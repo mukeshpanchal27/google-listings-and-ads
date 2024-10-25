@@ -363,8 +363,6 @@ test.describe( 'Complete your campaign', () => {
 		test( 'should not see the Free Ad Credit section if the account is not eligible', async () => {
 			await setupAdsAccountPage.mockAdsAccountConnected();
 			await completeCampaign.goto();
-			await completeCampaign.clickCreatePaidAdButton();
-			await completeCampaign.clickSkipPaidAdsCreationButon();
 			await completeCampaign.fulfillAdsCampaignsRequest( [] );
 			await setupAdsAccountPage.awaitAdsConnectionResponse();
 
