@@ -45,8 +45,8 @@ const useAdsCampaigns = ( ...query ) => {
 				googleAdsAccount?.status !== GOOGLE_ADS_ACCOUNT_STATUS.CONNECTED
 			) {
 				return {
-					loading: false,
-					loaded: true,
+					loading: isResolving,
+					loaded: hasFinishedResolution,
 					data: [],
 				};
 			}
