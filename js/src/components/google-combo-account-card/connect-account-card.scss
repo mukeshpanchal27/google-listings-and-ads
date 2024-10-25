@@ -19,6 +19,11 @@
 	.gla-google-combo-service-account-card__footer {
 		border: 0;
 		padding: 0;
+
+		.app-button, .components-button.is-tertiary:hover:not(:disabled,[aria-disabled=true]) {
+			background: none;
+			padding-left: 0;
+		}
 	}
 
 	.gla-connected-icon-label {
