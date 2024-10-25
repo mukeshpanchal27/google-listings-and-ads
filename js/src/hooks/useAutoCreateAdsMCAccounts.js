@@ -57,7 +57,6 @@ const useShouldCreateMCAccount = () => {
 
 /**
  * @typedef {Object} AutoCreateAdsMCAccountsData
- * @property {boolean} accountsCreated - Whether the accounts have been successfully created.
  * @property {boolean} hasDetermined - Whether the checks to determine if accounts should be created are finished.
  * @property {('ads'|'mc'|'both'|null)} creatingWhich - Which accounts are being created ('ads', 'mc', 'both'), or `null` if none.
  */
@@ -65,12 +64,11 @@ const useShouldCreateMCAccount = () => {
 /**
  * useAutoCreateAdsMCAccounts hook.
  * Creates Google Ads and Merchant Center accounts if the user doesn't have any existing and connected accounts.
- *
+ * @param {Function} createMCAccount Callback to create a Merchant Center account.
  * @return {AutoCreateAdsMCAccountsData} Object containing account creation data.
  */
 const useAutoCreateAdsMCAccounts = ( createMCAccount ) => {
 	const lockedRef = useRef( false );
-	// Create separate states.
 	const [ creatingWhich, setCreatingWhich ] = useState( null );
 	const [ hasDetermined, setDetermined ] = useState( false );
 
@@ -109,14 +107,12 @@ const useAutoCreateAdsMCAccounts = ( createMCAccount ) => {
 				if ( which === CREATING_BOTH_ACCOUNTS ) {
 					await createMCAccount();
 					await upsertAdsAccount();
-					setCreatingWhich( null );
 				} else if ( which === CREATING_MC_ACCOUNT ) {
 					await createMCAccount();
-					setCreatingWhich( null );
 				} else if ( which === CREATING_ADS_ACCOUNT ) {
 					await upsertAdsAccount();
-					setCreatingWhich( null );
 				}
+				setCreatingWhich( null );
 			};
 
 			handleCreateAccountCallback();

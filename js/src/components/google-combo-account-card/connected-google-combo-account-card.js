@@ -8,11 +8,10 @@ import { useEffect, useState } from '@wordpress/element';
  */
 import AccountCard, { APPEARANCE } from '../account-card';
 import AccountDetails from './account-details';
-import AppSpinner from '../app-spinner';
 import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
+import SpinnerCard from '.~/components/spinner-card';
 import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
 import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
 import useCreateMCAccount from '.~/hooks/useCreateMCAccount';
@@ -24,18 +23,6 @@ import './connected-google-combo-account-card.scss';
  * It will also kickoff Ads and Merchant Center account creation if the user does not have accounts.
  */
 const ConnectedGoogleComboAccountCard = () => {
-	// Used to track whether the account creation ever happened.
-	const [ wasCreatingAccounts, setWasCreatingAccounts ] =
-		useState( undefined );
-
-	const { hasFinishedResolution: hasFinishedResolutionForCurrentAdsAccount } =
-		useGoogleAdsAccount();
-
-	const {
-		hasFinishedResolution: hasFinishedResolutionForCurrentMCAccount,
-		isReady: isGoogleMCConnected,
-	} = useGoogleMCAccount();
-
 	// We use a single instance of the hook to create a MC (Merchant Center) account,
 	// ensuring consistent results across both the main component (ConnectedGoogleComboAccountCard)
 	// and its child component (ConnectMC).
@@ -45,44 +32,26 @@ const ConnectedGoogleComboAccountCard = () => {
 	const [ createMCAccount, resultCreateMCAccount ] = useCreateMCAccount();
 	const { data: accounts } = useExistingGoogleMCAccounts();
 	const [ showConnectMCCard, setShowConnectMCCard ] = useState( false );
+	const { isReady: isGoogleMCReady } = useGoogleMCAccount();
 	const { hasDetermined, creatingWhich } =
 		useAutoCreateAdsMCAccounts( createMCAccount );
-	const { text, subText } = getAccountCreationTexts( wasCreatingAccounts );
-
-	const accountDetailsResolved =
-		hasDetermined &&
-		hasFinishedResolutionForCurrentAdsAccount &&
-		hasFinishedResolutionForCurrentMCAccount;
-
-	const displayAccountDetails =
-		accountDetailsResolved && wasCreatingAccounts === null;
-
-	useEffect( () => {
-		if ( hasDetermined ) {
-			setWasCreatingAccounts( creatingWhich );
-		}
-	}, [ creatingWhich, hasDetermined ] );
+	const { text, subText } = getAccountCreationTexts( creatingWhich );
 
 	useEffect( () => {
 		// Show the Connect MC card if
-		// there's no connected accounts and there are existing accounts.
+		// there's no connected account and there are existing accounts.
 		// there's an issue when creating an MC account. For e.g need to reclaim the URL.
 		// The "Edit" button will be used to display the card within the connected state.
 		if (
-			( ! isGoogleMCConnected && accounts?.length > 0 ) ||
+			( ! isGoogleMCReady && accounts?.length > 0 ) ||
 			[ 403, 503 ].includes( resultCreateMCAccount.response?.status )
 		) {
 			setShowConnectMCCard( true );
 		}
-	}, [ isGoogleMCConnected, accounts?.length, resultCreateMCAccount ] );
+	}, [ isGoogleMCReady, accounts?.length, resultCreateMCAccount ] );
 
-	if (
-		wasCreatingAccounts === undefined &&
-		( ! hasDetermined ||
-			! hasFinishedResolutionForCurrentAdsAccount ||
-			! hasFinishedResolutionForCurrentMCAccount )
-	) {
-		return <AccountCard description={ <AppSpinner /> } />;
+	if ( ! hasDetermined ) {
+		return <SpinnerCard />;
 	}
 
 	return (
@@ -90,12 +59,12 @@ const ConnectedGoogleComboAccountCard = () => {
 			<AccountCard
 				appearance={ APPEARANCE.GOOGLE }
 				alignIcon="top"
-				className="gla-google-combo-account-card gla-google-combo-account-card--connected"
-				description={
-					! displayAccountDetails ? text : <AccountDetails />
+				className="gla-google-combo-account-card--connected"
+				description={ text || <AccountDetails /> }
+				helper={ subText }
+				indicator={
+					<Indicator showSpinner={ Boolean( creatingWhich ) } />
 				}
-				helper={ ! displayAccountDetails ? subText : null }
-				indicator={ <Indicator showSpinner={ creatingWhich } /> }
 			/>
 
 			{ showConnectMCCard && (
