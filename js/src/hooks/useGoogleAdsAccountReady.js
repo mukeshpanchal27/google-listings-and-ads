@@ -11,15 +11,25 @@ import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
  * @return {boolean|null} Whether the Google Ads account is ready. `null` if the state is not yet determined.
  */
 const useGoogleAdsAccountReady = () => {
-	const { hasGoogleAdsConnection } = useGoogleAdsAccount();
-	const { hasAccess, step } = useGoogleAdsAccountStatus();
+	const {
+		hasGoogleAdsConnection,
+		hasFinishedResolution: adsAccountResolved,
+	} = useGoogleAdsAccount();
+	const {
+		hasAccess,
+		step,
+		hasFinishedResolution: adsAccountStatusResolved,
+	} = useGoogleAdsAccountStatus();
 
-	const isReady =
+	if ( ! adsAccountResolved || ! adsAccountStatusResolved ) {
+		return null;
+	}
+
+	return (
 		hasGoogleAdsConnection &&
 		hasAccess &&
-		[ '', 'billing', 'link_merchant' ].includes( step );
-
-	return isReady === null ? null : !! isReady;
+		[ '', 'billing', 'link_merchant' ].includes( step )
+	);
 };
 
 export default useGoogleAdsAccountReady;
