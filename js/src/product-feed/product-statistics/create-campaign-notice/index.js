@@ -13,17 +13,12 @@ import useAdsCampaigns from '.~/hooks/useAdsCampaigns';
 import './index.scss';
 
 const CreateCampaignNotice = () => {
-	const { hasFinishedResolution, data: products } = useMCProductStatistics();
+	const { data: products } = useMCProductStatistics();
 	const { loaded: campaignsLoaded, data: campaigns } = useAdsCampaigns();
 
-	const isLoading =
-		! hasFinishedResolution || products?.loading || ! campaignsLoaded;
-
 	if (
-		isLoading ||
-		! products ||
-		products?.statistics?.active === 0 ||
-		! campaigns ||
+		! products?.statistics?.active ||
+		! campaignsLoaded ||
 		campaigns?.length > 0
 	) {
 		return null;
@@ -44,7 +39,7 @@ const CreateCampaignNotice = () => {
 						context: 'product-feed-overview-promotion',
 					} }
 				>
-					{ __( 'Create Campaign', 'google-listings-and-ads' ) }{ ' ' }
+					{ __( 'Create Campaign', 'google-listings-and-ads' ) }
 				</AddPaidCampaignButton>
 			</FlexItem>
 		</Flex>
