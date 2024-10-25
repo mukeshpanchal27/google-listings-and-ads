@@ -8,14 +8,18 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AccountCard from '.~/components/account-card';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import { useAppDispatch } from '.~/data';
-import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import ConnectAccountCard from '../connect-account-card';
 import ConnectAdsFooter from './connect-ads-footer';
 import ConnectAdsBody from './connect-ads-body';
+import ConfirmCreateModal from './confirm-create-modal';
+import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
+import useCreateAccountActions from './useCreateAccountActions';
+import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
+import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
+import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
+import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
+import { useAppDispatch } from '.~/data';
+import LoadingLabel from '.~/components/loading-label/loading-label';
 
 /**
  * ConnectAds component renders an account card to connect to an existing Google Ads account.
@@ -34,10 +38,7 @@ const ConnectAds = () => {
 		hasFinishedResolution: hasFinishedResolutionForCurrentAccount,
 	} = useGoogleAdsAccount();
 
-	const isConnected =
-		googleAdsAccount?.status === 'connected' ||
-		( googleAdsAccount?.status === 'incomplete' &&
-			googleAdsAccount?.step === 'link_merchant' );
+	const isConnected = useGoogleAdsAccountReady();
 
 	const [ value, setValue ] = useState();
 	const [ isLoading, setLoading ] = useState( false );
@@ -50,6 +51,13 @@ const ConnectAds = () => {
 	const { refetchGoogleAdsAccount } = useGoogleAdsAccount();
 	const { createNotice } = useDispatchCoreNotices();
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
+	const {
+		creatingNewAccount,
+		showCreateNewModal,
+		onContinue,
+		onCreateNew,
+		onRequestClose,
+	} = useCreateAccountActions();
 
 	useEffect( () => {
 		if ( isConnected ) {
@@ -66,7 +74,7 @@ const ConnectAds = () => {
 		try {
 			await fetchConnectAdsAccount();
 			await fetchGoogleAdsAccountStatus();
-			await refetchGoogleAdsAccount();
+			refetchGoogleAdsAccount();
 			setLoading( false );
 		} catch ( error ) {
 			setLoading( false );
@@ -80,6 +88,21 @@ const ConnectAds = () => {
 		}
 	};
 
+	if ( creatingNewAccount ) {
+		return (
+			<AccountCard
+				description={
+					<LoadingLabel
+						text={ __(
+							'Creating new ads account',
+							'google-listings-and-ads'
+						) }
+					/>
+				}
+			/>
+		);
+	}
+
 	// If the accounts are still being fetched, we don't want to show the card.
 	if (
 		! hasFinishedResolutionForExistingAdsAccount ||
@@ -90,27 +113,40 @@ const ConnectAds = () => {
 	}
 
 	return (
-		<ConnectAccountCard
-			className="gla-google-combo-service-account-card--ads"
-			title={ __(
-				'Connect to existing Google Ads account',
-				'google-listings-and-ads'
-			) }
-			helperText={ __(
-				'Required to set up conversion measurement for your store.',
-				'google-listings-and-ads'
-			) }
-			body={
-				<ConnectAdsBody
-					isConnected={ isConnected }
-					handleConnectClick={ handleConnectClick }
-					isLoading={ isLoading }
-					setValue={ setValue }
-					value={ value }
+		<>
+			<ConnectAccountCard
+				className="gla-google-combo-service-account-card--ads"
+				title={ __(
+					'Connect to existing Google Ads account',
+					'google-listings-and-ads'
+				) }
+				helperText={ __(
+					'Required to set up conversion measurement for your store.',
+					'google-listings-and-ads'
+				) }
+				body={
+					<ConnectAdsBody
+						isConnected={ isConnected }
+						handleConnectClick={ handleConnectClick }
+						isLoading={ isLoading }
+						setValue={ setValue }
+						value={ value }
+					/>
+				}
+				footer={
+					<ConnectAdsFooter
+						onCreateNew={ onCreateNew }
+						isConnected={ isConnected }
+					/>
+				}
+			/>
+			{ showCreateNewModal && (
+				<ConfirmCreateModal
+					onContinue={ onContinue }
+					onRequestClose={ onRequestClose }
 				/>
-			}
-			footer={ <ConnectAdsFooter isConnected={ isConnected } /> }
-		/>
+			) }
+		</>
 	);
 };
 

@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { noop } from 'lodash';
 
 /**
  * Internal dependencies
@@ -14,14 +15,14 @@ import DisconnectAccount from '.~/components/google-ads-account-card/disconnect-
  *
  * @return {JSX.Element} Footer component.
  */
-const ConnectAdsFooter = ( { isConnected } ) => {
+const ConnectAdsFooter = ( { isConnected, onCreateNew = noop } ) => {
 	// If the account is connected, show the disconnect button.
 	if ( isConnected ) {
 		return <DisconnectAccount />;
 	}
 
 	return (
-		<AppButton isTertiary>
+		<AppButton onClick={ onCreateNew } isTertiary>
 			{ __(
 				'Or, create a new Google Ads account',
 				'google-listings-and-ads'
