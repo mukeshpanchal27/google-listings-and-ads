@@ -55,7 +55,7 @@ const useAdsCampaigns = ( ...query ) => {
 			return {
 				loading,
 				loaded,
-				data,
+				data: data || [],
 			};
 		},
 		[
