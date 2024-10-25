@@ -256,11 +256,7 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCConnected();
 				await setUpAccountsPage.mockMCHasAccounts();
-				await setUpAccountsPage.fulfillAdsAccountStatus( {
-					has_access: true,
-					invite_link: '',
-					step: 'link_merchant',
-				} );
+				await setUpAccountsPage.mockAdsStatusClaimed();
 
 				const googleAccountCard =
 					setUpAccountsPage.getGoogleAccountCard();
