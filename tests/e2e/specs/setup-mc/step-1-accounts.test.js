@@ -325,12 +325,7 @@ test.describe( 'Set up accounts', () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCConnected();
-
-				await setUpAccountsPage.fulfillAdsAccountStatus( {
-					has_access: true,
-					invite_link: '',
-					step: 'link_merchant',
-				} );
+				await setUpAccountsPage.mockAdsAccountConnected();
 
 				await setUpAccountsPage.goto();
 			} );
