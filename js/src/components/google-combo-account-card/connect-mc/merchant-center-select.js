@@ -25,16 +25,15 @@ import AppSelectControl from '.~/components/app-select-control';
  * @param {boolean} props.isConnected Whether the Merchant Center account is connected.
  */
 const MerchantCenterSelect = ( { isConnected, ...rest } ) => {
-	const { data: existingAccounts, hasFinishedResolution } =
-		useExistingGoogleMCAccounts();
+	const { data: existingAccounts } = useExistingGoogleMCAccounts();
 	const { googleMCAccount } = useGoogleMCAccount();
 	const domain = new URL( getSetting( 'homeUrl' ) ).host;
 
-	const accountIdExists = existingAccounts.some(
+	const accountIdExists = existingAccounts?.some(
 		( existingAccount ) => existingAccount.id === googleMCAccount.id
 	);
 
-	if ( hasFinishedResolution && ! accountIdExists && isConnected ) {
+	if ( ! accountIdExists && isConnected ) {
 		// If the account ID is not in the list of existing accounts, and we have a connected state,
 		// display the connected ID only.
 		return (
