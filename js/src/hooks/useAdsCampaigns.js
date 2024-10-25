@@ -9,6 +9,7 @@ import { useSelect } from '@wordpress/data';
 import { STORE_KEY } from '.~/data';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useIsEqualRefValue from '.~/hooks/useIsEqualRefValue';
+import { GOOGLE_ADS_ACCOUNT_STATUS } from '.~/constants';
 
 const selectorName = 'getAdsCampaigns';
 
@@ -30,15 +31,22 @@ const selectorName = 'getAdsCampaigns';
  */
 const useAdsCampaigns = ( ...query ) => {
 	const queryRefValue = useIsEqualRefValue( query );
-	const { hasGoogleAdsConnection, hasFinishedResolution, isResolving } =
-		useGoogleAdsAccount();
+	const {
+		googleAdsAccount,
+		hasGoogleAdsConnection,
+		hasFinishedResolution,
+		isResolving,
+	} = useGoogleAdsAccount();
 
 	return useSelect(
 		( select ) => {
-			if ( ! hasGoogleAdsConnection ) {
+			if (
+				! hasGoogleAdsConnection ||
+				googleAdsAccount?.status !== GOOGLE_ADS_ACCOUNT_STATUS.CONNECTED
+			) {
 				return {
-					loading: isResolving,
-					loaded: hasFinishedResolution,
+					loading: false,
+					loaded: true,
 					data: [],
 				};
 			}
@@ -55,7 +63,7 @@ const useAdsCampaigns = ( ...query ) => {
 			return {
 				loading,
 				loaded,
-				data: data || [],
+				data,
 			};
 		},
 		[
