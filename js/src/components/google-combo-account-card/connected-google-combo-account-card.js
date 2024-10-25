@@ -28,9 +28,11 @@ const ConnectedGoogleComboAccountCard = () => {
 			alignIcon="top"
 			className="gla-google-combo-account-card--connected"
 			description={ text || <AccountDetails /> }
-			helper={ subText || <ConnectedAccountsActions /> }
+			helper={ subText }
 			indicator={ <Indicator showSpinner={ Boolean( creatingWhich ) } /> }
-		/>
+		>
+			<ConnectedAccountsActions />
+		</AccountCard>
 	);
 };
 

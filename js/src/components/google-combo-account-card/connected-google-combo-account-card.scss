@@ -5,16 +5,15 @@
 	}
 
 	.gla-connected-accounts-actions {
-		color: $black;
-		font-style: normal;
-		margin-top: 10px;
+		@media (min-width: $break-small) {
+			margin-left: auto;
 
-		.gla-claim-ads-account-section {
-			padding: 0;
+			// 40px is the icon size and $grid-unit-20 is 16px for the gap between flex items.
+			width: calc(100% - 40px - #{$grid-unit-20});
 		}
+	}
 
-		.gla-ads-conversion-measurement-notice {
-			margin: 0;
-		}
+	&:has(.gla-connected-accounts-actions) .components-card-body:last-of-type {
+		padding: $grid-unit-10;
 	}
 }
