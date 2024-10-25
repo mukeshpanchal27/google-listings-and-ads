@@ -25,6 +25,7 @@ import Faqs from './faqs';
 import './index.scss';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
+import useStoreAddressSynced from '.~/hooks/useStoreAddressSynced';
 
 /**
  * Renders the disclaimer of Comparison Shopping Service (CSS).
@@ -89,6 +90,7 @@ const SetupAccounts = ( props ) => {
 		isReady: isGoogleMCReady,
 	} = useGoogleMCAccount();
 	const { hasFinishedResolution } = useGoogleAdsAccount();
+	const storeAddressSynced = useStoreAddressSynced();
 	const isGoogleAdsReady = useGoogleAdsAccountReady();
 
 	/**
@@ -115,7 +117,8 @@ const SetupAccounts = ( props ) => {
 	const isContinueButtonDisabled = ! (
 		hasFinishedResolution &&
 		isGoogleAdsReady &&
-		isGoogleMCReady
+		isGoogleMCReady &&
+		storeAddressSynced
 	);
 
 	return (

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useRef, createInterpolateElement } from '@wordpress/element';
+import { useRef, createInterpolateElement, useState } from '@wordpress/element';
 import { CardDivider } from '@wordpress/components';
 import { Spinner } from '@woocommerce/components';
 import { update as updateIcon } from '@wordpress/icons';
@@ -11,6 +11,7 @@ import { getPath, getQuery } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
+import { useAppDispatch } from '.~/data';
 import useStoreAddress from '.~/hooks/useStoreAddress';
 import Section from '.~/wcdl/section';
 import Subsection from '.~/wcdl/subsection';
@@ -55,6 +56,8 @@ import './store-address-card.scss';
  */
 const StoreAddressCard = ( { showValidation = false } ) => {
 	const { loaded, data, refetch } = useStoreAddress();
+	const [ isSaving, setSaving ] = useState( false );
+	const { updateGoogleMCContactInformation } = useAppDispatch();
 	const path = getPath();
 	const { subpath } = getQuery();
 
@@ -66,7 +69,10 @@ const StoreAddressCard = ( { showValidation = false } ) => {
 	}
 
 	const handleRefreshClick = () => {
-		refetch();
+		setSaving( true );
+		updateGoogleMCContactInformation()
+			.then( () => refetch() )
+			.catch( () => setSaving( false ) );
 
 		refetchedCallbackRef.current = ( storeAddress ) => {
 			const eventProps = {
@@ -88,7 +94,7 @@ const StoreAddressCard = ( { showValidation = false } ) => {
 			iconPosition="right"
 			text={ __( 'Refresh to sync', 'google-listings-and-ads' ) }
 			onClick={ handleRefreshClick }
-			disabled={ ! loaded }
+			disabled={ ! loaded || isSaving }
 		/>
 	);
 

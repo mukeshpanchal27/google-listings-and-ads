@@ -6,6 +6,7 @@ import AccountDetails from './account-details';
 import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
+import SyncStoreAddress from './sync-store-address';
 import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
 import './connected-google-combo-account-card.scss';
 
@@ -22,14 +23,20 @@ const ConnectedGoogleComboAccountCard = () => {
 	}
 
 	return (
-		<AccountCard
-			appearance={ APPEARANCE.GOOGLE }
-			alignIcon="top"
-			className="gla-google-combo-account-card--connected"
-			description={ text || <AccountDetails /> }
-			helper={ subText }
-			indicator={ <Indicator showSpinner={ Boolean( creatingWhich ) } /> }
-		/>
+		<div className="gla-google-combo-account-cards">
+			<AccountCard
+				appearance={ APPEARANCE.GOOGLE }
+				alignIcon="top"
+				className="gla-google-combo-account-card--connected"
+				description={ text || <AccountDetails /> }
+				helper={ subText }
+				indicator={
+					<Indicator showSpinner={ Boolean( creatingWhich ) } />
+				}
+			/>
+
+			<SyncStoreAddress />
+		</div>
 	);
 };
 
