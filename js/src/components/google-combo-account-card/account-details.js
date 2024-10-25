@@ -17,14 +17,13 @@ import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
 const AccountDetails = () => {
 	const { google } = useGoogleAccount();
 	const { googleAdsAccount } = useGoogleAdsAccount();
-	const { googleMCAccount, isReady: isGoogleMCConnected } =
-		useGoogleMCAccount();
+	const { googleMCAccount, isReady: isGoogleMCReady } = useGoogleMCAccount();
 
 	return (
 		<>
 			<p>{ google.email }</p>
 			<p>
-				{ isGoogleMCConnected &&
+				{ isGoogleMCReady &&
 					sprintf(
 						// Translators: %s is the Merchant Center ID
 						__(

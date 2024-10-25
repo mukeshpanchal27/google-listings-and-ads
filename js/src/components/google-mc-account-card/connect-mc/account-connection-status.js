@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import SwitchUrlCard from './switch-url-card';
-import ReclaimUrlCard from './reclaim-url-card';
-import CreatingCard from './creating-card';
+import SwitchUrlCard from '../switch-url-card';
+import ReclaimUrlCard from '../reclaim-url-card';
+import CreatingCard from '../creating-card';
 
 /**
  * Displays different status cards based on account connection results.
