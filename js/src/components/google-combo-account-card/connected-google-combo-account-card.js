@@ -3,8 +3,7 @@
  */
 import AccountCard, { APPEARANCE } from '../account-card';
 import AccountDetails from './account-details';
-import ClaimAdsAccount from './claim-ads-account';
-import ConversionMeasurementNotice from './conversion-measurement-notice';
+import ConnectedAccountsActions from './connected-accounts-actions';
 import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
@@ -24,21 +23,14 @@ const ConnectedGoogleComboAccountCard = () => {
 	}
 
 	return (
-		<>
-			<AccountCard
-				appearance={ APPEARANCE.GOOGLE }
-				alignIcon="top"
-				className="gla-google-combo-account-card--connected"
-				description={ text || <AccountDetails /> }
-				helper={ subText }
-				indicator={
-					<Indicator showSpinner={ Boolean( creatingWhich ) } />
-				}
-			>
-				<ConversionMeasurementNotice />
-				<ClaimAdsAccount />
-			</AccountCard>
-		</>
+		<AccountCard
+			appearance={ APPEARANCE.GOOGLE }
+			alignIcon="top"
+			className="gla-google-combo-account-card--connected"
+			description={ text || <AccountDetails /> }
+			helper={ subText || <ConnectedAccountsActions /> }
+			indicator={ <Indicator showSpinner={ Boolean( creatingWhich ) } /> }
+		/>
 	);
 };
 

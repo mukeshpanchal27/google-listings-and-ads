@@ -1,13 +1,6 @@
 .gla-claim-ads-account-section {
 	padding-top: 0;
 
-	@media (min-width: $break-small) {
-		margin-left: auto;
-
-		// 40px is the icon size and $grid-unit-20 is 16px for the gap between flex items.
-		width: calc(100% - 40px - #{$grid-unit-20});
-	}
-
 	* {
 		margin: 0;
 	}

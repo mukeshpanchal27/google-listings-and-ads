@@ -12,7 +12,6 @@ import ClaimAccountButton from '.~/components/google-ads-account-card/claim-acco
 import Section from '.~/wcdl/section';
 import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import { useAppDispatch } from '.~/data';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
 import useWindowFocusCallbackIntervalEffect from '.~/hooks/useWindowFocusCallbackIntervalEffect';
 import './claim-ads-account.scss';
@@ -25,7 +24,6 @@ import './claim-ads-account.scss';
 const ClaimAdsAccount = () => {
 	const [ updating, setUpdating ] = useState( false );
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
-	const { googleAdsAccount } = useGoogleAdsAccount();
 	const { hasAccess, step } = useGoogleAdsAccountStatus();
 	const [ upsertAdsAccount ] = useUpsertAdsAccount();
 
@@ -42,14 +40,6 @@ const ClaimAdsAccount = () => {
 			upsertAdsAccount();
 		}
 	}, [ hasAccess, step, upsertAdsAccount ] );
-
-	const shouldClaimGoogleAdsAccount = Boolean(
-		googleAdsAccount.id && hasAccess === false
-	);
-
-	if ( ! shouldClaimGoogleAdsAccount ) {
-		return null;
-	}
 
 	return (
 		<Section.Card.Body className="gla-claim-ads-account-section">

@@ -3,4 +3,18 @@
 	.gla-account-card__description {
 		gap: 0;
 	}
+
+	.gla-connected-accounts-actions {
+		color: $black;
+		font-style: normal;
+		margin-top: 10px;
+
+		.gla-claim-ads-account-section {
+			padding: 0;
+		}
+
+		.gla-ads-conversion-measurement-notice {
+			margin: 0;
+		}
+	}
 }
