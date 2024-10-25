@@ -11,6 +11,7 @@ import AppButton from '.~/components/app-button';
 import ContentButtonLayout from '.~/components/content-button-layout';
 import ConnectedIconLabel from '.~/components/connected-icon-label';
 import LoadingLabel from '.~/components/loading-label';
+import ConnectedMerchantCenterDetails from './connected-merchant-center-details';
 
 /**
  * Clicking on the button to connect an existing Google Merchant Center account.
@@ -44,11 +45,14 @@ const ConnectMCBody = ( {
 } ) => {
 	return (
 		<ContentButtonLayout>
-			<MerchantCenterSelectControl
-				value={ value }
-				onChange={ setValue }
-				nonInteractive={ isConnected }
-			/>
+			{ isConnected && <ConnectedMerchantCenterDetails /> }
+
+			{ ! isConnected && (
+				<MerchantCenterSelectControl
+					value={ value }
+					onChange={ setValue }
+				/>
+			) }
 
 			{ isConnected && (
 				<ConnectedIconLabel className="gla-google-combo-service-connected-icon-label" />
