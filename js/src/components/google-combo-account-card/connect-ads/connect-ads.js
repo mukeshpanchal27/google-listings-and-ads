@@ -35,6 +35,7 @@ const ConnectAds = () => {
 
 	const {
 		googleAdsAccount,
+		hasGoogleAdsConnection,
 		hasFinishedResolution: hasFinishedResolutionForCurrentAccount,
 	} = useGoogleAdsAccount();
 
@@ -64,6 +65,11 @@ const ConnectAds = () => {
 			setValue( googleAdsAccount.id );
 		}
 	}, [ googleAdsAccount, isConnected ] );
+
+	// If the account is in unclaimed state, we don't want to show the card.
+	if ( hasGoogleAdsConnection && ! isConnected ) {
+		return null;
+	}
 
 	const handleConnectClick = async () => {
 		if ( ! value ) {
