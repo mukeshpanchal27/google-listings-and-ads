@@ -7,9 +7,8 @@ import { useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import { STORE_KEY } from '.~/data';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
+import { glaData } from '.~/constants';
 import useIsEqualRefValue from '.~/hooks/useIsEqualRefValue';
-import { GOOGLE_ADS_ACCOUNT_STATUS } from '.~/constants';
 
 const selectorName = 'getAdsCampaigns';
 
@@ -31,22 +30,19 @@ const selectorName = 'getAdsCampaigns';
  */
 const useAdsCampaigns = ( ...query ) => {
 	const queryRefValue = useIsEqualRefValue( query );
-	const {
-		googleAdsAccount,
-		hasGoogleAdsConnection,
-		hasFinishedResolution,
-		isResolving,
-	} = useGoogleAdsAccount();
 
 	return useSelect(
 		( select ) => {
-			if (
-				! hasGoogleAdsConnection ||
-				googleAdsAccount?.status !== GOOGLE_ADS_ACCOUNT_STATUS.CONNECTED
-			) {
+			// TODO: ideally adsSetupComplete should be retrieved from API endpoint
+			// and then put into wp-data.
+			// With that in place, then we don't need to depend on glaData
+			// which requires force reload using window.location.href.
+			const { adsSetupComplete } = glaData;
+
+			if ( ! adsSetupComplete ) {
 				return {
-					loading: isResolving,
-					loaded: hasFinishedResolution,
+					loading: false,
+					loaded: true,
 					data: [],
 				};
 			}
@@ -66,12 +62,7 @@ const useAdsCampaigns = ( ...query ) => {
 				data,
 			};
 		},
-		[
-			hasFinishedResolution,
-			hasGoogleAdsConnection,
-			isResolving,
-			queryRefValue,
-		]
+		[ queryRefValue ]
 	);
 };
 
