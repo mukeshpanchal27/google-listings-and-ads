@@ -10,6 +10,11 @@ import { createInterpolateElement } from '@wordpress/element';
  */
 import AppDocumentationLink from '.~/components/app-documentation-link';
 
+/**
+ * Render the Free Ads Credit section inside the Paid Features section.
+ *
+ * @return {JSX.Element} Free Ads Credit section.
+ */
 const FreeAdCredit = () => {
 	return (
 		<div className="gla-free-ad-credit">
