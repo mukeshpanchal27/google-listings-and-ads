@@ -11,6 +11,12 @@ export default class MockRequests {
 		this.page = page;
 	}
 
+	/**
+	 * Fulfill a request multiple times.
+	 *
+	 * @param {number} times The number of times to fulfill the request.
+	 * @return {this} A proxied instance intercepts the subsequent fulfillRequest calls to attach the `times` option.
+	 */
 	fulfillTimes( times ) {
 		return new Proxy( this, {
 			get( target, property ) {
@@ -35,7 +41,7 @@ export default class MockRequests {
 	 * @param {Object}        payload  The payload to send.
 	 * @param {number}        status   The HTTP status in the response.
 	 * @param {Array}         methods  The HTTP methods in the request to be fulfill.
-	 * @param {number}        times    The number of times to fulfill the request.
+	 * @param {number}        [times]    The number of times to fulfill the request. Optional.
 	 * @return {Promise<void>}
 	 */
 	async fulfillRequest( url, payload, status = 200, methods = [], times ) {
@@ -148,6 +154,7 @@ export default class MockRequests {
 	 * Fulfill the MC connection request.
 	 *
 	 * @param {Object} payload
+	 * @return {Promise<void>}
 	 */
 	async fulfillMCConnection( payload ) {
 		await this.fulfillRequest( /\/wc\/gla\/mc\/connection\b/, payload );
@@ -207,6 +214,7 @@ export default class MockRequests {
 	 * Fulfill the Ads Connection request.
 	 *
 	 * @param {Object} payload
+	 * @return {Promise<void>}
 	 */
 	async fulfillAdsConnection( payload ) {
 		await this.fulfillRequest( /\/wc\/gla\/ads\/connection\b/, payload );

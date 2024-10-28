@@ -252,10 +252,6 @@ test.describe( 'Set up accounts', () => {
 			} );
 
 			test( 'should see the merchant center id and ads account id if connected', async () => {
-				await setUpAccountsPage.fulfillAdsAccounts( [ { id: 12345 } ] );
-				await setUpAccountsPage.mockAdsAccountConnected();
-				await setUpAccountsPage.mockMCConnected();
-				await setUpAccountsPage.mockMCHasAccounts();
 				await setUpAccountsPage.mockAdsStatusClaimed();
 
 				const googleAccountCard =
@@ -456,12 +452,7 @@ test.describe( 'Set up accounts', () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCConnected();
-
-				await setUpAccountsPage.fulfillAdsAccountStatus( {
-					has_access: true,
-					invite_link: '',
-					step: 'link_merchant',
-				} );
+				await setUpAccountsPage.mockAdsAccountConnected();
 
 				await setUpAccountsPage.goto();
 			} );
