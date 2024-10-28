@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { createInterpolateElement } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -10,9 +9,9 @@ import { createInterpolateElement } from '@wordpress/element';
 import AppModal from '.~/components/app-modal';
 import AppButton from '.~/components/app-button';
 import WarningIcon from '.~/components/warning-icon';
+import './confirm-create-modal.scss';
 
 const ConfirmCreateModal = ( {
-	existingAccount = [],
 	onContinue = () => {},
 	onRequestClose = () => {},
 } ) => {
@@ -54,27 +53,15 @@ const ConfirmCreateModal = ( {
 					) }
 				</span>
 			</p>
-			{ existingAccount.length > 0 && (
-				<p>
-					{ createInterpolateElement(
-						__(
-							'You already have another verified account, <storename />, which is connected to this store’s URL, <storeurl />.',
-							'google-listings-and-ads'
-						),
-						{
-							storename: (
-								<strong>{ existingAccount.name }</strong>
-							),
-							storeurl: (
-								<strong>{ existingAccount.domain }</strong>
-							),
-						}
-					) }
-				</p>
-			) }
 			<p>
 				{ __(
-					'If you create a new Ads account, you will have to claim the new account. Do you want to proceed?',
+					'You already have another Ads account associated with this Google account.',
+					'google-listings-and-ads'
+				) }
+			</p>
+			<p>
+				{ __(
+					'If you create a new Google Ads account, you will need to accept an invite to the account before it can be used.',
 					'google-listings-and-ads'
 				) }
 			</p>
