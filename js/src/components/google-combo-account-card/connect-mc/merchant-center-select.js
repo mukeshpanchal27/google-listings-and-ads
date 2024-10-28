@@ -19,7 +19,9 @@ import AppSelectControl from '.~/components/app-select-control';
  * Ideally, we would use MerchantCenterSelectControl only for this purpose. However, during testing,
  * we found that when a URL is reclaimed for Merchant Center (MC), the Google API does not
  * return the newly reclaimed account in the list provided by the useExistingGoogleMCAccounts hook,
- * even though the data in the store is invalidated.
+ * even though the data in the store is invalidated. In that case, thus we end up having an account ID
+ * which is not in the list of existing accounts. We then fake the connected select by manually providing
+ * the connected ID.
  *
  * @param {Object} props
  * @param {boolean} props.isConnected Whether the Merchant Center account is connected.
@@ -33,9 +35,8 @@ const MerchantCenterSelect = ( { isConnected, ...rest } ) => {
 		( existingAccount ) => existingAccount.id === googleMCAccount.id
 	);
 
+	// If the account ID is in the list of existing accounts, display the connecte account ID only.
 	if ( ! accountIdExists && isConnected ) {
-		// If the account ID is not in the list of existing accounts, and we have a connected state,
-		// display the connected ID only.
 		return (
 			<AppSelectControl
 				autoSelectFirstOption

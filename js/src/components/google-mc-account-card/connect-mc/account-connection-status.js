@@ -23,6 +23,7 @@ const AccountConnectionStatus = ( {
 	resultCreateAccount,
 	onRetry,
 } ) => {
+	// 409: Conflict error.
 	if ( resultConnectMC.response?.status === 409 ) {
 		return (
 			<SwitchUrlCard
@@ -35,6 +36,7 @@ const AccountConnectionStatus = ( {
 		);
 	}
 
+	// 403: Authorization errors
 	if (
 		resultConnectMC.response?.status === 403 ||
 		resultCreateAccount.response?.status === 403
@@ -56,6 +58,7 @@ const AccountConnectionStatus = ( {
 		);
 	}
 
+	// 503: Service errors
 	if (
 		resultCreateAccount.loading ||
 		resultCreateAccount.response?.status === 503

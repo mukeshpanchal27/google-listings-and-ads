@@ -63,7 +63,6 @@ const ConnectMCBody = ( {
 			{ ! isConnected && ! isConnecting && (
 				<AppButton
 					isSecondary
-					disabled={ ! value }
 					eventName="gla_mc_account_connect_button_click"
 					eventProps={ { id: Number( value ) } }
 					onClick={ handleConnectMC }
