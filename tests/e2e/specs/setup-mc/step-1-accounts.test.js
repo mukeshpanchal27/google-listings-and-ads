@@ -293,6 +293,7 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.mockMCNotConnected();
 				await setUpAccountsPage.mockContactInformation( {
 					streetAddress: 'Automata Road',
+					isMCAddressDifferent: false,
 				} );
 
 				await setUpAccountsPage.goto();
@@ -311,6 +312,7 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.mockMCConnected();
 				await setUpAccountsPage.mockContactInformation( {
 					streetAddress: 'Automata Road',
+					isMCAddressDifferent: false,
 				} );
 
 				await setUpAccountsPage.goto();
