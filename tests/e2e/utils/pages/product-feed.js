@@ -69,6 +69,28 @@ export default class ProductFeedPage extends MockRequests {
 	}
 
 	/**
+	 * Change the value of adsSetupComplete to `true` after it is discovered.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async mockAdsSetupComplete() {
+		this.page.addInitScript( () => {
+			const targetId = 'google-listings-and-ads-js-before';
+			const checkElement = () => {
+				const targetElement = document.getElementById( targetId );
+				if ( targetElement ) {
+					window.glaData = window.glaData || {};
+					window.glaData.adsSetupComplete = true;
+				} else {
+					// If not, keep checking until targetElement exists
+					window.requestAnimationFrame( checkElement );
+				}
+			};
+			checkElement();
+		} );
+	}
+
+	/**
 	 * Get the active product value element.
 	 *
 	 * @return {Promise<import('@playwright/test').Locator>} The active product value element.
@@ -99,7 +121,7 @@ export default class ProductFeedPage extends MockRequests {
 	 * @return {Promise<import('@playwright/test').Locator>} The campaign notice section.
 	 */
 	async getCampaignNoticeSection() {
-		return this.page.locator( '.components-notice__content' ).filter( {
+		return this.page.locator( '.gla-ads-inline-notice' ).filter( {
 			hasText:
 				'You have approved products. Create a Google Ads campaign to reach more customers and drive more sales.',
 		} );

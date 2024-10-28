@@ -144,6 +144,7 @@ test.describe( 'Product Feed Page', () => {
 
 	test.describe( 'Has campaign', () => {
 		test.beforeAll( async () => {
+			await productFeedPage.mockAdsSetupComplete();
 			await productFeedPage.fulfillAdsCampaignsRequest( [
 				{
 					id: 111111111,
