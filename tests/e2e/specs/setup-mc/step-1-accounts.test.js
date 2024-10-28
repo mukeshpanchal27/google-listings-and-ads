@@ -215,91 +215,25 @@ test.describe( 'Set up accounts', () => {
 		test( 'should create merchant center and ads account if does not exist for the user', async () => {
 			await setUpAccountsPage.mockJetpackConnected();
 			await setUpAccountsPage.mockGoogleConnected();
-			await setUpAccountsPage.mockAdsAccountDisconnected();
-			await setUpAccountsPage.mockMCNotConnected();
 
-			await setUpAccountsPage.fulfillAdsAccounts(
-				[
-					[],
-					[
-						{
-							id: 78787878,
-							name: 'gla',
-						},
-					],
-				],
-				200,
-				[ 'GET' ],
-				true
-			);
+			await setUpAccountsPage.fulfillAdsAccounts( [ { id: 1 } ] );
+			await setUpAccountsPage.mockMCHasAccounts();
+			await setUpAccountsPage.mockAdsAccountIncomplete();
+			await setUpAccountsPage.mockMCConnected();
 
-			await setUpAccountsPage.fulfillMCAccounts(
-				[
-					[],
-					[
-						{
-							id: 5432178,
-							name: null,
-							subaccount: null,
-							domain: null,
-						},
-					],
-				],
-				200,
-				'GET',
-				true
-			);
+			const once = setUpAccountsPage.fulfillTimes( 1 );
 
-			await setUpAccountsPage.fulfillAdsConnection(
-				[
-					{
-						id: 0,
-						currency: 'USD',
-						status: 'disconnected',
-						symbol: '$',
-					},
-					{
-						id: 78787878,
-						currency: 'USD',
-						status: 'incomplete',
-						step: 'account_access',
-						sub_account: true,
-						symbol: '$',
-					},
-				],
-				200,
-				'GET',
-				true
-			);
-
-			await setUpAccountsPage.fulfillMCConnection(
-				[
-					{
-						id: 0,
-						name: null,
-						subaccount: null,
-						domain: null,
-					},
-					{
-						id: 5432178,
-						name: null,
-						subaccount: null,
-						domain: null,
-						status: 'incomplete',
-						step: 'claim',
-					},
-				],
-				200,
-				'GET',
-				true
-			);
+			await once.mockAdsHasNoAccounts();
+			await once.mockMCHasNoAccounts();
+			await once.mockAdsAccountDisconnected();
+			await once.mockMCNotConnected();
 
 			await setUpAccountsPage.goto();
 			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
 
 			await expect(
 				googleAccountCard.getByText(
-					/You don’t have Merchant Center nor Google Ads accounts, so we’re creating them for you./,
+					'You don’t have Merchant Center nor Google Ads accounts, so we’re creating them for you.',
 					{
 						exact: true,
 					}
@@ -318,6 +252,8 @@ test.describe( 'Set up accounts', () => {
 			} );
 
 			test( 'should see the merchant center id and ads account id if connected', async () => {
+				await setUpAccountsPage.mockAdsStatusClaimed();
+
 				const googleAccountCard =
 					setUpAccountsPage.getGoogleAccountCard();
 				await expect(
@@ -331,26 +267,6 @@ test.describe( 'Set up accounts', () => {
 						exact: true,
 					} )
 				).toBeVisible();
-			} );
-
-			test( 'should see the connected label', async () => {
-				const googleAccountCard =
-					setUpAccountsPage.getGoogleAccountCard();
-
-				await setUpAccountsPage.fulfillAdsAccountStatus( {
-					has_access: true,
-					invite_link: '',
-					step: 'link_merchant',
-				} );
-
-				await setUpAccountsPage.fulfillMCConnection( {
-					id: 1234,
-					name: 'Test Merchant Center',
-					subaccount: null,
-					domain: 'example.com',
-					status: 'connected',
-					step: '',
-				} );
 
 				await expect(
 					googleAccountCard.getByText( 'Connected', { exact: true } )
@@ -405,12 +321,7 @@ test.describe( 'Set up accounts', () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCConnected();
-
-				await setUpAccountsPage.fulfillAdsAccountStatus( {
-					has_access: true,
-					invite_link: '',
-					step: 'link_merchant',
-				} );
+				await setUpAccountsPage.mockAdsAccountConnected();
 
 				await setUpAccountsPage.goto();
 			} );
