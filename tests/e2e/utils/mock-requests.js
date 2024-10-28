@@ -15,7 +15,7 @@ export default class MockRequests {
 	 * Fulfill a request multiple times.
 	 *
 	 * @param {number} times The number of times to fulfill the request.
-	 * @return {Proxy} A proxy object to modify the behavior of the `fulfillRequest` method.
+	 * @return {this} A proxied instance intercepts the subsequent fulfillRequest calls to attach the `times` option.
 	 */
 	fulfillTimes( times ) {
 		return new Proxy( this, {
@@ -41,7 +41,7 @@ export default class MockRequests {
 	 * @param {Object}        payload  The payload to send.
 	 * @param {number}        status   The HTTP status in the response.
 	 * @param {Array}         methods  The HTTP methods in the request to be fulfill.
-	 * @param {number}        times    The number of times to fulfill the request.
+	 * @param {number}        [times]    The number of times to fulfill the request. Optional.
 	 * @return {Promise<void>}
 	 */
 	async fulfillRequest( url, payload, status = 200, methods = [], times ) {
