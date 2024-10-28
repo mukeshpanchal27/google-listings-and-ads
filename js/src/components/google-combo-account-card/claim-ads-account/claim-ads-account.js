@@ -3,7 +3,6 @@
  */
 import { useCallback, useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Flex, FlexBlock } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -43,45 +42,38 @@ const ClaimAdsAccount = () => {
 
 	return (
 		<Section.Card.Body className="gla-claim-ads-account-section">
-			<Flex gap={ 4 }>
-				<FlexBlock>
-					<div className="gla-claim-ads-account-box">
-						<h4>
-							{ __(
-								'Claim your Google Ads account',
-								'google-listings-and-ads'
-							) }
-						</h4>
-						<p>
-							{ __(
-								'You need to accept the invitation to the Google Ads account we created for you. This gives you access to Google Ads and sets up conversion measurement. You must claim your account in the next 20 days.',
-								'google-listings-and-ads'
-							) }
-						</p>
-						<p>
-							{ __(
-								'After accepting the invitation, you’ll be prompted to set up billing. We highly recommend doing this to avoid having to do it later on.',
-								'google-listings-and-ads'
-							) }
-						</p>
-						<ClaimAccountButton
-							loading={ updating }
-							text={
-								updating
-									? __(
-											'Updating…',
-											'google-listings-and-ads'
-									  )
-									: __(
-											'Claim your Google Ads account',
-											'google-listings-and-ads'
-									  )
-							}
-							isPrimary={ ! updating }
-						/>
-					</div>
-				</FlexBlock>
-			</Flex>
+			<div className="gla-claim-ads-account-box">
+				<h4>
+					{ __(
+						'Claim your Google Ads account',
+						'google-listings-and-ads'
+					) }
+				</h4>
+				<p>
+					{ __(
+						'You need to accept the invitation to the Google Ads account we created for you. This gives you access to Google Ads and sets up conversion measurement. You must claim your account in the next 20 days.',
+						'google-listings-and-ads'
+					) }
+				</p>
+				<p className="gla-ads-post-claim-instructions">
+					{ __(
+						'After accepting the invitation, you’ll be prompted to set up billing. We highly recommend doing this to avoid having to do it later on.',
+						'google-listings-and-ads'
+					) }
+				</p>
+				<ClaimAccountButton
+					loading={ updating }
+					text={
+						updating
+							? __( 'Updating…', 'google-listings-and-ads' )
+							: __(
+									'Claim your Google Ads account',
+									'google-listings-and-ads'
+							  )
+					}
+					isPrimary={ ! updating }
+				/>
+			</div>
 		</Section.Card.Body>
 	);
 };
