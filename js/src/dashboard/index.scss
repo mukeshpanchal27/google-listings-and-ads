@@ -26,6 +26,7 @@
 		margin-bottom: var(--main-gap);
 
 		@include break-medium {
+			align-items: flex-start;
 			flex-direction: row;
 		}
 
