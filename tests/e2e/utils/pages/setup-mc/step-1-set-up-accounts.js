@@ -376,4 +376,25 @@ export default class SetUpAccountsPage extends MockRequests {
 	getTermsCheckbox() {
 		return this.page.getByLabel( /I accept the terms and conditions/ );
 	}
+
+	/**
+	 * Get store address card.
+	 *
+	 * @return {import('@playwright/test').Locator} Get store address card.
+	 */
+	getStoreAddressCard() {
+		return this.page.locator( '.gla-store-address-card' );
+	}
+
+	/**
+	 * Get store address refresh to sync button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get store address refresh to sync button.
+	 */
+	getStoreAddressRefreshToSyncButton() {
+		return this.getStoreAddressCard().getByRole( 'button', {
+			name: 'Refresh to sync',
+			exact: true,
+		} );
+	}
 }

@@ -291,6 +291,9 @@ test.describe( 'Set up accounts', () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCNotConnected();
+				await setUpAccountsPage.mockContactInformation( {
+					streetAddress: 'Automata Road',
+				} );
 
 				await setUpAccountsPage.goto();
 			} );
@@ -306,6 +309,9 @@ test.describe( 'Set up accounts', () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountDisconnected();
 				await setUpAccountsPage.mockMCConnected();
+				await setUpAccountsPage.mockContactInformation( {
+					streetAddress: 'Automata Road',
+				} );
 
 				await setUpAccountsPage.goto();
 			} );
@@ -317,11 +323,33 @@ test.describe( 'Set up accounts', () => {
 			} );
 		} );
 
-		test.describe( 'When all accounts are connected', async () => {
+		test.describe( 'When the store address needs to be synced and accounts are connected', async () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCConnected();
+				await setUpAccountsPage.mockContactInformation( {
+					streetAddress: 'Automata Road',
+					isMCAddressDifferent: true,
+				} );
+
+				await setUpAccountsPage.goto();
+			} );
+
+			test( 'should see "Continue" button disabled when the store address needs to be synced', async () => {
+				const continueButton =
+					await setUpAccountsPage.getContinueButton();
+				await expect( continueButton ).toBeDisabled();
+			} );
+		} );
+
+		test.describe( 'When all accounts are connected and store address is synced', async () => {
+			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
+				await setUpAccountsPage.mockMCConnected();
+				await setUpAccountsPage.mockContactInformation( {
+					streetAddress: 'Automata Road',
+					isMCAddressDifferent: false,
+				} );
 
 				await setUpAccountsPage.goto();
 			} );
