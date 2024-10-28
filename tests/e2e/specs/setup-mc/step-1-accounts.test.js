@@ -453,6 +453,7 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCConnected();
 				await setUpAccountsPage.mockAdsAccountConnected();
+				await setUpAccountsPage.mockAdsStatusClaimed();
 
 				await setUpAccountsPage.goto();
 			} );
