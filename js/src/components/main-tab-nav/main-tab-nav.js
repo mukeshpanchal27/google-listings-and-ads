@@ -3,8 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { getNewPath, getPath } from '@woocommerce/navigation';
-import { createInterpolateElement } from '@wordpress/element';
-import { Notice } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -12,7 +10,7 @@ import { Notice } from '@wordpress/components';
 import { glaData } from '.~/constants';
 import AppTabNav from '.~/components/app-tab-nav';
 import useMenuEffect from '.~/hooks/useMenuEffect';
-import TrackableLink from '.~/components/trackable-link';
+import GtinMigrationBanner from '.~/components/gtin-migration-banner';
 
 let tabs = [
 	{
@@ -60,26 +58,7 @@ const MainTabNav = () => {
 
 	return (
 		<>
-			<Notice isDismissible={ true }>
-				{ createInterpolateElement(
-					__(
-						"The GTIN field managed by WooCommerce in the Product's inventory section, will now be used by Google for WooCommerce. It will continue to support the previous field and any mapping rules you have setup for the GTIN field. If you would like to migrate the data you can use the <link>tool here</link>",
-						'google-listings-and-ads'
-					),
-					{
-						link: (
-							<TrackableLink
-								eventName="gla_gtin_migration_banner_click"
-								eventProps={ {
-									context: 'banner',
-								} }
-								href="admin.php?page=wc-settings"
-								type="wp-admin"
-							/>
-						),
-					}
-				) }
-			</Notice>
+			<GtinMigrationBanner />
 			<AppTabNav tabs={ tabs } selectedKey={ selectedKey } />
 		</>
 	);
