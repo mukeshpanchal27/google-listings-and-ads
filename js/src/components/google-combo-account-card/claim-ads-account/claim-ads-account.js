@@ -28,11 +28,19 @@ const ClaimAdsAccount = () => {
 	const { hasAccess, step } = useGoogleAdsAccountStatus();
 	const [ upsertAdsAccount ] = useUpsertAdsAccount();
 
+	const shouldClaimGoogleAdsAccount = Boolean(
+		googleAdsAccount.id && hasAccess === false
+	);
+
 	const checkUpdatedAdsAccountStatus = useCallback( async () => {
+		if ( ! shouldClaimGoogleAdsAccount ) {
+			return;
+		}
+
 		setUpdating( true );
 		await fetchGoogleAdsAccountStatus();
 		setUpdating( false );
-	}, [ fetchGoogleAdsAccountStatus ] );
+	}, [ fetchGoogleAdsAccountStatus, shouldClaimGoogleAdsAccount ] );
 
 	useWindowFocusCallbackIntervalEffect( checkUpdatedAdsAccountStatus, 30 );
 
@@ -41,10 +49,6 @@ const ClaimAdsAccount = () => {
 			upsertAdsAccount();
 		}
 	}, [ hasAccess, step, upsertAdsAccount ] );
-
-	const shouldClaimGoogleAdsAccount = Boolean(
-		googleAdsAccount.id && hasAccess === false
-	);
 
 	if ( ! shouldClaimGoogleAdsAccount ) {
 		return null;
