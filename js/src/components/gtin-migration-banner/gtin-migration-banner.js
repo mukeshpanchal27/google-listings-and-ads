@@ -12,11 +12,16 @@ import TrackableLink from '.~/components/trackable-link';
 import AppButton from '.~/components/app-button';
 import AppModal from '.~/components/app-modal';
 import { recordGlaEvent } from '.~/utils/tracks';
+import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
 
 const GTIN_MIGRATION_BANNER_CONTEXT = 'gtin_migration_banner';
 
 const GtinMigrationBanner = () => {
 	const [ showModal, setShowModal ] = useState( false );
+	const [ startMigration, { loading, error, reset } ] = useApiFetchCallback( {
+		path: `/wc/gla/start-migration`,
+		method: 'POST',
+	} );
 
 	const closeModal = () => {
 		recordGlaEvent( 'gla_modal_closed', {
@@ -32,11 +37,12 @@ const GtinMigrationBanner = () => {
 		setShowModal( true );
 	};
 
-	const startMigration = () => {
+	const handleStartMigrationClick = async () => {
 		recordGlaEvent( 'gla_gtin_migration_banner_migration_start', {
 			context: GTIN_MIGRATION_BANNER_CONTEXT,
 		} );
-		console.log( 'TODO: Migration API Call to be implemented.' );
+		reset();
+		await startMigration( { parse: false } );
 	};
 
 	return (
@@ -52,7 +58,12 @@ const GtinMigrationBanner = () => {
 						<AppButton key="1" isSecondary onClick={ closeModal }>
 							{ __( 'Never mind', 'google-listings-and-ads' ) }
 						</AppButton>,
-						<AppButton key="2" isPrimary onClick={ startMigration }>
+						<AppButton
+							key="2"
+							disabled={ loading }
+							isPrimary
+							onClick={ handleStartMigrationClick }
+						>
 							{ __(
 								'Start migration',
 								'google-listings-and-ads'
