@@ -337,7 +337,40 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.goto();
 			} );
 
+			test( 'should see the Refresh to sync button', async () => {
+				const refreshToSyncButton =
+					await setUpAccountsPage.getStoreAddressRefreshToSyncButton();
+				await expect( refreshToSyncButton ).toBeVisible();
+			} );
+
 			test( 'should see "Continue" button disabled when the store address needs to be synced', async () => {
+				const continueButton =
+					await setUpAccountsPage.getContinueButton();
+				await expect( continueButton ).toBeDisabled();
+			} );
+		} );
+
+		test.describe( 'When the store address needs to be completed in WooCommerce settings', async () => {
+			test.beforeAll( async () => {
+				await setUpAccountsPage.mockAdsAccountConnected();
+				await setUpAccountsPage.mockMCConnected();
+				await setUpAccountsPage.mockContactInformation( {
+					wcAddressErrors: [ 'address_1', 'city', 'postcode' ],
+					isMCAddressDifferent: true,
+				} );
+
+				await setUpAccountsPage.goto();
+			} );
+
+			test( 'should see the notice to complete the store address in WooCommerce settings', async () => {
+				const storeAddressCard =
+					setUpAccountsPage.getStoreAddressCard();
+				await expect( storeAddressCard ).toContainText(
+					'Complete that in WooCommerce settings.'
+				);
+			} );
+
+			test( 'should see "Continue" button disabled when the store address needs to be completed', async () => {
 				const continueButton =
 					await setUpAccountsPage.getContinueButton();
 				await expect( continueButton ).toBeDisabled();

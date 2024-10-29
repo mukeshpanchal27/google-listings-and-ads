@@ -8,4 +8,10 @@
 	.gla-account-card__description {
 		color: $gray-700;
 	}
+
+	&.gla-store-address-card--is-compact {
+		.gla-store-address-card__address {
+			color: $gray-900;
+		}
+	}
 }

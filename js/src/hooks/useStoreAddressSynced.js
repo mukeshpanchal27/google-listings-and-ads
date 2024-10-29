@@ -10,9 +10,15 @@ import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
 import { STORE_KEY } from '.~/data/constants';
 
 /**
+ * @typedef {Object} StoreAddressSyncedData
+ * @property {boolean|null} isAddressFilled Whether the `data` is loading. It's equal to `isResolving` state of wp-data selector.
+ * @property {boolean|null} addressSynced Returns `true` if the store address matches the GMC account address, otherwise, returns `false`. If the MC account is not connected or if the state is not yet determined, returns `null`.
+ */
+
+/**
  * Checks if the store address is synchronized with the Merchant Center (GMC) account address.
  *
- * @return {boolean|null} Returns `true` if the store address matches the GMC account address, otherwise, returns `false`. If the MC account is not connected or if the state is not yet determined, returns `null`.
+ * @return {StoreAddressSyncedData} The store address synced data.
  */
 export default function useStoreAddressSynced() {
 	const { isReady } = useGoogleMCAccount();
@@ -20,14 +26,20 @@ export default function useStoreAddressSynced() {
 	return useSelect(
 		( select ) => {
 			if ( ! isReady ) {
-				return null;
+				return {
+					isAddressFilled: null,
+					addressSynced: null,
+				};
 			}
 
 			const { getGoogleMCContactInformation } = select( STORE_KEY );
 			const contact = getGoogleMCContactInformation();
 
 			if ( ! contact ) {
-				return null;
+				return {
+					isAddressFilled: null,
+					addressSynced: null,
+				};
 			}
 
 			const {
@@ -35,10 +47,12 @@ export default function useStoreAddressSynced() {
 				wc_address_errors: missingRequiredFields,
 			} = contact;
 
-			return (
-				! Boolean( isMCAddressDifferent ) &&
-				! missingRequiredFields.length
-			);
+			return {
+				isAddressFilled: ! missingRequiredFields.length,
+				addressSynced:
+					! Boolean( isMCAddressDifferent ) &&
+					! missingRequiredFields.length,
+			};
 		},
 		[ isReady ]
 	);

@@ -7,6 +7,7 @@ import { CardDivider } from '@wordpress/components';
 import { Spinner } from '@woocommerce/components';
 import { update as updateIcon } from '@wordpress/icons';
 import { getPath, getQuery } from '@woocommerce/navigation';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -52,10 +53,14 @@ import './store-address-card.scss';
  *
  * @param {Object} props React props.
  * @param {boolean} [props.showValidation=false] Whether to show validation error messages.
+ * @param {boolean} [props.compactStyles=false] Whether to use compact styles. The address is part of the card description as opposed to the card body and the description is different.
  *
  * @return {JSX.Element} Filled AccountCard component.
  */
-const StoreAddressCard = ( { showValidation = false } ) => {
+const StoreAddressCard = ( {
+	showValidation = false,
+	compactStyles = false,
+} ) => {
 	const { loaded, data, refetch } = useStoreAddress();
 	const [ isSaving, setSaving ] = useState( false );
 	const { updateGoogleMCContactInformation } = useAppDispatch();
@@ -102,7 +107,17 @@ const StoreAddressCard = ( { showValidation = false } ) => {
 	);
 
 	let addressContent;
-	const description = (
+	const settingsLink = (
+		<TrackableLink
+			target="_blank"
+			type="external"
+			href="admin.php?page=wc-settings"
+			eventName="gla_edit_wc_store_address"
+			eventProps={ { path, subpath } }
+		/>
+	);
+
+	let description = (
 		<>
 			<p>
 				{ createInterpolateElement(
@@ -111,15 +126,7 @@ const StoreAddressCard = ( { showValidation = false } ) => {
 						'google-listings-and-ads'
 					),
 					{
-						link: (
-							<TrackableLink
-								target="_blank"
-								type="external"
-								href="admin.php?page=wc-settings"
-								eventName="gla_edit_wc_store_address"
-								eventProps={ { path, subpath } }
-							/>
-						),
+						link: settingsLink,
 					}
 				) }
 			</p>
@@ -141,7 +148,7 @@ const StoreAddressCard = ( { showValidation = false } ) => {
 			.join( ', ' );
 
 		addressContent = (
-			<div>
+			<div className="gla-store-address-card__address">
 				<div>{ address }</div>
 				{ address2 && <div>{ address2 }</div> }
 				<div>{ rest }</div>
@@ -151,27 +158,52 @@ const StoreAddressCard = ( { showValidation = false } ) => {
 		addressContent = <Spinner />;
 	}
 
+	if ( compactStyles ) {
+		description = (
+			<>
+				<p>
+					{ createInterpolateElement(
+						__(
+							'We’re using your store address from Woo Commerce settings for Google verification. This information won’t be public. Edit in <link>WooCommerce settings</link> if needed. Then, refresh to sync it to Google.',
+							'google-listings-and-ads'
+						),
+						{
+							link: settingsLink,
+						}
+					) }
+				</p>
+				{ addressContent }
+			</>
+		);
+	}
+
 	return (
 		<AccountCard
-			className="gla-store-address-card"
+			className={ classNames( 'gla-store-address-card', {
+				'gla-store-address-card--is-compact': compactStyles,
+			} ) }
 			appearance={ APPEARANCE.ADDRESS }
 			alignIcon="top"
 			alignIndicator="top"
 			description={ description }
 			indicator={ refreshButton }
 		>
-			<CardDivider />
-			<Section.Card.Body>
-				<Subsection.Title>
-					{ __( 'Store address', 'google-listings-and-ads' ) }
-				</Subsection.Title>
-				{ addressContent }
-				{ showValidation && (
-					<ValidationErrors
-						messages={ mapStoreAddressErrors( data ) }
-					/>
-				) }
-			</Section.Card.Body>
+			{ ! compactStyles && (
+				<>
+					<CardDivider />
+					<Section.Card.Body>
+						<Subsection.Title>
+							{ __( 'Store address', 'google-listings-and-ads' ) }
+						</Subsection.Title>
+						{ addressContent }
+						{ showValidation && (
+							<ValidationErrors
+								messages={ mapStoreAddressErrors( data ) }
+							/>
+						) }
+					</Section.Card.Body>
+				</>
+			) }
 		</AccountCard>
 	);
 };
