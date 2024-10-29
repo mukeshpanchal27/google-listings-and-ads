@@ -9,5 +9,9 @@
 			// 40px is the icon size and $grid-unit-20 is 16px for the gap between flex items.
 			padding-left: calc(40px + $grid-unit-20);
 		}
+
+		.gla-ads-conversion-measurement-notice {
+			padding-bottom: var(--large-gap);
+		}
 	}
 }
