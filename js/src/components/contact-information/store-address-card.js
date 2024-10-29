@@ -61,7 +61,7 @@ const StoreAddressCard = ( {
 	showValidation = false,
 	compactStyles = false,
 } ) => {
-	const { loaded, data, refetch } = useStoreAddress();
+	const { loaded, data } = useStoreAddress();
 	const [ isSaving, setSaving ] = useState( false );
 	const { updateGoogleMCContactInformation } = useAppDispatch();
 	const path = getPath();
@@ -76,9 +76,7 @@ const StoreAddressCard = ( {
 
 	const handleRefreshClick = () => {
 		setSaving( true );
-		updateGoogleMCContactInformation()
-			.then( refetch )
-			.catch( () => setSaving( false ) );
+		updateGoogleMCContactInformation().catch( () => setSaving( false ) );
 
 		refetchedCallbackRef.current = ( storeAddress ) => {
 			const eventProps = {
