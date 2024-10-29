@@ -36,7 +36,7 @@ const ConnectAds = ( { isEditing = false } ) => {
 	const isConnected =
 		googleAdsAccount?.status === 'connected' ||
 		( googleAdsAccount?.status === 'incomplete' &&
-			googleAdsAccount?.step === 'link_merchant' );
+			[ 'link_merchant', 'billing' ].includes( googleAdsAccount?.step ) );
 
 	const [ value, setValue ] = useState();
 	const [ isLoading, setLoading ] = useState( false );
