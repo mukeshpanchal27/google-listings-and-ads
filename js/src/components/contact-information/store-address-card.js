@@ -21,6 +21,7 @@ import ValidationErrors from '.~/components/validation-errors';
 import ContactInformationPreviewCard from './contact-information-preview-card';
 import TrackableLink from '.~/components/trackable-link';
 import mapStoreAddressErrors from './mapStoreAddressErrors';
+import LoadingLabel from '.~/components/loading-label';
 import { recordGlaEvent } from '.~/utils/tracks';
 import './store-address-card.scss';
 
@@ -86,7 +87,9 @@ const StoreAddressCard = ( { showValidation = false } ) => {
 		};
 	};
 
-	const refreshButton = (
+	const refreshButton = isSaving ? (
+		<LoadingLabel />
+	) : (
 		<AppButton
 			isSecondary
 			icon={ updateIcon }

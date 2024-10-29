@@ -292,7 +292,7 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCNotConnected();
 				await setUpAccountsPage.mockContactInformation( {
-					streetAddress: 'Automata Road',
+					wcAddressErrors: [],
 					isMCAddressDifferent: false,
 				} );
 
@@ -311,7 +311,7 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.mockAdsAccountDisconnected();
 				await setUpAccountsPage.mockMCConnected();
 				await setUpAccountsPage.mockContactInformation( {
-					streetAddress: 'Automata Road',
+					wcAddressErrors: [],
 					isMCAddressDifferent: false,
 				} );
 
@@ -330,7 +330,7 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCConnected();
 				await setUpAccountsPage.mockContactInformation( {
-					streetAddress: 'Automata Road',
+					wcAddressErrors: [],
 					isMCAddressDifferent: true,
 				} );
 

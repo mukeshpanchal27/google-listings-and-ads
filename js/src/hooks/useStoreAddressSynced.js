@@ -24,9 +24,9 @@ export default function useStoreAddressSynced() {
 			}
 
 			const { getGoogleMCContactInformation } = select( STORE_KEY );
-			const { data: contact, loaded } = getGoogleMCContactInformation();
+			const contact = getGoogleMCContactInformation();
 
-			if ( ! loaded ) {
+			if ( ! contact ) {
 				return null;
 			}
 
