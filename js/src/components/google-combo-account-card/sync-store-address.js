@@ -3,7 +3,6 @@
  */
 import StoreAddressCard from '.~/components/contact-information/store-address-card';
 import useStoreAddressSynced from '.~/hooks/useStoreAddressSynced';
-import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
 
 /*
  * Renders StoreAddressCard to sync the store address if we have a connected MC account and the address needs to be synced.
@@ -11,9 +10,8 @@ import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
  */
 const SyncStoreAddress = () => {
 	const storeAddressSynced = useStoreAddressSynced();
-	const { isReady } = useGoogleMCAccount();
 
-	if ( ! isReady || storeAddressSynced ) {
+	if ( storeAddressSynced === null || storeAddressSynced ) {
 		return null;
 	}
 
