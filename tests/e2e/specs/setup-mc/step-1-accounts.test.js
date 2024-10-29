@@ -355,30 +355,12 @@ test.describe( 'Set up accounts', () => {
 				const googleAdsAccountCard =
 					setUpAccountsPage.getGoogleAdsAccountCard();
 
-				await setUpAccountsPage.fulfillAdsAccounts(
-					{
-						id: 111111,
-					},
-					200,
-					[ 'POST' ]
-				);
+				const once = setUpAccountsPage.fulfillTimes( 1 );
 
-				await setUpAccountsPage.fulfillAdsAccountStatus(
-					{
-						has_access: true,
-					},
-					200,
-					[ 'GET' ]
-				);
-
-				await setUpAccountsPage.fulfillAdsConnection(
-					{
-						id: 111111,
-						status: 'connected',
-					},
-					200,
-					[ 'GET' ]
-				);
+				await once.mockAdsStatusClaimed();
+				await once.fulfillAdsAccounts( {
+					id: 111111,
+				} );
 
 				await googleAdsAccountCard
 					.getByRole( 'button', { name: 'Connect' } )
@@ -386,7 +368,11 @@ test.describe( 'Set up accounts', () => {
 			} );
 		} );
 
-		test.describe( 'When new Google Ads account is created newadsaccount', () => {
+		test.describe( 'When new Google Ads account is created', () => {
+			test.beforeAll( async () => {
+				await setUpAccountsPage.mockAdsAccountDisconnected();
+			} );
+
 			test( 'should see the Create new Google Ads account link', async () => {
 				const googleAdsAccountCard =
 					setUpAccountsPage.getGoogleAdsAccountCard();
@@ -458,31 +444,6 @@ test.describe( 'Set up accounts', () => {
 					googleAccountCard.getByText( 'Google Ads ID: 12345' )
 				).toBeVisible();
 			} );
-		} );
-
-		test( 'should display the Ads ID in account card description', async () => {
-			await setUpAccountsPage.fulfillAdsAccounts( [
-				{
-					id: 111111,
-				},
-			] );
-
-			const googleAdsAccountCard =
-				setUpAccountsPage.getGoogleAdsAccountCard();
-
-			await expect(
-				googleAdsAccountCard.getByText( 'Google Ads ID: 111111' )
-			).toBeVisible();
-
-			await expect(
-				googleAdsAccountCard.getByText( 'Connected' )
-			).toBeVisible();
-
-			await expect(
-				googleAdsAccountCard.getByText(
-					'Or, connect to a different Google Ads account'
-				)
-			).toBeVisible();
 		} );
 	} );
 
