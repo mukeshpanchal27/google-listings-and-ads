@@ -36,7 +36,13 @@ const ClaimAdsAccount = () => {
 
 	useEffect( () => {
 		if ( hasAccess === true && step === 'conversion_action' ) {
-			upsertAdsAccount();
+			const createConversionAction = async () => {
+				await upsertAdsAccount();
+			};
+
+			setUpdating( true );
+			createConversionAction();
+			setUpdating( false );
 		}
 	}, [ hasAccess, step, upsertAdsAccount ] );
 
