@@ -10,8 +10,8 @@
 			padding-left: calc(40px + $grid-unit-20);
 		}
 
-		.gla-ads-conversion-measurement-notice {
+		& > .gla-ads-conversion-measurement-notice:only-child {
 			padding-bottom: var(--large-gap);
-		}
+		}	
 	}
 }
