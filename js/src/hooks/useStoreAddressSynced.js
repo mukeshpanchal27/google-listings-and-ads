@@ -12,7 +12,7 @@ import { STORE_KEY } from '.~/data/constants';
 /**
  * Checks if the store address is synchronized with the Merchant Center (GMC) account address.
  *
- * @return {boolean|null} Returns `true` if the store address matches the GMC account address, otherwise, returns `false`. If the GMC account is not connected `null` or if the state is not yet determined., returns `null`.
+ * @return {boolean|null} Returns `true` if the store address matches the GMC account address, otherwise, returns `false`. If the MC account is not connected or if the state is not yet determined, returns `null`.
  */
 export default function useStoreAddressSynced() {
 	const { isReady } = useGoogleMCAccount();

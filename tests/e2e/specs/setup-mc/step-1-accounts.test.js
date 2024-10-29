@@ -349,7 +349,7 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCConnected();
 				await setUpAccountsPage.mockContactInformation( {
-					streetAddress: 'Automata Road',
+					wcAddressErrors: [],
 					isMCAddressDifferent: false,
 				} );
 

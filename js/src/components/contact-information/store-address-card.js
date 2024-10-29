@@ -72,7 +72,7 @@ const StoreAddressCard = ( { showValidation = false } ) => {
 	const handleRefreshClick = () => {
 		setSaving( true );
 		updateGoogleMCContactInformation()
-			.then( () => refetch() )
+			.then( refetch )
 			.catch( () => setSaving( false ) );
 
 		refetchedCallbackRef.current = ( storeAddress ) => {
@@ -97,7 +97,7 @@ const StoreAddressCard = ( { showValidation = false } ) => {
 			iconPosition="right"
 			text={ __( 'Refresh to sync', 'google-listings-and-ads' ) }
 			onClick={ handleRefreshClick }
-			disabled={ ! loaded || isSaving }
+			disabled={ ! loaded }
 		/>
 	);
 
