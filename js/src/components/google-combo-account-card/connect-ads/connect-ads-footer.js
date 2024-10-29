@@ -13,16 +13,24 @@ import DisconnectAccount from '.~/components/google-ads-account-card/disconnect-
 /**
  * Footer component.
  *
+ * @param {Object} props Props.
+ * @param {boolean} props.isConnected Whether the account is connected.
+ * @param {Function} props.onCreateNew Callback to create a new account.
+ * @param {Object} props.restProps Rest props. Passed to AppButton.
  * @return {JSX.Element} Footer component.
  */
-const ConnectAdsFooter = ( { isConnected, onCreateNew = noop } ) => {
+const ConnectAdsFooter = ( {
+	isConnected,
+	onCreateNew = noop,
+	...restProps
+} ) => {
 	// If the account is connected, show the disconnect button.
 	if ( isConnected ) {
 		return <DisconnectAccount />;
 	}
 
 	return (
-		<AppButton onClick={ onCreateNew } isTertiary>
+		<AppButton isTertiary onClick={ onCreateNew } { ...restProps }>
 			{ __(
 				'Or, create a new Google Ads account',
 				'google-listings-and-ads'

@@ -24,16 +24,7 @@ import { useAppDispatch } from '.~/data';
 import './index.scss';
 
 /**
- * Clicking on the button to connect an existing Google Ads account.
- *
- * @event gla_ads_account_connect_button_click
- * @property {number} id The account ID to be connected.
- * @property {string} [context] Indicates the place where the button is located.
- * @property {string} [step] Indicates the step in the onboarding process.
- */
-
-/**
- * @fires gla_ads_account_connect_button_click when "Connect" button is clicked.
+ * Connect to an existing Google Ads account.
  * @fires gla_documentation_link_click with `{ context: 'setup-ads-connect-account', link_id: 'connect-sub-account', href: 'https://support.google.com/google-ads/answer/6139186' }`
  * @param {Object} props React props
  * @return {JSX.Element} {@link AccountCard} filled with content.
@@ -130,8 +121,8 @@ const ConnectAds = ( props ) => {
 						/>
 					) : (
 						<ConnectButton
-							handleConnectClick={ handleConnectClick }
-							value={ value }
+							accountID={ value }
+							onClick={ handleConnectClick }
 						/>
 					) }
 				</ContentButtonLayout>

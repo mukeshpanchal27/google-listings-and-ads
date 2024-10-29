@@ -24,10 +24,9 @@ import LoadingLabel from '.~/components/loading-label/loading-label';
 /**
  * ConnectAds component renders an account card to connect to an existing Google Ads account.
  *
- * @fires gla_documentation_link_click with `{ context: 'setup-ads-connect-account', link_id: 'connect-sub-account', href: 'https://support.google.com/google-ads/answer/6139186' }`
  * @return {JSX.Element} {@link AccountCard} filled with content.
  */
-const ConnectAds = () => {
+const ConnectAds = ( { isEditing = false } ) => {
 	const {
 		existingAccounts: accounts,
 		hasFinishedResolution: hasFinishedResolutionForExistingAdsAccount,
@@ -43,7 +42,7 @@ const ConnectAds = () => {
 
 	const [ value, setValue ] = useState();
 	const [ isLoading, setLoading ] = useState( false );
-	const [ fetchConnectAdsAccount ] = useApiFetchCallback( {
+	const [ connectGoogleAdsAccount ] = useApiFetchCallback( {
 		path: '/wc/gla/ads/accounts',
 		method: 'POST',
 		data: { id: value },
@@ -66,8 +65,10 @@ const ConnectAds = () => {
 		}
 	}, [ googleAdsAccount, isConnected ] );
 
-	// If the account is in unclaimed state, we don't want to show the card.
-	if ( hasGoogleAdsConnection && ! isConnected ) {
+	if (
+		( hasGoogleAdsConnection && ! isConnected ) ||
+		( isConnected && ! isEditing )
+	) {
 		return null;
 	}
 
@@ -78,7 +79,7 @@ const ConnectAds = () => {
 
 		setLoading( true );
 		try {
-			await fetchConnectAdsAccount();
+			await connectGoogleAdsAccount();
 			await fetchGoogleAdsAccountStatus();
 			refetchGoogleAdsAccount();
 			setLoading( false );
@@ -133,16 +134,17 @@ const ConnectAds = () => {
 				body={
 					<ConnectAdsBody
 						isConnected={ isConnected }
-						handleConnectClick={ handleConnectClick }
+						onClick={ handleConnectClick }
 						isLoading={ isLoading }
 						setValue={ setValue }
-						value={ value }
+						accountID={ value }
 					/>
 				}
 				footer={
 					<ConnectAdsFooter
-						onCreateNew={ onCreateNew }
+						disabled={ isLoading }
 						isConnected={ isConnected }
+						onCreateNew={ onCreateNew }
 					/>
 				}
 			/>
