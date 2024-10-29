@@ -13,13 +13,13 @@ import ConnectAdsFooter from './connect-ads-footer';
 import ConnectAdsBody from './connect-ads-body';
 import ConfirmCreateModal from './confirm-create-modal';
 import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import useCreateAccountActions from './useCreateAccountActions';
+import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
 import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import { useAppDispatch } from '.~/data';
-import LoadingLabel from '.~/components/loading-label/loading-label';
+import LoadingLabel from '.~/components/loading-label';
 
 /**
  * ConnectAds component renders an account card to connect to an existing Google Ads account.
@@ -27,6 +27,9 @@ import LoadingLabel from '.~/components/loading-label/loading-label';
  * @return {JSX.Element} {@link AccountCard} filled with content.
  */
 const ConnectAds = ( { isEditing = false } ) => {
+	const [ creatingNewAccount, setCreatingNewAccount ] = useState( false );
+	const [ showCreateNewModal, setShowCreateNewModal ] = useState( false );
+
 	const {
 		existingAccounts: accounts,
 		hasFinishedResolution: hasFinishedResolutionForExistingAdsAccount,
@@ -51,13 +54,22 @@ const ConnectAds = ( { isEditing = false } ) => {
 	const { refetchGoogleAdsAccount } = useGoogleAdsAccount();
 	const { createNotice } = useDispatchCoreNotices();
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
-	const {
-		creatingNewAccount,
-		showCreateNewModal,
-		onContinue,
-		onCreateNew,
-		onRequestClose,
-	} = useCreateAccountActions();
+	const [ upsertAdsAccount ] = useUpsertAdsAccount();
+
+	const onCreateNew = () => {
+		setShowCreateNewModal( true );
+	};
+
+	const onRequestClose = () => {
+		setShowCreateNewModal( false );
+	};
+
+	const onContinue = async () => {
+		setShowCreateNewModal( false );
+		setCreatingNewAccount( true );
+		await upsertAdsAccount();
+		setCreatingNewAccount( false );
+	};
 
 	useEffect( () => {
 		if ( isConnected ) {
@@ -82,9 +94,7 @@ const ConnectAds = ( { isEditing = false } ) => {
 			await connectGoogleAdsAccount();
 			await fetchGoogleAdsAccountStatus();
 			refetchGoogleAdsAccount();
-			setLoading( false );
 		} catch ( error ) {
-			setLoading( false );
 			createNotice(
 				'error',
 				__(
@@ -92,6 +102,8 @@ const ConnectAds = ( { isEditing = false } ) => {
 					'google-listings-and-ads'
 				)
 			);
+		} finally {
+			setLoading( false );
 		}
 	};
 

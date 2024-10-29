@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { noop } from 'lodash';
 
 /**
  * Internal dependencies
@@ -19,11 +18,7 @@ import DisconnectAccount from '.~/components/google-ads-account-card/disconnect-
  * @param {Object} props.restProps Rest props. Passed to AppButton.
  * @return {JSX.Element} Footer component.
  */
-const ConnectAdsFooter = ( {
-	isConnected,
-	onCreateNew = noop,
-	...restProps
-} ) => {
+const ConnectAdsFooter = ( { isConnected, onCreateNew, ...restProps } ) => {
 	// If the account is connected, show the disconnect button.
 	if ( isConnected ) {
 		return <DisconnectAccount />;

@@ -11,14 +11,15 @@ import AppButton from '.~/components/app-button';
 import WarningIcon from '.~/components/warning-icon';
 import './confirm-create-modal.scss';
 
-const ConfirmCreateModal = ( {
-	onContinue = () => {},
-	onRequestClose = () => {},
-} ) => {
-	const handleCreateAccountClick = () => {
-		onContinue();
-	};
-
+/**
+ * Google Ads account creation confirmation modal.
+ * This modal is shown when the user tries to create a new Google Ads account.
+ * @param {Object} props Component props.
+ * @param {Function} props.onContinue Callback to continue with account creation.
+ * @param {Function} props.onRequestClose Callback to close the modal.
+ * @return {JSX.Element} Confirmation modal.
+ */
+const ConfirmCreateModal = ( { onContinue, onRequestClose } ) => {
 	return (
 		<AppModal
 			className="gla-ads-warning-modal"
@@ -31,7 +32,7 @@ const ConfirmCreateModal = ( {
 					key="confirm"
 					isSecondary
 					eventName="gla_ads_account_warning_modal_confirm_button_click"
-					onClick={ handleCreateAccountClick }
+					onClick={ onContinue }
 				>
 					{ __(
 						'Yes, I want a new account',
