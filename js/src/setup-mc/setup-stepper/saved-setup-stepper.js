@@ -20,7 +20,6 @@ import useSaveShippingTimes from '.~/hooks/useSaveShippingTimes';
 import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
 import SetupAccounts from './setup-accounts';
 import SetupFreeListings from '.~/components/free-listings/setup-free-listings';
-import StoreRequirements from './store-requirements';
 import SetupPaidAds from './setup-paid-ads';
 import stepNameKeyMap from './stepNameKeyMap';
 import {
@@ -102,10 +101,6 @@ const SavedSetupStepper = ( { savedStep } ) => {
 	};
 
 	const handleSetupListingsContinue = () => {
-		continueStep( stepNameKeyMap.store_requirements );
-	};
-
-	const handleStoreRequirementsContinue = () => {
 		continueStep( stepNameKeyMap.paid_ads );
 	};
 
@@ -206,19 +201,6 @@ const SavedSetupStepper = ( { savedStep } ) => {
 								'Continue',
 								'google-listings-and-ads'
 							) }
-						/>
-					),
-					onClick: handleStepClick,
-				},
-				{
-					key: stepNameKeyMap.store_requirements,
-					label: __(
-						'Confirm store requirements',
-						'google-listings-and-ads'
-					),
-					content: (
-						<StoreRequirements
-							onContinue={ handleStoreRequirementsContinue }
 						/>
 					),
 					onClick: handleStepClick,
