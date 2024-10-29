@@ -235,11 +235,7 @@ class MerchantCenterService implements ContainerAwareInterface, OptionsAwareInte
 			$step = 'product_listings';
 
 			if ( $this->saved_target_audience() && $this->saved_shipping_and_tax_options() ) {
-				$step = 'store_requirements';
-
-				if ( $this->is_mc_contact_information_setup() ) {
-					$step = 'paid_ads';
-				}
+				$step = 'paid_ads';
 			}
 		}
 

@@ -433,36 +433,6 @@ class MerchantCenterServiceTest extends UnitTest {
 		);
 	}
 
-	public function test_get_setup_status_step_store_requirements() {
-		$this->options->method( 'get_merchant_id' )->willReturn( 1234 );
-		$this->merchant_account_state->method( 'last_incomplete_step' )->willReturn( '' );
-		$this->ads_service->method( 'connected_account' )->willReturn( true );
-		$this->options->method( 'get' )
-			->withConsecutive(
-				[ OptionsInterface::MC_SETUP_COMPLETED_AT, false ],
-				[ OptionsInterface::TARGET_AUDIENCE ],
-				[ OptionsInterface::MERCHANT_CENTER, [] ]
-			)->willReturnOnConsecutiveCalls(
-				false,
-				[
-					'location'  => 'selected',
-					'countries' => [ 'US' ],
-				],
-				[
-					'shipping_rate' => 'automatic',
-					'shipping_time' => 'manual',
-				]
-			);
-
-		$this->assertEquals(
-			[
-				'status' => 'incomplete',
-				'step'   => 'store_requirements',
-			],
-			$this->mc_service->get_setup_status()
-		);
-	}
-
 	public function test_get_setup_status_shipping_selected_rates() {
 		$this->options->method( 'get_merchant_id' )->willReturn( 1234 );
 		$this->merchant_account_state->method( 'last_incomplete_step' )->willReturn( '' );
@@ -501,7 +471,7 @@ class MerchantCenterServiceTest extends UnitTest {
 		$this->assertEquals(
 			[
 				'status' => 'incomplete',
-				'step'   => 'store_requirements',
+				'step'   => 'paid_ads',
 			],
 			$this->mc_service->get_setup_status()
 		);
