@@ -20,26 +20,26 @@ import { FILTER_ONBOARDING } from '.~/utils/tracks';
  */
 
 /**
- * Connect CTA component.
+ * Google Ads account connection button.
  *
  * @param {Object} props Props.
- * @param {Function} props.handleConnectClick Callback to handle the connect click.
- * @param {string} props.value Connected account ID.
+ * @param {number} props.accountID The Google Ads account ID to be connected.
+ * @param {Object} props.restProps Rest props. Forwarded to AppButton.
  * @fires gla_ads_account_connect_button_click when "Connect" button is clicked.
- * @return {JSX.Element} Connect CTA component.
+ * @return {JSX.Element} Google Ads connect button component.
  */
-const ConnectButton = ( { handleConnectClick, value } ) => {
+const ConnectButton = ( { accountID, ...restProps } ) => {
 	const getEventProps = useEventPropertiesFilter( FILTER_ONBOARDING );
 
 	return (
 		<AppButton
 			isSecondary
-			disabled={ ! value }
+			disabled={ ! accountID }
 			eventName="gla_ads_account_connect_button_click"
 			eventProps={ getEventProps( {
-				id: Number( value ),
+				id: Number( accountID ),
 			} ) }
-			onClick={ handleConnectClick }
+			{ ...restProps }
 		>
 			{ __( 'Connect', 'google-listings-and-ads' ) }
 		</AppButton>

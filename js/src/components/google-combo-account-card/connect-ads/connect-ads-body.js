@@ -17,23 +17,23 @@ import ConnectedIconLabel from '.~/components/connected-icon-label';
  *
  * @param {Object} props Props.
  * @param {boolean} props.isConnected Whether the account is connected.
- * @param {Function} props.handleConnectClick Callback to handle the connect click.
+ * @param {Function} props.onClick Callback to handle the connect click.
  * @param {boolean} props.isLoading Whether the card is in a loading state.
  * @param {Function} props.setValue Callback to set the value.
- * @param {string} props.value Ads account ID.
+ * @param {string} props.accountID Google Ads account ID.
  * @return {JSX.Element} Body component.
  */
 const ConnectAdsBody = ( {
 	isConnected,
-	handleConnectClick,
+	onClick,
 	isLoading,
 	setValue,
-	value,
+	accountID,
 } ) => {
 	return (
 		<ContentButtonLayout>
 			<AdsAccountSelectControl
-				value={ value }
+				value={ accountID }
 				onChange={ setValue }
 				autoSelectFirstOption={ true }
 				nonInteractive={ isConnected }
@@ -48,8 +48,8 @@ const ConnectAdsBody = ( {
 						<ConnectedIconLabel />
 					) : (
 						<ConnectButton
-							handleConnectClick={ handleConnectClick }
-							value={ value }
+							accountID={ accountID }
+							onClick={ onClick }
 						/>
 					) }
 				</>

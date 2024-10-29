@@ -20,10 +20,9 @@ import ConnectAdsBody from './connect-ads-body';
 /**
  * ConnectAds component renders an account card to connect to an existing Google Ads account.
  *
- * @fires gla_documentation_link_click with `{ context: 'setup-ads-connect-account', link_id: 'connect-sub-account', href: 'https://support.google.com/google-ads/answer/6139186' }`
  * @return {JSX.Element} {@link AccountCard} filled with content.
  */
-const ConnectAds = () => {
+const ConnectAds = ( { isEditing = false } ) => {
 	const {
 		existingAccounts: accounts,
 		hasFinishedResolution: hasFinishedResolutionForExistingAdsAccount,
@@ -41,7 +40,7 @@ const ConnectAds = () => {
 
 	const [ value, setValue ] = useState();
 	const [ isLoading, setLoading ] = useState( false );
-	const [ fetchConnectAdsAccount ] = useApiFetchCallback( {
+	const [ connectGoogleAdsAccount ] = useApiFetchCallback( {
 		path: '/wc/gla/ads/accounts',
 		method: 'POST',
 		data: { id: value },
@@ -57,6 +56,10 @@ const ConnectAds = () => {
 		}
 	}, [ googleAdsAccount, isConnected ] );
 
+	if ( isConnected && ! isEditing ) {
+		return null;
+	}
+
 	const handleConnectClick = async () => {
 		if ( ! value ) {
 			return;
@@ -64,7 +67,7 @@ const ConnectAds = () => {
 
 		setLoading( true );
 		try {
-			await fetchConnectAdsAccount();
+			await connectGoogleAdsAccount();
 			await fetchGoogleAdsAccountStatus();
 			await refetchGoogleAdsAccount();
 			setLoading( false );
@@ -103,13 +106,18 @@ const ConnectAds = () => {
 			body={
 				<ConnectAdsBody
 					isConnected={ isConnected }
-					handleConnectClick={ handleConnectClick }
+					onClick={ handleConnectClick }
 					isLoading={ isLoading }
 					setValue={ setValue }
-					value={ value }
+					accountID={ value }
 				/>
 			}
-			footer={ <ConnectAdsFooter isConnected={ isConnected } /> }
+			footer={
+				<ConnectAdsFooter
+					isConnected={ isConnected }
+					disabled={ isLoading }
+				/>
+			}
 		/>
 	);
 };
