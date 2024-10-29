@@ -8,8 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import AppNotice from '.~/components/app-notice';
 import ClaimAdsAccount from './claim-ads-account/claim-ads-account';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 
 /**
@@ -17,17 +15,11 @@ import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
  * @return {JSX.Element} Connected accounts actions.
  */
 const ConnectedAccountsActions = () => {
-	const { googleAdsAccount } = useGoogleAdsAccount();
-	const { hasAccess } = useGoogleAdsAccountStatus();
 	const isReady = useGoogleAdsAccountReady();
-
-	const shouldClaimGoogleAdsAccount = Boolean(
-		googleAdsAccount.id && hasAccess === false
-	);
 
 	return (
 		<div className="gla-connected-accounts-actions">
-			{ shouldClaimGoogleAdsAccount && <ClaimAdsAccount /> }
+			<ClaimAdsAccount />
 			{ isReady && (
 				<AppNotice
 					className="gla-ads-conversion-measurement-notice"
