@@ -13,6 +13,7 @@ import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import { useAppDispatch } from '.~/data';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
+import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import ConnectAccountCard from '../connect-account-card';
 import ConnectAdsFooter from './connect-ads-footer';
 import ConnectAdsBody from './connect-ads-body';
@@ -33,10 +34,7 @@ const ConnectAds = ( { isEditing = false } ) => {
 		hasFinishedResolution: hasFinishedResolutionForCurrentAccount,
 	} = useGoogleAdsAccount();
 
-	const isConnected =
-		googleAdsAccount?.status === 'connected' ||
-		( googleAdsAccount?.status === 'incomplete' &&
-			[ 'link_merchant', 'billing' ].includes( googleAdsAccount?.step ) );
+	const isConnected = useGoogleAdsAccountReady();
 
 	const [ value, setValue ] = useState();
 	const [ isLoading, setLoading ] = useState( false );
