@@ -61,7 +61,6 @@ const ConnectMC = ( { createMCAccount, resultCreateMCAccount } ) => {
 		resultCreateMCAccount
 	);
 
-	// TODO: Implement getIndicator function
 	const getIndicator = () => {
 		if ( isGoogleMCReady ) {
 			return (
