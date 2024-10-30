@@ -136,6 +136,8 @@ test.describe( 'Product Feed Page', () => {
 					name: 'Set up your accounts',
 				} )
 			).toBeVisible();
+			await productFeedPage.goto();
+			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 		} );
 	} );
 
@@ -161,7 +163,7 @@ test.describe( 'Product Feed Page', () => {
 		} );
 
 		test( 'Has active product and a campaign; Do not display campaign notice', async () => {
-			await productFeedPage.goto();
+			await page.reload();
 			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 
 			await expect(
