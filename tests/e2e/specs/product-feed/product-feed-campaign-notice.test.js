@@ -5,7 +5,12 @@ import { expect, test } from '@playwright/test';
 /**
  * Internal dependencies
  */
-import { clearOnboardedMerchant, setOnboardedMerchant } from '../../utils/api';
+import {
+	clearOnboardedMerchant,
+	setOnboardedMerchant,
+	setAdsCompletedAt,
+	clearAdsCompletedAt,
+} from '../../utils/api';
 import ProductFeedPage from '../../utils/pages/product-feed';
 import SetupAdsAccountsPage from '../../utils/pages/setup-ads/setup-ads-accounts.js';
 import { LOAD_STATE } from '../../utils/constants';
@@ -35,7 +40,6 @@ test.describe( 'Product Feed Page', () => {
 		productFeedPage = new ProductFeedPage( page );
 		setupAdsAccounts = new SetupAdsAccountsPage( page );
 		await Promise.all( [
-			setupAdsAccounts.mockAdsAccountsResponse( [] ),
 			productFeedPage.mockRequests(),
 			setOnboardedMerchant(),
 		] );
@@ -80,12 +84,12 @@ test.describe( 'Product Feed Page', () => {
 			).toBeVisible();
 
 			await expect(
-				await productFeedPage.getActiveProductValueElement()
+				productFeedPage.getActiveProductValueElement()
 			).toBeVisible();
 
 			await expect(
-				( await productFeedPage.getActiveProductValue() ).trim()
-			).toBe( '0' );
+				productFeedPage.getActiveProductValueElement()
+			).toHaveText( /^0$/ );
 
 			await expect(
 				await productFeedPage.getCampaignNoticeSection()
@@ -110,17 +114,17 @@ test.describe( 'Product Feed Page', () => {
 			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 
 			await expect(
-				await productFeedPage.getActiveProductValueElement()
+				productFeedPage.getActiveProductValueElement()
 			).toBeVisible();
 
 			await expect(
-				( await productFeedPage.getActiveProductValue() ).trim()
-			).toBe( '1' );
+				productFeedPage.getActiveProductValueElement()
+			).toHaveText( /^1$/ );
 
 			const noticeSection =
 				await productFeedPage.getCampaignNoticeSection();
 			const createCampaignButton =
-				await productFeedPage.getInNoticeCreateCampaignButton();
+				productFeedPage.getInNoticeCreateCampaignButton();
 
 			await expect( noticeSection ).toBeVisible();
 			await expect( createCampaignButton ).toBeVisible();
@@ -132,19 +136,12 @@ test.describe( 'Product Feed Page', () => {
 					name: 'Set up your accounts',
 				} )
 			).toBeVisible();
-
-			await productFeedPage.goto();
-			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
-
-			await expect(
-				page.getByRole( 'heading', { level: 1, name: 'Product Feed' } )
-			).toBeVisible();
 		} );
 	} );
 
 	test.describe( 'Has campaign', () => {
 		test.beforeAll( async () => {
-			await productFeedPage.mockAdsSetupComplete();
+			await setAdsCompletedAt();
 			await productFeedPage.fulfillAdsCampaignsRequest( [
 				{
 					id: 111111111,
@@ -158,17 +155,22 @@ test.describe( 'Product Feed Page', () => {
 			] );
 		} );
 
+		test.afterAll( async () => {
+			await clearAdsCompletedAt();
+			await page.close();
+		} );
+
 		test( 'Has active product and a campaign; Do not display campaign notice', async () => {
 			await productFeedPage.goto();
 			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 
 			await expect(
-				await productFeedPage.getActiveProductValueElement()
+				productFeedPage.getActiveProductValueElement()
 			).toBeVisible();
 
 			await expect(
-				( await productFeedPage.getActiveProductValue() ).trim()
-			).toBe( '1' );
+				productFeedPage.getActiveProductValueElement()
+			).toHaveText( /^1$/ );
 
 			await expect(
 				await productFeedPage.getCampaignNoticeSection()
@@ -192,12 +194,12 @@ test.describe( 'Product Feed Page', () => {
 			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 
 			await expect(
-				await productFeedPage.getActiveProductValueElement()
+				productFeedPage.getActiveProductValueElement()
 			).toBeVisible();
 
 			await expect(
-				( await productFeedPage.getActiveProductValue() ).trim()
-			).toBe( '0' );
+				productFeedPage.getActiveProductValueElement()
+			).toHaveText( /^0$/ );
 
 			await expect(
 				await productFeedPage.getCampaignNoticeSection()

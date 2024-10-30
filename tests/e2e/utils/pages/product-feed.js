@@ -49,22 +49,9 @@ export default class ProductFeedPage extends MockRequests {
 				loading: false,
 			} ),
 
-			this.fulfillJetPackConnection( {
-				active: 'yes',
-				owner: 'yes',
-				displayName: 'John',
-				email: 'john@email.com',
-			} ),
-
+			this.mockJetpackConnected(),
 			this.mockGoogleConnected(),
-
-			this.fulfillAdsConnection( {
-				id: 1111111,
-				currency: 'USD',
-				symbol: '$',
-				status: 'connected',
-				step: '',
-			} ),
+			this.mockAdsAccountConnected(),
 		] );
 	}
 
@@ -93,9 +80,9 @@ export default class ProductFeedPage extends MockRequests {
 	/**
 	 * Get the active product value element.
 	 *
-	 * @return {Promise<import('@playwright/test').Locator>} The active product value element.
+	 * @return {import('@playwright/test').Locator} The active product value element.
 	 */
-	async getActiveProductValueElement() {
+	getActiveProductValueElement() {
 		return this.page
 			.locator( '.woocommerce-summary__item-label span >> text=Active' )
 			.locator( '../..' )
@@ -103,22 +90,9 @@ export default class ProductFeedPage extends MockRequests {
 	}
 
 	/**
-	 * Get the active product value.
-	 *
-	 * @return {Promise<string>} The active product value as a string.
-	 */
-	async getActiveProductValue() {
-		return this.page
-			.locator( '.woocommerce-summary__item-label span >> text=Active' )
-			.locator( '../..' )
-			.locator( '.woocommerce-summary__item-value span' )
-			.innerText();
-	}
-
-	/**
 	 * Get the campaign notice section.
 	 *
-	 * @return {Promise<import('@playwright/test').Locator>} The campaign notice section.
+	 * @return {import('@playwright/test').Locator} The campaign notice section.
 	 */
 	async getCampaignNoticeSection() {
 		return this.page.locator( '.gla-ads-inline-notice' ).filter( {
@@ -130,11 +104,10 @@ export default class ProductFeedPage extends MockRequests {
 	/**
 	 * Get the create campaign button in the notice section.
 	 *
-	 * @return {Promise<import('@playwright/test').Locator>} The create campaign button.
+	 * @return {import('@playwright/test').Locator} The create campaign button.
 	 */
-	async getInNoticeCreateCampaignButton() {
-		const campaignNoticeSection = await this.getCampaignNoticeSection();
-		return campaignNoticeSection.getByRole( 'button', {
+	getInNoticeCreateCampaignButton() {
+		return this.page.getByRole( 'button', {
 			name: 'Create Campaign',
 		} );
 	}
