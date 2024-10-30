@@ -12,6 +12,7 @@ import ConnectAccountCard from '../connect-account-card';
 import ConnectAdsFooter from './connect-ads-footer';
 import ConnectAdsBody from './connect-ads-body';
 import ConfirmCreateModal from './confirm-create-modal';
+import LoadingLabel from '.~/components/loading-label';
 import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
 import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
 import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
@@ -19,15 +20,15 @@ import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts'
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import { useAppDispatch } from '.~/data';
-import LoadingLabel from '.~/components/loading-label';
 
 /**
  * ConnectAds component renders an account card to connect to an existing Google Ads account.
  *
+ * @param {Object} props Component props.
+ * @param {boolean} props.isEditing Whether in edit mode where the card is expanded.
  * @return {JSX.Element} {@link AccountCard} filled with content.
  */
-const ConnectAds = ( { isEditing = false } ) => {
-	const [ creatingNewAccount, setCreatingNewAccount ] = useState( false );
+const ConnectAds = ( { isEditing } ) => {
 	const [ showCreateNewModal, setShowCreateNewModal ] = useState( false );
 
 	const {
@@ -37,7 +38,6 @@ const ConnectAds = ( { isEditing = false } ) => {
 
 	const {
 		googleAdsAccount,
-		hasGoogleAdsConnection,
 		hasFinishedResolution: hasFinishedResolutionForCurrentAccount,
 	} = useGoogleAdsAccount();
 
@@ -54,21 +54,20 @@ const ConnectAds = ( { isEditing = false } ) => {
 	const { refetchGoogleAdsAccount } = useGoogleAdsAccount();
 	const { createNotice } = useDispatchCoreNotices();
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
-	const [ upsertAdsAccount ] = useUpsertAdsAccount();
+	const [ upsertAdsAccount, { loading: creatingNewAccount } ] =
+		useUpsertAdsAccount();
 
 	const onCreateNew = () => {
 		setShowCreateNewModal( true );
 	};
 
-	const onRequestClose = () => {
+	const handleOnRequestClose = () => {
 		setShowCreateNewModal( false );
 	};
 
-	const onContinue = async () => {
+	const handleOnContinue = async () => {
 		setShowCreateNewModal( false );
-		setCreatingNewAccount( true );
 		await upsertAdsAccount();
-		setCreatingNewAccount( false );
 	};
 
 	useEffect( () => {
@@ -78,8 +77,8 @@ const ConnectAds = ( { isEditing = false } ) => {
 	}, [ googleAdsAccount, isConnected ] );
 
 	if (
-		( hasGoogleAdsConnection && ! isConnected ) ||
-		( isConnected && ! isEditing )
+		// @TODO: review condition to display the component once 2596 and 2597 have been merged.
+		! isEditing
 	) {
 		return null;
 	}
@@ -107,21 +106,6 @@ const ConnectAds = ( { isEditing = false } ) => {
 		}
 	};
 
-	if ( creatingNewAccount ) {
-		return (
-			<AccountCard
-				description={
-					<LoadingLabel
-						text={ __(
-							'Creating new ads account',
-							'google-listings-and-ads'
-						) }
-					/>
-				}
-			/>
-		);
-	}
-
 	// If the accounts are still being fetched, we don't want to show the card.
 	if (
 		! hasFinishedResolutionForExistingAdsAccount ||
@@ -129,6 +113,27 @@ const ConnectAds = ( { isEditing = false } ) => {
 		! accounts?.length
 	) {
 		return null;
+	}
+
+	if ( creatingNewAccount ) {
+		return (
+			<ConnectAccountCard
+				className="gla-google-combo-service-account-card--ads"
+				title={ __(
+					'Creating a new Google Ads account',
+					'google-listings-and-ads'
+				) }
+				helperText={ __(
+					'This may take a few minutes, please wait a moment…',
+					'google-listings-and-ads'
+				) }
+				indicator={
+					<LoadingLabel
+						text={ __( 'Creating…', 'google-listings-and-ads' ) }
+					/>
+				}
+			/>
+		);
 	}
 
 	return (
@@ -162,8 +167,8 @@ const ConnectAds = ( { isEditing = false } ) => {
 			/>
 			{ showCreateNewModal && (
 				<ConfirmCreateModal
-					onContinue={ onContinue }
-					onRequestClose={ onRequestClose }
+					onContinue={ handleOnContinue }
+					onRequestClose={ handleOnRequestClose }
 				/>
 			) }
 		</>

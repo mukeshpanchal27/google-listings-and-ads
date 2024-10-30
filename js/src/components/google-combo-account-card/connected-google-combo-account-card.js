@@ -34,7 +34,9 @@ const ConnectedGoogleComboAccountCard = () => {
 					<Indicator showSpinner={ Boolean( creatingWhich ) } />
 				}
 			/>
-			<ConnectAds />
+
+			{ /* @TODO: review isEditing in 2605 */ }
+			<ConnectAds isEditing />
 		</div>
 	);
 };

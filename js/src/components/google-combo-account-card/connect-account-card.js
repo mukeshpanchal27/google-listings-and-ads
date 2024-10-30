@@ -18,6 +18,7 @@ import './connect-account-card.scss';
  * @param {string} props.helperText The helper text for the account card.
  * @param {JSX.Element} props.body The content for the body of the account card.
  * @param {JSX.Element} props.footer The content for the footer of the account card.
+ * @param {JSX.Element} [props.indicator] Indicator of actions or status on the right side of the card.
  * @param {string} [props.className] Additional class names for the account card.
  * @return {JSX.Element} ConnectAccountCard component.
  */
@@ -26,6 +27,7 @@ const ConnectAccountCard = ( {
 	helperText,
 	body,
 	footer,
+	indicator,
 	className,
 } ) => {
 	return (
@@ -36,6 +38,7 @@ const ConnectAccountCard = ( {
 			) }
 			title={ title }
 			helper={ helperText }
+			indicator={ indicator }
 		>
 			<Section.Card.Body className="gla-google-combo-service-account-card__body">
 				{ body }

@@ -38,6 +38,7 @@ const ConnectAdsBody = ( {
 				autoSelectFirstOption={ true }
 				nonInteractive={ isConnected }
 			/>
+
 			{ isLoading ? (
 				<LoadingLabel
 					text={ __( 'Connecting…', 'google-listings-and-ads' ) }
