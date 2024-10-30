@@ -6,6 +6,7 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\Jobs;
 use Automattic\WooCommerce\GoogleListingsAndAds\ActionScheduler\ActionSchedulerInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
+use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\AttributeManager;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductRepository;
 
@@ -65,7 +66,7 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	 * @return bool Returns true if the job can be scheduled.
 	 */
 	public function can_schedule( $args = [] ): bool {
-		return parent::can_schedule( $args ) && $this->is_gtin_available_in_core();
+		return ! parent::is_running( $args ) && $this->is_gtin_available_in_core();
 	}
 
 	/**
@@ -74,8 +75,6 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	 * @param int[] $items A single batch of WooCommerce product IDs from the get_batch() method.
 	 */
 	protected function process_items( array $items ) {
-		// todo: prevent execution if migration was completed?
-
 		// update the product core GTIN using G4W GTIN
 		$products = $this->product_repository->find_by_ids( $items );
 		foreach ( $products as $product ) {
@@ -106,7 +105,7 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	 *                                If equal to 1 then no items were processed by the job.
 	 */
 	protected function handle_complete( int $final_batch_number ) {
-		// todo: set migration as completed?
+		$this->options->add( OptionsInterface::GTIN_MIGRATION_COMPLETED, true );
 	}
 
 	/**
@@ -131,5 +130,15 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	 */
 	protected function is_gtin_available_in_core(): bool {
 		return method_exists( \WC_Product::class, 'get_global_unique_id' );
+	}
+
+
+	/**
+	 * If GTIN Migration was completed.
+	 *
+	 * @return bool
+	 */
+	protected function is_gtin_migration_completed(): bool {
+		return (bool) $this->options->get( OptionsInterface::GTIN_MIGRATION_COMPLETED, false );
 	}
 }
