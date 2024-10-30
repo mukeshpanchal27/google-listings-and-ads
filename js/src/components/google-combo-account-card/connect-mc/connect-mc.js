@@ -110,7 +110,7 @@ const ConnectMC = ( { createMCAccount, resultCreateMCAccount } ) => {
 				'Required to sync products so they show on Google.',
 				'google-listings-and-ads'
 			) }
-			alignIndicator='toDetail'
+			alignIndicator="toDetail"
 			indicator={ getIndicator() }
 			detail={
 				<MerchantCenterSelect
