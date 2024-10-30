@@ -447,6 +447,68 @@ test.describe( 'Set up accounts', () => {
 		} );
 	} );
 
+	test.describe( 'Claim Google Ads Account', () => {
+		test.beforeAll( async () => {
+			await setUpAccountsPage.mockJetpackConnected();
+			await setUpAccountsPage.mockGoogleConnected();
+			await setUpAccountsPage.mockMCHasAccounts();
+			await setUpAccountsPage.mockMCConnected();
+			await setUpAccountsPage.fulfillAdsAccounts( { id: 12345 } );
+			await setUpAccountsPage.mockAdsAccountConnected();
+			await setUpAccountsPage.mockAdsStatusNotClaimed();
+
+			await setUpAccountsPage.goto();
+		} );
+
+		test( 'should see the claim button', async () => {
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+			await expect(
+				googleAccountCard.getByRole( 'button', {
+					name: 'Claim your Google Ads account',
+				} )
+			).toBeVisible();
+		} );
+
+		test( 'should open the popup when the claim button is clicked', async () => {
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+
+			const [ popupPage ] = await Promise.all( [
+				page.waitForEvent( 'popup' ),
+				await googleAccountCard
+					.getByRole( 'button', {
+						name: 'Claim your Google Ads account',
+					} )
+					.click(),
+			] );
+
+			await popupPage.waitForLoadState();
+			const url = popupPage.url();
+			expect( url ).toMatch( /^https:\/\/example\.com(\/|\?|$)/ );
+		} );
+
+		test.describe( 'Account claimed', () => {
+			test.beforeEach( async () => {
+				await setUpAccountsPage.mockAdsStatusClaimed();
+				await setUpAccountsPage.mockAdsAccountConnected();
+
+				await setUpAccountsPage.goto();
+			} );
+
+			test( 'should see conversion action notice', async () => {
+				const googleAccountCard =
+					setUpAccountsPage.getGoogleAccountCard();
+				await expect(
+					googleAccountCard.getByText(
+						'Google Ads conversion measurement has been set up for your store.',
+						{
+							exact: true,
+						}
+					)
+				).toBeVisible();
+			} );
+		} );
+	} );
+
 	test.describe( 'Continue button', () => {
 		test.beforeAll( async () => {
 			// Mock Jetpack as connected

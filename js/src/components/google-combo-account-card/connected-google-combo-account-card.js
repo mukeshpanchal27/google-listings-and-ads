@@ -4,6 +4,7 @@
 import AccountCard, { APPEARANCE } from '../account-card';
 import ConnectAds from './connect-ads';
 import AccountDetails from './account-details';
+import ConnectedAccountsActions from './connected-accounts-actions';
 import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
@@ -33,7 +34,9 @@ const ConnectedGoogleComboAccountCard = () => {
 				indicator={
 					<Indicator showSpinner={ Boolean( creatingWhich ) } />
 				}
-			/>
+			>
+				<ConnectedAccountsActions />
+			</AccountCard>
 
 			{ /* @TODO: review isEditing in 2605 */ }
 			<ConnectAds isEditing />

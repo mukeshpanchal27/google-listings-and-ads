@@ -1,0 +1,29 @@
+.gla-claim-ads-account-section {
+	padding-top: 0;
+}
+
+.gla-claim-ads-account-box {
+	border: 1px solid $gray-300;
+	font-size: $gla-font-small;
+	padding: $grid-unit-30;
+
+	> * + * {
+		margin: $grid-unit-10 0 0;
+	}
+
+	h4 {
+		font-size: $gla-font-small;
+		margin-top: 0;
+	}
+
+	.gla-ads-post-claim-instructions {
+		color: $gray-700;
+		font-style: italic;
+	}
+
+	button,
+	.gla-loading-label {
+		display: flex;
+		margin-left: auto;
+	}
+}

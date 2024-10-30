@@ -19,6 +19,7 @@ import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
+import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import { useAppDispatch } from '.~/data';
 
 /**
@@ -30,30 +31,19 @@ import { useAppDispatch } from '.~/data';
  */
 const ConnectAds = ( { isEditing } ) => {
 	const [ showCreateNewModal, setShowCreateNewModal ] = useState( false );
-
-	const {
-		existingAccounts: accounts,
-		hasFinishedResolution: hasFinishedResolutionForExistingAdsAccount,
-	} = useExistingGoogleAdsAccounts();
-
-	const {
-		googleAdsAccount,
-		hasFinishedResolution: hasFinishedResolutionForCurrentAccount,
-	} = useGoogleAdsAccount();
-
-	const isConnected = useGoogleAdsAccountReady();
-
+	const { existingAccounts: accounts } = useExistingGoogleAdsAccounts();
+	const { googleAdsAccount, refetchGoogleAdsAccount } = useGoogleAdsAccount();
 	const [ value, setValue ] = useState();
 	const [ isLoading, setLoading ] = useState( false );
+	const { createNotice } = useDispatchCoreNotices();
+	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
+	const { hasAccess } = useGoogleAdsAccountStatus();
+	const isConnected = useGoogleAdsAccountReady();
 	const [ connectGoogleAdsAccount ] = useApiFetchCallback( {
 		path: '/wc/gla/ads/accounts',
 		method: 'POST',
 		data: { id: value },
 	} );
-
-	const { refetchGoogleAdsAccount } = useGoogleAdsAccount();
-	const { createNotice } = useDispatchCoreNotices();
-	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
 	const [ upsertAdsAccount, { loading: creatingNewAccount } ] =
 		useUpsertAdsAccount();
 
@@ -76,9 +66,14 @@ const ConnectAds = ( { isEditing } ) => {
 		}
 	}, [ googleAdsAccount, isConnected ] );
 
+	const shouldClaimGoogleAdsAccount = Boolean(
+		googleAdsAccount.id && hasAccess === false
+	);
+
 	if (
 		// @TODO: review condition to display the component once 2596 and 2597 have been merged.
-		! isEditing
+		! isEditing ||
+		shouldClaimGoogleAdsAccount
 	) {
 		return null;
 	}
