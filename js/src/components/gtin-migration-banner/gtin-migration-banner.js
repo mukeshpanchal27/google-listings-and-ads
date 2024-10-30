@@ -22,11 +22,11 @@ const GTIN_MIGRATION_BANNER_CONTEXT = 'gtin_migration_banner';
 const GtinMigrationBanner = () => {
 	const { createNotice } = useDispatchCoreNotices();
 	const [ shouldRender, setShouldRender ] = useState(
-		glaData?.gtinMigrationStarted ?? true
+		! glaData?.gtinMigrationStarted
 	);
 	const [ showModal, setShowModal ] = useState( false );
 	const [ startMigration, { loading, error, reset } ] = useApiFetchCallback( {
-		path: `/wc/gla/gtin-migration/start`,
+		path: `/wc/gla/gtin-migration-start`,
 		method: 'POST',
 	} );
 
