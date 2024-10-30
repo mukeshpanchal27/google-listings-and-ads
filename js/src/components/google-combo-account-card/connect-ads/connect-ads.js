@@ -106,12 +106,7 @@ const ConnectAds = ( { isEditing } ) => {
 		}
 	};
 
-	// If the accounts are still being fetched, we don't want to show the card.
-	if (
-		! hasFinishedResolutionForExistingAdsAccount ||
-		! hasFinishedResolutionForCurrentAccount ||
-		! accounts?.length
-	) {
+	if ( ! accounts?.length ) {
 		return null;
 	}
 

@@ -30,6 +30,26 @@ const ConnectAdsBody = ( {
 	setValue,
 	accountID,
 } ) => {
+	const getAction = () => {
+		if ( isLoading ) {
+			return (
+				<LoadingLabel
+					text={ __( 'Connecting…', 'google-listings-and-ads' ) }
+				/>
+			);
+		}
+
+		if ( isConnected ) {
+			return <ConnectedIconLabel />;
+		}
+
+		if ( isConnected === null ) {
+			return <ConnectButton loading />;
+		}
+
+		return <ConnectButton accountID={ accountID } onClick={ onClick } />;
+	};
+
 	return (
 		<ContentButtonLayout>
 			<AdsAccountSelectControl
@@ -38,22 +58,8 @@ const ConnectAdsBody = ( {
 				autoSelectFirstOption={ true }
 				nonInteractive={ isConnected }
 			/>
-			{ isLoading ? (
-				<LoadingLabel
-					text={ __( 'Connecting…', 'google-listings-and-ads' ) }
-				/>
-			) : (
-				<>
-					{ isConnected ? (
-						<ConnectedIconLabel />
-					) : (
-						<ConnectButton
-							accountID={ accountID }
-							onClick={ onClick }
-						/>
-					) }
-				</>
-			) }
+
+			{ getAction() }
 		</ContentButtonLayout>
 	);
 };
