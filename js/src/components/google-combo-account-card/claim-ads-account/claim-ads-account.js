@@ -37,9 +37,7 @@ const ClaimAdsAccount = () => {
 			return;
 		}
 
-		setUpdating( true );
 		await fetchGoogleAdsAccountStatus();
-		setUpdating( false );
 	}, [ fetchGoogleAdsAccountStatus, shouldClaimGoogleAdsAccount ] );
 
 	useWindowFocusCallbackIntervalEffect( checkUpdatedAdsAccountStatus, 30 );
@@ -49,6 +47,10 @@ const ClaimAdsAccount = () => {
 			upsertAdsAccount();
 		}
 	}, [ hasAccess, step, upsertAdsAccount ] );
+
+	const handleOnClick = () => {
+		setUpdating( true );
+	};
 
 	if ( ! shouldClaimGoogleAdsAccount ) {
 		return null;
@@ -86,6 +88,7 @@ const ClaimAdsAccount = () => {
 							  )
 					}
 					isPrimary={ ! updating }
+					onClick={ handleOnClick }
 				/>
 			</div>
 		</Section.Card.Body>
