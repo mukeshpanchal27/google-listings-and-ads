@@ -12,17 +12,11 @@ import {
 	clearAdsCompletedAt,
 } from '../../utils/api';
 import ProductFeedPage from '../../utils/pages/product-feed';
-import SetupAdsAccountsPage from '../../utils/pages/setup-ads/setup-ads-accounts.js';
 import { LOAD_STATE } from '../../utils/constants';
 
 test.use( { storageState: process.env.ADMINSTATE } );
 
 test.describe.configure( { mode: 'serial' } );
-
-/**
- * @type {import('../../utils/pages/setup-ads/setup-ads-accounts').default} setupAdsAccounts
- */
-let setupAdsAccounts = null;
 
 /**
  * @type {import('../../utils/pages/product-feed').default} productFeedPage
@@ -38,7 +32,6 @@ test.describe( 'Product Feed Page', () => {
 	test.beforeAll( async ( { browser } ) => {
 		page = await browser.newPage();
 		productFeedPage = new ProductFeedPage( page );
-		setupAdsAccounts = new SetupAdsAccountsPage( page );
 		await Promise.all( [
 			productFeedPage.mockRequests(),
 			setOnboardedMerchant(),
