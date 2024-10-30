@@ -19,6 +19,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class GTINMigrationController extends BaseController {
 	use EmptySchemaPropertiesTrait;
+
 	/**
 	 * Job responsible to run the migration in the background.
 	 *
@@ -29,7 +30,7 @@ class GTINMigrationController extends BaseController {
 	/**
 	 * Constructor.
 	 *
-	 * @param RESTServer     $server
+	 * @param RESTServer  $server
 	 * @param MigrateGTIN $job
 	 */
 	public function __construct( RESTServer $server, MigrateGTIN $job ) {
@@ -65,23 +66,34 @@ class GTINMigrationController extends BaseController {
 		return function ( Request $request ) {
 			try {
 				if ( ! $this->job->can_schedule( [ 1 ] ) ) {
-					return new Response( [
-						'status'  => 'error',
-						'message' => __( 'GTIN Migration cannot be scheduled.', 'google-listings-and-ads' ),
-					], 400 );
+					return new Response(
+						[
+							'status'  => 'error',
+							'message' => __( 'GTIN Migration cannot be scheduled.', 'google-listings-and-ads' ),
+						],
+						400
+					);
 				}
 
 				$this->job->schedule();
-				return new Response( [
-					'status'  => 'success',
-					'message' => __( 'GTIN Migration successfully started.', 'google-listings-and-ads' ),
-				], 200 );
+				return new Response(
+					[
+						'status'  => 'success',
+						'message' => __( 'GTIN Migration successfully started.', 'google-listings-and-ads' ),
+					],
+					200
+				);
 			} catch ( Exception $e ) {
 				return $this->response_from_exception( $e );
 			}
 		};
 	}
 
+	/**
+	 * Get Schema title
+	 *
+	 * @return string
+	 */
 	protected function get_schema_title(): string {
 		return 'gtin_migration';
 	}

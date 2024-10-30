@@ -135,9 +135,10 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 
 	/**
 	 * If GTIN Migration was completed.
+	 *
 	 * @return bool
 	 */
-	protected function is_gtin_migration_completed() : bool {
+	protected function is_gtin_migration_completed(): bool {
 		return (bool) $this->options->get( OptionsInterface::GTIN_MIGRATION_COMPLETED, false );
 	}
 }
