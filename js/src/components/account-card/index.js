@@ -125,6 +125,11 @@ const alignStyleName = {
 	top: `gla-account-card__styled--align-top`,
 };
 
+const indicatorAlignStyleName = {
+	...alignStyleName,
+	toDetail: 'gla-account-card__indicator--align-to-detail',
+};
+
 /**
  * Renders a Card component with account info and status.
  *
@@ -156,12 +161,16 @@ export default function AccountCard( {
 	alignIcon = 'center',
 	indicator,
 	alignIndicator = 'center',
+	detail,
+	expandedDetail = false,
+	actions,
 	children,
 	...restProps
 } ) {
 	const cardClassName = classnames(
 		'gla-account-card',
 		disabled ? 'gla-account-card--is-disabled' : false,
+		expandedDetail ? 'gla-account-card--is-expanded-detail' : false,
 		className
 	);
 
@@ -172,19 +181,15 @@ export default function AccountCard( {
 
 	const indicatorClassName = classnames(
 		'gla-account-card__indicator',
-		alignStyleName[ alignIndicator ]
+		indicatorAlignStyleName[ alignIndicator ]
 	);
 
 	return (
 		<Section.Card className={ cardClassName } { ...restProps }>
 			<Section.Card.Body>
-				<Flex gap={ 4 }>
-					{ icon && (
-						<FlexItem className={ iconClassName }>
-							{ icon }
-						</FlexItem>
-					) }
-					<FlexBlock>
+				<div className="gla-account-card__body-layout">
+					{ icon && <div className={ iconClassName }>{ icon }</div> }
+					<div className="gla-account-card__subject">
 						{ title && (
 							<Subsection.Title className="gla-account-card__title">
 								{ title }
@@ -200,13 +205,23 @@ export default function AccountCard( {
 								{ helper }
 							</div>
 						) }
-					</FlexBlock>
-					{ indicator && (
-						<FlexItem className={ indicatorClassName }>
-							{ indicator }
-						</FlexItem>
+					</div>
+					{ detail && (
+						<div className="gla-account-card__detail">
+							{ detail }
+						</div>
 					) }
-				</Flex>
+					{ indicator && (
+						<div className={ indicatorClassName }>
+							{ indicator }
+						</div>
+					) }
+					{ actions && (
+						<div className="gla-account-card__actions">
+							{ actions }
+						</div>
+					) }
+				</div>
 			</Section.Card.Body>
 			{ children }
 		</Section.Card>
