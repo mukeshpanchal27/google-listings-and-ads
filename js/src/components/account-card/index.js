@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
-import { Flex, FlexItem, FlexBlock } from '@wordpress/components';
 import GridiconPhone from 'gridicons/dist/phone';
 import { Icon, store as storeIcon } from '@wordpress/icons';
 
@@ -147,6 +146,9 @@ const indicatorAlignStyleName = {
  * @param {JSX.Element} [props.indicator] Indicator of actions or status on the right side of the card.
  * @param {'center'|'top'} [props.alignIcon='center'] Specify the vertical alignment of leading icon.
  * @param {'center'|'top'} [props.alignIndicator='center'] Specify the vertical alignment of `indicator`.
+ * @param {JSX.Element} [props.detail] Detail content below the card description.
+ * @param {boolean} [props.expandedDetail=false] Whether to expand the detail content.
+ * @param {JSX.Element} [props.actions] Actions content below the card detail.
  * @param {Array<JSX.Element>} [props.children] Children to be rendered if needs more content within the card.
  * @param {Object} [props.restProps] Props to be forwarded to Section.Card.
  */
