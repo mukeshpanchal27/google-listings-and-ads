@@ -13,15 +13,26 @@ import AppButton from '.~/components/app-button';
 import AppModal from '.~/components/app-modal';
 import { recordGlaEvent } from '.~/utils/tracks';
 import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
+import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
+import { glaData } from '.~/constants';
+import './index.scss';
 
 const GTIN_MIGRATION_BANNER_CONTEXT = 'gtin_migration_banner';
 
 const GtinMigrationBanner = () => {
+	const { createNotice } = useDispatchCoreNotices();
+	const [ shouldRender, setShouldRender ] = useState(
+		glaData?.gtinMigrationStarted ?? true
+	);
 	const [ showModal, setShowModal ] = useState( false );
 	const [ startMigration, { loading, error, reset } ] = useApiFetchCallback( {
-		path: `/wc/gla/start-migration`,
+		path: `/wc/gla/gtin-migration/start`,
 		method: 'POST',
 	} );
+
+	if ( ! shouldRender ) {
+		return null;
+	}
 
 	const closeModal = () => {
 		recordGlaEvent( 'gla_modal_closed', {
@@ -42,7 +53,33 @@ const GtinMigrationBanner = () => {
 			context: GTIN_MIGRATION_BANNER_CONTEXT,
 		} );
 		reset();
-		await startMigration( { parse: false } );
+		try {
+			await startMigration( { parse: false } );
+			recordGlaEvent( 'gla_gtin_migration_banner_migration_scheduled', {
+				context: GTIN_MIGRATION_BANNER_CONTEXT,
+			} );
+			setShowModal( false );
+			setShouldRender( false );
+			createNotice(
+				'info',
+				__(
+					'GTIN Migration was successfully scheduled.',
+					'google-listings-and-ads'
+				)
+			);
+		} catch ( e ) {
+			recordGlaEvent( 'gla_gtin_migration_banner_migration_failed', {
+				context: GTIN_MIGRATION_BANNER_CONTEXT,
+				error: e.message,
+			} );
+			createNotice(
+				'error',
+				__(
+					'Unable to start GTIN Migration.',
+					'google-listings-and-ads'
+				)
+			);
+		}
 	};
 
 	return (
@@ -98,7 +135,7 @@ const GtinMigrationBanner = () => {
 					</p>
 				</AppModal>
 			) }
-			<Notice status="warning">
+			<Notice>
 				{ createInterpolateElement(
 					__(
 						"The GTIN field managed by WooCommerce in the Product's inventory section, will now be used by Google for WooCommerce. It will continue to support the previous field and any mapping rules you have setup for the GTIN field. If you would like to migrate the data <link>click here.</link>",
@@ -107,6 +144,7 @@ const GtinMigrationBanner = () => {
 					{
 						link: (
 							<TrackableLink
+								className="gla-gtin-migration__link"
 								eventName="gla_gtin_migration_banner_click"
 								eventProps={ {
 									context: GTIN_MIGRATION_BANNER_CONTEXT,
