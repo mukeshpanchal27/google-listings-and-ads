@@ -99,14 +99,15 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	}
 
 	/**
-	 * Called when the job is completed.
+	 * Tweak schedule function for adding a start flag.
 	 *
-	 * @param int $final_batch_number The final batch number when the job was completed.
-	 *                                If equal to 1 then no items were processed by the job.
+	 * @param array $args
 	 */
-	protected function handle_complete( int $final_batch_number ) {
-		$this->options->add( OptionsInterface::GTIN_MIGRATION_COMPLETED, true );
+	public function schedule( array $args = [] ) {
+		$this->options->add( OptionsInterface::GTIN_MIGRATION_STARTED, true );
+		parent::schedule( $args );
 	}
+
 
 	/**
 	 * Get a single batch of items.
@@ -130,15 +131,5 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	 */
 	protected function is_gtin_available_in_core(): bool {
 		return method_exists( \WC_Product::class, 'get_global_unique_id' );
-	}
-
-
-	/**
-	 * If GTIN Migration was completed.
-	 *
-	 * @return bool
-	 */
-	protected function is_gtin_migration_completed(): bool {
-		return (bool) $this->options->get( OptionsInterface::GTIN_MIGRATION_COMPLETED, false );
 	}
 }
