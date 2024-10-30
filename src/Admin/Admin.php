@@ -146,7 +146,7 @@ class Admin implements Service, Registerable, Conditional, OptionsAwareInterface
 					'mcId'    => $this->options->get_merchant_id() ?: null,
 					'adsId'   => $this->options->get_ads_id() ?: null,
 				],
-				'gtinMigrationStarted' => $this->options->get( OptionsInterface::GTIN_MIGRATION_STARTED, false ),
+				'gtinMigrationStarted'     => $this->options->get( OptionsInterface::GTIN_MIGRATION_STARTED, false ),
 			]
 		);
 

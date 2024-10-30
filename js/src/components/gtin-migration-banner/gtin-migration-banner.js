@@ -25,7 +25,7 @@ const GtinMigrationBanner = () => {
 		! glaData?.gtinMigrationStarted
 	);
 	const [ showModal, setShowModal ] = useState( false );
-	const [ startMigration, { loading, error, reset } ] = useApiFetchCallback( {
+	const [ startMigration, { loading, reset } ] = useApiFetchCallback( {
 		path: `/wc/gla/gtin-migration-start`,
 		method: 'POST',
 	} );
