@@ -27,8 +27,11 @@ const useUpsertAdsAccount = () => {
 	// If not, it means we are creating a new account.
 	const { googleAdsAccount } = useGoogleAdsAccount();
 	const { createNotice } = useDispatchCoreNotices();
-	const { fetchGoogleAdsAccount, fetchGoogleAdsAccountStatus } =
-		useAppDispatch();
+	const {
+		fetchGoogleAdsAccount,
+		fetchGoogleAdsAccountStatus,
+		fetchExistingGoogleAdsAccounts,
+	} = useAppDispatch();
 	const [ currentAction, setCurrentAction ] = useState( null );
 
 	const isCreation = ! googleAdsAccount?.id;
@@ -70,6 +73,7 @@ const useUpsertAdsAccount = () => {
 		await Promise.all( [
 			fetchGoogleAdsAccount(),
 			fetchGoogleAdsAccountStatus(),
+			fetchExistingGoogleAdsAccounts(),
 		] );
 
 		setCurrentAction( null );
@@ -79,6 +83,7 @@ const useUpsertAdsAccount = () => {
 		fetchCreateAccount,
 		fetchGoogleAdsAccount,
 		fetchGoogleAdsAccountStatus,
+		fetchExistingGoogleAdsAccounts,
 	] );
 
 	return [
