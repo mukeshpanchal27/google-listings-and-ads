@@ -67,7 +67,7 @@ const ConnectAds = ( { isEditing } ) => {
 	}, [ googleAdsAccount, isConnected ] );
 
 	const shouldClaimGoogleAdsAccount = Boolean(
-		googleAdsAccount.id && hasAccess === false
+		googleAdsAccount?.id && hasAccess === false
 	);
 
 	if (
