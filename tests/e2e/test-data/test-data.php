@@ -53,6 +53,22 @@ function register_routes() {
 	);
 	register_rest_route(
 		'wc/v3',
+		'gla-test/ads-completed',
+		[
+			[
+				'methods'             => 'POST',
+				'callback'            => __NAMESPACE__ . '\set_ads_completed_at',
+				'permission_callback' => __NAMESPACE__ . '\permissions',
+			],
+			[
+				'methods'             => 'DELETE',
+				'callback'            => __NAMESPACE__ . '\clear_ads_completed_at',
+				'permission_callback' => __NAMESPACE__ . '\permissions',
+			],
+		],
+	);
+	register_rest_route(
+		'wc/v3',
 		'gla-test/notifications-ready',
 		[
 			[
@@ -100,6 +116,26 @@ function clear_onboarded_merchant() {
 	$options->delete( OptionsInterface::GOOGLE_CONNECTED );
 }
 
+/**
+ * Set the ADS_SETUP_COMPLETED_AT option.
+ */
+function set_ads_completed_at() {
+	/** @var OptionsInterface $options */
+	$options = woogle_get_container()->get( OptionsInterface::class );
+	$options->update(
+		OptionsInterface::ADS_SETUP_COMPLETED_AT,
+		1693215209
+	);
+}
+
+/**
+ * Clear a previously set ADS_SETUP_COMPLETED_AT option.
+ */
+function clear_ads_completed_at() {
+	/** @var OptionsInterface $options */
+	$options = woogle_get_container()->get( OptionsInterface::class );
+	$options->delete( OptionsInterface::ADS_SETUP_COMPLETED_AT );
+}
 
 /**
  * Set the Ads Conversion Action to test values.
