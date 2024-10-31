@@ -213,7 +213,9 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get select MC accounts select element.
 	 */
 	getMCAccountsSelect() {
-		return this.page.locator( 'select[id*="inspector-select-control"]' );
+		return this.getMCAccountCard().locator(
+			'select[id*="inspector-select-control"]'
+		);
 	}
 
 	/**
@@ -226,16 +228,6 @@ export default class SetUpAccountsPage extends MockRequests {
 			name: 'Connect',
 			exact: true,
 		} );
-	}
-
-	/**
-	 * Get Google combo account cards.
-	 *
-	 * @param {Object} options
-	 * @return {import('@playwright/test').Locator} Get Google combo account cards.
-	 */
-	getGoogleComboAccountCards( options = {} ) {
-		return this.page.locator( '.gla-google-combo-account-cards', options );
 	}
 
 	/**
@@ -291,7 +283,9 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Merchant Center account card.
 	 */
 	getMCAccountCard() {
-		return this.page.locator( '.gla-google-combo-account-card--mc' );
+		return this.page.locator(
+			'.gla-google-combo-service-account-card--mc'
+		);
 	}
 
 	/**
@@ -300,9 +294,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Merchant Center card footer.
 	 */
 	getMCCardFooter() {
-		return this.getMCAccountCard().locator(
-			'.gla-google-combo-connect-account-card__footer'
-		);
+		return this.getMCAccountCard().locator( '.gla-account-card__actions' );
 	}
 
 	/**

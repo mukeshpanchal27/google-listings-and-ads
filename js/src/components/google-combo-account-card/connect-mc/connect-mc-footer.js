@@ -34,7 +34,12 @@ const ConnectMCFooter = ( {
 			resultCreateAccount.reset();
 		};
 
-		return <DisconnectAccountButton onDisconnect={ handleDisconnect } />;
+		return (
+			<DisconnectAccountButton
+				onDisconnect={ handleDisconnect }
+				isTertiary
+			/>
+		);
 	}
 
 	return (

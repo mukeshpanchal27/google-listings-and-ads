@@ -30,12 +30,16 @@ let page = null;
 
 const ADS_ACCOUNTS = [
 	{
-		id: 1111111,
-		name: 'Test 1',
+		id: 111111,
+		name: 'gla',
 	},
 	{
-		id: 2222222,
-		name: 'Test 2',
+		id: 222222,
+		name: 'gla',
+	},
+	{
+		id: 333333,
+		name: 'gla',
 	},
 ];
 
@@ -294,10 +298,7 @@ test.describe( 'Set up accounts', () => {
 		test.beforeAll( async () => {
 			await Promise.all( [
 				// Mock Jetpack as connected.
-				setUpAccountsPage.mockJetpackConnected(
-					'Test user',
-					'jetpack@example.com'
-				),
+				setUpAccountsPage.mockJetpackConnected(),
 
 				// Mock google as connected.
 				setUpAccountsPage.mockGoogleConnected( 'google@example.com' ),
@@ -399,10 +400,7 @@ test.describe( 'Set up accounts', () => {
 
 						await Promise.all( [
 							// Mock Jetpack as connected.
-							setUpAccountsPage.mockJetpackConnected(
-								'Test user',
-								'jetpack@example.com'
-							),
+							setUpAccountsPage.mockJetpackConnected(),
 
 							// Mock google as connected.
 							setUpAccountsPage.mockGoogleConnected(
@@ -503,10 +501,7 @@ test.describe( 'Set up accounts', () => {
 			test.beforeAll( async () => {
 				await Promise.all( [
 					// Mock Jetpack as connected.
-					setUpAccountsPage.mockJetpackConnected(
-						'Test user',
-						'jetpack@example.com'
-					),
+					setUpAccountsPage.mockJetpackConnected(),
 
 					// Mock google as connected.
 					setUpAccountsPage.mockGoogleConnected(
@@ -593,10 +588,7 @@ test.describe( 'Set up accounts', () => {
 				test.beforeAll( async () => {
 					await Promise.all( [
 						// Mock Jetpack as connected.
-						setUpAccountsPage.mockJetpackConnected(
-							'Test user',
-							'jetpack@example.com'
-						),
+						setUpAccountsPage.mockJetpackConnected(),
 
 						// Mock google as connected.
 						setUpAccountsPage.mockGoogleConnected(
@@ -656,20 +648,7 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.mockMCHasAccounts();
 			await setUpAccountsPage.mockMCConnected();
 			await setUpAccountsPage.mockAdsAccountDisconnected();
-			await setUpAccountsPage.fulfillAdsAccounts( [
-				{
-					id: 111111,
-					name: 'gla',
-				},
-				{
-					id: 222222,
-					name: 'gla',
-				},
-				{
-					id: 333333,
-					name: 'gla',
-				},
-			] );
+			await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
 
 			await setUpAccountsPage.goto();
 		} );
@@ -734,10 +713,7 @@ test.describe( 'Set up accounts', () => {
 	test.describe( 'Continue button', () => {
 		test.beforeAll( async () => {
 			// Mock Jetpack as connected
-			await setUpAccountsPage.mockJetpackConnected(
-				'Test user',
-				'jetpack@example.com'
-			);
+			await setUpAccountsPage.mockJetpackConnected();
 
 			// Mock google as connected.
 			await setUpAccountsPage.mockGoogleConnected();
@@ -761,6 +737,7 @@ test.describe( 'Set up accounts', () => {
 		test.describe( 'When only MC is connected', async () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountDisconnected();
+				await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
 				await setUpAccountsPage.mockMCConnected();
 
 				await setUpAccountsPage.goto();

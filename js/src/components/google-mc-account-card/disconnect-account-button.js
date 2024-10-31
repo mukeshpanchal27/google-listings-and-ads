@@ -24,7 +24,7 @@ import { useAppDispatch } from '.~/data';
  *
  * * @fires gla_mc_account_connect_different_account_button_click
  */
-const DisconnectAccountButton = ( { onDisconnect = noop } ) => {
+const DisconnectAccountButton = ( { onDisconnect = noop, ...restProps } ) => {
 	const { createNotice, removeNotice } = useDispatchCoreNotices();
 	const { invalidateResolution } = useAppDispatch();
 
@@ -82,6 +82,7 @@ const DisconnectAccountButton = ( { onDisconnect = noop } ) => {
 			) }
 			eventName="gla_mc_account_connect_different_account_button_click"
 			onClick={ handleSwitch }
+			{ ...restProps }
 		/>
 	);
 };

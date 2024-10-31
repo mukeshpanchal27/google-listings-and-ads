@@ -13,7 +13,6 @@ import AppButton from '.~/components/app-button';
 import ConnectedIconLabel from '.~/components/connected-icon-label';
 import ConnectMCFooter from './connect-mc-footer';
 import LoadingLabel from '.~/components/loading-label';
-import SpinnerCard from '.~/components/spinner-card';
 import AccountConnectionStatus from '.~/components/google-mc-account-card/connect-mc/account-connection-status';
 import MerchantCenterSelect from './merchant-center-select';
 import useConnectMCAccount from '.~/hooks/useConnectMCAccount';
@@ -59,10 +58,6 @@ const ConnectMC = ( { createMCAccount, resultCreateMCAccount } ) => {
 		}
 	}, [ googleMCAccount, isGoogleMCReady ] );
 
-	if ( ! hasFinishedResolution ) {
-		return <SpinnerCard />;
-	}
-
 	const accountConnectionIssue = hasAccountConnectionIssue(
 		resultConnectMC,
 		resultCreateMCAccount
@@ -79,6 +74,10 @@ const ConnectMC = ( { createMCAccount, resultCreateMCAccount } ) => {
 	}
 
 	const getIndicator = () => {
+		if ( ! hasFinishedResolution ) {
+			return <LoadingLabel />;
+		}
+
 		if ( isGoogleMCReady ) {
 			return <ConnectedIconLabel />;
 		}
