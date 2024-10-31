@@ -15,10 +15,10 @@ import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts'
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import AccountCard from '.~/components/account-card';
 import AdsAccountSelectControl from '.~/components/ads-account-select-control';
-import AppButton from '.~/components/app-button';
 import ConnectedIconLabel from '.~/components/connected-icon-label';
 import ConnectAdsFooter from './connect-ads-footer';
-import LoadingLabel from '.~/components/loading-label/loading-label';
+import LoadingLabel from '.~/components/loading-label';
+import ConnectButton from '.~/components/google-ads-account-card/connect-ads/connect-button';
 
 /**
  * ConnectAds component renders an account card to connect to an existing Google Ads account.
@@ -100,18 +100,13 @@ const ConnectAds = ( { isEditing = false } ) => {
 				/>
 			);
 		}
+
 		if ( isConnected ) {
 			return <ConnectedIconLabel />;
 		}
+
 		return (
-			<AppButton
-				isSecondary
-				eventName="gla_ads_account_connect_button_click"
-				eventProps={ { id: Number( value ) } }
-				onClick={ handleConnectClick }
-			>
-				{ __( 'Connect', 'google-listings-and-ads' ) }
-			</AppButton>
+			<ConnectButton accountID={ value } onClick={ handleConnectClick } />
 		);
 	};
 
