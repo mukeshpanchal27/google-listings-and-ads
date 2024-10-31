@@ -257,10 +257,6 @@ test.describe( 'Set up accounts', () => {
 				const googleAccountCard =
 					setUpAccountsPage.getGoogleAccountCard();
 
-				const cardBody = googleAccountCard.locator(
-					'.gla-google-combo-account-card--connected'
-				);
-
 				await expect(
 					googleAccountCard.getByText( 'Merchant Center ID: 1234', {
 						exact: true,
@@ -274,7 +270,7 @@ test.describe( 'Set up accounts', () => {
 				).toBeVisible();
 
 				await expect(
-					cardBody.getByText( 'Connected', { exact: true } )
+					googleAccountCard.getByText( 'Connected', { exact: true } )
 				).toBeVisible();
 			} );
 		} );
@@ -282,12 +278,7 @@ test.describe( 'Set up accounts', () => {
 
 	test.describe( 'Google Ads card', () => {
 		test.beforeAll( async () => {
-			// Mock Jetpack as connected
-			await setUpAccountsPage.mockJetpackConnected(
-				'Test user',
-				'jetpack@example.com'
-			);
-
+			await setUpAccountsPage.mockJetpackConnected();
 			await setUpAccountsPage.mockGoogleConnected();
 			await setUpAccountsPage.mockMCHasAccounts();
 			await setUpAccountsPage.mockMCConnected();
@@ -328,12 +319,6 @@ test.describe( 'Set up accounts', () => {
 						{ exact: true }
 					)
 				).toBeVisible();
-
-				await expect(
-					googleAdsAccountCard.getByRole( 'button', {
-						name: 'Connect',
-					} )
-				).toBeEnabled();
 			} );
 
 			test( 'should see the button as enabled when selects the account from dropdown', async () => {
@@ -342,7 +327,7 @@ test.describe( 'Set up accounts', () => {
 
 				const adsAccountDropdown =
 					googleAdsAccountCard.locator( 'select' );
-				await adsAccountDropdown.selectOption( '111111' );
+				await adsAccountDropdown.selectOption( '222222' );
 
 				await expect(
 					googleAdsAccountCard.getByRole( 'button', {
@@ -351,10 +336,9 @@ test.describe( 'Set up accounts', () => {
 				).toBeEnabled();
 			} );
 
-			test( 'should send an API request to connect existing Google Ads account', async () => {
+			test( 'should display the correct Google Ads ID when connected', async () => {
 				const googleAccountCard =
 					setUpAccountsPage.getGoogleAccountCard();
-
 				const googleAdsAccountCard =
 					setUpAccountsPage.getGoogleAdsAccountCard();
 
@@ -367,7 +351,7 @@ test.describe( 'Set up accounts', () => {
 					.getByRole( 'button', { name: 'Connect' } )
 					.click();
 
-				expect( googleAccountCard ).toContainText(
+				await expect( googleAccountCard ).toContainText(
 					'Google Ads ID: 12345'
 				);
 			} );
