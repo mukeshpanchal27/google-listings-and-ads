@@ -10,11 +10,7 @@ import useStoreAddressSynced from '.~/hooks/useStoreAddressSynced';
  * If there's no connected account or the store address has been synced, it will return null.
  */
 const SyncStoreAddress = () => {
-	const { addressSynced, isAddressFilled } = useStoreAddressSynced();
-
-	if ( addressSynced === null || addressSynced ) {
-		return null;
-	}
+	const { isAddressFilled } = useStoreAddressSynced();
 
 	if ( ! isAddressFilled ) {
 		return <EmptyStoreAddressCard />;
