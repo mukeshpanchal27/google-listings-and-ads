@@ -24,7 +24,7 @@ const ConnectedGoogleComboAccountCard = () => {
 	const { existingAccounts: existingGoogleAdsAccounts } =
 		useExistingGoogleAdsAccounts();
 	const isConnected = useGoogleAdsAccountReady();
-	const { addressSynced } = useStoreAddressSynced();
+	const { isAddressSynced } = useStoreAddressSynced();
 
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
@@ -52,7 +52,7 @@ const ConnectedGoogleComboAccountCard = () => {
 
 			{ showConnectAds && <ConnectAds /> }
 
-			{ addressSynced === false && <SyncStoreAddress /> }
+			{ isAddressSynced === false && <SyncStoreAddress /> }
 		</div>
 	);
 };
