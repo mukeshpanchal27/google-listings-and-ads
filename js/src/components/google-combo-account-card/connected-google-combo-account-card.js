@@ -7,8 +7,8 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
 import AccountCard, { APPEARANCE } from '../account-card';
-import useAutoCreateAdsMCAccounts from '../../hooks/useAutoCreateAdsMCAccounts';
 import ConnectAds from './connect-ads';
 import AccountDetails from './account-details';
 import Indicator from './indicator';
