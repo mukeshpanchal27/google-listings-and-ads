@@ -53,14 +53,12 @@ const AppSelectControl = ( props ) => {
 		...rest,
 	};
 
-	const hasSingleValueStyle = autoSelectFirstOption && options?.length === 1;
-	if ( hasSingleValueStyle || nonInteractive ) {
+	const isNonInteractive =
+		( autoSelectFirstOption && options?.length === 1 ) || nonInteractive;
+	if ( isNonInteractive ) {
 		selectProps = {
 			...selectProps,
 			suffix: ' ',
-			style: {
-				pointerEvents: 'none',
-			},
 			readOnly: true,
 			tabIndex: -1,
 		};
@@ -69,7 +67,7 @@ const AppSelectControl = ( props ) => {
 	return (
 		<div
 			className={ classNames( 'app-select-control', className, {
-				'app-select-control--has-single-value': hasSingleValueStyle,
+				'app-select-control--is-non-interactive': isNonInteractive,
 			} ) }
 		>
 			<SelectControl { ...selectProps } />
