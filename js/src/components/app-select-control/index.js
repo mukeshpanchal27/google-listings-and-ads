@@ -59,16 +59,17 @@ const AppSelectControl = ( props ) => {
 		selectProps = {
 			...selectProps,
 			readOnly: true,
-			style: {
-				pointerEvents: 'none',
-			},
 			suffix: ' ',
 			tabIndex: '-1',
 		};
 	}
 
 	return (
-		<div className={ classNames( 'app-select-control', className ) }>
+		<div
+			className={ classNames( 'app-select-control', className, {
+				'app-select-control--is-non-interactive': isNonInteractive,
+			} ) }
+		>
 			<SelectControl { ...selectProps } />
 		</div>
 	);
