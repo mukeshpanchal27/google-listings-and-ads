@@ -14,6 +14,10 @@ import AccountDetails from './account-details';
 import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
+import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
+import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
+import useCreateMCAccount from '.~/hooks/useCreateMCAccount';
+import ConnectMC from './connect-mc';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import AppButton from '.~/components/app-button';
@@ -27,6 +31,14 @@ import './connected-google-combo-account-card.scss';
 const ConnectedGoogleComboAccountCard = () => {
 	const [ editMode, setEditMode ] = useState( false );
 	const { hasDetermined, creatingWhich } = useAutoCreateAdsMCAccounts();
+
+	// We use a single instance of the hook to create a MC (Merchant Center) account,
+	// ensuring consistent results across both the main component (ConnectedGoogleComboAccountCard) and its child component (ConnectMC).
+	// This approach is especially useful when an MC account is automatically created, and the URL needs to be reclaimed.
+	// The URL reclaim component is rendered within the ConnectMC component.
+	const [ createMCAccount, resultCreateMCAccount ] = useCreateMCAccount();
+	const { data: existingGoogleMCAccounts } = useExistingGoogleMCAccounts();
+	const { isReady: isGoogleMCReady } = useGoogleMCAccount();
 	const { text, subText } = getAccountCreationTexts( creatingWhich );
 	const { existingAccounts: existingGoogleAdsAccounts } =
 		useExistingGoogleAdsAccounts();
@@ -40,6 +52,11 @@ const ConnectedGoogleComboAccountCard = () => {
 		setEditMode( true );
 	};
 
+	const hasExistingGoogleMCAccounts = existingGoogleMCAccounts?.length > 0;
+	const showConnectMC =
+		( editMode && hasExistingGoogleMCAccounts ) ||
+		( ! isGoogleMCReady && hasExistingGoogleMCAccounts );
+
 	const hasExistingGoogleAdsAccounts = existingGoogleAdsAccounts?.length > 0;
 	const showConnectAds =
 		( editMode && hasExistingGoogleAdsAccounts ) ||
@@ -50,7 +67,7 @@ const ConnectedGoogleComboAccountCard = () => {
 			<AccountCard
 				appearance={ APPEARANCE.GOOGLE }
 				alignIcon="top"
-				className="gla-google-combo-account-card--connected"
+				className="gla-google-combo-account-card gla-google-combo-account-card--connected"
 				description={
 					<>
 						{ text || <AccountDetails /> }
@@ -85,6 +102,13 @@ const ConnectedGoogleComboAccountCard = () => {
 			/>
 
 			{ showConnectAds && <ConnectAds /> }
+
+			{ showConnectMC && (
+				<ConnectMC
+					createMCAccount={ createMCAccount }
+					resultCreateMCAccount={ resultCreateMCAccount }
+				/>
+			) }
 		</div>
 	);
 };
