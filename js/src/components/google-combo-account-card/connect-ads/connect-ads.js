@@ -8,9 +8,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AccountCard from '.~/components/account-card';
-import ConnectAccountCard from '../connect-account-card';
 import ConnectAdsFooter from './connect-ads-footer';
-import ConnectAdsBody from './connect-ads-body';
 import ConfirmCreateModal from './confirm-create-modal';
 import LoadingLabel from '.~/components/loading-label';
 import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
@@ -19,36 +17,25 @@ import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import { useAppDispatch } from '.~/data';
+import AdsAccountSelectControl from '.~/components/ads-account-select-control';
+import ConnectedIconLabel from '.~/components/connected-icon-label';
+import ConnectButton from '.~/components/google-ads-account-card/connect-ads/connect-button';
 
 /**
  * ConnectAds component renders an account card to connect to an existing Google Ads account.
  *
- * @param {Object} props Component props.
- * @param {boolean} props.isEditing Whether in edit mode where the card is expanded.
  * @return {JSX.Element} {@link AccountCard} filled with content.
  */
-const ConnectAds = ( { isEditing } ) => {
-	const [ showCreateNewModal, setShowCreateNewModal ] = useState( false );
+const ConnectAds = () => {
 	const [ value, setValue ] = useState();
 	const [ isLoading, setLoading ] = useState( false );
 	const { createNotice } = useDispatchCoreNotices();
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
 	const isConnected = useGoogleAdsAccountReady();
-	const {
-		hasAccess,
-		hasFinishedResolution: hasFinishedResolutionForAccountStatus,
-	} = useGoogleAdsAccountStatus();
-	const {
-		existingAccounts: accounts,
-		hasFinishedResolution: hasFinishedResolutionForExistingAdsAccount,
-	} = useExistingGoogleAdsAccounts();
-	const {
-		googleAdsAccount,
-		refetchGoogleAdsAccount,
-		hasFinishedResolution: hasFinishedResolutionForCurrentAccount,
-	} = useGoogleAdsAccount();
+	const [ showCreateNewModal, setShowCreateNewModal ] = useState( false );
+	const { existingAccounts: accounts } = useExistingGoogleAdsAccounts();
+	const { googleAdsAccount, refetchGoogleAdsAccount } = useGoogleAdsAccount();
 	const [ connectGoogleAdsAccount ] = useApiFetchCallback( {
 		path: '/wc/gla/ads/accounts',
 		method: 'POST',
@@ -75,18 +62,6 @@ const ConnectAds = ( { isEditing } ) => {
 			setValue( googleAdsAccount.id );
 		}
 	}, [ googleAdsAccount, isConnected ] );
-
-	const shouldClaimGoogleAdsAccount = Boolean(
-		googleAdsAccount?.id && hasAccess === false
-	);
-
-	if (
-		// @TODO: review condition to display the component once 2596 and 2597 have been merged.
-		! isEditing ||
-		shouldClaimGoogleAdsAccount
-	) {
-		return null;
-	}
 
 	const handleConnectClick = async () => {
 		if ( ! value ) {
@@ -115,15 +90,33 @@ const ConnectAds = ( { isEditing } ) => {
 		return null;
 	}
 
+	const getIndicator = () => {
+		if ( isLoading ) {
+			return (
+				<LoadingLabel
+					text={ __( 'Connecting…', 'google-listings-and-ads' ) }
+				/>
+			);
+		}
+
+		if ( isConnected ) {
+			return <ConnectedIconLabel />;
+		}
+
+		return (
+			<ConnectButton accountID={ value } onClick={ handleConnectClick } />
+		);
+	};
+
 	if ( creatingNewAccount ) {
 		return (
-			<ConnectAccountCard
+			<AccountCard
 				className="gla-google-combo-service-account-card--ads"
 				title={ __(
 					'Creating a new Google Ads account',
 					'google-listings-and-ads'
 				) }
-				helperText={ __(
+				helper={ __(
 					'This may take a few minutes, please wait a moment…',
 					'google-listings-and-ads'
 				) }
@@ -138,32 +131,27 @@ const ConnectAds = ( { isEditing } ) => {
 
 	return (
 		<>
-			<ConnectAccountCard
-				className="gla-google-combo-service-account-card--ads"
+			<AccountCard
+				className="gla-google-combo-account-card gla-google-combo-service-account-card--ads"
 				title={ __(
 					'Connect to existing Google Ads account',
 					'google-listings-and-ads'
 				) }
-				helperText={ __(
+				helper={ __(
 					'Required to set up conversion measurement for your store.',
 					'google-listings-and-ads'
 				) }
-				body={
-					<ConnectAdsBody
-						hasResolvedAccounts={
-							hasFinishedResolutionForExistingAdsAccount &&
-							hasFinishedResolutionForCurrentAccount &&
-							hasFinishedResolutionForAccountStatus &&
-							isConnected !== null
-						}
-						isConnected={ isConnected }
-						onClick={ handleConnectClick }
-						isLoading={ isLoading }
-						setValue={ setValue }
-						accountID={ value }
+				alignIndicator="toDetail"
+				indicator={ getIndicator() }
+				detail={
+					<AdsAccountSelectControl
+						value={ value }
+						onChange={ setValue }
+						autoSelectFirstOption
+						nonInteractive={ isConnected }
 					/>
 				}
-				footer={
+				actions={
 					<ConnectAdsFooter
 						disabled={ isLoading }
 						isConnected={ isConnected }
@@ -171,6 +159,7 @@ const ConnectAds = ( { isEditing } ) => {
 					/>
 				}
 			/>
+
 			{ showCreateNewModal && (
 				<ConfirmCreateModal
 					onContinue={ handleOnContinue }

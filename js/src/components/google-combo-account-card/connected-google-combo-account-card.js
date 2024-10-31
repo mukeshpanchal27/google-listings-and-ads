@@ -9,6 +9,10 @@ import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
 import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
+import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
+import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
+import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
+import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import './connected-google-combo-account-card.scss';
 
 /**
@@ -18,13 +22,29 @@ import './connected-google-combo-account-card.scss';
 const ConnectedGoogleComboAccountCard = () => {
 	const { hasDetermined, creatingWhich } = useAutoCreateAdsMCAccounts();
 	const { text, subText } = getAccountCreationTexts( creatingWhich );
+	const { existingAccounts: existingGoogleAdsAccounts } =
+		useExistingGoogleAdsAccounts();
+	const isConnected = useGoogleAdsAccountReady();
+	const { hasAccess } = useGoogleAdsAccountStatus();
+	const { googleAdsAccount } = useGoogleAdsAccount();
 
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
 	}
 
+	// @TODO: edit mode implementation in 2605
+	const editMode = false;
+	const shouldClaimGoogleAdsAccount = Boolean(
+		googleAdsAccount?.id && hasAccess === false
+	);
+	const hasExistingGoogleAdsAccounts = existingGoogleAdsAccounts?.length > 0;
+	const showConnectAds =
+		( editMode && hasExistingGoogleAdsAccounts ) ||
+		( ! isConnected && hasExistingGoogleAdsAccounts ) ||
+		! shouldClaimGoogleAdsAccount;
+
 	return (
-		<div className="gla-account-card">
+		<div>
 			<AccountCard
 				appearance={ APPEARANCE.GOOGLE }
 				alignIcon="top"
@@ -38,8 +58,7 @@ const ConnectedGoogleComboAccountCard = () => {
 				<ConnectedAccountsActions />
 			</AccountCard>
 
-			{ /* @TODO: review isEditing in 2605 */ }
-			<ConnectAds isEditing />
+			{ showConnectAds && <ConnectAds /> }
 		</div>
 	);
 };

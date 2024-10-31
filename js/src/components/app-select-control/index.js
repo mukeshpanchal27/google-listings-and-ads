@@ -58,8 +58,9 @@ const AppSelectControl = ( props ) => {
 	if ( isNonInteractive ) {
 		selectProps = {
 			...selectProps,
-			suffix: ' ',
 			readOnly: true,
+			suffix: ' ',
+			tabIndex: '-1',
 		};
 	}
 
