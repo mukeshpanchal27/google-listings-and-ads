@@ -39,7 +39,7 @@ const ConnectMCFooter = ( {
 
 	return (
 		<CreateAccountButton
-			isLink
+			isTertiary
 			disabled={ resultConnectMC.loading }
 			onCreateAccount={ handleCreateAccount }
 		>

@@ -3,17 +3,19 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
-import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
 import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
-import ConnectAccountCard from '../connect-account-card';
-import ConnectMCBody from './connect-mc-body';
+import AccountCard from '.~/components/account-card';
+import AppButton from '.~/components/app-button';
+import ConnectedIconLabel from '.~/components/connected-icon-label';
 import ConnectMCFooter from './connect-mc-footer';
+import LoadingLabel from '.~/components/loading-label';
 import SpinnerCard from '.~/components/spinner-card';
 import AccountConnectionStatus from '.~/components/google-mc-account-card/connect-mc/account-connection-status';
+import MerchantCenterSelect from './merchant-center-select';
 import useConnectMCAccount from '.~/hooks/useConnectMCAccount';
 import { hasAccountConnectionIssue } from '.~/components/google-mc-account-card/connect-mc/utils';
 
@@ -58,6 +60,34 @@ const ConnectMC = ( { createMCAccount, resultCreateMCAccount } ) => {
 		resultConnectMC,
 		resultCreateMCAccount
 	);
+
+	const getIndicator = () => {
+		if ( isGoogleMCReady ) {
+			return (
+				<ConnectedIconLabel className="gla-google-combo-service-connected-icon-label" />
+			);
+		}
+
+		if ( resultConnectMC.loading ) {
+			return (
+				<LoadingLabel
+					text={ __( 'Connecting…', 'google-listings-and-ads' ) }
+				/>
+			);
+		}
+
+		return (
+			<AppButton
+				isSecondary
+				eventName="gla_mc_account_connect_button_click"
+				eventProps={ { id: Number( accountID ) } }
+				onClick={ handleConnectMC }
+			>
+				{ __( 'Connect', 'google-listings-and-ads' ) }
+			</AppButton>
+		);
+	};
+
 	if ( ! isGoogleMCReady && accountConnectionIssue ) {
 		return (
 			<AccountConnectionStatus
@@ -69,10 +99,8 @@ const ConnectMC = ( { createMCAccount, resultCreateMCAccount } ) => {
 	}
 
 	return (
-		<ConnectAccountCard
-			className={ classNames( 'gla-google-combo-account-card--mc', {
-				'gla-google-combo-account-card--connected': isGoogleMCReady,
-			} ) }
+		<AccountCard
+			className="gla-google-combo-account-card gla-google-combo-service-account-card--mc"
 			title={ __(
 				'Connect to existing Merchant Center account',
 				'google-listings-and-ads'
@@ -81,16 +109,16 @@ const ConnectMC = ( { createMCAccount, resultCreateMCAccount } ) => {
 				'Required to sync products so they show on Google.',
 				'google-listings-and-ads'
 			) }
-			body={
-				<ConnectMCBody
-					value={ accountID }
-					setValue={ setAccountID }
+			alignIndicator="toDetail"
+			indicator={ getIndicator() }
+			detail={
+				<MerchantCenterSelect
 					isConnected={ isGoogleMCReady }
-					isConnecting={ resultConnectMC.loading }
-					handleConnectMC={ handleConnectMC }
+					value={ accountID }
+					onChange={ setAccountID }
 				/>
 			}
-			footer={
+			actions={
 				<ConnectMCFooter
 					isConnected={ isGoogleMCReady }
 					resultConnectMC={ resultConnectMC }
