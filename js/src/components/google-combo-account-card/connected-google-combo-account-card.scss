@@ -5,6 +5,10 @@
 	}
 
 	.gla-connected-accounts-actions {
+		&:empty {
+			display: none;
+		}
+
 		padding-bottom: calc((var(--large-gap)) / 2);
 
 		@media (min-width: $break-small) {

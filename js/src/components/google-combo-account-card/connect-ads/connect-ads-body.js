@@ -21,6 +21,7 @@ import ConnectedIconLabel from '.~/components/connected-icon-label';
  * @param {boolean} props.isLoading Whether the card is in a loading state.
  * @param {Function} props.setValue Callback to set the value.
  * @param {string} props.accountID Google Ads account ID.
+ * @param {boolean} props.hasResolvedAccounts Whether the existing Ads accounts and current Ads account have resolved.
  * @return {JSX.Element} Body component.
  */
 const ConnectAdsBody = ( {
@@ -29,6 +30,7 @@ const ConnectAdsBody = ( {
 	isLoading,
 	setValue,
 	accountID,
+	hasResolvedAccounts,
 } ) => {
 	const getAction = () => {
 		if ( isLoading ) {
@@ -47,7 +49,13 @@ const ConnectAdsBody = ( {
 			return <ConnectButton loading />;
 		}
 
-		return <ConnectButton accountID={ accountID } onClick={ onClick } />;
+		return (
+			<ConnectButton
+				accountID={ accountID }
+				onClick={ onClick }
+				loading={ ! hasResolvedAccounts }
+			/>
+		);
 	};
 
 	return (

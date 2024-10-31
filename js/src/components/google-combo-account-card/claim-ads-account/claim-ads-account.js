@@ -24,9 +24,10 @@ import './claim-ads-account.scss';
 const ClaimAdsAccount = () => {
 	const [ updating, setUpdating ] = useState( false );
 	const { googleAdsAccount } = useGoogleAdsAccount();
-	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
 	const { hasAccess, step } = useGoogleAdsAccountStatus();
 	const [ upsertAdsAccount ] = useUpsertAdsAccount();
+	const { fetchGoogleAdsAccountStatus, invalidateResolution } =
+		useAppDispatch();
 
 	const shouldClaimGoogleAdsAccount = Boolean(
 		googleAdsAccount?.id && hasAccess === false
@@ -43,10 +44,17 @@ const ClaimAdsAccount = () => {
 	useWindowFocusCallbackIntervalEffect( checkUpdatedAdsAccountStatus, 30 );
 
 	useEffect( () => {
-		if ( hasAccess === true && step === 'conversion_action' ) {
-			upsertAdsAccount();
-		}
-	}, [ hasAccess, step, upsertAdsAccount ] );
+		const upsertAccount = async () => {
+			if ( hasAccess === true && step === 'conversion_action' ) {
+				await upsertAdsAccount();
+				invalidateResolution( 'getExistingGoogleAdsAccounts', [] );
+				invalidateResolution( 'getGoogleAdsAccount', [] );
+				invalidateResolution( 'getGoogleAdsAccountStatus', [] );
+			}
+		};
+
+		upsertAccount();
+	}, [ hasAccess, step, upsertAdsAccount, invalidateResolution ] );
 
 	const handleOnClick = () => {
 		setUpdating( true );

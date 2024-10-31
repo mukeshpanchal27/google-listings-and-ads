@@ -31,14 +31,24 @@ import { useAppDispatch } from '.~/data';
  */
 const ConnectAds = ( { isEditing } ) => {
 	const [ showCreateNewModal, setShowCreateNewModal ] = useState( false );
-	const { existingAccounts: accounts } = useExistingGoogleAdsAccounts();
-	const { googleAdsAccount, refetchGoogleAdsAccount } = useGoogleAdsAccount();
 	const [ value, setValue ] = useState();
 	const [ isLoading, setLoading ] = useState( false );
 	const { createNotice } = useDispatchCoreNotices();
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
-	const { hasAccess } = useGoogleAdsAccountStatus();
 	const isConnected = useGoogleAdsAccountReady();
+	const {
+		hasAccess,
+		hasFinishedResolution: hasFinishedResolutionForAccountStatus,
+	} = useGoogleAdsAccountStatus();
+	const {
+		existingAccounts: accounts,
+		hasFinishedResolution: hasFinishedResolutionForExistingAdsAccount,
+	} = useExistingGoogleAdsAccounts();
+	const {
+		googleAdsAccount,
+		refetchGoogleAdsAccount,
+		hasFinishedResolution: hasFinishedResolutionForCurrentAccount,
+	} = useGoogleAdsAccount();
 	const [ connectGoogleAdsAccount ] = useApiFetchCallback( {
 		path: '/wc/gla/ads/accounts',
 		method: 'POST',
@@ -140,6 +150,12 @@ const ConnectAds = ( { isEditing } ) => {
 				) }
 				body={
 					<ConnectAdsBody
+						hasResolvedAccounts={
+							hasFinishedResolutionForExistingAdsAccount &&
+							hasFinishedResolutionForCurrentAccount &&
+							hasFinishedResolutionForAccountStatus &&
+							isConnected !== null
+						}
 						isConnected={ isConnected }
 						onClick={ handleConnectClick }
 						isLoading={ isLoading }
