@@ -7,16 +7,18 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AccountCard from '.~/components/account-card';
 import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
 import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import { useAppDispatch } from '.~/data';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
-import ConnectAccountCard from '../connect-account-card';
+import AccountCard from '.~/components/account-card';
+import AdsAccountSelectControl from '.~/components/ads-account-select-control';
+import ConnectedIconLabel from '.~/components/connected-icon-label';
 import ConnectAdsFooter from './connect-ads-footer';
-import ConnectAdsBody from './connect-ads-body';
+import LoadingLabel from '.~/components/loading-label';
+import ConnectButton from '.~/components/google-ads-account-card/connect-ads/connect-button';
 
 /**
  * ConnectAds component renders an account card to connect to an existing Google Ads account.
@@ -90,27 +92,46 @@ const ConnectAds = ( { isEditing = false } ) => {
 		return null;
 	}
 
+	const getIndicator = () => {
+		if ( isLoading ) {
+			return (
+				<LoadingLabel
+					text={ __( 'Connecting…', 'google-listings-and-ads' ) }
+				/>
+			);
+		}
+
+		if ( isConnected ) {
+			return <ConnectedIconLabel />;
+		}
+
+		return (
+			<ConnectButton accountID={ value } onClick={ handleConnectClick } />
+		);
+	};
+
 	return (
-		<ConnectAccountCard
-			className="gla-google-combo-service-account-card--ads"
+		<AccountCard
+			className="gla-google-combo-account-card gla-google-combo-service-account-card--ads"
 			title={ __(
 				'Connect to existing Google Ads account',
 				'google-listings-and-ads'
 			) }
-			helperText={ __(
+			helper={ __(
 				'Required to set up conversion measurement for your store.',
 				'google-listings-and-ads'
 			) }
-			body={
-				<ConnectAdsBody
-					isConnected={ isConnected }
-					onClick={ handleConnectClick }
-					isLoading={ isLoading }
-					setValue={ setValue }
-					accountID={ value }
+			alignIndicator="toDetail"
+			indicator={ getIndicator() }
+			detail={
+				<AdsAccountSelectControl
+					value={ value }
+					onChange={ setValue }
+					autoSelectFirstOption
+					nonInteractive={ isConnected }
 				/>
 			}
-			footer={
+			actions={
 				<ConnectAdsFooter
 					isConnected={ isConnected }
 					disabled={ isLoading }
