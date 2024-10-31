@@ -55,8 +55,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get MC "Create account" button from the page.
 	 */
 	getMCCreateAccountButtonFromPage() {
-		const button = this.getMCCardFooterButton();
-		return button;
+		return this.getMCCardFooterButton();
 	}
 
 	/**
