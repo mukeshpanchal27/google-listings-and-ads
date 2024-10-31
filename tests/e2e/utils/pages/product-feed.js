@@ -56,28 +56,6 @@ export default class ProductFeedPage extends MockRequests {
 	}
 
 	/**
-	 * Change the value of adsSetupComplete to `true` after it is discovered.
-	 *
-	 * @return {Promise<void>}
-	 */
-	async mockAdsSetupComplete() {
-		this.page.addInitScript( () => {
-			const targetId = 'google-listings-and-ads-js-before';
-			const checkElement = () => {
-				const targetElement = document.getElementById( targetId );
-				if ( targetElement ) {
-					window.glaData = window.glaData || {};
-					window.glaData.adsSetupComplete = true;
-				} else {
-					// If not, keep checking until targetElement exists
-					window.requestAnimationFrame( checkElement );
-				}
-			};
-			checkElement();
-		} );
-	}
-
-	/**
 	 * Get the active product value element.
 	 *
 	 * @return {import('@playwright/test').Locator} The active product value element.

@@ -8,8 +8,8 @@ import { expect, test } from '@playwright/test';
 import {
 	clearOnboardedMerchant,
 	setOnboardedMerchant,
-	setAdsCompletedAt,
-	clearAdsCompletedAt,
+	setCompletedAdsSetup,
+	clearCompletedAdsSetup,
 } from '../../utils/api';
 import ProductFeedPage from '../../utils/pages/product-feed';
 import { LOAD_STATE } from '../../utils/constants';
@@ -46,14 +46,9 @@ test.describe( 'Product Feed Page', () => {
 	test.describe( 'No campaign', () => {
 		test.beforeAll( async () => {
 			await productFeedPage.fulfillAdsCampaignsRequest( [] );
-			await productFeedPage.goto();
 		} );
 
 		test( 'No active product and no campaign; Do not display campaign notice', async () => {
-			await expect(
-				page.getByRole( 'heading', { level: 1, name: 'Product Feed' } )
-			).toBeVisible();
-
 			await productFeedPage.fulfillProductStatisticsRequest( {
 				timestamp: 1695011644,
 				statistics: {
@@ -67,8 +62,10 @@ test.describe( 'Product Feed Page', () => {
 				loading: false,
 			} );
 
-			await page.reload();
-			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
+			await productFeedPage.goto();
+			await expect(
+				page.getByRole( 'heading', { level: 1, name: 'Product Feed' } )
+			).toBeVisible();
 
 			await expect(
 				page.getByRole( 'heading', {
@@ -103,8 +100,7 @@ test.describe( 'Product Feed Page', () => {
 				loading: false,
 			} );
 
-			await page.reload();
-			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
+			await productFeedPage.goto();
 
 			await expect(
 				productFeedPage.getActiveProductValueElement()
@@ -129,14 +125,12 @@ test.describe( 'Product Feed Page', () => {
 					name: 'Set up your accounts',
 				} )
 			).toBeVisible();
-			await productFeedPage.goto();
-			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 		} );
 	} );
 
 	test.describe( 'Has campaign', () => {
 		test.beforeAll( async () => {
-			await setAdsCompletedAt();
+			await setCompletedAdsSetup();
 			await productFeedPage.fulfillAdsCampaignsRequest( [
 				{
 					id: 111111111,
@@ -151,13 +145,12 @@ test.describe( 'Product Feed Page', () => {
 		} );
 
 		test.afterAll( async () => {
-			await clearAdsCompletedAt();
+			await clearCompletedAdsSetup();
 			await page.close();
 		} );
 
 		test( 'Has active product and a campaign; Do not display campaign notice', async () => {
-			await page.reload();
-			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
+			await productFeedPage.goto();
 
 			await expect(
 				productFeedPage.getActiveProductValueElement()
@@ -185,8 +178,7 @@ test.describe( 'Product Feed Page', () => {
 				scheduled_sync: 0,
 				loading: false,
 			} );
-			await page.reload();
-			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
+			await productFeedPage.goto();
 
 			await expect(
 				productFeedPage.getActiveProductValueElement()
