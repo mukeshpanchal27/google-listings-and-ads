@@ -280,11 +280,9 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Google Ads account card.
 	 */
 	getGoogleAdsAccountCard() {
-		return this.getGoogleComboAccountCards( {
-			has: this.page.locator( '.gla-account-card__title', {
-				hasText: 'Google Ads',
-			} ),
-		} ).first();
+		return this.page.locator(
+			'.gla-google-combo-service-account-card--ads'
+		);
 	}
 
 	/**

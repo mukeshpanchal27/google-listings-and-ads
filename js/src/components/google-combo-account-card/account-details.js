@@ -34,7 +34,7 @@ const AccountDetails = () => {
 					) }
 			</p>
 			<p>
-				{ googleAdsAccount.id > 0 &&
+				{ googleAdsAccount?.id > 0 &&
 					sprintf(
 						// Translators: %s is the Google Ads ID
 						__( 'Google Ads ID: %s', 'google-listings-and-ads' ),
