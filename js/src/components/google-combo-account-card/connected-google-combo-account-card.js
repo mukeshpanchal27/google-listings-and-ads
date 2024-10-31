@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { useEffect, useState } from '@wordpress/element';
-
-/**
  * Internal dependencies
  */
 import AccountCard, { APPEARANCE } from '../account-card';
@@ -30,29 +25,22 @@ const ConnectedGoogleComboAccountCard = () => {
 	// and the URL needs to be reclaimed. The URL reclaiming component is rendered
 	// within the ConnectMC component.
 	const [ createMCAccount, resultCreateMCAccount ] = useCreateMCAccount();
-	const { data: accounts } = useExistingGoogleMCAccounts();
-	const [ showConnectMCCard, setShowConnectMCCard ] = useState( false );
+	const { data: existingGoogleMCAccounts } = useExistingGoogleMCAccounts();
 	const { isReady: isGoogleMCReady } = useGoogleMCAccount();
 	const { hasDetermined, creatingWhich } =
 		useAutoCreateAdsMCAccounts( createMCAccount );
 	const { text, subText } = getAccountCreationTexts( creatingWhich );
 
-	useEffect( () => {
-		// Show the Connect MC card if
-		// there's no connected account and there are existing accounts.
-		// there's an issue when creating an MC account. For e.g need to reclaim the URL.
-		// The "Edit" button will be used to display the card within the connected state.
-		if (
-			( ! isGoogleMCReady && accounts?.length > 0 ) ||
-			[ 403, 503 ].includes( resultCreateMCAccount.response?.status )
-		) {
-			setShowConnectMCCard( true );
-		}
-	}, [ isGoogleMCReady, accounts?.length, resultCreateMCAccount ] );
-
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
 	}
+
+	// @TODO: edit mode implementation in 2605
+	const editMode = false;
+	const hasExistingGoogleMCAccounts = existingGoogleMCAccounts?.length > 0;
+	const showConnectMC =
+		( editMode && hasExistingGoogleMCAccounts ) ||
+		( ! isGoogleMCReady && hasExistingGoogleMCAccounts );
 
 	return (
 		<div className="gla-google-combo-account-cards">
@@ -67,7 +55,7 @@ const ConnectedGoogleComboAccountCard = () => {
 				}
 			/>
 
-			{ showConnectMCCard && (
+			{ showConnectMC && (
 				<ConnectMC
 					createMCAccount={ createMCAccount }
 					resultCreateMCAccount={ resultCreateMCAccount }
