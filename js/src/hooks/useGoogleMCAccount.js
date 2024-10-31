@@ -18,6 +18,8 @@ import { GOOGLE_MC_ACCOUNT_STATUS } from '.~/constants';
  * @property {boolean} isResolving Whether resolution is in progress.
  * @property {boolean} hasFinishedResolution Whether resolution has completed.
  * @property {boolean} isPreconditionReady Whether the precondition of continued connection processing is fulfilled.
+ * @property {boolean} hasGoogleMCConnection Whether the user has a Google Merchant Center account connection established.
+ * @property {boolean} isReady Whether the user has a Google Merchant Center account is in connected state.
  */
 
 const googleMCAccountSelector = 'getGoogleMCAccount';
@@ -46,11 +48,10 @@ const useGoogleMCAccount = () => {
 					// has not been granted necessary access permissions for Google Merchant Center, then
 					// the precondition doesn't meet.
 					isPreconditionReady: false,
+					hasGoogleMCConnection: false,
+					isReady: false,
 				};
 			}
-
-			const { getGoogleMCAccount, hasFinishedResolution } =
-				select( STORE_KEY );
 
 			const selector = select( STORE_KEY );
 			const acc = selector[ googleMCAccountSelector ]();
@@ -63,13 +64,20 @@ const useGoogleMCAccount = () => {
 				GOOGLE_MC_ACCOUNT_STATUS.INCOMPLETE,
 			].includes( acc?.status );
 
+			const isReady =
+				acc?.status === GOOGLE_MC_ACCOUNT_STATUS.CONNECTED ||
+				( acc?.status === GOOGLE_MC_ACCOUNT_STATUS.INCOMPLETE &&
+					acc?.step === 'link_ads' );
+
 			return {
-				googleMCAccount: getGoogleMCAccount(),
+				googleMCAccount: acc,
 				isResolving: isResolvingGoogleMCAccount,
-				hasFinishedResolution:
-					hasFinishedResolution( 'getGoogleMCAccount' ),
+				hasFinishedResolution: selector.hasFinishedResolution(
+					googleMCAccountSelector
+				),
 				isPreconditionReady: true,
 				hasGoogleMCConnection,
+				isReady,
 			};
 		},
 		[

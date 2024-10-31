@@ -8,17 +8,16 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AccountCard, { APPEARANCE } from '../account-card';
-import AccountCreationDescription from './account-creation-description';
-import AppSpinner from '../app-spinner';
-import ConnectedIconLabel from '../connected-icon-label';
-import { CREATING_BOTH_ACCOUNTS } from './constants';
-import LoadingLabel from '../loading-label/loading-label';
-import AppButton from '.~/components/app-button';
-import SwitchAccountButton from '../google-account-card/switch-account-button';
 import useAutoCreateAdsMCAccounts from '../../hooks/useAutoCreateAdsMCAccounts';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
-import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
+import ConnectAds from './connect-ads';
+import AccountDetails from './account-details';
+import Indicator from './indicator';
+import getAccountCreationTexts from './getAccountCreationTexts';
+import SpinnerCard from '.~/components/spinner-card';
+import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
+import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
+import AppButton from '.~/components/app-button';
+import SwitchAccountButton from '.~/components/google-account-card/switch-account-button';
 import './connected-google-combo-account-card.scss';
 
 /**
@@ -27,114 +26,66 @@ import './connected-google-combo-account-card.scss';
  */
 const ConnectedGoogleComboAccountCard = () => {
 	const [ editMode, setEditMode ] = useState( false );
-	const {
-		hasGoogleAdsConnection,
-		hasFinishedResolution: hasFinishedResolutionForCurrentAdsAccount,
-	} = useGoogleAdsAccount();
+	const { hasDetermined, creatingWhich } = useAutoCreateAdsMCAccounts();
+	const { text, subText } = getAccountCreationTexts( creatingWhich );
+	const { existingAccounts: existingGoogleAdsAccounts } =
+		useExistingGoogleAdsAccounts();
+	const isConnected = useGoogleAdsAccountReady();
 
-	const {
-		googleMCAccount,
-		isPreconditionReady,
-		hasFinishedResolution: hasFinishedResolutionForCurrentMCAccount,
-	} = useGoogleMCAccount();
-
-	const {
-		hasFinishedResolutionForExistingAdsMCAccounts,
-		isCreatingWhichAccount,
-	} = useAutoCreateAdsMCAccounts();
-
-	const { hasAccess, step } = useGoogleAdsAccountStatus();
-
-	const isCreatingAccounts = !! isCreatingWhichAccount;
-
-	if (
-		! hasFinishedResolutionForExistingAdsMCAccounts ||
-		! hasFinishedResolutionForCurrentAdsAccount ||
-		! hasFinishedResolutionForCurrentMCAccount
-	) {
-		return <AccountCard description={ <AppSpinner /> } />;
+	if ( ! hasDetermined ) {
+		return <SpinnerCard />;
 	}
-
-	const isGoogleAdsConnected =
-		hasGoogleAdsConnection &&
-		hasAccess &&
-		[ '', 'billing', 'link_merchant' ].includes( step );
-
-	const isGoogleMCConnected =
-		isPreconditionReady &&
-		( googleMCAccount?.status === 'connected' ||
-			( googleMCAccount?.status === 'incomplete' &&
-				googleMCAccount?.step === 'link_ads' ) );
-
-	const getHelper = () => {
-		if ( isCreatingWhichAccount === CREATING_BOTH_ACCOUNTS ) {
-			return (
-				<p>
-					{ __(
-						'Merchant Center is required to sync products so they show on Google. Google Ads is required to set up conversion measurement for your store.',
-						'google-listings-and-ads'
-					) }
-				</p>
-			);
-		}
-
-		return null;
-	};
 
 	const handleEditClick = () => {
 		setEditMode( true );
 	};
 
-	const getIndicator = () => {
-		if ( isCreatingAccounts ) {
-			return (
-				<LoadingLabel
-					text={ __( 'Creating…', 'google-listings-and-ads' ) }
-				/>
-			);
-		}
-
-		if ( isGoogleAdsConnected && isGoogleMCConnected ) {
-			return <ConnectedIconLabel />;
-		}
-
-		return null;
-	};
+	const hasExistingGoogleAdsAccounts = existingGoogleAdsAccounts?.length > 0;
+	const showConnectAds =
+		( editMode && hasExistingGoogleAdsAccounts ) ||
+		( ! isConnected && hasExistingGoogleAdsAccounts );
 
 	return (
-		<>
+		<div>
 			<AccountCard
 				appearance={ APPEARANCE.GOOGLE }
 				alignIcon="top"
 				className="gla-google-combo-account-card--connected"
 				description={
 					<>
-						<AccountCreationDescription
-							isCreatingWhichAccount={ isCreatingWhichAccount }
-						/>
+						{ text || <AccountDetails /> }
 
-						{ ! editMode && (
-							<AppButton
-								isLink
-								text={ __( 'Edit', 'google-listings-and-ads' ) }
-								onClick={ handleEditClick }
-							/>
-						) }
+						<div className="gla-google-combo-account-card__actions">
+							{ ! editMode && (
+								<AppButton
+									isLink
+									text={ __(
+										'Edit',
+										'google-listings-and-ads'
+									) }
+									onClick={ handleEditClick }
+								/>
+							) }
 
-						{ editMode && <SwitchAccountButton /> }
+							{ editMode && (
+								<SwitchAccountButton
+									text={ __(
+										'Connect to a different Google account',
+										'google-listings-and-ads'
+									) }
+								/>
+							) }
+						</div>
 					</>
 				}
-				helper={ getHelper() }
-				indicator={ getIndicator() }
+				helper={ subText }
+				indicator={
+					<Indicator showSpinner={ Boolean( creatingWhich ) } />
+				}
 			/>
 
-			{ editMode && (
-				<>
-					<p>Connect Ads</p>
-					<p>Connect MC</p>
-				</>
-			) }
-		</>
+			{ showConnectAds && <ConnectAds /> }
+		</div>
 	);
 };
 

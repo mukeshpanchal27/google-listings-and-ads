@@ -12,60 +12,55 @@ export default class MockRequests {
 	}
 
 	/**
+	 * Fulfill a request multiple times.
+	 *
+	 * @param {number} times The number of times to fulfill the request.
+	 * @return {this} A proxied instance intercepts the subsequent fulfillRequest calls to attach the `times` option.
+	 */
+	fulfillTimes( times ) {
+		return new Proxy( this, {
+			get( target, property ) {
+				const value = Reflect.get( ...arguments );
+
+				if ( property === 'fulfillRequest' ) {
+					return function ( url, payload, status, methods ) {
+						const args = [ url, payload, status, methods, times ];
+						return value.apply( target, args );
+					};
+				}
+
+				return value;
+			},
+		} );
+	}
+
+	/**
 	 * Fulfill a request with a payload.
 	 *
 	 * @param {RegExp|string} url      The url to fulfill.
 	 * @param {Object}        payload  The payload to send.
 	 * @param {number}        status   The HTTP status in the response.
 	 * @param {Array}         methods  The HTTP methods in the request to be fulfill.
-	 * @param {boolean}       multiRequestMock Whether to mock multiple requests.
+	 * @param {number}        [times]    The number of times to fulfill the request. Optional.
 	 * @return {Promise<void>}
 	 */
-	async fulfillRequest(
-		url,
-		payload,
-		status = 200,
-		methods = [],
-		multiRequestMock = false
-	) {
-		let callCount = 0;
-
-		await this.page.route( url, ( route ) => {
-			const requestMethod = route.request().method();
-
-			if ( methods.length === 0 || methods.includes( requestMethod ) ) {
-				let currentPayload;
-
-				if ( multiRequestMock ) {
-					// Handle multiple requests scenario
-					if (
-						Array.isArray( payload ) &&
-						callCount < payload.length
-					) {
-						currentPayload = payload[ callCount ];
-						callCount += 1;
-					} else if ( ! Array.isArray( payload ) ) {
-						currentPayload = payload;
-					} else {
-						// Fallback if all payloads are fulfilled
-						route.fallback();
-						return;
-					}
-				} else {
-					// Handle single response scenario
-					currentPayload = payload;
-				}
-
-				route.fulfill( {
+	async fulfillRequest( url, payload, status = 200, methods = [], times ) {
+		const handler = async ( route ) => {
+			if (
+				methods.length === 0 ||
+				methods.includes( route.request().method() )
+			) {
+				return route.fulfill( {
 					status,
 					contentType: 'application/json',
 					headers: { 'Access-Control-Allow-Origin': '*' },
-					body: JSON.stringify( currentPayload ),
+					body: JSON.stringify( payload ),
 				} );
-			} else {
-				route.fallback();
 			}
-		} );
+			return route.fallback();
+		};
+
+		await this.page.route( url, handler, { times } );
 	}
 
 	/**
@@ -129,21 +124,14 @@ export default class MockRequests {
 	 * @param {Object} payload
 	 * @param {number} status
 	 * @param {string[]} [methods]
-	 * @param {boolean} multiRequestMock
 	 * @return {Promise<void>}
 	 */
-	async fulfillMCAccounts(
-		payload,
-		status = 200,
-		methods,
-		multiRequestMock = false
-	) {
+	async fulfillMCAccounts( payload, status = 200, methods ) {
 		await this.fulfillRequest(
 			/\/wc\/gla\/mc\/accounts\b/,
 			payload,
 			status,
-			methods,
-			multiRequestMock
+			methods
 		);
 	}
 
@@ -166,24 +154,10 @@ export default class MockRequests {
 	 * Fulfill the MC connection request.
 	 *
 	 * @param {Object} payload
-	 * @param {number} status
-	 * @param {Array} methods
-	 * @param {boolean} multiRequestMock
 	 * @return {Promise<void>}
 	 */
-	async fulfillMCConnection(
-		payload,
-		status = 200,
-		methods = [],
-		multiRequestMock = false
-	) {
-		await this.fulfillRequest(
-			/\/wc\/gla\/mc\/connection\b/,
-			payload,
-			status,
-			methods,
-			multiRequestMock
-		);
+	async fulfillMCConnection( payload ) {
+		await this.fulfillRequest( /\/wc\/gla\/mc\/connection\b/, payload );
 	}
 
 	/**
@@ -240,24 +214,10 @@ export default class MockRequests {
 	 * Fulfill the Ads Connection request.
 	 *
 	 * @param {Object} payload
-	 * @param {number} status
-	 * @param {Array} methods
-	 * @param {boolean} multiRequestMock
 	 * @return {Promise<void>}
 	 */
-	async fulfillAdsConnection(
-		payload,
-		status = 200,
-		methods = [],
-		multiRequestMock = false
-	) {
-		await this.fulfillRequest(
-			/\/wc\/gla\/ads\/connection\b/,
-			payload,
-			status,
-			methods,
-			multiRequestMock
-		);
+	async fulfillAdsConnection( payload ) {
+		await this.fulfillRequest( /\/wc\/gla\/ads\/connection\b/, payload );
 	}
 
 	/**
@@ -281,24 +241,10 @@ export default class MockRequests {
 	 * Fulfill the Ads Account request.
 	 *
 	 * @param {Object} payload
-	 * @param {number} status
-	 * @param {Array} methods
-	 * @param {boolean} multiRequestMock
 	 * @return {Promise<void>}
 	 */
-	async fulfillAdsAccounts(
-		payload,
-		status = 200,
-		methods = [],
-		multiRequestMock = false
-	) {
-		await this.fulfillRequest(
-			/\/wc\/gla\/ads\/accounts\b/,
-			payload,
-			status,
-			methods,
-			multiRequestMock
-		);
+	async fulfillAdsAccounts( payload ) {
+		await this.fulfillRequest( /\/wc\/gla\/ads\/accounts\b/, payload );
 	}
 
 	/**

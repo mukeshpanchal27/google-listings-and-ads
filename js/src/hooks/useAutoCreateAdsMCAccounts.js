@@ -1,166 +1,135 @@
 /**
  * External dependencies
  */
-import { useEffect, useState, useRef, useCallback } from '@wordpress/element';
+import { useEffect, useState, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import useGoogleAdsAccount from './useGoogleAdsAccount';
+import useExistingGoogleAdsAccounts from './useExistingGoogleAdsAccounts';
+import useGoogleMCAccount from './useGoogleMCAccount';
+import useExistingGoogleMCAccounts from './useExistingGoogleMCAccounts';
 import useCreateMCAccount from './useCreateMCAccount';
 import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
-import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
-import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
-import useGoogleAdsAccount from './useGoogleAdsAccount';
-import useGoogleMCAccount from './useGoogleMCAccount';
 import {
 	CREATING_ADS_ACCOUNT,
 	CREATING_BOTH_ACCOUNTS,
 	CREATING_MC_ACCOUNT,
 } from '.~/components/google-combo-account-card/constants';
 
-/**
- * Hook to automatically create Ads and Merchant Center accounts if they do not exist.
- *
- * @return {Object} Object containing the state of the account creation process.
- * @property {boolean} hasFinishedResolutionForExistingAdsMCAccounts Indicates whether the checks for existing Merchant Center (MC) and Google Ads accounts have been completed.
- * @property {string|null} isCreatingWhichAccount The type of account that is being created. Possible values are 'ads', 'mc', or 'both'.
- */
-const useAutoCreateAdsMCAccounts = () => {
-	const [ accountsState, setAccountsState ] = useState( {
-		accountsCreated: false,
-		isCreatingWhichAccount: null,
-	} );
-
-	const { accountsCreated, isCreatingWhichAccount } = accountsState;
-	const shouldCreateAccounts = useRef();
-
+const useShouldCreateAdsAccount = () => {
 	const {
-		data: existingMCAccounts,
-		hasFinishedResolution: hasFinishedResolutionForExistingMCAccounts,
-	} = useExistingGoogleMCAccounts();
-
-	const {
-		existingAccounts: existingAdsAccounts,
-		hasFinishedResolution: hasFinishedResolutionForExistingAdsAccount,
-	} = useExistingGoogleAdsAccounts();
-
-	const {
-		hasFinishedResolution: hasFinishedResolutionForGoogleAdsAccount,
-		hasGoogleAdsConnection,
+		hasFinishedResolution: hasResolvedAccount,
+		hasGoogleAdsConnection: hasConnection,
 	} = useGoogleAdsAccount();
 
 	const {
-		hasGoogleMCConnection,
-		hasFinishedResolution: hasFinishedResolutionForGoogleMCAccount,
-	} = useGoogleMCAccount();
+		hasFinishedResolution: hasResolvedExistingAccounts,
+		existingAccounts: accounts,
+	} = useExistingGoogleAdsAccounts();
 
-	const [ handleCreateAccount, { response } ] = useCreateMCAccount();
-	const [ upsertAdsAccount, { loading } ] = useUpsertAdsAccount();
-
-	const hasExistingMCAccount =
-		hasGoogleMCConnection || existingMCAccounts?.length > 0;
-	const hasExistingAdsAccount =
-		hasGoogleAdsConnection || existingAdsAccounts?.length > 0;
-
-	const googleAdsAccountChecksResolved =
-		hasFinishedResolutionForExistingAdsAccount &&
-		hasFinishedResolutionForGoogleAdsAccount;
-
-	const googleMCAccountChecksResolved =
-		hasFinishedResolutionForGoogleMCAccount &&
-		hasFinishedResolutionForExistingMCAccounts;
-
-	const accountCreationChecksResolved =
-		googleAdsAccountChecksResolved && googleMCAccountChecksResolved;
-
-	if ( accountCreationChecksResolved ) {
-		if ( ! hasExistingAdsAccount || ! hasExistingMCAccount ) {
-			const createBothAccounts =
-				! hasExistingAdsAccount && ! hasExistingMCAccount;
-
-			if ( createBothAccounts ) {
-				shouldCreateAccounts.current = CREATING_BOTH_ACCOUNTS;
-			} else if ( ! hasExistingAdsAccount ) {
-				shouldCreateAccounts.current = CREATING_ADS_ACCOUNT;
-			} else {
-				shouldCreateAccounts.current = CREATING_MC_ACCOUNT;
-			}
-		}
+	// Return null if the account hasn't been resolved or the existing accounts haven't been resolved
+	if ( ! hasResolvedAccount || ! hasResolvedExistingAccounts ) {
+		return null;
 	}
 
-	const handlePostAccountCreation = useCallback( () => {
-		if ( ! isCreatingWhichAccount ) {
-			return;
-		}
+	return ! hasConnection && accounts?.length === 0;
+};
 
-		const mcAccountCreated = [ 200, 403, 406, 503 ].includes(
-			response?.status
-		);
+const useShouldCreateMCAccount = () => {
+	const {
+		hasFinishedResolution: hasResolvedAccount,
+		hasGoogleMCConnection: hasConnection,
+	} = useGoogleMCAccount();
 
-		const resetState =
-			( isCreatingWhichAccount === CREATING_ADS_ACCOUNT && ! loading ) ||
-			( isCreatingWhichAccount === CREATING_MC_ACCOUNT &&
-				mcAccountCreated ) ||
-			( isCreatingWhichAccount === CREATING_BOTH_ACCOUNTS &&
-				mcAccountCreated &&
-				! loading );
+	const {
+		hasFinishedResolution: hasResolvedExistingAccounts,
+		data: accounts,
+	} = useExistingGoogleMCAccounts();
 
-		if ( resetState ) {
-			shouldCreateAccounts.current = null;
-			setAccountsState( ( prevState ) => ( {
-				...prevState,
-				isCreatingWhichAccount: null,
-				accountsCreated: true,
-			} ) );
-		}
-	}, [ response, loading, isCreatingWhichAccount ] );
+	// Return null if the account hasn't been resolved or the existing accounts haven't been resolved
+	if ( ! hasResolvedAccount || ! hasResolvedExistingAccounts ) {
+		return null;
+	}
 
-	const handleAccountCreation = useCallback( async () => {
+	return ! hasConnection && accounts?.length === 0;
+};
+
+/**
+ * @typedef {Object} AutoCreateAdsMCAccountsData
+ * @property {boolean} hasDetermined - Whether the checks to determine if accounts should be created are finished.
+ * @property {('ads'|'mc'|'both'|null)} creatingWhich - Which accounts are being created ('ads', 'mc', 'both'), or `null` if none.
+ */
+
+/**
+ * useAutoCreateAdsMCAccounts hook.
+ * Creates Google Ads and Merchant Center accounts if the user doesn't have any existing and connected accounts.
+ *
+ * @return {AutoCreateAdsMCAccountsData} Object containing account creation data.
+ */
+const useAutoCreateAdsMCAccounts = () => {
+	const lockedRef = useRef( false );
+	const [ creatingWhich, setCreatingWhich ] = useState( null );
+	const [ hasDetermined, setDetermined ] = useState( false );
+
+	const shouldCreateAds = useShouldCreateAdsAccount();
+	const shouldCreateMC = useShouldCreateMCAccount();
+
+	const [ handleCreateAccount ] = useCreateMCAccount();
+	const [ upsertAdsAccount ] = useUpsertAdsAccount();
+
+	useEffect( () => {
 		if (
-			! accountCreationChecksResolved ||
-			isCreatingWhichAccount ||
-			accountsCreated
+			// Wait for all determinations to be ready
+			shouldCreateMC === null ||
+			shouldCreateAds === null ||
+			// Avoid repeated calls
+			lockedRef.current
 		) {
 			return;
 		}
 
-		if ( shouldCreateAccounts.current ) {
-			setAccountsState( ( prevState ) => ( {
-				...prevState,
-				isCreatingWhichAccount: shouldCreateAccounts.current,
-			} ) );
+		let which = null;
 
-			if ( shouldCreateAccounts.current === CREATING_BOTH_ACCOUNTS ) {
-				await handleCreateAccount();
-				await upsertAdsAccount();
-			} else if (
-				shouldCreateAccounts.current === CREATING_ADS_ACCOUNT
-			) {
-				await upsertAdsAccount();
-			} else {
-				await handleCreateAccount();
-			}
+		lockedRef.current = true;
+
+		if ( shouldCreateMC && shouldCreateAds ) {
+			which = CREATING_BOTH_ACCOUNTS;
+		} else if ( shouldCreateMC ) {
+			which = CREATING_MC_ACCOUNT;
+		} else if ( shouldCreateAds ) {
+			which = CREATING_ADS_ACCOUNT;
+		}
+
+		setCreatingWhich( which );
+		setDetermined( true );
+
+		if ( which ) {
+			const handleCreateAccountCallback = async () => {
+				if ( which === CREATING_BOTH_ACCOUNTS ) {
+					await handleCreateAccount();
+					await upsertAdsAccount();
+				} else if ( which === CREATING_MC_ACCOUNT ) {
+					await handleCreateAccount();
+				} else if ( which === CREATING_ADS_ACCOUNT ) {
+					await upsertAdsAccount();
+				}
+				setCreatingWhich( null );
+			};
+
+			handleCreateAccountCallback();
 		}
 	}, [
-		accountCreationChecksResolved,
-		isCreatingWhichAccount,
-		accountsCreated,
 		handleCreateAccount,
+		shouldCreateAds,
+		shouldCreateMC,
 		upsertAdsAccount,
 	] );
 
-	useEffect( () => {
-		handlePostAccountCreation();
-	}, [ response, loading, handlePostAccountCreation ] );
-
-	useEffect( () => {
-		handleAccountCreation();
-	}, [ handleAccountCreation ] );
-
 	return {
-		hasFinishedResolutionForExistingAdsMCAccounts:
-			accountCreationChecksResolved,
-		isCreatingWhichAccount,
+		hasDetermined,
+		creatingWhich,
 	};
 };
 

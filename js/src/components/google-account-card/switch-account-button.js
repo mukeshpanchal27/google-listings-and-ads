@@ -19,17 +19,22 @@ import useSwitchGoogleAccount from './useSwitchGoogleAccount';
  * Renders a switch button that lets user connect with another Google account.
  *
  * @fires gla_google_account_connect_different_account_button_click
+ * @param {Object} props React props
+ * @param {string} [props.text="Or, connect to a different Google account"] Text to display on the button
  */
-const SwitchAccountButton = () => {
+const SwitchAccountButton = ( {
+	text = __(
+		'Or, connect to a different Google account',
+		'google-listings-and-ads'
+	),
+} ) => {
 	const [ handleSwitch, { loading } ] = useSwitchGoogleAccount();
+
 	return (
 		<AppButton
 			isLink
 			disabled={ loading }
-			text={ __(
-				'Or, connect to a different Google account',
-				'google-listings-and-ads'
-			) }
+			text={ text }
 			eventName="gla_google_account_connect_different_account_button_click"
 			onClick={ handleSwitch }
 		/>
