@@ -16,7 +16,6 @@ import useStoreAddressSynced from '.~/hooks/useStoreAddressSynced';
 import AccountCard, { APPEARANCE } from '.~/components/account-card';
 import AppButton from '.~/components/app-button';
 import ValidationErrors from '.~/components/validation-errors';
-import ContactInformationPreviewCard from './contact-information-preview-card';
 import TrackableLink from '.~/components/trackable-link';
 import mapStoreAddressErrors from './mapStoreAddressErrors';
 import LoadingLabel from '.~/components/loading-label';
