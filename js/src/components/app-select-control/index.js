@@ -58,17 +58,17 @@ const AppSelectControl = ( props ) => {
 	if ( isNonInteractive ) {
 		selectProps = {
 			...selectProps,
-			suffix: ' ',
 			readOnly: true,
+			style: {
+				pointerEvents: 'none',
+			},
+			suffix: ' ',
+			tabIndex: '-1',
 		};
 	}
 
 	return (
-		<div
-			className={ classNames( 'app-select-control', className, {
-				'app-select-control--is-non-interactive': isNonInteractive,
-			} ) }
-		>
+		<div className={ classNames( 'app-select-control', className ) }>
 			<SelectControl { ...selectProps } />
 		</div>
 	);

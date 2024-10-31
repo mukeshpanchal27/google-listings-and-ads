@@ -8,6 +8,8 @@ import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
 import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
+import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
+import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import './connected-google-combo-account-card.scss';
 
 /**
@@ -17,13 +19,23 @@ import './connected-google-combo-account-card.scss';
 const ConnectedGoogleComboAccountCard = () => {
 	const { hasDetermined, creatingWhich } = useAutoCreateAdsMCAccounts();
 	const { text, subText } = getAccountCreationTexts( creatingWhich );
+	const { existingAccounts: existingGoogleAdsAccounts } =
+		useExistingGoogleAdsAccounts();
+	const isConnected = useGoogleAdsAccountReady();
 
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
 	}
 
+	// @TODO: edit mode implementation in 2605
+	const editMode = false;
+	const hasExistingGoogleAdsAccounts = existingGoogleAdsAccounts?.length > 0;
+	const showConnectAds =
+		( editMode && hasExistingGoogleAdsAccounts ) ||
+		( ! isConnected && hasExistingGoogleAdsAccounts );
+
 	return (
-		<div className="gla-account-card">
+		<div>
 			<AccountCard
 				appearance={ APPEARANCE.GOOGLE }
 				alignIcon="top"
@@ -34,7 +46,8 @@ const ConnectedGoogleComboAccountCard = () => {
 					<Indicator showSpinner={ Boolean( creatingWhich ) } />
 				}
 			/>
-			<ConnectAds />
+
+			{ showConnectAds && <ConnectAds /> }
 		</div>
 	);
 };

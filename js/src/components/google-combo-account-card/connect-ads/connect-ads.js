@@ -25,40 +25,32 @@ import ConnectButton from '.~/components/google-ads-account-card/connect-ads/con
  *
  * @return {JSX.Element} {@link AccountCard} filled with content.
  */
-const ConnectAds = ( { isEditing = false } ) => {
+const ConnectAds = () => {
+	const [ value, setValue ] = useState();
+	const [ isLoading, setLoading ] = useState( false );
+	const { refetchGoogleAdsAccount } = useGoogleAdsAccount();
+	const { createNotice } = useDispatchCoreNotices();
+	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
+	const isConnected = useGoogleAdsAccountReady();
 	const {
 		existingAccounts: accounts,
 		hasFinishedResolution: hasFinishedResolutionForExistingAdsAccount,
 	} = useExistingGoogleAdsAccounts();
-
 	const {
 		googleAdsAccount,
 		hasFinishedResolution: hasFinishedResolutionForCurrentAccount,
 	} = useGoogleAdsAccount();
-
-	const isConnected = useGoogleAdsAccountReady();
-
-	const [ value, setValue ] = useState();
-	const [ isLoading, setLoading ] = useState( false );
 	const [ connectGoogleAdsAccount ] = useApiFetchCallback( {
 		path: '/wc/gla/ads/accounts',
 		method: 'POST',
 		data: { id: value },
 	} );
 
-	const { refetchGoogleAdsAccount } = useGoogleAdsAccount();
-	const { createNotice } = useDispatchCoreNotices();
-	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
-
 	useEffect( () => {
 		if ( isConnected ) {
 			setValue( googleAdsAccount.id );
 		}
 	}, [ googleAdsAccount, isConnected ] );
-
-	if ( isConnected && ! isEditing ) {
-		return null;
-	}
 
 	const handleConnectClick = async () => {
 		if ( ! value ) {
