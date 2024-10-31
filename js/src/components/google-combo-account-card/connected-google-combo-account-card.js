@@ -39,8 +39,8 @@ const ConnectedGoogleComboAccountCard = () => {
 	);
 	const hasExistingGoogleAdsAccounts = existingGoogleAdsAccounts?.length > 0;
 	const showConnectAds =
-		( editMode && hasExistingGoogleAdsAccounts ) ||
-		( ! isConnected && hasExistingGoogleAdsAccounts ) ||
+		( ( editMode && hasExistingGoogleAdsAccounts ) ||
+			( ! isConnected && hasExistingGoogleAdsAccounts ) ) &&
 		! shouldClaimGoogleAdsAccount;
 
 	return (
@@ -55,7 +55,9 @@ const ConnectedGoogleComboAccountCard = () => {
 					<Indicator showSpinner={ Boolean( creatingWhich ) } />
 				}
 			>
-				<ConnectedAccountsActions />
+				<ConnectedAccountsActions
+					claimGoogleAdsAccount={ shouldClaimGoogleAdsAccount }
+				/>
 			</AccountCard>
 
 			{ showConnectAds && <ConnectAds /> }

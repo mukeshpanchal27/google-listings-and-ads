@@ -57,6 +57,7 @@ const ConnectAds = () => {
 		await upsertAdsAccount();
 	};
 
+	console.log( accounts, googleAdsAccount, isConnected );
 	useEffect( () => {
 		if ( isConnected ) {
 			setValue( googleAdsAccount.id );

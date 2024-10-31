@@ -60,10 +60,6 @@ const ClaimAdsAccount = () => {
 		setUpdating( true );
 	};
 
-	if ( ! shouldClaimGoogleAdsAccount ) {
-		return null;
-	}
-
 	return (
 		<Section.Card.Body className="gla-claim-ads-account-section">
 			<div className="gla-claim-ads-account-box">

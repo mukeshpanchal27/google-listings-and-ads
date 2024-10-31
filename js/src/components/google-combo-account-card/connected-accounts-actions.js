@@ -12,14 +12,16 @@ import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 
 /**
  * Renders the actionable components for connected accounts.
+ * @param {Object} props Component props.
+ * @param {boolean} props.claimGoogleAdsAccount Whether the user should claim the Google Ads account.
  * @return {JSX.Element} Connected accounts actions.
  */
-const ConnectedAccountsActions = () => {
+const ConnectedAccountsActions = ( { claimGoogleAdsAccount } ) => {
 	const isReady = useGoogleAdsAccountReady();
 
 	return (
 		<div className="gla-connected-accounts-actions">
-			<ClaimAdsAccount />
+			{ claimGoogleAdsAccount && <ClaimAdsAccount /> }
 
 			{ isReady && (
 				<AppNotice
