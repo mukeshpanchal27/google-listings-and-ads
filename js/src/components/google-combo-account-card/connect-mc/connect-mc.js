@@ -27,14 +27,21 @@ import { hasAccountConnectionIssue } from '.~/components/google-mc-account-card/
  */
 
 /**
+ * Clicking on the button to connect an existing Google Merchant Center account.
+ *
+ * @event gla_mc_account_connect_button_click
+ * @property {number} id The account ID to be connected.
+ */
+
+/**
  * ConnectMC component.
  *
  * This component renders Merchant Center connection section.
  * It is using createMCAccount and resultCreateMCAccount from the parent component.
- *
- * @param {Object}   props
+ * @fires gla_mc_account_connect_button_click
+ * @param {Object} props
  * @param {Function} props.createMCAccount Callback function for creating a new Merchant Center account.
- * @param {Object}   props.resultCreateMCAccount The result of the create account request.
+ * @param {Object} props.resultCreateMCAccount The result of the create account request.
  */
 const ConnectMC = ( { createMCAccount, resultCreateMCAccount } ) => {
 	const {
@@ -61,11 +68,19 @@ const ConnectMC = ( { createMCAccount, resultCreateMCAccount } ) => {
 		resultCreateMCAccount
 	);
 
+	if ( ! isGoogleMCReady && accountConnectionIssue ) {
+		return (
+			<AccountConnectionStatus
+				resultConnectMC={ resultConnectMC }
+				resultCreateAccount={ resultCreateMCAccount }
+				onRetry={ createMCAccount }
+			/>
+		);
+	}
+
 	const getIndicator = () => {
 		if ( isGoogleMCReady ) {
-			return (
-				<ConnectedIconLabel className="gla-google-combo-service-connected-icon-label" />
-			);
+			return <ConnectedIconLabel />;
 		}
 
 		if ( resultConnectMC.loading ) {
@@ -87,16 +102,6 @@ const ConnectMC = ( { createMCAccount, resultCreateMCAccount } ) => {
 			</AppButton>
 		);
 	};
-
-	if ( ! isGoogleMCReady && accountConnectionIssue ) {
-		return (
-			<AccountConnectionStatus
-				resultConnectMC={ resultConnectMC }
-				resultCreateAccount={ resultCreateMCAccount }
-				onRetry={ createMCAccount }
-			/>
-		);
-	}
 
 	return (
 		<AccountCard

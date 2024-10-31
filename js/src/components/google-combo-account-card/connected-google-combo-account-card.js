@@ -22,11 +22,9 @@ import './connected-google-combo-account-card.scss';
  */
 const ConnectedGoogleComboAccountCard = () => {
 	// We use a single instance of the hook to create a MC (Merchant Center) account,
-	// ensuring consistent results across both the main component (ConnectedGoogleComboAccountCard)
-	// and its child component (ConnectMC).
-	// This approach is especially useful when an MC account is automatically created,
-	// and the URL needs to be reclaimed. The URL reclaiming component is rendered
-	// within the ConnectMC component.
+	// ensuring consistent results across both the main component (ConnectedGoogleComboAccountCard) and its child component (ConnectMC).
+	// This approach is especially useful when an MC account is automatically created, and the URL needs to be reclaimed.
+	// The URL reclaim component is rendered within the ConnectMC component.
 	const [ createMCAccount, resultCreateMCAccount ] = useCreateMCAccount();
 	const { data: existingGoogleMCAccounts } = useExistingGoogleMCAccounts();
 	const { isReady: isGoogleMCReady } = useGoogleMCAccount();
