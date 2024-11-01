@@ -22,8 +22,6 @@ export const subpaths = {
 	editFreeListings: '/free-listings/edit',
 	editCampaign: '/campaigns/edit',
 	createCampaign: '/campaigns/create',
-	editPhoneNumber: '/edit-phone-number',
-	editStoreAddress: '/edit-store-address',
 	reconnectWPComAccount: '/reconnect-wpcom-account',
 	reconnectGoogleAccount: '/reconnect-google-account',
 };
@@ -84,21 +82,6 @@ export const getSettingsUrl = () => {
 
 export const geReportsUrl = () => {
 	return getNewPath( null, reportsPath, null );
-};
-
-export const getEditPhoneNumberUrl = () => {
-	return getNewPath(
-		{ subpath: subpaths.editPhoneNumber },
-		settingsPath,
-		null
-	);
-};
-export const getEditStoreAddressUrl = () => {
-	return getNewPath(
-		{ subpath: subpaths.editStoreAddress },
-		settingsPath,
-		null
-	);
 };
 
 /**

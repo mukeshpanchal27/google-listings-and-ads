@@ -6,16 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { getEditPhoneNumberUrl, getEditStoreAddressUrl } from '.~/utils/urls';
 import Section from '.~/wcdl/section';
+import StoreAddressCard from './store-address-card';
 import VerticalGapLayout from '.~/components/vertical-gap-layout';
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import { PhoneNumberCardPreview } from './phone-number-card';
-import { StoreAddressCardPreview } from './store-address-card';
-
-const learnMoreLinkId = 'contact-information-read-more';
-const learnMoreUrl =
-	'https://woocommerce.com/document/google-for-woocommerce/get-started/requirements/#contact-information';
 
 const description = (
 	<>
@@ -38,36 +31,13 @@ const settingsTitle = __( 'Contact information', 'google-listings-and-ads' );
 
 /**
  * Renders a preview of contact information section,
- * or a <NoContactInformationCard> if contact informations are not saved yet.
+ * or a <NoContactInformationCard> if contact information are not saved yet.
  */
 export function ContactInformationPreview() {
 	return (
 		<Section title={ settingsTitle } description={ description }>
 			<VerticalGapLayout size="overlap">
-				<PhoneNumberCardPreview
-					editHref={ getEditPhoneNumberUrl() }
-					learnMore={
-						<AppDocumentationLink
-							context="settings-no-phone-number-notice"
-							linkId={ learnMoreLinkId }
-							href={ learnMoreUrl }
-						>
-							{ __( 'Learn more', 'google-listings-and-ads' ) }
-						</AppDocumentationLink>
-					}
-				/>
-				<StoreAddressCardPreview
-					editHref={ getEditStoreAddressUrl() }
-					learnMore={
-						<AppDocumentationLink
-							context="settings-no-store-address-notice"
-							linkId={ learnMoreLinkId }
-							href={ learnMoreUrl }
-						>
-							{ __( 'Learn more', 'google-listings-and-ads' ) }
-						</AppDocumentationLink>
-					}
-				/>
+				<StoreAddressCard />
 			</VerticalGapLayout>
 		</Section>
 	);

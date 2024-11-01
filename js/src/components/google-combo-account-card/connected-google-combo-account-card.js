@@ -7,7 +7,7 @@ import AccountDetails from './account-details';
 import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
-import SyncStoreAddress from './sync-store-address';
+import StoreAddressCard from '.~/components/contact-information/store-address-card';
 import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
@@ -24,7 +24,13 @@ const ConnectedGoogleComboAccountCard = () => {
 	const { existingAccounts: existingGoogleAdsAccounts } =
 		useExistingGoogleAdsAccounts();
 	const isConnected = useGoogleAdsAccountReady();
-	const { addressSynced } = useStoreAddressSynced();
+	const {
+		isAddressSynced,
+		hasFinishedResolution: hasFinishedStoreAddressResolution,
+	} = useStoreAddressSynced();
+
+	const showAddressCard =
+		hasFinishedStoreAddressResolution && ! isAddressSynced;
 
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
@@ -52,7 +58,7 @@ const ConnectedGoogleComboAccountCard = () => {
 
 			{ showConnectAds && <ConnectAds /> }
 
-			{ addressSynced === false && <SyncStoreAddress /> }
+			{ showAddressCard && <StoreAddressCard /> }
 		</div>
 	);
 };
