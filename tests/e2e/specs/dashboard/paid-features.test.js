@@ -57,7 +57,7 @@ test.describe( 'Paid Feature Listing', () => {
 		);
 
 		await expect( dashboardPage.createCampaignButton ).toBeEnabled();
-
+		await dashboardPage.mockAdsAccountsResponse( [] );
 		await dashboardPage.createCampaignButton.click();
 		await expect(
 			page.getByRole( 'heading', {
