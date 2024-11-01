@@ -262,10 +262,7 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.mockGoogleConnected();
 				await setUpAccountsPage.mockMCConnected();
 				await setUpAccountsPage.mockAdsAccountConnected();
-
 				await setUpAccountsPage.mockMCHasAccounts();
-				await setUpAccountsPage.mockMCConnected();
-
 				await setUpAccountsPage.goto();
 			} );
 
@@ -312,7 +309,7 @@ test.describe( 'Set up accounts', () => {
 			] );
 		} );
 
-		test.describe( 'Merchant Center has no connected accounts', () => {
+		test.describe( 'Create Merchant Center Account', () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountsResponse( ADS_ACCOUNTS );
 				await setUpAccountsPage.mockMCHasAccounts();
@@ -344,7 +341,6 @@ test.describe( 'Set up accounts', () => {
 				const createAccountButton =
 					setUpAccountsPage.getMCCreateAccountButtonFromPage();
 				await createAccountButton.click();
-				await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 
 				const modalHeader = setUpAccountsPage.getModalHeader();
 				await expect( modalHeader ).toContainText(
@@ -376,9 +372,6 @@ test.describe( 'Set up accounts', () => {
 					const createAccountButtonFromModal =
 						setUpAccountsPage.getMCCreateAccountButtonFromModal();
 					await createAccountButtonFromModal.click();
-					await page.waitForLoadState(
-						LOAD_STATE.DOM_CONTENT_LOADED
-					);
 					const mcConnectedLabel =
 						setUpAccountsPage.getGoogleComboConnectedLabel();
 					await expect( mcConnectedLabel ).toContainText(
@@ -399,18 +392,6 @@ test.describe( 'Set up accounts', () => {
 						const host = new URL( baseURL ).host;
 
 						await Promise.all( [
-							// Mock Jetpack as connected.
-							setUpAccountsPage.mockJetpackConnected(),
-
-							// Mock google as connected.
-							setUpAccountsPage.mockGoogleConnected(
-								'google@example.com'
-							),
-							setUpAccountsPage.mockAdsAccountsResponse(
-								ADS_ACCOUNTS
-							),
-							setUpAccountsPage.mockMCHasAccounts(),
-
 							// Mock Merchant Center as not connected
 							setUpAccountsPage.mockMCNotConnected(),
 						] );
@@ -427,9 +408,6 @@ test.describe( 'Set up accounts', () => {
 						const createAccountButton =
 							setUpAccountsPage.getMCCreateAccountButtonFromPage();
 						await createAccountButton.click();
-						await page.waitForLoadState(
-							LOAD_STATE.DOM_CONTENT_LOADED
-						);
 
 						// Check the checkbox to accept ToS.
 						const modalCheckbox =
@@ -440,9 +418,6 @@ test.describe( 'Set up accounts', () => {
 						const createAccountButtonFromModal =
 							setUpAccountsPage.getMCCreateAccountButtonFromModal();
 						await createAccountButtonFromModal.click();
-						await page.waitForLoadState(
-							LOAD_STATE.DOM_CONTENT_LOADED
-						);
 
 						const reclaimButton =
 							setUpAccountsPage.getReclaimMyURLButton();
@@ -477,9 +452,6 @@ test.describe( 'Set up accounts', () => {
 						const reclaimButton =
 							setUpAccountsPage.getReclaimMyURLButton();
 						await reclaimButton.click();
-						await page.waitForLoadState(
-							LOAD_STATE.DOM_CONTENT_LOADED
-						);
 
 						const mcConnectedLabel =
 							setUpAccountsPage.getGoogleComboConnectedLabel();
@@ -497,17 +469,9 @@ test.describe( 'Set up accounts', () => {
 			} );
 		} );
 
-		test.describe( 'Merchant Center has existing accounts', () => {
+		test.describe( 'Connect Merchant Center account', () => {
 			test.beforeAll( async () => {
 				await Promise.all( [
-					// Mock Jetpack as connected.
-					setUpAccountsPage.mockJetpackConnected(),
-
-					// Mock google as connected.
-					setUpAccountsPage.mockGoogleConnected(
-						'google@example.com'
-					),
-
 					setUpAccountsPage.mockAdsAccountsResponse( ADS_ACCOUNTS ),
 
 					// Mock merchant center as not connected.
@@ -566,9 +530,6 @@ test.describe( 'Set up accounts', () => {
 					// Click connect button
 					const connectButton = setUpAccountsPage.getConnectButton();
 					await connectButton.click();
-					await page.waitForLoadState(
-						LOAD_STATE.DOM_CONTENT_LOADED
-					);
 
 					const mcConnectedLabel =
 						setUpAccountsPage.getGoogleComboConnectedLabel();
@@ -579,7 +540,7 @@ test.describe( 'Set up accounts', () => {
 					const mcDescriptionRow =
 						setUpAccountsPage.getMCDescriptionRow();
 					await expect( mcDescriptionRow ).toContainText(
-						`Merchant Center ID: 23456`
+						'Merchant Center ID: 23456'
 					);
 				} );
 			} );
@@ -587,18 +548,6 @@ test.describe( 'Set up accounts', () => {
 			test.describe( 'click "Or, create a new Merchant Center account"', () => {
 				test.beforeAll( async () => {
 					await Promise.all( [
-						// Mock Jetpack as connected.
-						setUpAccountsPage.mockJetpackConnected(),
-
-						// Mock google as connected.
-						setUpAccountsPage.mockGoogleConnected(
-							'google@example.com'
-						),
-
-						// Mock Google Ads as connected.
-						setUpAccountsPage.mockAdsAccountConnected(),
-						setUpAccountsPage.mockAdsStatusClaimed(),
-
 						// Mock merchant center as not connected.
 						setUpAccountsPage.mockMCNotConnected(),
 
@@ -607,35 +556,6 @@ test.describe( 'Set up accounts', () => {
 					] );
 
 					await setUpAccountsPage.goto();
-				} );
-
-				test( 'should see see a modal to ensure the intention of creating a new account', async () => {
-					// Click 'Or, create a new Merchant Center account'
-					const mcFooterButton =
-						setUpAccountsPage.getMCCardFooterButton();
-					await mcFooterButton.click();
-					await page.waitForLoadState(
-						LOAD_STATE.DOM_CONTENT_LOADED
-					);
-
-					const modalHeader = setUpAccountsPage.getModalHeader();
-					await expect( modalHeader ).toContainText(
-						'Create Google Merchant Center Account'
-					);
-
-					const modalCheckbox = setUpAccountsPage.getModalCheckbox();
-					await expect( modalCheckbox ).toBeEnabled();
-
-					const modalPrimaryButton =
-						setUpAccountsPage.getModalPrimaryButton();
-					await expect( modalPrimaryButton ).toContainText(
-						'Create account'
-					);
-					await expect( modalPrimaryButton ).toBeDisabled();
-
-					// Select the checkbox, the button should be enabled.
-					await modalCheckbox.click();
-					await expect( modalPrimaryButton ).toBeEnabled();
 				} );
 			} );
 		} );

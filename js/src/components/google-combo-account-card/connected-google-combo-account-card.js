@@ -56,7 +56,7 @@ const ConnectedGoogleComboAccountCard = () => {
 			<AccountCard
 				appearance={ APPEARANCE.GOOGLE }
 				alignIcon="top"
-				className="gla-google-combo-account-card gla-google-combo-account-card--connected"
+				className="gla-google-combo-account-card gla-google-combo-account-card--connected gla-google-combo-service-account-card--google"
 				description={ text || <AccountDetails /> }
 				helper={ subText }
 				indicator={

@@ -212,9 +212,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get select MC accounts select element.
 	 */
 	getMCAccountsSelect() {
-		return this.getMCAccountCard().locator(
-			'select[id*="inspector-select-control"]'
-		);
+		return this.getMCAccountCard().getByRole( 'combobox' );
 	}
 
 	/**
@@ -256,13 +254,9 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Google account card.
 	 */
 	getGoogleAccountCard() {
-		return this.page
-			.locator( '.components-card-body', {
-				has: this.page.locator( '.gla-account-card__title', {
-					hasText: 'Google',
-				} ),
-			} )
-			.first();
+		return this.page.locator(
+			'.gla-google-combo-service-account-card--google'
+		);
 	}
 
 	/**
