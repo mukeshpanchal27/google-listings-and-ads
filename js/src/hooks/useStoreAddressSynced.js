@@ -15,13 +15,15 @@ import { STORE_KEY } from '.~/data/constants';
  * @property {boolean|null} isAddressSynced Returns `true` if the store address matches the GMC account address, otherwise, returns `false`. If the MC account is not connected or if the state is not yet determined, returns `null`.
  */
 
+const googleMCContactInformationSelector = 'getGoogleMCContactInformation';
+
 /**
  * Checks if the store address is synchronized with the Merchant Center (GMC) account address.
  *
  * @return {StoreAddressSyncedData} The store address synced data.
  */
 export default function useStoreAddressSynced() {
-	const { isReady } = useGoogleMCAccount();
+	const { isReady, hasFinishedResolutionGoogle } = useGoogleMCAccount();
 
 	return useSelect(
 		( select ) => {
@@ -29,16 +31,21 @@ export default function useStoreAddressSynced() {
 				return {
 					isAddressFilled: null,
 					isAddressSynced: null,
+					hasFinishedResolution: hasFinishedResolutionGoogle,
 				};
 			}
 
-			const { getGoogleMCContactInformation } = select( STORE_KEY );
-			const contact = getGoogleMCContactInformation();
+			const selector = select( STORE_KEY );
+			const contact = selector[ googleMCContactInformationSelector ]();
+			const hasFinishedResolution = selector.hasFinishedResolution(
+				googleMCContactInformationSelector
+			);
 
 			if ( ! contact ) {
 				return {
 					isAddressFilled: null,
 					isAddressSynced: null,
+					hasFinishedResolution,
 				};
 			}
 
@@ -50,8 +57,9 @@ export default function useStoreAddressSynced() {
 			return {
 				isAddressFilled: ! missingRequiredFields.length,
 				isAddressSynced: ! isMCAddressDifferent,
+				hasFinishedResolution,
 			};
 		},
-		[ isReady ]
+		[ hasFinishedResolutionGoogle, isReady ]
 	);
 }

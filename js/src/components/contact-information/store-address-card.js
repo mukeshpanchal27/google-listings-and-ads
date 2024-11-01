@@ -16,6 +16,7 @@ import useStoreAddressSynced from '.~/hooks/useStoreAddressSynced';
 import AccountCard, { APPEARANCE } from '.~/components/account-card';
 import AppButton from '.~/components/app-button';
 import ValidationErrors from '.~/components/validation-errors';
+import SpinnerCard from '.~/components/spinner-card';
 import TrackableLink from '.~/components/trackable-link';
 import mapStoreAddressErrors from './mapStoreAddressErrors';
 import LoadingLabel from '.~/components/loading-label';
@@ -50,7 +51,11 @@ import './store-address-card.scss';
  */
 const StoreAddressCard = () => {
 	const { loaded, data } = useStoreAddress();
-	const { isAddressFilled, isAddressSynced } = useStoreAddressSynced();
+	const {
+		isAddressFilled,
+		isAddressSynced,
+		hasFinishedResolution: hasFinishedStoreAddressResolution,
+	} = useStoreAddressSynced();
 	const [ isSaving, setSaving ] = useState( false );
 	const { updateGoogleMCContactInformation } = useAppDispatch();
 	const path = getPath();
@@ -61,6 +66,10 @@ const StoreAddressCard = () => {
 	if ( loaded && refetchedCallbackRef.current ) {
 		refetchedCallbackRef.current( data );
 		refetchedCallbackRef.current = null;
+	}
+
+	if ( ! hasFinishedStoreAddressResolution ) {
+		return <SpinnerCard />;
 	}
 
 	const handleRefreshClick = () => {
