@@ -6,7 +6,12 @@ import { expect, test } from '@playwright/test';
 /**
  * Internal dependencies
  */
-import { clearOnboardedMerchant, setOnboardedMerchant } from '../../utils/api';
+import {
+	clearOnboardedMerchant,
+	setOnboardedMerchant,
+	setCompletedAdsSetup,
+	clearCompletedAdsSetup,
+} from '../../utils/api';
 import DashboardPage from '../../utils/pages/dashboard.js';
 
 test.use( { storageState: process.env.ADMINSTATE } );
@@ -37,7 +42,7 @@ test.describe( 'Paid Feature Listing', () => {
 		await page.close();
 	} );
 
-	test( 'Paid Feature Listing is visible if ads campaign setup not complete', async () => {
+	test( 'Paid Features Listing is visible if ads campaign setup is not complete', async () => {
 		await expect( dashboardPage.googleAdsSummaryCard ).toContainText(
 			'Google Ads'
 		);
@@ -54,5 +59,30 @@ test.describe( 'Paid Feature Listing', () => {
 		await expect( dashboardPage.createCampaignButton ).toBeEnabled();
 
 		await dashboardPage.createCampaignButton.click();
+		await expect(
+			page.getByRole( 'heading', {
+				level: 1,
+				name: 'Set up your accounts',
+			} )
+		).toBeVisible();
+	} );
+
+	test.describe( 'When ads campaign setup is complete', async () => {
+		test.beforeAll( async () => {
+			await setCompletedAdsSetup();
+		} );
+
+		test.afterAll( async () => {
+			await clearCompletedAdsSetup();
+			await page.close();
+		} );
+		test( 'Paid Features listing is complete', async () => {
+			await dashboardPage.goto();
+			await expect( dashboardPage.googleAdsSummaryCard ).toContainText(
+				'Google Ads'
+			);
+
+			await expect( dashboardPage.paidFeaturesDiv ).not.toBeVisible();
+		} );
 	} );
 } );
