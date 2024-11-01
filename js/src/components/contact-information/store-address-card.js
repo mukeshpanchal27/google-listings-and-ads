@@ -74,9 +74,11 @@ const StoreAddressCard = () => {
 
 	const handleRefreshClick = () => {
 		setSaving( true );
-		updateGoogleMCContactInformation()
-			.then( () => setSaving( false ) )
-			.catch();
+		updateGoogleMCContactInformation().finally( () => {
+			// Errors are handled in the dispatched action but
+			// we change the saving state regardless of success.
+			setSaving( false );
+		} );
 
 		refetchedCallbackRef.current = ( storeAddress ) => {
 			const eventProps = {
