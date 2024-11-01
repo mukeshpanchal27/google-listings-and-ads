@@ -334,10 +334,12 @@ test.describe( 'Complete your campaign', () => {
 				await expect( addPaidCampaignButton ).toBeVisible();
 				await expect( addPaidCampaignButton ).toBeEnabled();
 
-				const createCampaignButton =
-					await dashboardPage.getCreateCampaignButton();
-				await expect( createCampaignButton ).toBeVisible();
-				await expect( createCampaignButton ).toBeEnabled();
+				await expect(
+					dashboardPage.createCampaignButton
+				).toBeVisible();
+				await expect(
+					dashboardPage.createCampaignButton
+				).toBeEnabled();
 			} );
 		} );
 
