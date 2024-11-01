@@ -29,7 +29,7 @@ const FreeAdCredit = () => {
 					{
 						termLink: (
 							<AppDocumentationLink
-								context="setup-ads"
+								context="dashboard"
 								linkId="free-ad-credit-terms"
 								href="https://www.google.com/ads/coupons/terms/"
 							/>
