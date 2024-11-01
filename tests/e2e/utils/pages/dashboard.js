@@ -20,6 +20,21 @@ export default class DashboardPage extends MockRequests {
 		this.editFreeListingButton = this.freeListingRow.getByRole( 'button', {
 			name: 'Edit',
 		} );
+		this.googleAdsSummaryCard = this.page.locator(
+			'.gla-dashboard__performance .gla-summary-card:nth-child(1)'
+		);
+		this.paidFeaturesDiv = this.googleAdsSummaryCard.locator(
+			'.gla-paid-features-div'
+		);
+		this.createCampaignButton = this.paidFeaturesDiv.locator( 'button', {
+			hasText: 'Create Campaign',
+		} );
+		this.adsConnectionAllProgramsButton = this.page.locator(
+			'.gla-all-programs-table-card button',
+			{
+				hasText: 'Add paid campaign',
+			}
+		);
 	}
 
 	/**
@@ -126,27 +141,5 @@ export default class DashboardPage extends MockRequests {
 	async clickContinueToEditButton() {
 		const continueToEditButton = await this.getContinueToEditButton();
 		await continueToEditButton.click();
-	}
-
-	/**
-	 * Get the Ads connection button.
-	 *
-	 * @return {import('@playwright/test').Locator} Get the Ads connection button.
-	 */
-	getAdsConnectionAllProgramsButton() {
-		return this.page.locator( '.gla-all-programs-table-card button', {
-			hasText: 'Add paid campaign',
-		} );
-	}
-
-	/**
-	 * Get the Create Campaign button.
-	 *
-	 * @return {import('@playwright/test').Locator} Get the Ads connection button.
-	 */
-	getCreateCampaignButton() {
-		return this.page.locator( '.gla-summary-card button', {
-			hasText: 'Create Campaign',
-		} );
 	}
 }

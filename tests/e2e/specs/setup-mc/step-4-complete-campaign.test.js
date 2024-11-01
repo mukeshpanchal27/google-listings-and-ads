@@ -328,18 +328,14 @@ test.describe( 'Complete your campaign', () => {
 			test( 'should see buttons on Dashboard for Google Ads onboarding', async () => {
 				await page.keyboard.press( 'Escape' );
 				await page.getByRole( 'tab', { name: 'Dashboard' } ).click();
-				const addPaidCampaignButton =
-					await dashboardPage.getAdsConnectionAllProgramsButton();
+				const { adsConnectionAllProgramsButton, createCampaignButton } =
+					dashboardPage;
 
-				await expect( addPaidCampaignButton ).toBeVisible();
-				await expect( addPaidCampaignButton ).toBeEnabled();
+				await expect( adsConnectionAllProgramsButton ).toBeVisible();
+				await expect( adsConnectionAllProgramsButton ).toBeEnabled();
 
-				await expect(
-					dashboardPage.createCampaignButton
-				).toBeVisible();
-				await expect(
-					dashboardPage.createCampaignButton
-				).toBeEnabled();
+				await expect( createCampaignButton ).toBeVisible();
+				await expect( createCampaignButton ).toBeEnabled();
 			} );
 		} );
 
