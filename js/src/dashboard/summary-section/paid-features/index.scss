@@ -1,4 +1,4 @@
-.gla-paid-features-section {
+.gla-paid-features-div {
 	@media (max-width: $break-small) {
 		&__content {
 			flex-direction: column;
@@ -20,9 +20,15 @@
 		}
 	}
 
-	.gla-free-ad-credit {
+	.gla-free-ad-credit-div {
 		text-align: left;
 		background-color: #fff;
+		display: flex;
+		align-items: center;
+		gap: calc(var(--main-gap) / 3 * 2);
+		padding: calc(var(--main-gap) / 3 * 2);
+		color: $black;
+
 		.gridicon {
 			fill: #5ec862;
 		}

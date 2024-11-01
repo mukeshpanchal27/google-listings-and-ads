@@ -11,13 +11,13 @@ import { createInterpolateElement } from '@wordpress/element';
 import AppDocumentationLink from '.~/components/app-documentation-link';
 
 /**
- * Render the Free Ads Credit section inside the Paid Features section.
+ * Render the Free Ads Credit div inside the Paid Features div.
  *
- * @return {JSX.Element} Free Ads Credit section.
+ * @return {JSX.Element} Free Ads Credit div.
  */
 const FreeAdCredit = () => {
 	return (
-		<div className="gla-free-ad-credit">
+		<div className="gla-free-ad-credit-div">
 			<GridiconGift />
 			<div>
 				{ createInterpolateElement(

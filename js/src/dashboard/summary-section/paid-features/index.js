@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement } from '@wordpress/element';
-import { Flex, FlexBlock, FlexItem, Card } from '@wordpress/components';
+import { Flex, FlexBlock, FlexItem } from '@wordpress/components';
 import GridiconCheckmark from 'gridicons/dist/checkmark';
 
 /**
@@ -52,7 +52,7 @@ function FeatureList() {
 	];
 
 	return (
-		<div className="gla-paid-features-section__feature-list">
+		<div className="gla-paid-features-div__feature-list">
 			{ featuresItems.map( ( { Icon, content }, idx ) => (
 				<Flex key={ idx } align="flex-start">
 					<Icon size="18" />
@@ -64,17 +64,17 @@ function FeatureList() {
 }
 
 /**
- * Returns a Card with the given content.
+ * Returns a div with paid features content.
  *
- * @return {Card} Card with title and content.
+ * @return {JSX.Element} Paid Features div.
  */
 const PaidFeatures = () => {
 	return (
-		<VerticalGapLayout size="medium" className="gla-paid-features-section">
+		<VerticalGapLayout size="medium" className="gla-paid-features-div">
 			<Flex
 				align="center"
 				gap={ 9 }
-				className="gla-paid-features-section__content"
+				className="gla-paid-features-div__content"
 			>
 				<FlexItem>
 					<CampaignPreview />
