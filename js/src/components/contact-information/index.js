@@ -37,7 +37,7 @@ export function ContactInformationPreview() {
 	return (
 		<Section title={ settingsTitle } description={ description }>
 			<VerticalGapLayout size="overlap">
-				<StoreAddressCard isDescriptionShown={ false }/>
+				<StoreAddressCard />
 			</VerticalGapLayout>
 		</Section>
 	);

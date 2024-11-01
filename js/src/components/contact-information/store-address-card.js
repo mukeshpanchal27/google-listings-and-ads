@@ -48,11 +48,10 @@ import './store-address-card.scss';
  * @fires gla_wc_store_address_validation Whenever the new store address data is fetched after clicking "Refresh to sync" button.
  *
  * @param {Object} props React props.
- * @param {boolean} [props.isDescriptionShown=true] Whether the description section is hidden.
  *
  * @return {JSX.Element} Filled AccountCard component.
  */
-const StoreAddressCard = ( { isDescriptionShown = true }) => {
+const StoreAddressCard = () => {
 	const { loaded, data } = useStoreAddress();
 	const { isAddressFilled, isAddressSynced } = useStoreAddressSynced();
 	const [ isSaving, setSaving ] = useState( false );
@@ -111,9 +110,9 @@ const StoreAddressCard = ( { isDescriptionShown = true }) => {
 		/>
 	);
 
-	let addressContent;
+	let addressContent = <Spinner />;
 
-	if ( loaded ) {
+	if ( loaded && isAddressFilled ) {
 		const { address, address2, city, state, country, postcode } = data;
 		const stateAndCountry = state ? `${ state } - ${ country }` : country;
 
@@ -129,14 +128,14 @@ const StoreAddressCard = ( { isDescriptionShown = true }) => {
 			</div>
 		);
 	} else {
-		addressContent = <Spinner />;
+		addressContent = null;
 	}
 
-	const description = (
+	const longDescription = (
 		<p>
 			{ createInterpolateElement(
 				__(
-					'We’re using your store address from <link>Woo Commerce settings</link> for Google verification. This information won’t be public.',
+					'We’re using your store address for Google verification. This information won’t be public. Edit in <link>WooCommerce settings</link> if needed. Then, refresh to sync it to Google.',
 					'google-listings-and-ads'
 				),
 				{
@@ -146,16 +145,17 @@ const StoreAddressCard = ( { isDescriptionShown = true }) => {
 		</p>
 	);
 
-	const helper = (
-		createInterpolateElement(
-			__(
-				'Edit in <link>WooCommerce settings</link> if needed. Then, refresh to sync it to Google.'
-			),
-			{
-				link: settingsLink,
-			}
-		)
-
+	const shortDescription = (
+		<p>
+			{ createInterpolateElement(
+				__(
+					'Your store address is required by Google for verification. This information won’t be public. Complete that in <link>WooCommerce settings</link>.'
+				),
+				{
+					link: settingsLink,
+				}
+			) }
+		</p>
 	);
 
 	const detail = (
@@ -175,9 +175,8 @@ const StoreAddressCard = ( { isDescriptionShown = true }) => {
 			appearance={ APPEARANCE.ADDRESS }
 			alignIcon="top"
 			alignIndicator="top"
-			description={ isDescriptionShown && description }
+			description={ isAddressFilled ? longDescription : shortDescription }
 			detail={ detail }
-			helper={ helper }
 			indicator={ showIndicator && refreshButton }
 		/>
 	);
