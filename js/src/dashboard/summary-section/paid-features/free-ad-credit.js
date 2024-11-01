@@ -13,6 +13,7 @@ import AppDocumentationLink from '.~/components/app-documentation-link';
 /**
  * Render the Free Ads Credit div inside the Paid Features div.
  *
+ * @fires gla_documentation_link_click with `{ context: 'dashboard', link_id: 'free-ad-credit-terms', href: 'https://www.google.com/ads/coupons/terms/' }`
  * @return {JSX.Element} Free Ads Credit div.
  */
 const FreeAdCredit = () => {
@@ -28,7 +29,7 @@ const FreeAdCredit = () => {
 					{
 						termLink: (
 							<AppDocumentationLink
-								context="setup-ads"
+								context="dashboard"
 								linkId="free-ad-credit-terms"
 								href="https://www.google.com/ads/coupons/terms/"
 							/>
