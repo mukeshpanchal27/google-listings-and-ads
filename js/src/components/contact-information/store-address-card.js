@@ -46,9 +46,6 @@ import './store-address-card.scss';
  *
  * @fires gla_edit_wc_store_address Whenever "Edit in WooCommerce Settings" button is clicked.
  * @fires gla_wc_store_address_validation Whenever the new store address data is fetched after clicking "Refresh to sync" button.
- *
- * @param {Object} props React props.
- *
  * @return {JSX.Element} Filled AccountCard component.
  */
 const StoreAddressCard = () => {
@@ -149,7 +146,8 @@ const StoreAddressCard = () => {
 		<p>
 			{ createInterpolateElement(
 				__(
-					'Your store address is required by Google for verification. This information won’t be public. Complete that in <link>WooCommerce settings</link>.'
+					'Your store address is required by Google for verification. This information won’t be public. Complete that in <link>WooCommerce settings</link>.',
+					'google-listings-and-ads'
 				),
 				{
 					link: settingsLink,
@@ -162,12 +160,10 @@ const StoreAddressCard = () => {
 		<>
 			{ addressContent }
 			{ ! isAddressFilled && (
-					<ValidationErrors
-						messages={ mapStoreAddressErrors( data ) }
-					/>
+				<ValidationErrors messages={ mapStoreAddressErrors( data ) } />
 			) }
 		</>
-	)
+	);
 
 	return (
 		<AccountCard

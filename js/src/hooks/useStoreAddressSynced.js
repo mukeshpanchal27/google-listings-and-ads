@@ -49,7 +49,7 @@ export default function useStoreAddressSynced() {
 
 			return {
 				isAddressFilled: ! missingRequiredFields.length,
-				isAddressSynced: ! isMCAddressDifferent
+				isAddressSynced: ! isMCAddressDifferent,
 			};
 		},
 		[ isReady ]

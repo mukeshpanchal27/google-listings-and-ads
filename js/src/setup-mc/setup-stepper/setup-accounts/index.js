@@ -90,7 +90,7 @@ const SetupAccounts = ( props ) => {
 		isReady: isGoogleMCReady,
 	} = useGoogleMCAccount();
 	const { hasFinishedResolution } = useGoogleAdsAccount();
-	const { isAddressFilled, isAddressSynced } = useStoreAddressSynced();
+	const { isAddressSynced } = useStoreAddressSynced();
 	const isGoogleAdsReady = useGoogleAdsAccountReady();
 
 	/**
