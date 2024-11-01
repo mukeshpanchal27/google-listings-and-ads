@@ -230,7 +230,8 @@ class MerchantCenterService implements ContainerAwareInterface, OptionsAwareInte
 
 		if (
 			$this->connected_account() &&
-			$this->container->get( AdsService::class )->connected_account()
+			$this->container->get( AdsService::class )->connected_account() &&
+			$this->is_mc_contact_information_setup()
 		) {
 			$step = 'product_listings';
 
@@ -309,9 +310,7 @@ class MerchantCenterService implements ContainerAwareInterface, OptionsAwareInte
 	 */
 	protected function is_mc_contact_information_setup(): bool {
 		$is_setup = [
-			'phone_number'          => false,
-			'phone_number_verified' => false,
-			'address'               => false,
+			'address' => false,
 		];
 
 		try {
@@ -327,9 +326,6 @@ class MerchantCenterService implements ContainerAwareInterface, OptionsAwareInte
 		}
 
 		if ( $contact_info instanceof AccountBusinessInformation ) {
-			$is_setup['phone_number']          = ! empty( $contact_info->getPhoneNumber() );
-			$is_setup['phone_number_verified'] = 'VERIFIED' === $contact_info->getPhoneVerificationStatus();
-
 			/** @var Settings $settings */
 			$settings = $this->container->get( Settings::class );
 
@@ -341,7 +337,7 @@ class MerchantCenterService implements ContainerAwareInterface, OptionsAwareInte
 			}
 		}
 
-		return $is_setup['phone_number'] && $is_setup['phone_number_verified'] && $is_setup['address'];
+		return $is_setup['address'];
 	}
 
 	/**
