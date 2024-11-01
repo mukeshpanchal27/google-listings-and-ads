@@ -71,6 +71,14 @@ trait GTINMigrationUtilities {
 		return $this->options()->get( OptionsInterface::GTIN_MIGRATION_STATUS, MigrateGTIN::GTIN_MIGRATION_READY );
 	}
 
+	/**
+	 *
+	 * Get the options object,
+	 *
+	 * @return OptionsInterface
+	 * @throws \Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Psr\Container\ContainerExceptionInterface
+	 * @throws \Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Psr\Container\NotFoundExceptionInterface
+	 */
 	protected function options() {
 		return $this->options ?? woogle_get_container()->get( OptionsInterface::class );
 	}
