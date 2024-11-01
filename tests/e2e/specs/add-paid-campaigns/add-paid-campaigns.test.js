@@ -86,15 +86,13 @@ test.describe( 'Set up Ads account', () => {
 
 	test( 'Dashboard page contains Add Paid campaign buttons', async () => {
 		//Add page campaign in the programs section.
-		await expect(
-			dashboardPage.adsConnectionAllProgramsButton
-		).toBeEnabled();
+		await expect( dashboardPage.addPaidCampaignButton ).toBeEnabled();
 	} );
 
 	test.describe( 'Set up your accounts page', async () => {
 		test.beforeAll( async () => {
 			await setupAdsAccounts.mockAdsAccountsResponse( [] );
-			await dashboardPage.adsConnectionAllProgramsButton.click();
+			await dashboardPage.addPaidCampaignButton.click();
 			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 		} );
 

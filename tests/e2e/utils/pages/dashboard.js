@@ -29,7 +29,7 @@ export default class DashboardPage extends MockRequests {
 		this.createCampaignButton = this.paidFeaturesDiv.locator( 'button', {
 			hasText: 'Create Campaign',
 		} );
-		this.adsConnectionAllProgramsButton = this.page.locator(
+		this.addPaidCampaignButton = this.page.locator(
 			'.gla-all-programs-table-card button',
 			{
 				hasText: 'Add paid campaign',
