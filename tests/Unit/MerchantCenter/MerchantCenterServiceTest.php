@@ -423,6 +423,12 @@ class MerchantCenterServiceTest extends UnitTest {
 				]
 			);
 		$this->target_audience->method( 'get_target_countries' )->willReturn( [ 'US' ] );
+		$this->contact_information->method( 'get_contact_information' )
+			->willReturn( $this->get_valid_business_info() );
+		$this->settings->method( 'get_store_address' )
+			->willReturn( $this->get_sample_address() );
+		$this->address_utility->method( 'compare_addresses' )
+			->willReturn( true );
 
 		$this->assertEquals(
 			[
@@ -467,6 +473,12 @@ class MerchantCenterServiceTest extends UnitTest {
 				]
 			);
 		$this->target_audience->method( 'get_target_countries' )->willReturn( [ 'GB' ] );
+		$this->contact_information->method( 'get_contact_information' )
+			->willReturn( $this->get_valid_business_info() );
+		$this->settings->method( 'get_store_address' )
+			->willReturn( $this->get_sample_address() );
+		$this->address_utility->method( 'compare_addresses' )
+			->willReturn( true );
 
 		$this->assertEquals(
 			[
