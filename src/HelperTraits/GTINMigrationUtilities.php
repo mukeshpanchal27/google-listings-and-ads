@@ -24,7 +24,7 @@ trait GTINMigrationUtilities {
 	 * @return string
 	 */
 	protected function get_gtin_hidden_version(): string {
-		return '2.8.6';
+		return '2.8.7';
 	}
 
 	/**
