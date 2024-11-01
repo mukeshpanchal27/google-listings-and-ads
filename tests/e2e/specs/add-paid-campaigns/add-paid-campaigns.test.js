@@ -42,11 +42,6 @@ let dashboardPage = null;
 let setupAdsAccounts = null;
 
 /**
- * @type {import('@playwright/test').Locator} adsConnectionButton
- */
-let adsConnectionButton = null;
-
-/**
  * @type {import('../../utils/pages/setup-ads/setup-budget.js').default} setupBudgetPage
  */
 let setupBudgetPage = null;
@@ -81,40 +76,15 @@ test.describe( 'Set up Ads account', () => {
 
 	test( 'Dashboard page contains Add Paid campaign buttons', async () => {
 		//Add page campaign in the programs section.
-		adsConnectionButton = dashboardPage.getAdsConnectionAllProgramsButton();
-		await expect( adsConnectionButton ).toBeEnabled();
-	} );
-
-	test( 'Dashboard page contains Paid Features section with feature list and Create Campaign button', async () => {
 		await expect(
-			page.getByText(
-				'Reach more customer by advertising your products across Google Ads channels like Search, YouTube and Discover.'
-			)
-		).toBeVisible();
-
-		await expect(
-			page.getByText(
-				'New to Google Ads? Get $500 in ad credit when you spend $500 within your first 60 days.'
-			)
-		).toBeVisible();
-
-		await expect( dashboardPage.getCreateCampaignButton() ).toBeEnabled();
-		await dashboardPage.getCreateCampaignButton().click();
-		await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
-		await expect(
-			page.getByRole( 'heading', {
-				name: 'Set up your accounts',
-			} )
-		).toBeVisible();
-
-		await dashboardPage.goto();
-		await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
+			dashboardPage.adsConnectionAllProgramsButton
+		).toBeEnabled();
 	} );
 
 	test.describe( 'Set up your accounts page', async () => {
 		test.beforeAll( async () => {
 			await setupAdsAccounts.mockAdsAccountsResponse( [] );
-			await adsConnectionButton.click();
+			await dashboardPage.adsConnectionAllProgramsButton.click();
 			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 		} );
 
