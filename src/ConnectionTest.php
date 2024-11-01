@@ -17,6 +17,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Connection;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Merchant;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Middleware;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\WP\NotificationsService;
+use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\GTINMigrationUtilities;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\CleanupProductsJob;
@@ -44,6 +45,7 @@ use WP_REST_Request as Request;
 class ConnectionTest implements Service, Registerable {
 
 	use PluginHelper;
+	use GTINMigrationUtilities;
 
 	/**
 	 * @var ContainerInterface
@@ -651,6 +653,9 @@ class ConnectionTest implements Service, Registerable {
 						<tr>
 							<th><label>GTIN Migration:</label></th>
 							<td>
+								<p>
+									<code><?php echo $this->get_gtin_migration_status(); ?></code>
+								</p>
 								<p>
 									<a class="button" href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'action' => 'migrate-gtin' ], $url ), 'migrate-gtin' ) ); ?>">Start GTIN Migration</a>
 								</p>

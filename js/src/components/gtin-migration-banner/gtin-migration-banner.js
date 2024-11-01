@@ -18,19 +18,37 @@ import { glaData } from '.~/constants';
 import './index.scss';
 
 const GTIN_MIGRATION_BANNER_CONTEXT = 'gtin_migration_banner';
+const GTIN_MIGRATION_READY = 'GTIN_MIGRATION_READY';
+const GTIN_MIGRATION_STARTED = 'GTIN_MIGRATION_STARTED';
+
+const LinkGTINMigrationJobStatusPage = ( props ) => (
+	<TrackableLink
+		eventName="gla_gtin_migration_banner_status_link_click"
+		eventProps={ {
+			context: GTIN_MIGRATION_BANNER_CONTEXT,
+		} }
+		href={
+			'admin.php?page=wc-status&tab=action-scheduler&s=migrate_gtin&orderby=schedule&order=desc'
+		}
+		type="external"
+		target="_blank"
+		{ ...props }
+	/>
+);
 
 const GtinMigrationBanner = () => {
 	const { createNotice } = useDispatchCoreNotices();
-	const [ shouldRender, setShouldRender ] = useState(
-		! glaData?.gtinMigrationStarted
-	);
+	const [ status, setStatus ] = useState( glaData?.gtinMigrationStatus );
 	const [ showModal, setShowModal ] = useState( false );
 	const [ startMigration, { loading, reset } ] = useApiFetchCallback( {
 		path: `/wc/gla/gtin-migration-start`,
 		method: 'POST',
 	} );
 
-	if ( ! shouldRender ) {
+	if (
+		status !== GTIN_MIGRATION_READY &&
+		status !== GTIN_MIGRATION_STARTED
+	) {
 		return null;
 	}
 
@@ -59,7 +77,7 @@ const GtinMigrationBanner = () => {
 				context: GTIN_MIGRATION_BANNER_CONTEXT,
 			} );
 			setShowModal( false );
-			setShouldRender( false );
+			setStatus( GTIN_MIGRATION_STARTED );
 			createNotice(
 				'info',
 				__(
@@ -116,45 +134,47 @@ const GtinMigrationBanner = () => {
 								'google-listings-and-ads'
 							),
 							{
-								link: (
-									<TrackableLink
-										eventName="gla_gtin_migration_banner_status_link_click"
-										eventProps={ {
-											context:
-												GTIN_MIGRATION_BANNER_CONTEXT,
-										} }
-										href={
-											'admin.php?page=wc-status&tab=action-scheduler&s=migrate_gtin'
-										}
-										type="external"
-										target="_blank"
-									/>
-								),
+								link: <LinkGTINMigrationJobStatusPage />,
 							}
 						) }
 					</p>
 				</AppModal>
 			) }
-			<Notice>
-				{ createInterpolateElement(
-					__(
-						"The GTIN field managed by WooCommerce in the Product's inventory section, will now be used by Google for WooCommerce. It will continue to support the previous field and any mapping rules you have setup for the GTIN field. If you would like to migrate the data <link>click here.</link>",
-						'google-listings-and-ads'
-					),
-					{
-						link: (
-							<TrackableLink
-								className="gla-gtin-migration__link"
-								eventName="gla_gtin_migration_banner_click"
-								eventProps={ {
-									context: GTIN_MIGRATION_BANNER_CONTEXT,
-								} }
-								onClick={ openModal }
-							/>
+			{ status === GTIN_MIGRATION_READY && (
+				<Notice isDismissible={ false }>
+					{ createInterpolateElement(
+						__(
+							"The GTIN field managed by WooCommerce in the Product's inventory section, will now be used by Google for WooCommerce. It will continue to support the previous field and any mapping rules you have setup for the GTIN field. If you would like to migrate the data <link>click here.</link>",
+							'google-listings-and-ads'
 						),
-					}
-				) }
-			</Notice>
+						{
+							link: (
+								<TrackableLink
+									className="gla-gtin-migration__link"
+									eventName="gla_gtin_migration_banner_click"
+									eventProps={ {
+										context: GTIN_MIGRATION_BANNER_CONTEXT,
+									} }
+									onClick={ openModal }
+								/>
+							),
+						}
+					) }
+				</Notice>
+			) }
+			{ status === GTIN_MIGRATION_STARTED && (
+				<Notice isDismissible={ false }>
+					{ createInterpolateElement(
+						__(
+							'Your GTIN Migration is now running in the background. You can check the migration process on the <link>WooCommerce Scheduled Actions page</link>',
+							'google-listings-and-ads'
+						),
+						{
+							link: <LinkGTINMigrationJobStatusPage />,
+						}
+					) }
+				</Notice>
+			) }
 		</>
 	);
 };
