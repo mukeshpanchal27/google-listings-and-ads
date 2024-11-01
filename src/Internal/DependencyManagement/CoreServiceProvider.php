@@ -217,7 +217,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		AttributeMapping::class          => true,
 		MarketingChannelRegistrar::class => true,
 		OAuthService::class              => true,
-		WPCLIMigrationGTIN::class     	 => true,
+		WPCLIMigrationGTIN::class        => true,
 	];
 
 	/**
