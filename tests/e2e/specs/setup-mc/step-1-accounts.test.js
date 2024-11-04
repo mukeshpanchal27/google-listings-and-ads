@@ -149,12 +149,9 @@ test.describe( 'Set up accounts', () => {
 	} );
 
 	test.describe( 'Connect Google account', () => {
-		test.beforeEach( async () => {
+		test.beforeAll( async () => {
 			// Mock Jetpack as connected
-			await setUpAccountsPage.mockJetpackConnected(
-				'Test user',
-				'jetpack@example.com'
-			);
+			await setUpAccountsPage.mockJetpackNotConnected();
 
 			// Mock google as not connected.
 			// When pending even WPORG will not render yet.
@@ -165,7 +162,23 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.goto();
 		} );
 
+		test( 'should see the connect button and terms and conditions checkbox disabled when jetpack is not connected', async () => {
+			const connectButton = setUpAccountsPage
+				.getGoogleAccountCard()
+				.getByRole( 'button', { name: 'Connect' } );
+
+			await expect( connectButton ).toBeDisabled();
+
+			const termsCheckbox = setUpAccountsPage.getTermsCheckbox();
+			await expect( termsCheckbox ).toBeDisabled();
+		} );
+
 		test( 'should see their WPORG email, "Google" title & connect button', async () => {
+			// Mock Jetpack as disconnected
+			await setUpAccountsPage.mockJetpackConnected();
+
+			await setUpAccountsPage.goto();
+
 			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
 
 			await expect(
@@ -187,22 +200,6 @@ test.describe( 'Set up accounts', () => {
 			// Also ensure that connect button is disabled.
 			const connectButton = setUpAccountsPage.getConnectButton();
 			await expect( connectButton ).toBeDisabled();
-		} );
-
-		test( 'should see the connect button and terms and conditions checkbox disabled when jetpack is not connected', async () => {
-			// Mock Jetpack as disconnected
-			await setUpAccountsPage.mockJetpackNotConnected();
-
-			await setUpAccountsPage.goto();
-
-			const connectButton = setUpAccountsPage
-				.getGoogleAccountCard()
-				.getByRole( 'button', { name: 'Connect' } );
-
-			await expect( connectButton ).toBeDisabled();
-
-			const termsCheckbox = setUpAccountsPage.getTermsCheckbox();
-			await expect( termsCheckbox ).toBeDisabled();
 		} );
 
 		test( 'after clicking the "Connect your Google account" button should send an API request to connect Google account, and redirect to the returned URL', async ( {
