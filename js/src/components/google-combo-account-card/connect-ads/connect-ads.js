@@ -115,6 +115,8 @@ const ConnectAds = ( { finalizeAdsAccountCreation } ) => {
 		);
 	};
 
+	// Show a loading state if the Ads account is being updated or if a new Ads account is being created.
+	// If finalizeAdsAccountCreation is true, the processing is done in `ConnectedGoogleComboAccountCard`.
 	if ( creatingNewAccount || finalizeAdsAccountCreation ) {
 		return (
 			<AccountCard

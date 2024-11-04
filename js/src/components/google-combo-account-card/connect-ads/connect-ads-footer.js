@@ -19,7 +19,6 @@ import DisconnectAccount from '.~/components/google-ads-account-card/disconnect-
  * @return {JSX.Element} Footer component.
  */
 const ConnectAdsFooter = ( { isConnected, onCreateNew, ...restProps } ) => {
-	// If the account is connected, show the disconnect button.
 	if ( isConnected ) {
 		return <DisconnectAccount />;
 	}

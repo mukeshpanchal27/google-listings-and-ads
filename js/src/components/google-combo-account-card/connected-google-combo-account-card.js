@@ -40,6 +40,8 @@ const ConnectedGoogleComboAccountCard = () => {
 	const finalizeAdsAccountCreation =
 		hasAccess === true && step === 'conversion_action';
 
+	// Ideally updating the account should be done in ConnectMC component but the latter is not always rendered,
+	// (for e.g when the user is creating the first account).
 	useEffect( () => {
 		const upsertAccount = async () => {
 			if ( finalizeAdsAccountCreation ) {
@@ -68,7 +70,7 @@ const ConnectedGoogleComboAccountCard = () => {
 
 	// Show the spinner if there's an account creation in progress and we're not finalizing the Ads account creation.
 	// If we are not showing the ConnectMC screen, for e.g when we are creating the first account,
-	// then show the spinner while the Ads account is being claimed.
+	// then show the spinner in the Google combo card while the Ads account is being claimed.
 	const showSpinner =
 		( Boolean( creatingWhich ) && ! finalizeAdsAccountCreation ) ||
 		( ! showConnectAds && finalizeAdsAccountCreation );

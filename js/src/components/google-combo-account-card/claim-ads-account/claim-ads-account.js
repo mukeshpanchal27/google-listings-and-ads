@@ -1,16 +1,16 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { useCallback, useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
 import ClaimAccountButton from '.~/components/google-ads-account-card/claim-account-button';
 import Section from '.~/wcdl/section';
 import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
+import { useAppDispatch } from '.~/data';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useWindowFocusCallbackIntervalEffect from '.~/hooks/useWindowFocusCallbackIntervalEffect';
 import './claim-ads-account.scss';
