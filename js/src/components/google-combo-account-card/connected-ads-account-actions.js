@@ -19,8 +19,12 @@ import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 const ConnectedAdsAccountsActions = ( { claimGoogleAdsAccount } ) => {
 	const isReady = useGoogleAdsAccountReady();
 
+	if ( ! claimGoogleAdsAccount && ! isReady ) {
+		return null;
+	}
+
 	return (
-		<div className="gla-connected-accounts-actions">
+		<div className="gla-connected-ads-account-actions">
 			{ claimGoogleAdsAccount && <ClaimAdsAccount /> }
 
 			{ isReady && (
