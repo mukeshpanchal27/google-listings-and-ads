@@ -68,7 +68,7 @@ const ConnectedGoogleComboAccountCard = () => {
 
 			{ showConnectMC && (
 				<ConnectMC
-					createMCAccount={ createMCAccount }
+					createAccount={ createMCAccount }
 					resultCreateAccount={ resultCreateMCAccount }
 					className="gla-google-combo-account-card gla-google-combo-service-account-card--mc"
 				/>
