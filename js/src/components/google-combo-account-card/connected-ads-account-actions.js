@@ -16,7 +16,7 @@ import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
  * @param {boolean} props.claimGoogleAdsAccount Whether the user should claim the Google Ads account.
  * @return {JSX.Element} Connected accounts actions.
  */
-const ConnectedAccountsActions = ( { claimGoogleAdsAccount } ) => {
+const ConnectedAdsAccountsActions = ( { claimGoogleAdsAccount } ) => {
 	const isReady = useGoogleAdsAccountReady();
 
 	return (
@@ -39,4 +39,4 @@ const ConnectedAccountsActions = ( { claimGoogleAdsAccount } ) => {
 	);
 };
 
-export default ConnectedAccountsActions;
+export default ConnectedAdsAccountsActions;

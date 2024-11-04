@@ -28,7 +28,6 @@ const useShouldCreateAdsAccount = () => {
 		hasFinishedResolution: hasResolvedExistingAccounts,
 		existingAccounts: accounts,
 	} = useExistingGoogleAdsAccounts();
-	console.log( accounts, hasConnection );
 
 	// Return null if the account hasn't been resolved or the existing accounts haven't been resolved
 	if ( ! hasResolvedAccount || ! hasResolvedExistingAccounts ) {

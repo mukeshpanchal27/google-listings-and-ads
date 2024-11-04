@@ -1,10 +1,16 @@
 /**
+ * External dependencies
+ */
+import { useEffect } from '@wordpress/element';
+
+/**
  * Internal dependencies
  */
+import { useAppDispatch } from '.~/data';
 import AccountCard, { APPEARANCE } from '../account-card';
 import ConnectAds from './connect-ads';
 import AccountDetails from './account-details';
-import ConnectedAccountsActions from './connected-accounts-actions';
+import ConnectedAdsAccountsActions from './connected-ads-account-actions';
 import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
@@ -13,6 +19,7 @@ import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
+import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
 import './connected-google-combo-account-card.scss';
 
 /**
@@ -25,15 +32,31 @@ const ConnectedGoogleComboAccountCard = () => {
 	const { existingAccounts: existingGoogleAdsAccounts } =
 		useExistingGoogleAdsAccounts();
 	const isConnected = useGoogleAdsAccountReady();
-	const { hasAccess } = useGoogleAdsAccountStatus();
+	const { invalidateResolution } = useAppDispatch();
 	const { googleAdsAccount } = useGoogleAdsAccount();
+	const { hasAccess, step } = useGoogleAdsAccountStatus();
+	const [ upsertAdsAccount ] = useUpsertAdsAccount();
+
+	const finalizeAdsAccountCreation =
+		hasAccess === true && step === 'conversion_action';
+
+	useEffect( () => {
+		const upsertAccount = async () => {
+			if ( finalizeAdsAccountCreation ) {
+				await upsertAdsAccount();
+				invalidateResolution( 'getExistingGoogleAdsAccounts', [] );
+			}
+		};
+
+		upsertAccount();
+	}, [ finalizeAdsAccountCreation, upsertAdsAccount, invalidateResolution ] );
 
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
 	}
 
 	// @TODO: edit mode implementation in 2605
-	const editMode = false;
+	const editMode = true;
 	const shouldClaimGoogleAdsAccount = Boolean(
 		googleAdsAccount?.id && hasAccess === false
 	);
@@ -43,6 +66,13 @@ const ConnectedGoogleComboAccountCard = () => {
 			( ! isConnected && hasExistingGoogleAdsAccounts ) ) &&
 		! shouldClaimGoogleAdsAccount;
 
+	// Show the spinner if there's an account creation in progress and we're not finalizing the Ads account creation.
+	// If we are not showing the ConnectMC screen, for e.g when we are creating the first account,
+	// then show the spinner while the Ads account is being claimed.
+	const showSpinner =
+		( Boolean( creatingWhich ) && ! finalizeAdsAccountCreation ) ||
+		( ! showConnectAds && finalizeAdsAccountCreation );
+
 	return (
 		<div>
 			<AccountCard
@@ -51,16 +81,18 @@ const ConnectedGoogleComboAccountCard = () => {
 				className="gla-google-combo-account-card--connected"
 				description={ text || <AccountDetails /> }
 				helper={ subText }
-				indicator={
-					<Indicator showSpinner={ Boolean( creatingWhich ) } />
-				}
+				indicator={ <Indicator showSpinner={ showSpinner } /> }
 			>
-				<ConnectedAccountsActions
+				<ConnectedAdsAccountsActions
 					claimGoogleAdsAccount={ shouldClaimGoogleAdsAccount }
 				/>
 			</AccountCard>
 
-			{ showConnectAds && <ConnectAds /> }
+			{ showConnectAds && (
+				<ConnectAds
+					finalizeAdsAccountCreation={ finalizeAdsAccountCreation }
+				/>
+			) }
 		</div>
 	);
 };

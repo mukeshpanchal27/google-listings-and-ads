@@ -25,16 +25,19 @@ import ConnectButton from '.~/components/google-ads-account-card/connect-ads/con
 /**
  * ConnectAds component renders an account card to connect to an existing Google Ads account.
  *
+ * @param {Object} props Component props.
+ * @param {boolean} props.finalizeAdsAccountCreation Whether the user is in the process of finalizing the Ads account creation, i.e after the user has claimed the account and the step is conversion_action.
  * @return {JSX.Element} {@link AccountCard} filled with content.
  */
-const ConnectAds = () => {
+const ConnectAds = ( { finalizeAdsAccountCreation } ) => {
 	const [ value, setValue ] = useState();
 	const [ isLoading, setLoading ] = useState( false );
 	const { createNotice } = useDispatchCoreNotices();
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
 	const isConnected = useGoogleAdsAccountReady();
 	const [ showCreateNewModal, setShowCreateNewModal ] = useState( false );
-	const { existingAccounts: accounts } = useExistingGoogleAdsAccounts();
+	const { existingAccounts: accounts, hasFinishedResolution } =
+		useExistingGoogleAdsAccounts();
 	const { googleAdsAccount, refetchGoogleAdsAccount } = useGoogleAdsAccount();
 	const [ connectGoogleAdsAccount ] = useApiFetchCallback( {
 		path: '/wc/gla/ads/accounts',
@@ -57,7 +60,6 @@ const ConnectAds = () => {
 		await upsertAdsAccount();
 	};
 
-	console.log( accounts, googleAdsAccount, isConnected );
 	useEffect( () => {
 		if ( isConnected ) {
 			setValue( googleAdsAccount.id );
@@ -92,6 +94,10 @@ const ConnectAds = () => {
 	}
 
 	const getIndicator = () => {
+		if ( ! hasFinishedResolution ) {
+			return <LoadingLabel />;
+		}
+
 		if ( isLoading ) {
 			return (
 				<LoadingLabel
@@ -109,7 +115,7 @@ const ConnectAds = () => {
 		);
 	};
 
-	if ( creatingNewAccount ) {
+	if ( creatingNewAccount || finalizeAdsAccountCreation ) {
 		return (
 			<AccountCard
 				className="gla-google-combo-service-account-card--ads"

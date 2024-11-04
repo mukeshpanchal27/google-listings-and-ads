@@ -1,18 +1,17 @@
 /**
  * External dependencies
  */
-import { useCallback, useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { useCallback, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { useAppDispatch } from '.~/data';
 import ClaimAccountButton from '.~/components/google-ads-account-card/claim-account-button';
 import Section from '.~/wcdl/section';
 import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
-import { useAppDispatch } from '.~/data';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
 import useWindowFocusCallbackIntervalEffect from '.~/hooks/useWindowFocusCallbackIntervalEffect';
 import './claim-ads-account.scss';
 
@@ -24,10 +23,8 @@ import './claim-ads-account.scss';
 const ClaimAdsAccount = () => {
 	const [ updating, setUpdating ] = useState( false );
 	const { googleAdsAccount } = useGoogleAdsAccount();
-	const { hasAccess, step } = useGoogleAdsAccountStatus();
-	const [ upsertAdsAccount ] = useUpsertAdsAccount();
-	const { fetchGoogleAdsAccountStatus, invalidateResolution } =
-		useAppDispatch();
+	const { hasAccess } = useGoogleAdsAccountStatus();
+	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
 
 	const shouldClaimGoogleAdsAccount = Boolean(
 		googleAdsAccount?.id && hasAccess === false
@@ -42,19 +39,6 @@ const ClaimAdsAccount = () => {
 	}, [ fetchGoogleAdsAccountStatus, shouldClaimGoogleAdsAccount ] );
 
 	useWindowFocusCallbackIntervalEffect( checkUpdatedAdsAccountStatus, 30 );
-
-	useEffect( () => {
-		const upsertAccount = async () => {
-			if ( hasAccess === true && step === 'conversion_action' ) {
-				await upsertAdsAccount();
-				invalidateResolution( 'getExistingGoogleAdsAccounts', [] );
-				invalidateResolution( 'getGoogleAdsAccount', [] );
-				invalidateResolution( 'getGoogleAdsAccountStatus', [] );
-			}
-		};
-
-		upsertAccount();
-	}, [ hasAccess, step, upsertAdsAccount, invalidateResolution ] );
 
 	const handleOnClick = () => {
 		setUpdating( true );
