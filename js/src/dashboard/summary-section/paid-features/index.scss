@@ -19,14 +19,15 @@
 		}
 	}
 
-	.gla-free-ad-credit-div {
+	.gla-free-ad-credit-claim {
 		text-align: left;
-		background-color: #fff;
+		background-color: $white;
 		display: flex;
 		align-items: center;
 		gap: calc(var(--main-gap) / 3 * 2);
-		padding: calc(var(--main-gap) / 3 * 2);
-		color: $black;
+		padding: 16px 12px;
+		color: #1e1e1e;
+		font-size: $gla-font-base;
 
 		.gridicon {
 			fill: #5ec862;
