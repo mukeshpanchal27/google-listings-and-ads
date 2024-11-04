@@ -3,6 +3,7 @@
  */
 import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -43,8 +44,9 @@ import './index.scss';
  * @param {Object} props
  * @param {Function} props.createMCAccount Callback function for creating a new Merchant Center account.
  * @param {Object} props.resultCreateMCAccount The result of the create account request.
+ * @param {string} [className] Additional class name to be added to the card.
  */
-const ConnectMC = ( { createMCAccount, resultCreateMCAccount } ) => {
+const ConnectMC = ( { createMCAccount, resultCreateMCAccount, className } ) => {
 	const [ value, setValue ] = useState();
 	const [ handleConnectMC, resultConnectMC ] = useConnectMCAccount( value );
 	const {
@@ -135,7 +137,7 @@ const ConnectMC = ( { createMCAccount, resultCreateMCAccount } ) => {
 
 	return (
 		<AccountCard
-			className="gla-connect-mc-card"
+			className={ classnames( 'gla-connect-mc-card', className ) }
 			title={ __(
 				'Connect to existing Merchant Center account',
 				'google-listings-and-ads'

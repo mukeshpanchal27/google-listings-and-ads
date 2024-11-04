@@ -70,6 +70,7 @@ const ConnectedGoogleComboAccountCard = () => {
 				<ConnectMC
 					createMCAccount={ createMCAccount }
 					resultCreateMCAccount={ resultCreateMCAccount }
+					className="gla-google-combo-account-card gla-google-combo-service-account-card--mc"
 				/>
 			) }
 		</div>
