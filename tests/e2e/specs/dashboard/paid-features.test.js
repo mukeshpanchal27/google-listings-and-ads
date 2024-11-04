@@ -76,7 +76,26 @@ test.describe( 'Paid Feature Listing', () => {
 			await clearCompletedAdsSetup();
 			await page.close();
 		} );
-		test( 'Paid Features listing is complete', async () => {
+		test( 'When no campaign present', async () => {
+			await dashboardPage.goto();
+			await expect( dashboardPage.googleAdsSummaryCard ).toContainText(
+				'Google Ads'
+			);
+
+			await expect( dashboardPage.paidFeatures ).toBeVisible();
+		} );
+		test( 'When atleast one campaign present', async () => {
+			await dashboardPage.fulfillAdsCampaignsRequest( [
+				{
+					id: 111111111,
+					name: 'Test Campaign',
+					status: 'enabled',
+					type: 'performance_max',
+					amount: 1,
+					country: 'US',
+					targeted_locations: [ 'US' ],
+				},
+			] );
 			await dashboardPage.goto();
 			await expect( dashboardPage.googleAdsSummaryCard ).toContainText(
 				'Google Ads'

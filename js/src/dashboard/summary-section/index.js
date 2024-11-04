@@ -114,7 +114,7 @@ export default function SummarySection() {
 		if ( ! loaded ) {
 			return null;
 		}
-		if ( adsCampaignsData.length > 0 ) {
+		if ( adsCampaignsData?.length > 0 ) {
 			showCampaignPromotionCard = false;
 		}
 	}
