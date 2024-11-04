@@ -144,7 +144,7 @@ const GtinMigrationBanner = () => {
 				<Notice isDismissible={ false }>
 					{ createInterpolateElement(
 						__(
-							"The GTIN field managed by WooCommerce in the Product's inventory section, will now be used by Google for WooCommerce. It will continue to support the previous field and any mapping rules you have setup for the GTIN field. If you would like to migrate the data <link>click here.</link>",
+							"The GTIN field managed by WooCommerce in the Product's inventory section, will now be used by Google for WooCommerce. It will continue to support the previous field and any mapping rules you have setup for the GTIN field. If you would like to migrate the data <link>click here</link>.",
 							'google-listings-and-ads'
 						),
 						{
