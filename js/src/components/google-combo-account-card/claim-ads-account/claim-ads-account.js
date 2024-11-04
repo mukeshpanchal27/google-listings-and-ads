@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useCallback, useEffect, useState } from '@wordpress/element';
+import { useCallback, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -12,7 +12,6 @@ import Section from '.~/wcdl/section';
 import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import { useAppDispatch } from '.~/data';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
 import useWindowFocusCallbackIntervalEffect from '.~/hooks/useWindowFocusCallbackIntervalEffect';
 import './claim-ads-account.scss';
 
@@ -24,12 +23,11 @@ import './claim-ads-account.scss';
 const ClaimAdsAccount = () => {
 	const [ updating, setUpdating ] = useState( false );
 	const { googleAdsAccount } = useGoogleAdsAccount();
+	const { hasAccess } = useGoogleAdsAccountStatus();
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
-	const { hasAccess, step } = useGoogleAdsAccountStatus();
-	const [ upsertAdsAccount ] = useUpsertAdsAccount();
 
 	const shouldClaimGoogleAdsAccount = Boolean(
-		googleAdsAccount.id && hasAccess === false
+		googleAdsAccount?.id && hasAccess === false
 	);
 
 	const checkUpdatedAdsAccountStatus = useCallback( async () => {
@@ -37,22 +35,14 @@ const ClaimAdsAccount = () => {
 			return;
 		}
 
-		setUpdating( true );
 		await fetchGoogleAdsAccountStatus();
-		setUpdating( false );
 	}, [ fetchGoogleAdsAccountStatus, shouldClaimGoogleAdsAccount ] );
 
 	useWindowFocusCallbackIntervalEffect( checkUpdatedAdsAccountStatus, 30 );
 
-	useEffect( () => {
-		if ( hasAccess === true && step === 'conversion_action' ) {
-			upsertAdsAccount();
-		}
-	}, [ hasAccess, step, upsertAdsAccount ] );
-
-	if ( ! shouldClaimGoogleAdsAccount ) {
-		return null;
-	}
+	const handleOnClick = () => {
+		setUpdating( true );
+	};
 
 	return (
 		<Section.Card.Body className="gla-claim-ads-account-section">
@@ -86,6 +76,7 @@ const ClaimAdsAccount = () => {
 							  )
 					}
 					isPrimary={ ! updating }
+					onClick={ handleOnClick }
 				/>
 			</div>
 		</Section.Card.Body>

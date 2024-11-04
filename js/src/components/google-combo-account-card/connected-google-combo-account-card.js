@@ -67,11 +67,11 @@ const ConnectedGoogleComboAccountCard = () => {
 		( editMode && hasExistingGoogleAdsAccounts ) ||
 		( ! isConnected && hasExistingGoogleAdsAccounts );
 
-	// Show the spinner if there's an account creation in progress and we're not finalizing the Ads account creation.
+	// Show the spinner if there's an account creation in progress and account should not be claimed.
 	// If we are not showing the ConnectMC screen, for e.g when we are creating the first account,
 	// then show the spinner in the Google combo card while the Ads account is being claimed.
 	const showSpinner =
-		( Boolean( creatingWhich ) && ! finalizeAdsAccountCreation ) ||
+		( Boolean( creatingWhich ) && ! shouldClaimGoogleAdsAccount ) ||
 		( ! showConnectAds && finalizeAdsAccountCreation );
 
 	return (
