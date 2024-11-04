@@ -11,7 +11,7 @@ import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
 import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
 import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
 import useCreateMCAccount from '.~/hooks/useCreateMCAccount';
-import ConnectMC from './connect-mc';
+import ConnectMC from '.~/components/google-mc-account-card/connect-mc';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import './connected-google-combo-account-card.scss';
