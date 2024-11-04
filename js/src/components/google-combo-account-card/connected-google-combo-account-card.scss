@@ -4,12 +4,16 @@
 		gap: 0;
 	}
 
-	.gla-connected-accounts-actions {
+	.gla-connected-ads-account-actions {
 		padding-bottom: calc((var(--large-gap)) / 2);
 
 		@media (min-width: $break-small) {
 			// 40px is the icon size and $grid-unit-20 is 16px for the gap between flex items.
 			padding-left: calc(40px + $grid-unit-20);
+		}
+
+		&:empty {
+			display: none;
 		}
 	}
 }

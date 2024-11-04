@@ -7,19 +7,26 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AppNotice from '.~/components/app-notice';
-import ClaimAdsAccount from './claim-ads-account/claim-ads-account';
+import ClaimAdsAccount from './claim-ads-account';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 
 /**
  * Renders the actionable components for connected accounts.
+ * @param {Object} props Component props.
+ * @param {boolean} props.claimGoogleAdsAccount Whether the user should claim the Google Ads account.
  * @return {JSX.Element} Connected accounts actions.
  */
-const ConnectedAccountsActions = () => {
+const ConnectedAdsAccountsActions = ( { claimGoogleAdsAccount } ) => {
 	const isReady = useGoogleAdsAccountReady();
 
+	if ( ! claimGoogleAdsAccount && ! isReady ) {
+		return null;
+	}
+
 	return (
-		<div className="gla-connected-accounts-actions">
-			<ClaimAdsAccount />
+		<div className="gla-connected-ads-account-actions">
+			{ claimGoogleAdsAccount && <ClaimAdsAccount /> }
+
 			{ isReady && (
 				<AppNotice
 					className="gla-ads-conversion-measurement-notice"
@@ -36,4 +43,4 @@ const ConnectedAccountsActions = () => {
 	);
 };
 
-export default ConnectedAccountsActions;
+export default ConnectedAdsAccountsActions;

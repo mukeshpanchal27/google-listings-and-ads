@@ -1,13 +1,25 @@
 /**
+ * External dependencies
+ */
+import { useEffect } from '@wordpress/element';
+
+/**
  * Internal dependencies
  */
+import { useAppDispatch } from '.~/data';
 import AccountCard, { APPEARANCE } from '../account-card';
+import ConnectAds from './connect-ads';
 import AccountDetails from './account-details';
-import ConnectedAccountsActions from './connected-accounts-actions';
+import ConnectedAdsAccountsActions from './connected-ads-account-actions';
 import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
 import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
+import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
+import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
+import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
+import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
+import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
 import './connected-google-combo-account-card.scss';
 
 /**
@@ -17,22 +29,68 @@ import './connected-google-combo-account-card.scss';
 const ConnectedGoogleComboAccountCard = () => {
 	const { hasDetermined, creatingWhich } = useAutoCreateAdsMCAccounts();
 	const { text, subText } = getAccountCreationTexts( creatingWhich );
+	const { existingAccounts: existingGoogleAdsAccounts } =
+		useExistingGoogleAdsAccounts();
+	const isConnected = useGoogleAdsAccountReady();
+	const { invalidateResolution } = useAppDispatch();
+	const { googleAdsAccount } = useGoogleAdsAccount();
+	const { hasAccess, step } = useGoogleAdsAccountStatus();
+	const [ upsertAdsAccount ] = useUpsertAdsAccount();
+
+	const finalizeAdsAccountCreation =
+		hasAccess === true && step === 'conversion_action';
+
+	// Ideally updating the account should be done in ConnectMC component but the latter is not always rendered,
+	// (for e.g when the user is creating the first account).
+	useEffect( () => {
+		const upsertAccount = async () => {
+			if ( finalizeAdsAccountCreation ) {
+				await upsertAdsAccount();
+				invalidateResolution( 'getExistingGoogleAdsAccounts', [] );
+			}
+		};
+
+		upsertAccount();
+	}, [ finalizeAdsAccountCreation, upsertAdsAccount, invalidateResolution ] );
 
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
 	}
 
+	// @TODO: edit mode implementation in 2605
+	const editMode = false;
+	const shouldClaimGoogleAdsAccount = Boolean(
+		googleAdsAccount?.id && hasAccess === false
+	);
+	const hasExistingGoogleAdsAccounts = existingGoogleAdsAccounts?.length > 0;
+	const showConnectAds =
+		( editMode && hasExistingGoogleAdsAccounts ) ||
+		( ! isConnected && hasExistingGoogleAdsAccounts );
+
+	// Show the spinner if there's an account creation in progress and we're not finalizing the Ads account creation.
+	// If we are not showing the ConnectMC screen, for e.g when we are creating the first account,
+	// then show the spinner in the Google combo card while the Ads account is being claimed.
+	const showSpinner =
+		( Boolean( creatingWhich ) && ! finalizeAdsAccountCreation ) ||
+		( ! showConnectAds && finalizeAdsAccountCreation );
+
 	return (
-		<AccountCard
-			appearance={ APPEARANCE.GOOGLE }
-			alignIcon="top"
-			className="gla-google-combo-account-card--connected"
-			description={ text || <AccountDetails /> }
-			helper={ subText }
-			indicator={ <Indicator showSpinner={ Boolean( creatingWhich ) } /> }
-		>
-			<ConnectedAccountsActions />
-		</AccountCard>
+		<div>
+			<AccountCard
+				appearance={ APPEARANCE.GOOGLE }
+				alignIcon="top"
+				className="gla-google-combo-account-card--connected"
+				description={ text || <AccountDetails /> }
+				helper={ subText }
+				indicator={ <Indicator showSpinner={ showSpinner } /> }
+			>
+				<ConnectedAdsAccountsActions
+					claimGoogleAdsAccount={ shouldClaimGoogleAdsAccount }
+				/>
+			</AccountCard>
+
+			{ showConnectAds && <ConnectAds /> }
+		</div>
 	);
 };
 
