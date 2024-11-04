@@ -8,6 +8,7 @@ import { SummaryNumber } from '@woocommerce/components';
  * Internal dependencies
  */
 import { glaData, REPORT_SOURCE_PAID, REPORT_SOURCE_FREE } from '.~/constants';
+import useAdsCampaigns from '.~/hooks/useAdsCampaigns';
 import useAdsCurrency from '.~/hooks/useAdsCurrency';
 import useCurrencyFormat from '.~/hooks/useCurrencyFormat';
 import usePerformance from './usePerformance';
@@ -106,17 +107,28 @@ const PaidPerformanceCard = () => {
 };
 
 export default function SummarySection() {
+	const { loaded, data: adsCampaignsData } = useAdsCampaigns();
 	const { adsSetupComplete } = glaData;
+	let showCampaignPromotionCard = true;
+	if ( adsSetupComplete ) {
+		if ( ! loaded ) {
+			return null;
+		}
+		showCampaignPromotionCard = false;
+		if ( adsCampaignsData.length === 0 ) {
+			showCampaignPromotionCard = true;
+		}
+	}
 
 	return (
 		<>
 			<SummaryCard
 				title={ __( 'Google Ads', 'google-listings-and-ads' ) }
 			>
-				{ adsSetupComplete ? (
-					<PaidPerformanceCard />
-				) : (
+				{ showCampaignPromotionCard ? (
 					<PaidCampaignPromotionCard />
+				) : (
+					<PaidPerformanceCard />
 				) }
 			</SummaryCard>
 			<SummaryCard

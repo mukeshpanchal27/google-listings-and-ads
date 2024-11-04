@@ -11,10 +11,10 @@ import { createInterpolateElement } from '@wordpress/element';
 import AppDocumentationLink from '.~/components/app-documentation-link';
 
 /**
- * Render the Free Ads Credit div inside the Paid Features div.
+ * Render the Free Ads Credit inside the Paid Features component.
  *
  * @fires gla_documentation_link_click with `{ context: 'dashboard', link_id: 'free-ad-credit-terms', href: 'https://www.google.com/ads/coupons/terms/' }`
- * @return {JSX.Element} Free Ads Credit div.
+ * @return {JSX.Element} Free Ads Credit component.
  */
 const FreeAdCredit = () => {
 	return (

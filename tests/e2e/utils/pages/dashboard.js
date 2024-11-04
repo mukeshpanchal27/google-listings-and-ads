@@ -23,10 +23,9 @@ export default class DashboardPage extends MockRequests {
 		this.googleAdsSummaryCard = this.page.locator(
 			'.gla-dashboard__performance .gla-summary-card:nth-child(1)'
 		);
-		this.paidFeaturesDiv = this.googleAdsSummaryCard.locator(
-			'.gla-paid-features-div'
-		);
-		this.createCampaignButton = this.paidFeaturesDiv.locator( 'button', {
+		this.paidFeatures =
+			this.googleAdsSummaryCard.locator( '.gla-paid-features' );
+		this.createCampaignButton = this.paidFeatures.locator( 'button', {
 			hasText: 'Create Campaign',
 		} );
 		this.addPaidCampaignButton = this.page.locator(

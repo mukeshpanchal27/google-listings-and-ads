@@ -52,7 +52,7 @@ function FeatureList() {
 	];
 
 	return (
-		<div className="gla-paid-features-div__feature-list">
+		<div className="gla-paid-features__feature-list">
 			{ featuresItems.map( ( { Icon, content }, idx ) => (
 				<Flex key={ idx } align="flex-start">
 					<Icon size="18" />
@@ -66,15 +66,15 @@ function FeatureList() {
 /**
  * Returns a div with paid features content.
  *
- * @return {JSX.Element} Paid Features div.
+ * @return {JSX.Element} Paid Features component.
  */
 const PaidFeatures = () => {
 	return (
-		<VerticalGapLayout size="medium" className="gla-paid-features-div">
+		<VerticalGapLayout size="medium" className="gla-paid-features">
 			<Flex
 				align="center"
 				gap={ 9 }
-				className="gla-paid-features-div__content"
+				className="gla-paid-features__content"
 			>
 				<FlexItem>
 					<CampaignPreview />
