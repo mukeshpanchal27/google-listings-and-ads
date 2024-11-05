@@ -62,6 +62,10 @@ const ConnectedGoogleComboAccountCard = () => {
 		return <SpinnerCard />;
 	}
 
+	const handleOnAccountConnected = () => {
+		setShowConversionMeasurementNotice( true );
+	};
+
 	// @TODO: edit mode implementation in 2605
 	const editMode = false;
 	const shouldClaimGoogleAdsAccount = Boolean(
@@ -97,7 +101,9 @@ const ConnectedGoogleComboAccountCard = () => {
 				/>
 			</AccountCard>
 
-			{ showConnectAds && <ConnectAds /> }
+			{ showConnectAds && (
+				<ConnectAds onAccountConnected={ handleOnAccountConnected } />
+			) }
 		</div>
 	);
 };
