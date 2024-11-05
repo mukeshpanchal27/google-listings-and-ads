@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { __ } from '@wordpress/i18n';
-
-/**
  * Internal dependencies
  */
 import AccountCard, { APPEARANCE } from '.~/components/account-card';
