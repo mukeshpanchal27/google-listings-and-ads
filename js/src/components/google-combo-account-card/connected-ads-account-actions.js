@@ -8,18 +8,19 @@ import { __ } from '@wordpress/i18n';
  */
 import AppNotice from '.~/components/app-notice';
 import ClaimAdsAccount from './claim-ads-account';
-import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 
 /**
  * Renders the actionable components for connected accounts.
  * @param {Object} props Component props.
  * @param {boolean} props.claimGoogleAdsAccount Whether the user should claim the Google Ads account.
+ * @param {boolean} props.showConversionMeasurementNotice Whether to show the conversion measurement notice.
  * @return {JSX.Element} Connected accounts actions.
  */
-const ConnectedAdsAccountsActions = ( { claimGoogleAdsAccount } ) => {
-	const isReady = useGoogleAdsAccountReady();
-
-	if ( ! claimGoogleAdsAccount && ! isReady ) {
+const ConnectedAdsAccountsActions = ( {
+	claimGoogleAdsAccount,
+	showConversionMeasurementNotice,
+} ) => {
+	if ( ! claimGoogleAdsAccount && ! showConversionMeasurementNotice ) {
 		return null;
 	}
 
@@ -27,7 +28,7 @@ const ConnectedAdsAccountsActions = ( { claimGoogleAdsAccount } ) => {
 		<div className="gla-connected-ads-account-actions">
 			{ claimGoogleAdsAccount && <ClaimAdsAccount /> }
 
-			{ isReady && (
+			{ showConversionMeasurementNotice && (
 				<AppNotice
 					className="gla-ads-conversion-measurement-notice"
 					status="success"

@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useEffect } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -27,6 +27,10 @@ import './connected-google-combo-account-card.scss';
  * It will also kickoff Ads and Merchant Center account creation if the user does not have accounts.
  */
 const ConnectedGoogleComboAccountCard = () => {
+	const [
+		showConversionMeasurementNotice,
+		setShowConversionMeasurementNotice,
+	] = useState( false );
 	const { hasDetermined, creatingWhich } = useAutoCreateAdsMCAccounts();
 	const { text, subText } = getAccountCreationTexts( creatingWhich );
 	const { existingAccounts: existingGoogleAdsAccounts } =
@@ -47,6 +51,7 @@ const ConnectedGoogleComboAccountCard = () => {
 			if ( finalizeAdsAccountCreation ) {
 				await upsertAdsAccount();
 				invalidateResolution( 'getExistingGoogleAdsAccounts', [] );
+				setShowConversionMeasurementNotice( true );
 			}
 		};
 
@@ -85,6 +90,9 @@ const ConnectedGoogleComboAccountCard = () => {
 				indicator={ <Indicator showSpinner={ showSpinner } /> }
 			>
 				<ConnectedAdsAccountsActions
+					showConversionMeasurementNotice={
+						showConversionMeasurementNotice
+					}
 					claimGoogleAdsAccount={ shouldClaimGoogleAdsAccount }
 				/>
 			</AccountCard>
