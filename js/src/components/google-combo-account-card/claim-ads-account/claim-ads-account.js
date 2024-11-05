@@ -69,7 +69,7 @@ const ClaimAdsAccount = () => {
 					loading={ updating }
 					text={
 						updating
-							? __( 'Updating…', 'google-listings-and-ads' )
+							? __( 'Waiting…', 'google-listings-and-ads' )
 							: __(
 									'Claim your Google Ads account',
 									'google-listings-and-ads'

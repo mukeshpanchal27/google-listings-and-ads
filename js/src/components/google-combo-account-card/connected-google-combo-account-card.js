@@ -35,6 +35,10 @@ import './connected-google-combo-account-card.scss';
  */
 const ConnectedGoogleComboAccountCard = () => {
 	const [ editMode, setEditMode ] = useState( false );
+	const [
+		showConversionMeasurementNotice,
+		setShowConversionMeasurementNotice,
+	] = useState( false );
 	const { hasDetermined, creatingWhich } = useAutoCreateAdsMCAccounts();
 
 	// We use a single instance of the hook to create a MC (Merchant Center) account,
@@ -63,6 +67,7 @@ const ConnectedGoogleComboAccountCard = () => {
 			if ( finalizeAdsAccountCreation ) {
 				await upsertAdsAccount();
 				invalidateResolution( 'getExistingGoogleAdsAccounts', [] );
+				setShowConversionMeasurementNotice( true );
 			}
 		};
 
@@ -134,6 +139,9 @@ const ConnectedGoogleComboAccountCard = () => {
 				indicator={ <Indicator showSpinner={ showSpinner } /> }
 			>
 				<ConnectedAdsAccountsActions
+					showConversionMeasurementNotice={
+						showConversionMeasurementNotice
+					}
 					claimGoogleAdsAccount={ shouldClaimGoogleAdsAccount }
 				/>
 			</AccountCard>
