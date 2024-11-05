@@ -17,7 +17,7 @@ import SpinnerCard from '.~/components/spinner-card';
 import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
 import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
 import useCreateMCAccount from '.~/hooks/useCreateMCAccount';
-import ConnectMC from './connect-mc';
+import ConnectMC from '.~/components/google-mc-account-card/connect-mc';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import AppButton from '.~/components/app-button';
@@ -67,7 +67,7 @@ const ConnectedGoogleComboAccountCard = () => {
 			<AccountCard
 				appearance={ APPEARANCE.GOOGLE }
 				alignIcon="top"
-				className="gla-google-combo-account-card gla-google-combo-account-card--connected"
+				className="gla-google-combo-account-card gla-google-combo-account-card--connected gla-google-combo-service-account-card--google"
 				description={
 					<>
 						{ text || <AccountDetails /> }
@@ -105,8 +105,9 @@ const ConnectedGoogleComboAccountCard = () => {
 
 			{ showConnectMC && (
 				<ConnectMC
-					createMCAccount={ createMCAccount }
-					resultCreateMCAccount={ resultCreateMCAccount }
+					createAccount={ createMCAccount }
+					resultCreateAccount={ resultCreateMCAccount }
+					className="gla-google-combo-account-card gla-google-combo-service-account-card--mc"
 				/>
 			) }
 		</div>

@@ -29,7 +29,6 @@ import AppSelectControl from '.~/components/app-select-control';
 const MerchantCenterSelect = ( { isConnected, ...rest } ) => {
 	const { data: existingAccounts } = useExistingGoogleMCAccounts();
 	const { googleMCAccount } = useGoogleMCAccount();
-	const domain = new URL( getSetting( 'homeUrl' ) ).host;
 
 	const accountIdExists = existingAccounts?.some(
 		( existingAccount ) => existingAccount.id === googleMCAccount.id
@@ -37,6 +36,8 @@ const MerchantCenterSelect = ( { isConnected, ...rest } ) => {
 
 	// If the account ID is not in the list of existing accounts, fake the select options by displaying the connected account ID only.
 	if ( ! accountIdExists && isConnected ) {
+		const domain = new URL( getSetting( 'homeUrl' ) ).host;
+
 		return (
 			<AppSelectControl
 				autoSelectFirstOption

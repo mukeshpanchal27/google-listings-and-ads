@@ -6,14 +6,13 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import CreateAccountButton from '.~/components/google-mc-account-card/create-account-button';
-import DisconnectAccountButton from '.~/components/google-mc-account-card/disconnect-account-button';
+import CreateAccountButton from '../create-account-button';
+import DisconnectAccountButton from '../disconnect-account-button';
 
 /**
- * ConnectMCFooter component.
+ * Actions component.
  *
- * This component renders the footer for the Merchant Center connection section.
- * It conditionally renders either a button to disconnect the account if already
+ * Conditionally renders either a button to disconnect the account if already
  * connected, or a button to create a new Merchant Center account.
  *
  * @param {Object}   props
@@ -22,7 +21,7 @@ import DisconnectAccountButton from '.~/components/google-mc-account-card/discon
  * @param {Object}   props.resultCreateAccount The result of the create account request.
  * @param {Function} props.handleCreateAccount Callback function for creating a new Merchant Center account.
  */
-const ConnectMCFooter = ( {
+const Actions = ( {
 	isConnected,
 	resultConnectMC,
 	resultCreateAccount,
@@ -56,4 +55,4 @@ const ConnectMCFooter = ( {
 	);
 };
 
-export default ConnectMCFooter;
+export default Actions;
