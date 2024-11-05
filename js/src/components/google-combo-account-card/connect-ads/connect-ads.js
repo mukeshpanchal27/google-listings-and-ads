@@ -23,11 +23,9 @@ import ConnectButton from '.~/components/google-ads-account-card/connect-ads/con
 /**
  * ConnectAds component renders an account card to connect to an existing Google Ads account.
  *
- * @param {Object} props Component props.
- * @param {Function} props.onAccountConnected Callback function to be called when the account is connected.
  * @return {JSX.Element} {@link AccountCard} filled with content.
  */
-const ConnectAds = ( { onAccountConnected } ) => {
+const ConnectAds = () => {
 	const [ value, setValue ] = useState();
 	const [ isLoading, setLoading ] = useState( false );
 	const { refetchGoogleAdsAccount } = useGoogleAdsAccount();
@@ -64,7 +62,6 @@ const ConnectAds = ( { onAccountConnected } ) => {
 			await connectGoogleAdsAccount();
 			await fetchGoogleAdsAccountStatus();
 			await refetchGoogleAdsAccount();
-			onAccountConnected();
 			setLoading( false );
 		} catch ( error ) {
 			setLoading( false );

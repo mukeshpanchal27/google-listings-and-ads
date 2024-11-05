@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -31,6 +31,7 @@ const ConnectedGoogleComboAccountCard = () => {
 		showConversionMeasurementNotice,
 		setShowConversionMeasurementNotice,
 	] = useState( false );
+	const initConnected = useRef( null );
 	const { hasDetermined, creatingWhich } = useAutoCreateAdsMCAccounts();
 	const { text, subText } = getAccountCreationTexts( creatingWhich );
 	const { existingAccounts: existingGoogleAdsAccounts } =
@@ -44,6 +45,22 @@ const ConnectedGoogleComboAccountCard = () => {
 	const finalizeAdsAccountCreation =
 		hasAccess === true && step === 'conversion_action';
 
+	// Show the conversion measurement notice after the account is ready.
+	useEffect( () => {
+		if ( isConnected === null ) {
+			return;
+		}
+
+		if ( isConnected && initConnected.current === false ) {
+			setShowConversionMeasurementNotice( true );
+		}
+
+		// Store the initial isConnected state.
+		if ( initConnected.current === null ) {
+			initConnected.current = isConnected;
+		}
+	}, [ initConnected, isConnected ] );
+
 	// Ideally updating the account should be done in ConnectMC component but the latter is not always rendered,
 	// (for e.g when the user is creating the first account).
 	useEffect( () => {
@@ -51,7 +68,6 @@ const ConnectedGoogleComboAccountCard = () => {
 			if ( finalizeAdsAccountCreation ) {
 				await upsertAdsAccount();
 				invalidateResolution( 'getExistingGoogleAdsAccounts', [] );
-				setShowConversionMeasurementNotice( true );
 			}
 		};
 
@@ -61,10 +77,6 @@ const ConnectedGoogleComboAccountCard = () => {
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
 	}
-
-	const handleOnAccountConnected = () => {
-		setShowConversionMeasurementNotice( true );
-	};
 
 	// @TODO: edit mode implementation in 2605
 	const editMode = false;
@@ -101,9 +113,7 @@ const ConnectedGoogleComboAccountCard = () => {
 				/>
 			</AccountCard>
 
-			{ showConnectAds && (
-				<ConnectAds onAccountConnected={ handleOnAccountConnected } />
-			) }
+			{ showConnectAds && <ConnectAds /> }
 		</div>
 	);
 };
