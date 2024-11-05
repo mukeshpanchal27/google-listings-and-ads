@@ -118,22 +118,29 @@ const ConnectAds = ( { finalizeAdsAccountCreation } ) => {
 	// Show a loading state if the Ads account is being updated or if a new Ads account is being created.
 	// If finalizeAdsAccountCreation is true, the processing is done in `ConnectedGoogleComboAccountCard`.
 	if ( creatingNewAccount || finalizeAdsAccountCreation ) {
+		let title = __(
+			'Creating a new Google Ads account',
+			'google-listings-and-ads'
+		);
+		let indicatorLabel = __( 'Creating…', 'google-listings-and-ads' );
+
+		if ( finalizeAdsAccountCreation ) {
+			title = __(
+				'Connecting your Google Ads account',
+				'google-listings-and-ads'
+			);
+			indicatorLabel = __( 'Connecting…', 'google-listings-and-ads' );
+		}
+
 		return (
 			<AccountCard
 				className="gla-google-combo-service-account-card--ads"
-				title={ __(
-					'Creating a new Google Ads account',
-					'google-listings-and-ads'
-				) }
+				title={ title }
 				helper={ __(
 					'This may take a few minutes, please wait a moment…',
 					'google-listings-and-ads'
 				) }
-				indicator={
-					<LoadingLabel
-						text={ __( 'Creating…', 'google-listings-and-ads' ) }
-					/>
-				}
+				indicator={ <LoadingLabel text={ indicatorLabel } /> }
 			/>
 		);
 	}

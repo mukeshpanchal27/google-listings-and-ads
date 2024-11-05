@@ -58,7 +58,7 @@ const ConnectedGoogleComboAccountCard = () => {
 	}
 
 	// @TODO: edit mode implementation in 2605
-	const editMode = true;
+	const editMode = false;
 	const shouldClaimGoogleAdsAccount = Boolean(
 		googleAdsAccount?.id && hasAccess === false
 	);
