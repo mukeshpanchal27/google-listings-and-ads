@@ -108,16 +108,10 @@ const PaidPerformanceCard = () => {
 
 export default function SummarySection() {
 	const { loaded, data: adsCampaignsData } = useAdsCampaigns();
-	const { adsSetupComplete } = glaData;
-	let showCampaignPromotionCard = true;
-	if ( adsSetupComplete ) {
-		if ( ! loaded ) {
-			return null;
-		}
-		if ( adsCampaignsData?.length > 0 ) {
-			showCampaignPromotionCard = false;
-		}
+	if ( ! loaded ) {
+		return null;
 	}
+	const showCampaignPromotionCard = Boolean( ! adsCampaignsData?.length );
 
 	return (
 		<>
