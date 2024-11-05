@@ -9,7 +9,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Assets\AdminScriptWithBuiltDepen
 use Automattic\WooCommerce\GoogleListingsAndAds\Assets\AdminStyleAsset;
 use Automattic\WooCommerce\GoogleListingsAndAds\Assets\Asset;
 use Automattic\WooCommerce\GoogleListingsAndAds\Assets\AssetsHandlerInterface;
-use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\GTINMigrationUtilities;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\AdminConditional;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Conditional;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
@@ -35,7 +34,6 @@ class Admin implements Service, Registerable, Conditional, OptionsAwareInterface
 	use AdminConditional;
 	use PluginHelper;
 	use OptionsAwareTrait;
-	use GTINMigrationUtilities;
 
 	/**
 	 * @var AssetsHandlerInterface
@@ -147,8 +145,7 @@ class Admin implements Service, Registerable, Conditional, OptionsAwareInterface
 					'version' => $this->get_version(),
 					'mcId'    => $this->options->get_merchant_id() ?: null,
 					'adsId'   => $this->options->get_ads_id() ?: null,
-				],
-				'gtinMigrationStatus'      => $this->get_gtin_migration_status(),
+				]
 			]
 		);
 
