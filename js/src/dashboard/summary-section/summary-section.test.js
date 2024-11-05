@@ -59,7 +59,7 @@ describe( 'SummarySection when no data is loaded', () => {
 			'https://merchants.google.com/mc/reporting/dashboard'
 		);
 	} );
-	it.only( 'Shows no data message for Paid Campaigns', async () => {
+	it( 'Shows no data message for Paid Campaigns', async () => {
 		mockCampaigns( [] );
 		const { findByText } = render( <SummarySection /> );
 
