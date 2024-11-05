@@ -84,7 +84,7 @@ test.describe( 'Paid Feature Listing', () => {
 
 			await expect( dashboardPage.paidFeatures ).toBeVisible();
 		} );
-		test( 'When atleast one campaign present', async () => {
+		test( 'When at least one campaign present', async () => {
 			await dashboardPage.fulfillAdsCampaignsRequest( [
 				{
 					id: 111111111,
