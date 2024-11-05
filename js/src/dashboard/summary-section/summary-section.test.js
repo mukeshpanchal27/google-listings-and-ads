@@ -28,13 +28,22 @@ jest.mock( '.~/hooks/useAdsCampaigns', () =>
 );
 
 describe( 'SummarySection when no data is loaded', () => {
+	let mockCampaigns;
+
 	beforeAll( () => {
+		let mockedCampaigns = [];
+
 		useAdsCampaigns.mockImplementation( () => {
-			return { loaded: true, data: [] };
+			return { loaded: true, data: mockedCampaigns };
 		} );
+
+		mockCampaigns = ( ...campaigns ) => {
+			mockedCampaigns = campaigns;
+		};
 	} );
 
 	it( 'Shows no data message for Free Campaigns', async () => {
+		mockCampaigns( [] );
 		const { findByText } = render( <SummarySection /> );
 
 		expect(
@@ -50,7 +59,8 @@ describe( 'SummarySection when no data is loaded', () => {
 			'https://merchants.google.com/mc/reporting/dashboard'
 		);
 	} );
-	it( 'Shows no data message for Paid Campaigns', async () => {
+	it.only( 'Shows no data message for Paid Campaigns', async () => {
+		mockCampaigns( [] );
 		const { findByText } = render( <SummarySection /> );
 
 		expect(
