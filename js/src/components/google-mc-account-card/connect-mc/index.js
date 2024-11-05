@@ -19,7 +19,6 @@ import AccountCard from '.~/components/account-card';
 import Actions from './actions';
 import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
 import CreatingCard from '../creating-card';
-import './index.scss';
 
 /**
  * Clicking on the button to connect an existing Google Merchant Center account.
@@ -38,7 +37,7 @@ import './index.scss';
 /**
  * ConnectMC component.
  *
- * This component renders Merchant Center connection section.
+ * This component renders Merchant Center connection card.
  * It is using createAccount and resultCreateAccount from the parent component.
  * @fires gla_mc_account_connect_button_click
  * @param {Object} props
@@ -160,7 +159,7 @@ const ConnectMC = ( { createAccount, resultCreateAccount, className } ) => {
 					isConnected={ isGoogleMCReady }
 					resultConnectMC={ resultConnectMC }
 					resultCreateAccount={ resultCreateAccount }
-					handleCreateAccount={ createAccount }
+					onCreateAccount={ createAccount }
 				/>
 			}
 		/>

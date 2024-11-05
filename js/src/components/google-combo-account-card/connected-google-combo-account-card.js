@@ -40,7 +40,7 @@ const ConnectedGoogleComboAccountCard = () => {
 	}
 
 	// @TODO: edit mode implementation in 2605
-	const editMode = false;
+	const editMode = true;
 	const hasExistingGoogleMCAccounts = existingGoogleMCAccounts?.length > 0;
 	const showConnectMC =
 		( editMode && hasExistingGoogleMCAccounts ) ||

@@ -24,15 +24,17 @@ import { useAppDispatch } from '.~/data';
  *
  * * @fires gla_mc_account_connect_different_account_button_click
  */
-const DisconnectAccountButton = ( { onDisconnect = noop, ...restProps } ) => {
+const DisconnectAccountButton = ( { onDisconnected = noop, ...restProps } ) => {
 	const { createNotice, removeNotice } = useDispatchCoreNotices();
 	const { invalidateResolution } = useAppDispatch();
 
-	const [ fetchGoogleMCDisconnect, { loading: loadingGoogleMCDisconnect } ] =
-		useApiFetchCallback( {
-			path: `${ API_NAMESPACE }/mc/connection`,
-			method: 'DELETE',
-		} );
+	const [
+		disconnectGoogleMCAccount,
+		{ loading: isDisconnectingGoogleMCAccount },
+	] = useApiFetchCallback( {
+		path: `${ API_NAMESPACE }/mc/connection`,
+		method: 'DELETE',
+	} );
 
 	/**
 	 * Event handler to switch GMC account. Upon click, it will:
@@ -55,10 +57,10 @@ const DisconnectAccountButton = ( { onDisconnect = noop, ...restProps } ) => {
 		);
 
 		try {
-			await fetchGoogleMCDisconnect();
+			await disconnectGoogleMCAccount();
 			invalidateResolution( 'getExistingGoogleMCAccounts', [] );
 			invalidateResolution( 'getGoogleMCAccount', [] );
-			onDisconnect();
+			onDisconnected();
 		} catch ( error ) {
 			createNotice(
 				'error',
@@ -74,8 +76,7 @@ const DisconnectAccountButton = ( { onDisconnect = noop, ...restProps } ) => {
 
 	return (
 		<AppButton
-			isLink
-			disabled={ loadingGoogleMCDisconnect }
+			disabled={ isDisconnectingGoogleMCAccount }
 			text={ __(
 				'Or, connect to a different Google Merchant Center account',
 				'google-listings-and-ads'

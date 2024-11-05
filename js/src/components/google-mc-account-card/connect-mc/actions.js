@@ -19,23 +19,23 @@ import DisconnectAccountButton from '../disconnect-account-button';
  * @param {boolean}  props.isConnected Whether the Merchant Center account is connected.
  * @param {Object}   props.resultConnectMC The result of the connection request, used to handle loading state.
  * @param {Object}   props.resultCreateAccount The result of the create account request.
- * @param {Function} props.handleCreateAccount Callback function for creating a new Merchant Center account.
+ * @param {Function} props.onCreateAccount Callback function for creating a new Merchant Center account.
  */
 const Actions = ( {
 	isConnected,
 	resultConnectMC,
 	resultCreateAccount,
-	handleCreateAccount,
+	onCreateAccount,
 } ) => {
 	if ( isConnected ) {
-		const handleDisconnect = () => {
+		const handleOnDisconnected = () => {
 			resultConnectMC.reset();
 			resultCreateAccount.reset();
 		};
 
 		return (
 			<DisconnectAccountButton
-				onDisconnect={ handleDisconnect }
+				onDisconnected={ handleOnDisconnected }
 				isTertiary
 			/>
 		);
@@ -45,7 +45,7 @@ const Actions = ( {
 		<CreateAccountButton
 			isTertiary
 			disabled={ resultConnectMC.loading }
-			onCreateAccount={ handleCreateAccount }
+			onCreateAccount={ onCreateAccount }
 		>
 			{ __(
 				'Or, create a new Merchant Center account',
