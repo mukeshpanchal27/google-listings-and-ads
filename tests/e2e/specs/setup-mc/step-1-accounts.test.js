@@ -544,20 +544,6 @@ test.describe( 'Set up accounts', () => {
 					);
 				} );
 			} );
-
-			test.describe( 'click "Or, create a new Merchant Center account"', () => {
-				test.beforeAll( async () => {
-					await Promise.all( [
-						// Mock merchant center as not connected.
-						setUpAccountsPage.mockMCNotConnected(),
-
-						// Mock merchant center has accounts
-						setUpAccountsPage.mockMCHasAccounts(),
-					] );
-
-					await setUpAccountsPage.goto();
-				} );
-			} );
 		} );
 	} );
 
