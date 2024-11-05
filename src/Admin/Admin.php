@@ -145,7 +145,7 @@ class Admin implements Service, Registerable, Conditional, OptionsAwareInterface
 					'version' => $this->get_version(),
 					'mcId'    => $this->options->get_merchant_id() ?: null,
 					'adsId'   => $this->options->get_ads_id() ?: null,
-				]
+				],
 			]
 		);
 
