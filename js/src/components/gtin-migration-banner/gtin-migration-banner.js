@@ -12,14 +12,13 @@ import TrackableLink from '.~/components/trackable-link';
 import AppButton from '.~/components/app-button';
 import AppModal from '.~/components/app-modal';
 import { recordGlaEvent } from '.~/utils/tracks';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
 import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import { glaData } from '.~/constants';
+import useGTINMigrationStatus from '.~/hooks/useGTINMigrationStatus';
 import './index.scss';
 
 const GTIN_MIGRATION_BANNER_CONTEXT = 'gtin_migration_banner';
-const GTIN_MIGRATION_READY = 'GTIN_MIGRATION_READY';
-const GTIN_MIGRATION_STARTED = 'GTIN_MIGRATION_STARTED';
+const GTIN_MIGRATION_READY = 'ready';
+const GTIN_MIGRATION_STARTED = 'started';
 
 const LinkGTINMigrationJobStatusPage = ( props ) => (
 	<TrackableLink
@@ -38,12 +37,8 @@ const LinkGTINMigrationJobStatusPage = ( props ) => (
 
 const GtinMigrationBanner = () => {
 	const { createNotice } = useDispatchCoreNotices();
-	const [ status, setStatus ] = useState( glaData?.gtinMigrationStatus );
 	const [ showModal, setShowModal ] = useState( false );
-	const [ startMigration, { loading, reset } ] = useApiFetchCallback( {
-		path: `/wc/gla/gtin-migration-start`,
-		method: 'POST',
-	} );
+	const [ status, loading, startMigration ] = useGTINMigrationStatus();
 
 	if (
 		status !== GTIN_MIGRATION_READY &&
@@ -70,14 +65,12 @@ const GtinMigrationBanner = () => {
 		recordGlaEvent( 'gla_gtin_migration_banner_migration_start', {
 			context: GTIN_MIGRATION_BANNER_CONTEXT,
 		} );
-		reset();
 		try {
-			await startMigration( { parse: false } );
+			await startMigration();
 			recordGlaEvent( 'gla_gtin_migration_banner_migration_scheduled', {
 				context: GTIN_MIGRATION_BANNER_CONTEXT,
 			} );
 			setShowModal( false );
-			setStatus( GTIN_MIGRATION_STARTED );
 			createNotice(
 				'info',
 				__(

@@ -25,10 +25,10 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	use OptionsAwareTrait;
 	use GTINMigrationUtilities;
 
-	public const GTIN_MIGRATION_COMPLETED   = 'GTIN_MIGRATION_COMPLETED';
-	public const GTIN_MIGRATION_STARTED     = 'GTIN_MIGRATION_STARTED';
-	public const GTIN_MIGRATION_READY       = 'GTIN_MIGRATION_READY';
-	public const GTIN_MIGRATION_UNAVAILABLE = 'GTIN_MIGRATION_UNAVAILABLE';
+	public const GTIN_MIGRATION_COMPLETED   = 'completed';
+	public const GTIN_MIGRATION_STARTED     = 'started';
+	public const GTIN_MIGRATION_READY       = 'ready';
+	public const GTIN_MIGRATION_UNAVAILABLE = 'unavailable';
 
 	/**
 	 * @var ProductRepository
