@@ -111,7 +111,7 @@ export default function SummarySection() {
 	if ( ! loaded ) {
 		return null;
 	}
-	const showCampaignPromotionCard = Boolean( ! adsCampaignsData?.length );
+	const showCampaignPromotionCard = ! adsCampaignsData?.length;
 
 	return (
 		<>
