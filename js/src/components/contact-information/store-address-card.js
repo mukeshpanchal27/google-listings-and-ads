@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useRef, createInterpolateElement, useState } from '@wordpress/element';
+import { useRef, createInterpolateElement } from '@wordpress/element';
 import { Spinner } from '@woocommerce/components';
 import { update as updateIcon } from '@wordpress/icons';
 import { getPath, getQuery } from '@woocommerce/navigation';
@@ -10,16 +10,13 @@ import { getPath, getQuery } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
 import useStoreAddress from '.~/hooks/useStoreAddress';
 import useStoreAddressSynced from '.~/hooks/useStoreAddressSynced';
 import AccountCard, { APPEARANCE } from '.~/components/account-card';
 import AppButton from '.~/components/app-button';
 import ValidationErrors from '.~/components/validation-errors';
-import SpinnerCard from '.~/components/spinner-card';
 import TrackableLink from '.~/components/trackable-link';
 import mapStoreAddressErrors from './mapStoreAddressErrors';
-import LoadingLabel from '.~/components/loading-label';
 import { recordGlaEvent } from '.~/utils/tracks';
 import './store-address-card.scss';
 
@@ -50,14 +47,8 @@ import './store-address-card.scss';
  * @return {JSX.Element} Filled AccountCard component.
  */
 const StoreAddressCard = () => {
-	const { loaded, data } = useStoreAddress();
-	const {
-		isAddressFilled,
-		isAddressSynced,
-		hasFinishedResolution: hasFinishedStoreAddressResolution,
-	} = useStoreAddressSynced();
-	const [ isSaving, setSaving ] = useState( false );
-	const { updateGoogleMCContactInformation } = useAppDispatch();
+	const { loaded, data, refetch } = useStoreAddress();
+	const { isAddressFilled } = useStoreAddressSynced();
 	const path = getPath();
 	const { subpath } = getQuery();
 
@@ -68,17 +59,8 @@ const StoreAddressCard = () => {
 		refetchedCallbackRef.current = null;
 	}
 
-	if ( ! hasFinishedStoreAddressResolution ) {
-		return <SpinnerCard />;
-	}
-
 	const handleRefreshClick = () => {
-		setSaving( true );
-		updateGoogleMCContactInformation().finally( () => {
-			// Errors are handled in the dispatched action but
-			// we change the saving state regardless of success.
-			setSaving( false );
-		} );
+		refetch();
 
 		refetchedCallbackRef.current = ( storeAddress ) => {
 			const eventProps = {
@@ -92,17 +74,13 @@ const StoreAddressCard = () => {
 		};
 	};
 
-	const showIndicator = isAddressFilled && ! isAddressSynced;
-
-	const refreshButton = isSaving ? (
-		<LoadingLabel />
-	) : (
+	const refreshButton = (
 		<AppButton
 			isSecondary
 			icon={ updateIcon }
 			iconSize={ 20 }
 			iconPosition="right"
-			text={ __( 'Refresh to sync', 'google-listings-and-ads' ) }
+			text={ __( 'Update store address', 'google-listings-and-ads' ) }
 			onClick={ handleRefreshClick }
 			disabled={ ! loaded }
 		/>
@@ -120,7 +98,7 @@ const StoreAddressCard = () => {
 
 	let addressContent = <Spinner />;
 
-	if ( loaded && isAddressFilled ) {
+	if ( loaded ) {
 		const { address, address2, city, state, country, postcode } = data;
 		const stateAndCountry = state ? `${ state } - ${ country }` : country;
 
@@ -135,8 +113,6 @@ const StoreAddressCard = () => {
 				<div>{ rest }</div>
 			</div>
 		);
-	} else {
-		addressContent = null;
 	}
 
 	const longDescription = (
@@ -184,7 +160,7 @@ const StoreAddressCard = () => {
 			alignIndicator="top"
 			description={ isAddressFilled ? longDescription : shortDescription }
 			detail={ detail }
-			indicator={ showIndicator && refreshButton }
+			indicator={ refreshButton }
 		/>
 	);
 };

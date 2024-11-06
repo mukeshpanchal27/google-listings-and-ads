@@ -11,8 +11,8 @@ import StoreAddressCard from '.~/components/contact-information/store-address-ca
 import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
-import useStoreAddressSynced from '.~/hooks/useStoreAddressSynced';
 import './connected-google-combo-account-card.scss';
+import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
 
 /**
  * Renders a Google account card UI with connected account information.
@@ -24,13 +24,10 @@ const ConnectedGoogleComboAccountCard = () => {
 	const { existingAccounts: existingGoogleAdsAccounts } =
 		useExistingGoogleAdsAccounts();
 	const isConnected = useGoogleAdsAccountReady();
-	const {
-		isAddressSynced,
-		hasFinishedResolution: hasFinishedStoreAddressResolution,
-	} = useStoreAddressSynced();
+	const { hasGoogleMCConnection, hasFinishedResolution } =
+		useGoogleMCAccount();
 
-	const showAddressCard =
-		hasFinishedStoreAddressResolution && isAddressSynced !== null;
+	const showAddressCard = hasFinishedResolution && hasGoogleMCConnection;
 
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
