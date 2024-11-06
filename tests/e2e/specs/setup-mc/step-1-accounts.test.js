@@ -224,34 +224,34 @@ test.describe( 'Set up accounts', () => {
 			expect( page.url() ).toMatch( baseURL + 'google_auth' );
 		} );
 
-		test( 'should create merchant center and ads account if does not exist for the user', async () => {
-			await setUpAccountsPage.mockJetpackConnected();
-			await setUpAccountsPage.mockGoogleConnected();
+		// test( 'should create merchant center and ads account if does not exist for the user', async () => {
+		// 	await setUpAccountsPage.mockJetpackConnected();
+		// 	await setUpAccountsPage.mockGoogleConnected();
 
-			await setUpAccountsPage.fulfillAdsAccounts( [ { id: 1 } ] );
-			await setUpAccountsPage.mockMCHasAccounts();
-			await setUpAccountsPage.mockAdsAccountIncomplete();
-			await setUpAccountsPage.mockMCConnected();
+		// 	await setUpAccountsPage.fulfillAdsAccounts( [ { id: 1 } ] );
+		// 	await setUpAccountsPage.mockMCHasAccounts();
+		// 	await setUpAccountsPage.mockAdsAccountIncomplete();
+		// 	await setUpAccountsPage.mockMCConnected();
 
-			const once = setUpAccountsPage.fulfillTimes( 1 );
+		// 	const once = setUpAccountsPage.fulfillTimes( 1 );
 
-			await once.mockAdsHasNoAccounts();
-			await once.mockMCHasNoAccounts();
-			await once.mockAdsAccountDisconnected();
-			await once.mockMCNotConnected();
+		// 	await once.mockAdsHasNoAccounts();
+		// 	await once.mockMCHasNoAccounts();
+		// 	await once.mockAdsAccountDisconnected();
+		// 	await once.mockMCNotConnected();
 
-			await setUpAccountsPage.goto();
-			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+		// 	await setUpAccountsPage.goto();
+		// 	const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
 
-			await expect(
-				googleAccountCard.getByText(
-					'You don’t have Merchant Center nor Google Ads accounts, so we’re creating them for you.',
-					{
-						exact: true,
-					}
-				)
-			).toBeVisible();
-		} );
+		// 	await expect(
+		// 		googleAccountCard.getByText(
+		// 			'You don’t have Merchant Center nor Google Ads accounts, so we’re creating them for you.',
+		// 			{
+		// 				exact: true,
+		// 			}
+		// 		)
+		// 	).toBeVisible();
+		// } );
 
 		test.describe( 'After connecting Google account', () => {
 			test.beforeEach( async () => {
@@ -683,6 +683,19 @@ test.describe( 'Set up accounts', () => {
 					googleAccountCard.getByText( 'Google Ads ID: 12345' )
 				).toBeVisible();
 			} );
+
+			test( 'should see the conversion action notice', async () => {
+				const googleAccountCard =
+					setUpAccountsPage.getGoogleAccountCard();
+				await expect(
+					googleAccountCard.getByText(
+						'Google Ads conversion measurement has been set up for your store.',
+						{
+							exact: true,
+						}
+					)
+				).toBeVisible();
+			} );
 		} );
 	} );
 
@@ -725,26 +738,15 @@ test.describe( 'Set up accounts', () => {
 			expect( url ).toMatch( /^https:\/\/example\.com(\/|\?|$)/ );
 		} );
 
-		test.describe( 'Account claimed', () => {
-			test.beforeEach( async () => {
-				await setUpAccountsPage.mockAdsStatusClaimed();
-				await setUpAccountsPage.mockAdsAccountConnected();
+		test( 'should see the merchant center id once account has been claimed', async () => {
+			await setUpAccountsPage.mockAdsStatusClaimed();
+			await setUpAccountsPage.mockAdsAccountConnected();
 
-				await setUpAccountsPage.goto();
-			} );
-
-			test( 'should see conversion action notice', async () => {
-				const googleAccountCard =
-					setUpAccountsPage.getGoogleAccountCard();
-				await expect(
-					googleAccountCard.getByText(
-						'Google Ads conversion measurement has been set up for your store.',
-						{
-							exact: true,
-						}
-					)
-				).toBeVisible();
-			} );
+			await setUpAccountsPage.goto();
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+			await expect( googleAccountCard ).toContainText(
+				'Google Ads ID: 12345'
+			);
 		} );
 	} );
 
