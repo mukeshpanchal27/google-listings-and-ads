@@ -22,11 +22,11 @@ jest.mock( './useGoogleMCAccount' );
 jest.mock( './useExistingGoogleMCAccounts' );
 
 describe( 'useAutoCreateAdsMCAccounts hook', () => {
-	let handleCreateAccount;
+	let createMCAccount;
 	let upsertAdsAccount;
 
 	beforeEach( () => {
-		handleCreateAccount = jest.fn( () => Promise.resolve() );
+		createMCAccount = jest.fn( () => Promise.resolve() );
 		upsertAdsAccount = jest.fn( () => Promise.resolve() );
 
 		useGoogleAdsAccount.mockReturnValue( {
@@ -53,7 +53,7 @@ describe( 'useAutoCreateAdsMCAccounts hook', () => {
 	describe( 'Automatic account creation', () => {
 		beforeEach( () => {
 			useCreateMCAccount.mockReturnValue( [
-				handleCreateAccount,
+				createMCAccount,
 				{ response: undefined },
 			] );
 			useUpsertAdsAccount.mockReturnValue( [
@@ -63,13 +63,15 @@ describe( 'useAutoCreateAdsMCAccounts hook', () => {
 		} );
 
 		it( 'should create both accounts', async () => {
-			const { result } = renderHook( () => useAutoCreateAdsMCAccounts() );
+			const { result } = renderHook( () =>
+				useAutoCreateAdsMCAccounts( createMCAccount )
+			);
 
 			await act( async () => {
 				expect( result.current.creatingWhich ).toBe( 'both' );
 			} );
 
-			expect( handleCreateAccount ).toHaveBeenCalledTimes( 1 );
+			expect( createMCAccount ).toHaveBeenCalledTimes( 1 );
 			expect( upsertAdsAccount ).toHaveBeenCalledTimes( 1 );
 		} );
 
@@ -84,12 +86,14 @@ describe( 'useAutoCreateAdsMCAccounts hook', () => {
 				],
 			} );
 
-			const { result } = renderHook( () => useAutoCreateAdsMCAccounts() );
+			const { result } = renderHook( () =>
+				useAutoCreateAdsMCAccounts( createMCAccount )
+			);
 			await act( async () => {
 				expect( result.current.creatingWhich ).toBe( 'mc' );
 			} );
 
-			expect( handleCreateAccount ).toHaveBeenCalledTimes( 1 );
+			expect( createMCAccount ).toHaveBeenCalledTimes( 1 );
 			expect( upsertAdsAccount ).toHaveBeenCalledTimes( 0 );
 		} );
 
@@ -104,12 +108,14 @@ describe( 'useAutoCreateAdsMCAccounts hook', () => {
 				],
 			} );
 
-			const { result } = renderHook( () => useAutoCreateAdsMCAccounts() );
+			const { result } = renderHook( () =>
+				useAutoCreateAdsMCAccounts( createMCAccount )
+			);
 			await act( async () => {
 				expect( result.current.creatingWhich ).toBe( 'ads' );
 			} );
 
-			expect( handleCreateAccount ).toHaveBeenCalledTimes( 0 );
+			expect( createMCAccount ).toHaveBeenCalledTimes( 0 );
 			expect( upsertAdsAccount ).toHaveBeenCalledTimes( 1 );
 		} );
 	} );
@@ -138,10 +144,12 @@ describe( 'useAutoCreateAdsMCAccounts hook', () => {
 		} );
 
 		it( 'should not create accounts if they already exist', () => {
-			const { result } = renderHook( () => useAutoCreateAdsMCAccounts() );
+			const { result } = renderHook( () =>
+				useAutoCreateAdsMCAccounts( createMCAccount )
+			);
 
 			expect( result.current.creatingWhich ).toBe( null );
-			expect( handleCreateAccount ).not.toHaveBeenCalled();
+			expect( createMCAccount ).not.toHaveBeenCalled();
 			expect( upsertAdsAccount ).not.toHaveBeenCalled();
 		} );
 	} );

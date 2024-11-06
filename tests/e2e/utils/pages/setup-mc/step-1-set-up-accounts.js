@@ -55,8 +55,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get MC "Create account" button from the page.
 	 */
 	getMCCreateAccountButtonFromPage() {
-		const button = this.getCreateAccountButton();
-		return button.locator( ':scope.is-secondary' ).nth( 1 );
+		return this.getMCCardFooterButton();
 	}
 
 	/**
@@ -86,9 +85,9 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Merchant Center description row.
 	 */
 	getMCDescriptionRow() {
-		return this.getMCAccountCard().locator(
-			'.gla-account-card__description'
-		);
+		return this.getGoogleDescriptionRow().locator( 'p', {
+			hasText: 'Merchant Center ID',
+		} );
 	}
 
 	/**
@@ -155,6 +154,17 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
+	 * Get Google combo card connected label.
+	 *
+	 * @return {import('@playwright/test').Locator} Get Google combo card connected label.
+	 */
+	getGoogleComboConnectedLabel() {
+		return this.getGoogleComboAccountCard().locator(
+			'.gla-connected-icon-label'
+		);
+	}
+
+	/**
 	 * Get "Reclaim my URL" button.
 	 *
 	 * @return {import('@playwright/test').Locator} Get "Reclaim my URL" button.
@@ -193,9 +203,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get select existing Merchant Center account title.
 	 */
 	getSelectExistingMCAccountTitle() {
-		return this.getMCAccountCard()
-			.locator( '.wcdl-subsection-title' )
-			.nth( 1 );
+		return this.getMCAccountCard().locator( '.gla-account-card__title' );
 	}
 
 	/**
@@ -204,7 +212,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get select MC accounts select element.
 	 */
 	getMCAccountsSelect() {
-		return this.page.locator( 'select[id*="inspector-select-control"]' );
+		return this.getMCAccountCard().getByRole( 'combobox' );
 	}
 
 	/**
@@ -220,13 +228,13 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
-	 * Get account cards.
+	 * Get Google combo account card.
 	 *
 	 * @param {Object} options
-	 * @return {import('@playwright/test').Locator} Get account cards.
+	 * @return {import('@playwright/test').Locator} Get Google combo account card.
 	 */
-	getAccountCards( options = {} ) {
-		return this.page.locator( '.gla-account-card', options );
+	getGoogleComboAccountCard( options = {} ) {
+		return this.page.locator( '.gla-google-combo-account-card', options );
 	}
 
 	/**
@@ -235,7 +243,9 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get WordPress account card.
 	 */
 	getWPAccountCard() {
-		return this.getAccountCards( { hasText: 'WordPress.com' } ).first();
+		return this.page.locator( '.gla-account-card', {
+			hasText: 'WordPress.com',
+		} );
 	}
 
 	/**
@@ -244,11 +254,9 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Google account card.
 	 */
 	getGoogleAccountCard() {
-		return this.getAccountCards( {
-			has: this.page.locator( '.gla-account-card__title', {
-				hasText: 'Google',
-			} ),
-		} ).first();
+		return this.page.locator(
+			'.gla-google-combo-service-account-card--google'
+		);
 	}
 
 	/**
@@ -268,11 +276,9 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Merchant Center account card.
 	 */
 	getMCAccountCard() {
-		return this.getAccountCards( {
-			has: this.page.locator( '.gla-account-card__title', {
-				hasText: 'Google Merchant Center',
-			} ),
-		} ).first();
+		return this.page.locator(
+			'.gla-google-combo-service-account-card--mc'
+		);
 	}
 
 	/**
@@ -281,7 +287,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Merchant Center card footer.
 	 */
 	getMCCardFooter() {
-		return this.getMCAccountCard().locator( '.wcdl-section-card-footer' );
+		return this.getMCAccountCard().locator( '.gla-account-card__actions' );
 	}
 
 	/**

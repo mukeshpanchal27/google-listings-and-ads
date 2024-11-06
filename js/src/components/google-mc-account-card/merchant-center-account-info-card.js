@@ -27,34 +27,18 @@ import DisconnectModal, {
 import { getSettingsUrl } from '.~/utils/urls';
 
 /**
- * Clicking on the "connect to a different Google Merchant Center account" button.
- *
- * @event gla_mc_account_connect_different_account_button_click
- */
-
-/**
  * Renders a Google Merchant Center account card UI with connected account information.
- * It also provides a switch button that lets user connect with another account.
  *
- * @fires gla_mc_account_connect_different_account_button_click
  * @param {Object} props React props.
  * @param {{ id: number }} props.googleMCAccount A data payload object containing the user's Google Merchant Center account ID.
- * @param {boolean} [props.hideAccountSwitch=false] Indicate whether hide the account switch block at the card footer.
  * @param {boolean} [props.hideNotificationService=true] Indicate whether hide the enable Notification service block at the card footer.
  */
-const ConnectedGoogleMCAccountCard = ( {
+const MerchantCenterAccountInfoCard = ( {
 	googleMCAccount,
-	hideAccountSwitch = false,
 	hideNotificationService = false,
 } ) => {
 	const { createNotice, removeNotice } = useDispatchCoreNotices();
 	const { invalidateResolution } = useAppDispatch();
-
-	const [ fetchGoogleMCDisconnect, { loading: loadingGoogleMCDisconnect } ] =
-		useApiFetchCallback( {
-			path: `${ API_NAMESPACE }/mc/connection`,
-			method: 'DELETE',
-		} );
 
 	const [
 		fetchDisableNotifications,
@@ -73,43 +57,6 @@ const ConnectedGoogleMCAccountCard = ( {
 		setOpenedModal( API_DATA_FETCH_FEATURE );
 
 	const domain = new URL( getSetting( 'homeUrl' ) ).host;
-
-	/**
-	 * Event handler to switch GMC account. Upon click, it will:
-	 *
-	 * 1. Display a notice to indicate disconnection in progress, and advise users to wait.
-	 * 2. Call API to disconnect the current connected GMC account.
-	 * 3. Call API to refetch list of GMC accounts.
-	 * Users may have just created a new account,
-	 * and we want that new account to show up in the list.
-	 * 4. Call API to refetch GMC account connection status.
-	 * 5. If there is an error in the above API calls, display an error notice.
-	 */
-	const handleSwitch = async () => {
-		const { notice } = await createNotice(
-			'info',
-			__(
-				'Disconnecting your Google Merchant Center account, please wait…',
-				'google-listings-and-ads'
-			)
-		);
-
-		try {
-			await fetchGoogleMCDisconnect();
-			invalidateResolution( 'getExistingGoogleMCAccounts', [] );
-			invalidateResolution( 'getGoogleMCAccount', [] );
-		} catch ( error ) {
-			createNotice(
-				'error',
-				__(
-					'Unable to disconnect your Google Merchant Center account. Please try again later.',
-					'google-listings-and-ads'
-				)
-			);
-		}
-
-		removeNotice( notice.id );
-	};
 
 	const disableNotifications = async () => {
 		const { notice } = await createNotice(
@@ -149,8 +96,6 @@ const ConnectedGoogleMCAccountCard = ( {
 		googleMCAccount.notification_service_enabled &&
 		googleMCAccount.wpcom_rest_api_status !==
 			GOOGLE_WPCOM_APP_CONNECTED_STATUS.APPROVED;
-
-	const showFooter = ! hideAccountSwitch || showDisconnectNotificationsButton;
 
 	return (
 		<AccountCard
@@ -202,37 +147,23 @@ const ConnectedGoogleMCAccountCard = ( {
 				/>
 			) }
 
-			{ showFooter && (
+			{ showDisconnectNotificationsButton && (
 				<Section.Card.Footer>
-					{ ! hideAccountSwitch && (
-						<AppButton
-							isLink
-							disabled={ loadingGoogleMCDisconnect }
-							text={ __(
-								'Or, connect to a different Google Merchant Center account',
-								'google-listings-and-ads'
-							) }
-							eventName="gla_mc_account_connect_different_account_button_click"
-							onClick={ handleSwitch }
-						/>
-					) }
-					{ showDisconnectNotificationsButton && (
-						<AppButton
-							isDestructive
-							isLink
-							disabled={ loadingDisableNotifications }
-							text={ __(
-								'Disable product data fetch',
-								'google-listings-and-ads'
-							) }
-							eventName="gla_disable_product_sync_click"
-							onClick={ openDisableDataFetchModal }
-						/>
-					) }
+					<AppButton
+						isDestructive
+						isLink
+						disabled={ loadingDisableNotifications }
+						text={ __(
+							'Disable product data fetch',
+							'google-listings-and-ads'
+						) }
+						eventName="gla_disable_product_sync_click"
+						onClick={ openDisableDataFetchModal }
+					/>
 				</Section.Card.Footer>
 			) }
 		</AccountCard>
 	);
 };
 
-export default ConnectedGoogleMCAccountCard;
+export default MerchantCenterAccountInfoCard;
