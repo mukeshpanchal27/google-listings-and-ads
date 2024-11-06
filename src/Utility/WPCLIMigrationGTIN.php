@@ -182,7 +182,7 @@ class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 				continue;
 			}
 
-			$gtin = str_replace( "-", "", $gtin );
+			$gtin = str_replace( '-', '', $gtin );
 			if ( is_numeric( $gtin ) ) {
 				try {
 					$product->set_global_unique_id( $gtin );
@@ -202,6 +202,7 @@ class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 
 	/**
 	 * Check if this Service is needed.
+	 *
 	 * @see https://make.wordpress.org/cli/handbook/guides/commands-cookbook/#include-in-a-plugin-or-theme
 	 * @return bool
 	 */
