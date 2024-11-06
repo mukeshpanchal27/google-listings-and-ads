@@ -64,7 +64,7 @@ function FeatureList() {
 }
 
 /**
- * Returns a div with paid features content.
+ * Returns a component with paid features content.
  *
  * @return {JSX.Element} Paid Features component.
  */

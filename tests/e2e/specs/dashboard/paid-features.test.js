@@ -51,7 +51,7 @@ test.describe( 'Paid Feature Listing', () => {
 			'Reach more customer by advertising your products across Google Ads channels like Search, YouTube and Discover.'
 		);
 
-		// FreeAdCredit div content visible.
+		// FreeAdCredit component content visible.
 		await expect( dashboardPage.paidFeatures ).toContainText(
 			'Claim $500 in ads credit when you spend your first $500 with Google Ads.'
 		);
