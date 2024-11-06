@@ -656,21 +656,17 @@ test.describe( 'Set up accounts', () => {
 			await popupPage.close();
 		} );
 
-		test( 'should see conversion action notice', async () => {
+		test( 'should see the accounts card connected', async () => {
 			await setUpAccountsPage.mockAdsStatusClaimed();
-			const statusResponse =
-				setUpAccountsPage.registerAdsAccountStatusResponse();
-			await setUpAccountsPage.page.dispatchEvent( 'body', 'focus' );
-			await statusResponse;
+
+			await page.reload();
 
 			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+
 			await expect(
-				googleAccountCard.getByText(
-					'Google Ads conversion measurement has been set up for your store.',
-					{
-						exact: true,
-					}
-				)
+				googleAccountCard.getByText( 'Connected', {
+					exact: true,
+				} )
 			).toBeVisible();
 		} );
 	} );
