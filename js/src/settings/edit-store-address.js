@@ -90,9 +90,7 @@ const EditStoreAddress = () => {
 						</div>
 					}
 				>
-					<StoreAddressCard
-						showValidation={ ! address.isAddressFilled }
-					/>
+					<StoreAddressCard />
 				</Section>
 				<Section>
 					<Flex justify="flex-end">
