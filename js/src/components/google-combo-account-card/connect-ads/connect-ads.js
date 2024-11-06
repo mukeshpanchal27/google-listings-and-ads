@@ -12,7 +12,6 @@ import ConnectAdsFooter from './connect-ads-footer';
 import ConfirmCreateModal from './confirm-create-modal';
 import LoadingLabel from '.~/components/loading-label';
 import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
 import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
@@ -26,10 +25,12 @@ import ConnectButton from '.~/components/google-ads-account-card/connect-ads/con
  * ConnectAds component renders an account card to connect to an existing Google Ads account.
  *
  * @param {Object} props Component props.
- * @param {boolean} props.finalizeAdsAccountCreation Whether the user is in the process of finalizing the Ads account creation, i.e after the user has claimed the account and the step is conversion_action.
+ * @param {boolean} props.isConnecting Whether the user is in the process of finalizing the Ads account creation, i.e after the user has claimed the account and the step is conversion_action.
+ * @param {boolean} props.isCreating Whether the user is in the process of creating a new Ads account.
+ * @param {Function} props.onCreate A callback to fire when creating a new account.
  * @return {JSX.Element} {@link AccountCard} filled with content.
  */
-const ConnectAds = ( { finalizeAdsAccountCreation } ) => {
+const ConnectAds = ( { isConnecting, isCreating, onCreate } ) => {
 	const [ value, setValue ] = useState();
 	const [ isLoading, setLoading ] = useState( false );
 	const { createNotice } = useDispatchCoreNotices();
@@ -38,14 +39,16 @@ const ConnectAds = ( { finalizeAdsAccountCreation } ) => {
 	const [ showCreateNewModal, setShowCreateNewModal ] = useState( false );
 	const { existingAccounts: accounts, hasFinishedResolution } =
 		useExistingGoogleAdsAccounts();
-	const { googleAdsAccount, refetchGoogleAdsAccount } = useGoogleAdsAccount();
+	const {
+		googleAdsAccount,
+		refetchGoogleAdsAccount,
+		hasFinishedResolution: hasResolvedGoogleAdsAccount,
+	} = useGoogleAdsAccount();
 	const [ connectGoogleAdsAccount ] = useApiFetchCallback( {
 		path: '/wc/gla/ads/accounts',
 		method: 'POST',
 		data: { id: value },
 	} );
-	const [ upsertAdsAccount, { loading: creatingNewAccount } ] =
-		useUpsertAdsAccount();
 
 	const onCreateNew = () => {
 		setShowCreateNewModal( true );
@@ -57,7 +60,7 @@ const ConnectAds = ( { finalizeAdsAccountCreation } ) => {
 
 	const handleOnContinue = async () => {
 		setShowCreateNewModal( false );
-		await upsertAdsAccount();
+		await onCreate();
 	};
 
 	useEffect( () => {
@@ -94,7 +97,7 @@ const ConnectAds = ( { finalizeAdsAccountCreation } ) => {
 	}
 
 	const getIndicator = () => {
-		if ( ! hasFinishedResolution ) {
+		if ( ! hasFinishedResolution || ! hasResolvedGoogleAdsAccount ) {
 			return <LoadingLabel />;
 		}
 
@@ -116,15 +119,14 @@ const ConnectAds = ( { finalizeAdsAccountCreation } ) => {
 	};
 
 	// Show a loading state if the Ads account is being updated or if a new Ads account is being created.
-	// If finalizeAdsAccountCreation is true, the processing is done in `ConnectedGoogleComboAccountCard`.
-	if ( creatingNewAccount || finalizeAdsAccountCreation ) {
+	if ( isConnecting || isCreating ) {
 		let title = __(
 			'Creating a new Google Ads account',
 			'google-listings-and-ads'
 		);
 		let indicatorLabel = __( 'Creating…', 'google-listings-and-ads' );
 
-		if ( finalizeAdsAccountCreation ) {
+		if ( isConnecting ) {
 			title = __(
 				'Connecting your Google Ads account',
 				'google-listings-and-ads'

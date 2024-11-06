@@ -40,7 +40,7 @@ const ConnectedGoogleComboAccountCard = () => {
 	const { invalidateResolution } = useAppDispatch();
 	const { googleAdsAccount } = useGoogleAdsAccount();
 	const { hasAccess, step } = useGoogleAdsAccountStatus();
-	const [ upsertAdsAccount ] = useUpsertAdsAccount();
+	const [ upsertAdsAccount, { action } ] = useUpsertAdsAccount();
 
 	const finalizeAdsAccountCreation =
 		hasAccess === true && step === 'conversion_action';
@@ -116,7 +116,9 @@ const ConnectedGoogleComboAccountCard = () => {
 
 			{ showConnectAds && (
 				<ConnectAds
-					finalizeAdsAccountCreation={ finalizeAdsAccountCreation }
+					isConnecting={ action === 'update' }
+					isCreating={ action === 'create' }
+					onCreate={ upsertAdsAccount }
 				/>
 			) }
 		</div>
