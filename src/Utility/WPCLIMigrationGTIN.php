@@ -177,7 +177,7 @@ class WPCLIMigrationGTIN implements Service, Registerable {
 			if ( $gtin ) {
 				$product->set_global_unique_id( $gtin );
 				$product->save();
-				WP_CLI::success( sprintf( 'GTIN [ %s ] has been migrated for Product ID: %s - %s', $gtin, $product->get_id(), $product->get_name() ) );
+				WP_CLI::debug( sprintf( 'GTIN [ %s ] has been migrated for Product ID: %s - %s', $gtin, $product->get_id(), $product->get_name() ) );
 				++$processed;
 			}
 		}
