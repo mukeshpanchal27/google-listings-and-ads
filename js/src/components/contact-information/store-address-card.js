@@ -14,6 +14,7 @@ import useStoreAddress from '.~/hooks/useStoreAddress';
 import useStoreAddressSynced from '.~/hooks/useStoreAddressSynced';
 import AccountCard, { APPEARANCE } from '.~/components/account-card';
 import AppButton from '.~/components/app-button';
+import ContactInformationPreviewCard from './contact-information-preview-card';
 import ValidationErrors from '.~/components/validation-errors';
 import TrackableLink from '.~/components/trackable-link';
 import mapStoreAddressErrors from './mapStoreAddressErrors';
@@ -166,3 +167,73 @@ const StoreAddressCard = () => {
 };
 
 export default StoreAddressCard;
+
+/**
+ * Trigger when store address edit button is clicked.
+ * Before `1.5.0` this name was used for tracking clicking "Edit in settings" to edit the WC address. As of `>1.5.0`, that event is now tracked as `edit_wc_store_address`.
+ *
+ * @event gla_edit_mc_store_address
+ * @property {string} path The path used in the page from which the link was clicked, e.g. `"/google/settings"`.
+ * @property {string|undefined} [subpath] The subpath used in the page, e.g. `"/edit-store-address"` or `undefined` when there is no subpath.
+ */
+
+/**
+ * Renders a component with the store address.
+ * In preview mode, meaning there will be no refresh button, just the edit link.
+ *
+ * @fires gla_edit_mc_store_address Whenever "Edit" is clicked.
+ *
+ * @param {Object} props React props
+ * @param {string} props.editHref URL where Edit button should point to.
+ * @param {JSX.Element} props.learnMore Link to be shown at the end of missing data message.
+ * @return {JSX.Element} Filled AccountCard component.
+ */
+export function StoreAddressCardPreview( { editHref, learnMore } ) {
+	const { loaded, data } = useStoreAddress( 'mc' );
+	let content, warning;
+
+	if ( loaded ) {
+		const {
+			isAddressFilled,
+			isMCAddressDifferent,
+			address,
+			address2,
+			city,
+			state,
+			country,
+			postcode,
+		} = data;
+		const stateAndCountry = state ? `${ state } - ${ country }` : country;
+
+		if ( isAddressFilled && ! isMCAddressDifferent ) {
+			content = [ address, address2, city, stateAndCountry, postcode ]
+				.filter( Boolean )
+				.join( ', ' );
+		} else {
+			warning = __(
+				'Please add your store address',
+				'google-listings-and-ads'
+			);
+			content = (
+				<>
+					{ __(
+						'Google requires the store address for all stores using Google Merchant Center. ',
+						'google-listings-and-ads'
+					) }
+					{ learnMore }
+				</>
+			);
+		}
+	}
+
+	return (
+		<ContactInformationPreviewCard
+			appearance={ APPEARANCE.ADDRESS }
+			editHref={ editHref }
+			editEventName="gla_edit_mc_store_address"
+			loading={ ! loaded }
+			warning={ warning }
+			content={ content }
+		></ContactInformationPreviewCard>
+	);
+}

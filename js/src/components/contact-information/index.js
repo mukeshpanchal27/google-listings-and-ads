@@ -6,9 +6,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import { getEditStoreAddressUrl } from '.~/utils/urls';
 import Section from '.~/wcdl/section';
-import StoreAddressCard from './store-address-card';
 import VerticalGapLayout from '.~/components/vertical-gap-layout';
+import AppDocumentationLink from '.~/components/app-documentation-link';
+import { StoreAddressCardPreview } from './store-address-card';
+
+const learnMoreLinkId = 'contact-information-read-more';
+const learnMoreUrl =
+	'https://woocommerce.com/document/google-for-woocommerce/get-started/requirements/#contact-information';
 
 const description = (
 	<>
@@ -37,7 +43,18 @@ export function ContactInformationPreview() {
 	return (
 		<Section title={ settingsTitle } description={ description }>
 			<VerticalGapLayout size="overlap">
-				<StoreAddressCard />
+				<StoreAddressCardPreview
+					editHref={ getEditStoreAddressUrl() }
+					learnMore={
+						<AppDocumentationLink
+							context="settings-no-store-address-notice"
+							linkId={ learnMoreLinkId }
+							href={ learnMoreUrl }
+						>
+							{ __( 'Learn more', 'google-listings-and-ads' ) }
+						</AppDocumentationLink>
+					}
+				/>
 			</VerticalGapLayout>
 		</Section>
 	);

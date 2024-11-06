@@ -22,6 +22,7 @@ export const subpaths = {
 	editFreeListings: '/free-listings/edit',
 	editCampaign: '/campaigns/edit',
 	createCampaign: '/campaigns/create',
+	editStoreAddress: '/edit-store-address',
 	reconnectWPComAccount: '/reconnect-wpcom-account',
 	reconnectGoogleAccount: '/reconnect-google-account',
 };
@@ -84,6 +85,13 @@ export const geReportsUrl = () => {
 	return getNewPath( null, reportsPath, null );
 };
 
+export const getEditStoreAddressUrl = () => {
+	return getNewPath(
+		{ subpath: subpaths.editStoreAddress },
+		settingsPath,
+		null
+	);
+};
 /**
  * Returns the URL of the account re-connecting page.
  *
