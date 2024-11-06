@@ -28,22 +28,26 @@ jest.mock( '.~/hooks/useAdsCampaigns', () =>
 );
 
 describe( 'SummarySection when no data is loaded', () => {
-	let mockCampaigns;
-
 	beforeAll( () => {
-		let mockedCampaigns = [];
-
 		useAdsCampaigns.mockImplementation( () => {
-			return { loaded: true, data: mockedCampaigns };
+			return {
+				loading: false,
+				loaded: true,
+				data: [
+					{
+						id: 10,
+						name: 'PMax Campaign',
+						status: 'enabled',
+						type: 'performance_max',
+						amount: 20,
+						displayCountries: [ 'US' ],
+					},
+				],
+			};
 		} );
-
-		mockCampaigns = ( ...campaigns ) => {
-			mockedCampaigns = campaigns;
-		};
 	} );
 
 	it( 'Shows no data message for Free Campaigns', async () => {
-		mockCampaigns( [] );
 		const { findByText } = render( <SummarySection /> );
 
 		expect(
@@ -60,7 +64,6 @@ describe( 'SummarySection when no data is loaded', () => {
 		);
 	} );
 	it( 'Shows no data message for Paid Campaigns', async () => {
-		mockCampaigns( [] );
 		const { findByText } = render( <SummarySection /> );
 
 		expect(
