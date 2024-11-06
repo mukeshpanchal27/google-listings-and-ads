@@ -27,10 +27,9 @@
 		gap: calc(var(--main-gap) / 3 * 2);
 		padding: $grid-unit-20 $grid-unit-15;
 		color: $gray-900;
-		font-size: $gla-font-base;
 
 		.gridicon {
-			fill: #5ec862;
+			fill: $gla-color-green;
 		}
 	}
 
