@@ -8,6 +8,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\AttributeManager;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductRepository;
+use Exception;
 use WP_CLI;
 
 defined( 'ABSPATH' ) || exit;
@@ -164,6 +165,7 @@ class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 		foreach ( $products as $product ) {
 			// void if core GTIN is already set.
 			if ( $product->get_global_unique_id() ) {
+				WP_CLI::debug( sprintf( 'GTIN has been skipped for Product ID: %s - %s. GTIN was found in Product Inventory tab.', $product->get_id(), $product->get_name() ) );
 				continue;
 			}
 
@@ -175,11 +177,23 @@ class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 			}
 
 			$gtin = $this->attribute_manager->get_value( $product, 'gtin' );
-			if ( $gtin ) {
-				$product->set_global_unique_id( $gtin );
-				$product->save();
-				WP_CLI::debug( sprintf( 'GTIN [ %s ] has been migrated for Product ID: %s - %s', $gtin, $product->get_id(), $product->get_name() ) );
-				++$processed;
+			if ( ! $gtin ) {
+				WP_CLI::debug( sprintf( 'GTIN has been skipped for Product ID: %s - %s. No GTIN was found', $product->get_id(), $product->get_name() ) );
+				continue;
+			}
+
+			$gtin = str_replace( "-", "", $gtin );
+			if ( is_numeric( $gtin ) ) {
+				try {
+					$product->set_global_unique_id( $gtin );
+					$product->save();
+					WP_CLI::debug( sprintf( 'GTIN [ %s ] has been migrated for Product ID: %s - %s', $gtin, $product->get_id(), $product->get_name() ) );
+					++$processed;
+				} catch ( Exception $e ) {
+					WP_CLI::error( $e->getMessage(), false );
+				}
+			} else {
+				WP_CLI::debug( sprintf( 'GTIN [ %s ] has been skipped for Product ID: %s - %s. Invalid GTIN was found.', $gtin, $product->get_id(), $product->get_name() ) );
 			}
 		}
 
