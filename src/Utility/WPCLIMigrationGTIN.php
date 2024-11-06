@@ -3,6 +3,7 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Utility;
 
+use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Conditional;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\AttributeManager;
@@ -19,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since x.x.x
  */
-class WPCLIMigrationGTIN implements Service, Registerable {
+class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 
 
 	/** @var AttributeManager  */
@@ -183,5 +184,14 @@ class WPCLIMigrationGTIN implements Service, Registerable {
 		}
 
 		return $processed;
+	}
+
+	/**
+	 * Check if this Service is needed.
+	 * @see https://make.wordpress.org/cli/handbook/guides/commands-cookbook/#include-in-a-plugin-or-theme
+	 * @return bool
+	 */
+	public static function is_needed(): bool {
+		return defined( 'WP_CLI' ) && WP_CLI;
 	}
 }
