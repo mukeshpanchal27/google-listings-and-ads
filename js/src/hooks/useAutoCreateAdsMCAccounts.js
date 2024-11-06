@@ -10,7 +10,6 @@ import useGoogleAdsAccount from './useGoogleAdsAccount';
 import useExistingGoogleAdsAccounts from './useExistingGoogleAdsAccounts';
 import useGoogleMCAccount from './useGoogleMCAccount';
 import useExistingGoogleMCAccounts from './useExistingGoogleMCAccounts';
-import useCreateMCAccount from './useCreateMCAccount';
 import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
 import {
 	CREATING_ADS_ACCOUNT,
@@ -65,18 +64,16 @@ const useShouldCreateMCAccount = () => {
 /**
  * useAutoCreateAdsMCAccounts hook.
  * Creates Google Ads and Merchant Center accounts if the user doesn't have any existing and connected accounts.
- *
+ * @param {Function} createMCAccount Callback to create a Merchant Center account.
  * @return {AutoCreateAdsMCAccountsData} Object containing account creation data.
  */
-const useAutoCreateAdsMCAccounts = () => {
+const useAutoCreateAdsMCAccounts = ( createMCAccount ) => {
 	const lockedRef = useRef( false );
 	const [ creatingWhich, setCreatingWhich ] = useState( null );
 	const [ hasDetermined, setDetermined ] = useState( false );
 
 	const shouldCreateAds = useShouldCreateAdsAccount();
 	const shouldCreateMC = useShouldCreateMCAccount();
-
-	const [ handleCreateAccount ] = useCreateMCAccount();
 	const [ upsertAdsAccount ] = useUpsertAdsAccount();
 
 	useEffect( () => {
@@ -108,10 +105,10 @@ const useAutoCreateAdsMCAccounts = () => {
 		if ( which ) {
 			const handleCreateAccountCallback = async () => {
 				if ( which === CREATING_BOTH_ACCOUNTS ) {
-					await handleCreateAccount();
+					await createMCAccount();
 					await upsertAdsAccount();
 				} else if ( which === CREATING_MC_ACCOUNT ) {
-					await handleCreateAccount();
+					await createMCAccount();
 				} else if ( which === CREATING_ADS_ACCOUNT ) {
 					await upsertAdsAccount();
 				}
@@ -120,12 +117,7 @@ const useAutoCreateAdsMCAccounts = () => {
 
 			handleCreateAccountCallback();
 		}
-	}, [
-		handleCreateAccount,
-		shouldCreateAds,
-		shouldCreateMC,
-		upsertAdsAccount,
-	] );
+	}, [ createMCAccount, shouldCreateAds, shouldCreateMC, upsertAdsAccount ] );
 
 	return {
 		hasDetermined,

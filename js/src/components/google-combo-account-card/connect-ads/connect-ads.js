@@ -11,7 +11,6 @@ import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
 import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import { useAppDispatch } from '.~/data';
-import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import AccountCard from '.~/components/account-card';
 import AdsAccountSelectControl from '.~/components/ads-account-select-control';
@@ -32,14 +31,7 @@ const ConnectAds = () => {
 	const { createNotice } = useDispatchCoreNotices();
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
 	const isConnected = useGoogleAdsAccountReady();
-	const {
-		existingAccounts: accounts,
-		hasFinishedResolution: hasFinishedResolutionForExistingAdsAccount,
-	} = useExistingGoogleAdsAccounts();
-	const {
-		googleAdsAccount,
-		hasFinishedResolution: hasFinishedResolutionForCurrentAccount,
-	} = useGoogleAdsAccount();
+	const { googleAdsAccount, hasFinishedResolution } = useGoogleAdsAccount();
 	const [ connectGoogleAdsAccount ] = useApiFetchCallback( {
 		path: '/wc/gla/ads/accounts',
 		method: 'POST',
@@ -75,16 +67,11 @@ const ConnectAds = () => {
 		}
 	};
 
-	// If the accounts are still being fetched, we don't want to show the card.
-	if (
-		! hasFinishedResolutionForExistingAdsAccount ||
-		! hasFinishedResolutionForCurrentAccount ||
-		! accounts?.length
-	) {
-		return null;
-	}
-
 	const getIndicator = () => {
+		if ( ! hasFinishedResolution ) {
+			return <LoadingLabel />;
+		}
+
 		if ( isLoading ) {
 			return (
 				<LoadingLabel
