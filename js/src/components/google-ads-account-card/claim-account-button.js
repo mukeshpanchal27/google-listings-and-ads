@@ -35,7 +35,7 @@ const ClaimAccountButton = ( {
 	loading = false,
 	...restProps
 } ) => {
-	const { inviteLink } = useGoogleAdsAccountStatus();
+	const { inviteLink, hasFinishedResolution } = useGoogleAdsAccountStatus();
 	const getEventProps = useEventPropertiesFilter( FILTER_ONBOARDING );
 
 	const handleClaimAccountClick = ( event ) => {
@@ -47,13 +47,17 @@ const ClaimAccountButton = ( {
 		onClick( event );
 	};
 
+	if ( ! hasFinishedResolution ) {
+		return null;
+	}
+
 	return (
 		<AppButton
 			{ ...restProps }
 			eventName="gla_open_ads_account_claim_invitation_button_click"
 			eventProps={ getEventProps() }
 			onClick={ handleClaimAccountClick }
-			loading={ ! inviteLink || loading }
+			loading={ loading }
 		/>
 	);
 };

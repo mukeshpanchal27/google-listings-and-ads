@@ -32,6 +32,7 @@ describe( 'ClaimAccountButton', () => {
 
 		useGoogleAdsAccountStatus.mockReturnValue( {
 			inviteLink: 'https://example.com',
+			hasFinishedResolution: true,
 		} );
 	} );
 
