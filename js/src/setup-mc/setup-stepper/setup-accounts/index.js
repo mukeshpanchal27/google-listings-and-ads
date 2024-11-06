@@ -7,6 +7,7 @@ import { createInterpolateElement } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import { useAppDispatch } from '.~/data';
 import useJetpackAccount from '.~/hooks/useJetpackAccount';
 import useGoogleAccount from '.~/hooks/useGoogleAccount';
 import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
@@ -26,6 +27,7 @@ import './index.scss';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import useStoreAddressSynced from '.~/hooks/useStoreAddressSynced';
+import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
 
 /**
  * Renders the disclaimer of Comparison Shopping Service (CSS).
@@ -90,8 +92,25 @@ const SetupAccounts = ( props ) => {
 		isReady: isGoogleMCReady,
 	} = useGoogleMCAccount();
 	const { hasFinishedResolution } = useGoogleAdsAccount();
-	const { isAddressSynced } = useStoreAddressSynced();
+	const { isAddressFilled } = useStoreAddressSynced();
 	const isGoogleAdsReady = useGoogleAdsAccountReady();
+	const { updateGoogleMCContactInformation } = useAppDispatch();
+	const { createNotice } = useDispatchCoreNotices();
+
+	const handleContinueClick = async () => {
+		try {
+			await updateGoogleMCContactInformation();
+			onContinue();
+		} catch ( error ) {
+			createNotice(
+				'error',
+				__(
+					'Unable to update your contact information. Please try again later.',
+					'google-listings-and-ads'
+				)
+			);
+		}
+	};
 
 	/**
 	 * When jetpack is loading, or when google account is loading,
@@ -118,7 +137,7 @@ const SetupAccounts = ( props ) => {
 		hasFinishedResolution &&
 		isGoogleAdsReady &&
 		isGoogleMCReady &&
-		isAddressSynced
+		isAddressFilled
 	);
 
 	return (
@@ -154,7 +173,7 @@ const SetupAccounts = ( props ) => {
 					<AppButton
 						isPrimary
 						disabled={ isContinueButtonDisabled }
-						onClick={ onContinue }
+						onClick={ handleContinueClick }
 					>
 						{ __( 'Continue', 'google-listings-and-ads' ) }
 					</AppButton>
