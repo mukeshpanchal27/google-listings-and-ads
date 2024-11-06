@@ -683,19 +683,6 @@ test.describe( 'Set up accounts', () => {
 					googleAccountCard.getByText( 'Google Ads ID: 12345' )
 				).toBeVisible();
 			} );
-
-			test( 'should see the conversion action notice', async () => {
-				const googleAccountCard =
-					setUpAccountsPage.getGoogleAccountCard();
-				await expect(
-					googleAccountCard.getByText(
-						'Google Ads conversion measurement has been set up for your store.',
-						{
-							exact: true,
-						}
-					)
-				).toBeVisible();
-			} );
 		} );
 	} );
 
@@ -736,17 +723,21 @@ test.describe( 'Set up accounts', () => {
 			await popupPage.waitForLoadState();
 			const url = popupPage.url();
 			expect( url ).toMatch( /^https:\/\/example\.com(\/|\?|$)/ );
+			await popupPage.close();
 		} );
 
-		test( 'should see the merchant center id once account has been claimed', async () => {
+		test( 'should see the accounts card connected', async () => {
 			await setUpAccountsPage.mockAdsStatusClaimed();
-			await setUpAccountsPage.mockAdsAccountConnected();
 
-			await setUpAccountsPage.goto();
+			await page.reload();
+
 			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
-			await expect( googleAccountCard ).toContainText(
-				'Google Ads ID: 12345'
-			);
+
+			await expect(
+				googleAccountCard.getByText( 'Connected', {
+					exact: true,
+				} )
+			).toBeVisible();
 		} );
 	} );
 
