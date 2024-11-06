@@ -420,7 +420,7 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.goto();
 			} );
 
-			test( 'should see the Refresh to sync button', async () => {
+			test( 'should see the Update store address button', async () => {
 				const refreshToSyncButton =
 					await setUpAccountsPage.getStoreAddressRefreshToSyncButton();
 				await expect( refreshToSyncButton ).toBeVisible();

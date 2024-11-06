@@ -391,7 +391,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 */
 	getStoreAddressRefreshToSyncButton() {
 		return this.getStoreAddressCard().getByRole( 'button', {
-			name: 'Refresh to sync',
+			name: 'Update store address',
 			exact: true,
 		} );
 	}

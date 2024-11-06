@@ -44,7 +44,7 @@ import './store-address-card.scss';
  * Renders a component with a given store address.
  *
  * @fires gla_edit_wc_store_address Whenever "Edit in WooCommerce Settings" button is clicked.
- * @fires gla_wc_store_address_validation Whenever the new store address data is fetched after clicking "Refresh to sync" button.
+ * @fires gla_wc_store_address_validation Whenever the new store address data is fetched after clicking "Update store address" button.
  * @return {JSX.Element} Filled AccountCard component.
  */
 const StoreAddressCard = () => {
