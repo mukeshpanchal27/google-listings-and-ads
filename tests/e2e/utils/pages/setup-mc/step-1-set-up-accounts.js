@@ -374,4 +374,17 @@ export default class SetUpAccountsPage extends MockRequests {
 	getTermsCheckbox() {
 		return this.page.getByLabel( /I accept the terms and conditions/ );
 	}
+
+	/**
+	 * Register the responses when checking for account-status.
+	 *
+	 * @return {Promise<import('@playwright/test').Response>} The response.
+	 */
+	registerAdsAccountStatusResponse() {
+		return this.page.waitForResponse(
+			( response ) =>
+				response.url().includes( '/gla/ads/account-status' ) &&
+				response.status() === 200
+		);
+	}
 }
