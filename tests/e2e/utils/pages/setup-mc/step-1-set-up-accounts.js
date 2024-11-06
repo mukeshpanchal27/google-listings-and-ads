@@ -380,4 +380,28 @@ export default class SetUpAccountsPage extends MockRequests {
 	getTermsCheckbox() {
 		return this.page.getByLabel( /I accept the terms and conditions/ );
 	}
+
+	/**
+	 * Get "Edit" button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get "Edit" button.
+	 */
+	getEditButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Edit',
+			exact: true,
+		} );
+	}
+
+	/**
+	 * Get "Connect to a different Google account" button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get "Connect to a different Google account" button.
+	 */
+	getConnectDifferentGoogleAccountButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Connect to a different Google account',
+			exact: true,
+		} );
+	}
 }

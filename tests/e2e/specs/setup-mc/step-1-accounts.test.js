@@ -794,7 +794,6 @@ test.describe( 'Set up accounts', () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCConnected();
-				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockAdsStatusClaimed();
 
 				await setUpAccountsPage.goto();
@@ -806,6 +805,44 @@ test.describe( 'Set up accounts', () => {
 
 				await expect( continueButton ).toBeEnabled();
 			} );
+		} );
+	} );
+
+	test.describe( 'Edit button', () => {
+		test.beforeAll( async () => {
+			await setUpAccountsPage.mockMCConnected();
+			await setUpAccountsPage.mockAdsAccountConnected();
+			await setUpAccountsPage.mockAdsStatusClaimed();
+			await setUpAccountsPage.goto();
+
+			const editButton = setUpAccountsPage.getEditButton();
+			await editButton.click();
+		} );
+
+		test( 'should display "Connect to a different Google account" button when clicked', async () => {
+			const connectDifferentGoogleAccountButton =
+				setUpAccountsPage.getConnectDifferentGoogleAccountButton();
+			await expect( connectDifferentGoogleAccountButton ).toBeVisible();
+		} );
+
+		test( 'should render the Google MC account card', async () => {
+			const selectAccountTitle =
+				setUpAccountsPage.getSelectExistingMCAccountTitle();
+			await expect( selectAccountTitle ).toContainText(
+				'Connect to existing Merchant Center account'
+			);
+		} );
+
+		test( 'should render the Google Ads account', async () => {
+			const googleAdsAccountCard =
+				setUpAccountsPage.getGoogleAdsAccountCard();
+
+			await expect(
+				googleAdsAccountCard.getByText(
+					'Connect to existing Google Ads account',
+					{ exact: true }
+				)
+			).toBeVisible();
 		} );
 	} );
 
