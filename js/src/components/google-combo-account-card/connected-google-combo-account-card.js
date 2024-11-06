@@ -27,8 +27,6 @@ const ConnectedGoogleComboAccountCard = () => {
 	const { hasGoogleMCConnection, hasFinishedResolution } =
 		useGoogleMCAccount();
 
-	const showAddressCard = hasFinishedResolution && hasGoogleMCConnection;
-
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
 	}
@@ -39,6 +37,8 @@ const ConnectedGoogleComboAccountCard = () => {
 	const showConnectAds =
 		( editMode && hasExistingGoogleAdsAccounts ) ||
 		( ! isConnected && hasExistingGoogleAdsAccounts );
+
+	const showAddressCard = hasFinishedResolution && hasGoogleMCConnection;
 
 	return (
 		<div>

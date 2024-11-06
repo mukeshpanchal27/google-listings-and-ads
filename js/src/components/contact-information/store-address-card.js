@@ -155,7 +155,7 @@ const StoreAddressCard = () => {
 
 	return (
 		<AccountCard
-			className="'gla-store-address-card"
+			className="gla-store-address-card"
 			appearance={ APPEARANCE.ADDRESS }
 			alignIcon="top"
 			alignIndicator="top"
