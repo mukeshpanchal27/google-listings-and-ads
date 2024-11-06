@@ -30,7 +30,7 @@ const ConnectedGoogleComboAccountCard = () => {
 	} = useStoreAddressSynced();
 
 	const showAddressCard =
-		hasFinishedStoreAddressResolution && ! isAddressSynced;
+		hasFinishedStoreAddressResolution && isAddressSynced !== null;
 
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
