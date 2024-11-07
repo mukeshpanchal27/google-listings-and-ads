@@ -1,7 +1,11 @@
 .gla-paid-features {
-	@media (max-width: $break-small) {
-		&__content {
-			flex-direction: column;
+
+	&__content {
+		flex-direction: column;
+
+		@media (min-width: $break-small) {
+			align-items: flex-start;
+			flex-direction: row;
 			gap: $grid-unit-20;
 		}
 	}
