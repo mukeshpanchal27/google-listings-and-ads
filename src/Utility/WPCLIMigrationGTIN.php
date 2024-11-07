@@ -183,17 +183,19 @@ class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 			}
 
 			$gtin = str_replace( '-', '', $gtin );
-			if ( is_numeric( $gtin ) ) {
-				try {
-					$product->set_global_unique_id( $gtin );
-					$product->save();
-					WP_CLI::debug( sprintf( 'GTIN [ %s ] has been migrated for Product ID: %s - %s', $gtin, $product->get_id(), $product->get_name() ) );
-					++$processed;
-				} catch ( Exception $e ) {
-					WP_CLI::error( sprintf('GTIN [ %s ] for Product ID: %s - %s has an error - %s', $gtin, $product->get_id(), $product->get_name(), $e->getMessage()), false );
-				}
-			} else {
+
+			if ( ! is_numeric( $gtin ) ) {
 				WP_CLI::debug( sprintf( 'GTIN [ %s ] has been skipped for Product ID: %s - %s. Invalid GTIN was found.', $gtin, $product->get_id(), $product->get_name() ) );
+				continue;
+			}
+
+			try {
+				$product->set_global_unique_id( $gtin );
+				$product->save();
+				WP_CLI::debug( sprintf( 'GTIN [ %s ] has been migrated for Product ID: %s - %s', $gtin, $product->get_id(), $product->get_name() ) );
+				++$processed;
+			} catch ( Exception $e ) {
+				WP_CLI::error( sprintf( 'GTIN [ %s ] for Product ID: %s - %s has an error - %s', $gtin, $product->get_id(), $product->get_name(), $e->getMessage() ), false );
 			}
 		}
 
