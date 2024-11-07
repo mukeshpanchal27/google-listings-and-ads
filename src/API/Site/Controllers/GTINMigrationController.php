@@ -55,7 +55,7 @@ class GTINMigrationController extends BaseController {
 				],
 				[
 					'methods'  => TransportMethods::READABLE,
-					'callback' => $this->get_migration_callback(),
+					'callback' => $this->get_migration_status_callback(),
 				],
 				'schema' => $this->get_api_response_schema_callback(),
 			]
@@ -96,11 +96,11 @@ class GTINMigrationController extends BaseController {
 	}
 
 	/**
-	 * Callback function for scheduling GTIN migration job.
+	 * Callback function for getting the current migration status.
 	 *
 	 * @return callable
 	 */
-	protected function get_migration_callback(): callable {
+	protected function get_migration_status_callback(): callable {
 		return function () {
 			return new Response(
 				[
