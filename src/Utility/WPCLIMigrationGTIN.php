@@ -190,7 +190,7 @@ class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 					WP_CLI::debug( sprintf( 'GTIN [ %s ] has been migrated for Product ID: %s - %s', $gtin, $product->get_id(), $product->get_name() ) );
 					++$processed;
 				} catch ( Exception $e ) {
-					WP_CLI::error( $e->getMessage(), false );
+					WP_CLI::error( sprintf('GTIN [ %s ] for Product ID: %s - %s has an error - %s', $gtin, $product->get_id(), $product->get_name(), $e->getMessage()), false );
 				}
 			} else {
 				WP_CLI::debug( sprintf( 'GTIN [ %s ] has been skipped for Product ID: %s - %s. Invalid GTIN was found.', $gtin, $product->get_id(), $product->get_name() ) );
