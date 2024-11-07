@@ -404,4 +404,16 @@ export default class SetUpAccountsPage extends MockRequests {
 			exact: true,
 		} );
 	}
+
+	/**
+	 * Get "Cancel" button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get "Cancel" button.
+	 */
+	getCancelButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Cancel',
+			exact: true,
+		} );
+	}
 }

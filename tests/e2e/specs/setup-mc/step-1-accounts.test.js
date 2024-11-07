@@ -805,35 +805,66 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.mockAdsAccountConnected();
 			await setUpAccountsPage.mockAdsStatusClaimed();
 			await setUpAccountsPage.goto();
+		} );
 
+		test( 'should display the Edit button and the Ads and MC account cards are not visible', async () => {
 			const editButton = setUpAccountsPage.getEditButton();
-			await editButton.click();
-		} );
+			await expect( editButton ).toBeVisible();
 
-		test( 'should display "Connect to a different Google account" button when clicked', async () => {
-			const connectDifferentGoogleAccountButton =
-				setUpAccountsPage.getConnectDifferentGoogleAccountButton();
-			await expect( connectDifferentGoogleAccountButton ).toBeVisible();
-		} );
+			const googleMcAccountCard = setUpAccountsPage.getMCAccountCard();
+			await expect( googleMcAccountCard ).not.toBeVisible();
 
-		test( 'should render the Google MC account card', async () => {
-			const selectAccountTitle =
-				setUpAccountsPage.getSelectExistingMCAccountTitle();
-			await expect( selectAccountTitle ).toContainText(
-				'Connect to existing Merchant Center account'
-			);
-		} );
-
-		test( 'should render the Google Ads account', async () => {
 			const googleAdsAccountCard =
 				setUpAccountsPage.getGoogleAdsAccountCard();
+			await expect( googleAdsAccountCard ).not.toBeVisible();
+		} );
 
-			await expect(
-				googleAdsAccountCard.getByText(
-					'Connect to existing Google Ads account',
-					{ exact: true }
-				)
-			).toBeVisible();
+		test.describe( 'clicking the Edit button', async () => {
+			test( 'the "Connect to a different Google account" button is visible', async () => {
+				const editButton = setUpAccountsPage.getEditButton();
+				await editButton.click();
+
+				const connectDifferentGoogleAccountButton =
+					setUpAccountsPage.getConnectDifferentGoogleAccountButton();
+				await expect(
+					connectDifferentGoogleAccountButton
+				).toBeVisible();
+			} );
+
+			test( 'the "Cancel" button is visible', async () => {
+				const cancelButton = setUpAccountsPage.getCancelButton();
+				await expect( cancelButton ).toBeVisible();
+			} );
+
+			test( 'MC and Ads account cards are visible', async () => {
+				const googleMcAccountCard =
+					setUpAccountsPage.getMCAccountCard();
+				await expect( googleMcAccountCard ).toBeVisible();
+
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+				await expect( googleAdsAccountCard ).toBeVisible();
+			} );
+		} );
+
+		test.describe( 'clicking the Cancel button', async () => {
+			test( 'the "Edit" button is visible', async () => {
+				const cancelButton = setUpAccountsPage.getCancelButton();
+				await cancelButton.click();
+
+				const editButton = setUpAccountsPage.getEditButton();
+				await expect( editButton ).toBeVisible();
+			} );
+
+			test( 'MC and Ads account cards are not visible', async () => {
+				const googleMcAccountCard =
+					setUpAccountsPage.getMCAccountCard();
+				await expect( googleMcAccountCard ).not.toBeVisible();
+
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+				await expect( googleAdsAccountCard ).not.toBeVisible();
+			} );
 		} );
 	} );
 
