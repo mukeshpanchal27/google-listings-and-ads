@@ -1,29 +1,30 @@
 .gla-claim-ads-account-section {
-	padding-top: 0;
-}
+	padding: 0;
 
-.gla-claim-ads-account-box {
-	border: 1px solid $gray-300;
-	font-size: $gla-font-small;
-	padding: $grid-unit-30;
-
-	> * + * {
-		margin: $grid-unit-10 0 0;
-	}
-
-	h4 {
-		font-size: $gla-font-small;
-		margin-top: 0;
-	}
-
-	.gla-ads-post-claim-instructions {
-		color: $gray-700;
-		font-style: italic;
-	}
-
-	button,
-	.gla-loading-label {
+	.gla-claim-ads-account-box {
+		border: 1px solid $gray-300;
 		display: flex;
-		margin-left: auto;
+		flex-direction: column;
+		gap: $grid-unit-10;
+		padding: $grid-unit-30;
+
+		h4 {
+			font-size: $gla-font-small;
+			margin: 0;
+		}
+
+		p {
+			margin: 0;
+		}
+
+		.gla-ads-post-claim-instructions {
+			color: $gray-700;
+			font-style: italic;
+		}
+
+		.app-button {
+			display: flex;
+			margin-left: auto;
+		}
 	}
 }

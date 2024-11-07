@@ -27,14 +27,9 @@ import useEventPropertiesFilter from '.~/hooks/useEventPropertiesFilter';
  *
  * @param {Object} props React props.
  * @param {Function} [props.onClick] Function called back when the button is clicked.
- * @param {boolean} [props.loading] Whether the button is in a loading state.
  * @param {Object} props.restProps Props to be forwarded to AppButton.
  */
-const ClaimAccountButton = ( {
-	onClick = noop,
-	loading = false,
-	...restProps
-} ) => {
+const ClaimAccountButton = ( { onClick = noop, ...restProps } ) => {
 	const { inviteLink, hasFinishedResolution } = useGoogleAdsAccountStatus();
 	const getEventProps = useEventPropertiesFilter( FILTER_ONBOARDING );
 
@@ -57,7 +52,6 @@ const ClaimAccountButton = ( {
 			eventName="gla_open_ads_account_claim_invitation_button_click"
 			eventProps={ getEventProps() }
 			onClick={ handleClaimAccountClick }
-			loading={ loading }
 		/>
 	);
 };

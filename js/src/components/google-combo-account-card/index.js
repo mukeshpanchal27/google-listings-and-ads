@@ -18,7 +18,7 @@ export default function GoogleComboAccountCard( { disabled = false } ) {
 
 	const isConnected = google?.active === 'yes';
 
-	if ( isConnected && scope.glaRequired ) {
+	if ( isConnected && scope.gmcRequired && scope.glaRequired ) {
 		return <ConnectedGoogleComboAccountCard />;
 	}
 
