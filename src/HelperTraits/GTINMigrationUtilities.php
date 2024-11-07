@@ -74,6 +74,10 @@ trait GTINMigrationUtilities {
 	/**
 	 *
 	 * Get the options object.
+	 * Notice classes with OptionsAwareTrait only get the options object auto-loaded if
+	 * they are registered in the Container class.
+	 * If they are instantiated on the fly (like the input fields), then this won't get done.
+	 * That's why we need to fetch it from the container in case options field is null.
 	 *
 	 * @return OptionsInterface
 	 */
