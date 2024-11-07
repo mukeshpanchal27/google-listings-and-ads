@@ -4,7 +4,6 @@
 
 .gla-claim-ads-account-box {
 	border: 1px solid $gray-300;
-	font-size: $gla-font-small;
 	padding: $grid-unit-30;
 
 	> * + * {
@@ -21,8 +20,7 @@
 		font-style: italic;
 	}
 
-	button,
-	.gla-loading-label {
+	button {
 		display: flex;
 		margin-left: auto;
 	}

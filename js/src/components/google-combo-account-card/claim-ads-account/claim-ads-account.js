@@ -9,9 +9,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ClaimAccountButton from '.~/components/google-ads-account-card/claim-account-button';
 import Section from '.~/wcdl/section';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import { useAppDispatch } from '.~/data';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useWindowFocusCallbackIntervalEffect from '.~/hooks/useWindowFocusCallbackIntervalEffect';
 import './claim-ads-account.scss';
 
@@ -22,21 +20,11 @@ import './claim-ads-account.scss';
  */
 const ClaimAdsAccount = () => {
 	const [ updating, setUpdating ] = useState( false );
-	const { googleAdsAccount } = useGoogleAdsAccount();
-	const { hasAccess } = useGoogleAdsAccountStatus();
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
 
-	const shouldClaimGoogleAdsAccount = Boolean(
-		googleAdsAccount?.id && hasAccess === false
-	);
-
 	const checkUpdatedAdsAccountStatus = useCallback( async () => {
-		if ( ! shouldClaimGoogleAdsAccount ) {
-			return;
-		}
-
 		await fetchGoogleAdsAccountStatus();
-	}, [ fetchGoogleAdsAccountStatus, shouldClaimGoogleAdsAccount ] );
+	}, [ fetchGoogleAdsAccountStatus ] );
 
 	useWindowFocusCallbackIntervalEffect( checkUpdatedAdsAccountStatus, 30 );
 

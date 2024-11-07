@@ -2,21 +2,21 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Notice } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import AppNotice from '.~/components/app-notice';
 import ClaimAdsAccount from './claim-ads-account';
 
 /**
- * Renders the actionable components for connected accounts.
+ * Renders logic to claim an Ads account or show the conversion measurement notice.
  * @param {Object} props Component props.
  * @param {boolean} props.claimGoogleAdsAccount Whether the user should claim the Google Ads account.
  * @param {boolean} props.showConversionMeasurementNotice Whether to show the conversion measurement notice.
  * @return {JSX.Element} Connected accounts actions.
  */
-const ConnectedAdsAccountsActions = ( {
+const ConnectedAdsAccountDetail = ( {
 	claimGoogleAdsAccount,
 	showConversionMeasurementNotice,
 } ) => {
@@ -29,7 +29,7 @@ const ConnectedAdsAccountsActions = ( {
 			{ claimGoogleAdsAccount && <ClaimAdsAccount /> }
 
 			{ showConversionMeasurementNotice && (
-				<AppNotice
+				<Notice
 					className="gla-ads-conversion-measurement-notice"
 					status="success"
 					isDismissible={ false }
@@ -38,10 +38,10 @@ const ConnectedAdsAccountsActions = ( {
 						'Google Ads conversion measurement has been set up for your store.',
 						'google-listings-and-ads'
 					) }
-				</AppNotice>
+				</Notice>
 			) }
 		</div>
 	);
 };
 
-export default ConnectedAdsAccountsActions;
+export default ConnectedAdsAccountDetail;
