@@ -10,7 +10,7 @@ import { useAppDispatch } from '.~/data';
 import AccountCard, { APPEARANCE } from '../account-card';
 import ConnectAds from './connect-ads';
 import AccountDetails from './account-details';
-import ConnectedAdsAccountsActions from './connected-ads-account-actions';
+import ConnectedAdsAccountDetail from './connected-ads-account-detail';
 import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
@@ -72,7 +72,7 @@ const ConnectedGoogleComboAccountCard = () => {
 		if ( initConnected.current === null ) {
 			initConnected.current = isConnected;
 		}
-	}, [ initConnected, isConnected ] );
+	}, [ isConnected ] );
 
 	// Ideally updating the account should be done in ConnectMC component but the latter is not always rendered,
 	// (for e.g when the user is creating the first account).
@@ -125,7 +125,7 @@ const ConnectedGoogleComboAccountCard = () => {
 				helper={ subText }
 				indicator={ <Indicator showSpinner={ showSpinner } /> }
 			>
-				<ConnectedAdsAccountsActions
+				<ConnectedAdsAccountDetail
 					showConversionMeasurementNotice={
 						showConversionMeasurementNotice
 					}
