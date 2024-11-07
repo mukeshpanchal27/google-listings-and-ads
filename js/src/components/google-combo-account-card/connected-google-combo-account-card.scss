@@ -22,6 +22,7 @@
 	}
 
 	.gla-google-combo-account-card__description-actions {
-		margin-top: $grid-unit-10;
+		display: flex;
+		gap: var(--large-gap);
 	}
 }

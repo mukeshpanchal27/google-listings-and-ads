@@ -94,9 +94,34 @@ const ConnectedGoogleComboAccountCard = () => {
 		return <SpinnerCard />;
 	}
 
-	const handleEditClick = () => {
-		setEditMode( true );
+	const toggleEditMode = () => {
+		setEditMode( ! editMode );
 	};
+
+	const cardActions = (
+		<div className="gla-google-combo-account-card__description-actions">
+			{ editMode ? (
+				<>
+					<SwitchAccountButton
+						isTertiary
+						text={ __(
+							'Connect to a different Google account',
+							'google-listings-and-ads'
+						) }
+					/>
+					<AppButton isTertiary onClick={ toggleEditMode }>
+						{ __( 'Cancel', 'google-listings-and-ads' ) }
+					</AppButton>
+				</>
+			) : (
+				<AppButton
+					isTertiary
+					text={ __( 'Edit', 'google-listings-and-ads' ) }
+					onClick={ toggleEditMode }
+				/>
+			) }
+		</div>
+	);
 
 	const hasExistingGoogleMCAccounts = existingGoogleMCAccounts?.length > 0;
 	const showConnectMC =
@@ -124,33 +149,8 @@ const ConnectedGoogleComboAccountCard = () => {
 				appearance={ APPEARANCE.GOOGLE }
 				alignIcon="top"
 				className="gla-google-combo-account-card gla-google-combo-account-card--connected gla-google-combo-service-account-card--google"
-				description={
-					<>
-						{ text || <AccountDetails /> }
-
-						<div className="gla-google-combo-account-card__description-actions">
-							{ ! editMode && (
-								<AppButton
-									isLink
-									text={ __(
-										'Edit',
-										'google-listings-and-ads'
-									) }
-									onClick={ handleEditClick }
-								/>
-							) }
-
-							{ editMode && (
-								<SwitchAccountButton
-									text={ __(
-										'Connect to a different Google account',
-										'google-listings-and-ads'
-									) }
-								/>
-							) }
-						</div>
-					</>
-				}
+				description={ text || <AccountDetails /> }
+				actions={ cardActions }
 				helper={ subText }
 				indicator={ <Indicator showSpinner={ showSpinner } /> }
 			>

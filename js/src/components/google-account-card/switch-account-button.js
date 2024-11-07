@@ -27,6 +27,7 @@ const SwitchAccountButton = ( {
 		'Or, connect to a different Google account',
 		'google-listings-and-ads'
 	),
+	...restProps
 } ) => {
 	const [ handleSwitch, { loading } ] = useSwitchGoogleAccount();
 
@@ -37,6 +38,7 @@ const SwitchAccountButton = ( {
 			text={ text }
 			eventName="gla_google_account_connect_different_account_button_click"
 			onClick={ handleSwitch }
+			{ ...restProps }
 		/>
 	);
 };
