@@ -163,16 +163,16 @@ class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 		$processed = 0;
 
 		foreach ( $products as $product ) {
-			// void if core GTIN is already set.
-			if ( $product->get_global_unique_id() ) {
-				WP_CLI::debug( sprintf( 'GTIN has been skipped for Product ID: %s - %s. GTIN was found in Product Inventory tab.', $product->get_id(), $product->get_name() ) );
-				continue;
-			}
-
 			// process variations
 			if ( $product instanceof \WC_Product_Variable ) {
 				$variations = $product->get_children();
 				$processed += $this->process_items( $variations );
+				continue;
+			}
+
+			// void if core GTIN is already set.
+			if ( $product->get_global_unique_id() ) {
+				WP_CLI::debug( sprintf( 'GTIN has been skipped for Product ID: %s - %s. GTIN was found in Product Inventory tab.', $product->get_id(), $product->get_name() ) );
 				continue;
 			}
 
