@@ -159,7 +159,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Google combo card connected label.
 	 */
 	getGoogleComboConnectedLabel() {
-		return this.getGoogleComboAccountCard().locator(
+		return this.getGoogleAccountCard().locator(
 			'.gla-connected-icon-label'
 		);
 	}
@@ -395,7 +395,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 *
 	 * @return {import('@playwright/test').Locator} Get store address refresh to sync button.
 	 */
-	getStoreAddressRefreshToSyncButton() {
+	getStoreAddressButton() {
 		return this.getStoreAddressCard().getByRole( 'button', {
 			name: 'Update store address',
 			exact: true,
