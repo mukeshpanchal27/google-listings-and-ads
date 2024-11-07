@@ -8,13 +8,13 @@ import { Notice } from '@wordpress/components';
  * Internal dependencies
  */
 import ClaimAdsAccount from './claim-ads-account';
+import './connected-ads-account-detail.scss';
 
 /**
- * Renders logic to claim an Ads account or show the conversion measurement notice.
+ * Renders details related to a connected Google Ads account, including the option to claim the account and a notice indicating whether conversion measurement has been set up.
  * @param {Object} props Component props.
  * @param {boolean} props.claimGoogleAdsAccount Whether the user should claim the Google Ads account.
  * @param {boolean} props.showConversionMeasurementNotice Whether to show the conversion measurement notice.
- * @return {JSX.Element} Connected accounts actions.
  */
 const ConnectedAdsAccountDetail = ( {
 	claimGoogleAdsAccount,
@@ -25,15 +25,11 @@ const ConnectedAdsAccountDetail = ( {
 	}
 
 	return (
-		<div className="gla-connected-ads-account-actions">
+		<div className="gla-connected-ads-account-detail">
 			{ claimGoogleAdsAccount && <ClaimAdsAccount /> }
 
 			{ showConversionMeasurementNotice && (
-				<Notice
-					className="gla-ads-conversion-measurement-notice"
-					status="success"
-					isDismissible={ false }
-				>
+				<Notice status="success" isDismissible={ false }>
 					{ __(
 						'Google Ads conversion measurement has been set up for your store.',
 						'google-listings-and-ads'
