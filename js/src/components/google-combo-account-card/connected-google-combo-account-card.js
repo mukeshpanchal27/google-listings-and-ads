@@ -123,14 +123,16 @@ const ConnectedGoogleComboAccountCard = () => {
 				description={ text || <AccountDetails /> }
 				helper={ subText }
 				indicator={ <Indicator showSpinner={ showSpinner } /> }
-			>
-				<ConnectedAdsAccountDetail
-					showConversionMeasurementNotice={
-						showConversionMeasurementNotice
-					}
-					claimGoogleAdsAccount={ shouldClaimGoogleAdsAccount }
-				/>
-			</AccountCard>
+				detail={
+					<ConnectedAdsAccountDetail
+						showConversionMeasurementNotice={
+							showConversionMeasurementNotice
+						}
+						claimGoogleAdsAccount={ shouldClaimGoogleAdsAccount }
+					/>
+				}
+				expandedDetail
+			/>
 
 			{ showConnectAds && <ConnectAds /> }
 
