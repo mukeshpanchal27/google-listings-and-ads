@@ -20,6 +20,20 @@ export default class DashboardPage extends MockRequests {
 		this.editFreeListingButton = this.freeListingRow.getByRole( 'button', {
 			name: 'Edit',
 		} );
+		this.googleAdsSummaryCard = this.page.locator(
+			'.gla-dashboard__performance .gla-summary-card:nth-child(1)'
+		);
+		this.paidFeatures =
+			this.googleAdsSummaryCard.locator( '.gla-paid-features' );
+		this.createCampaignButton = this.paidFeatures.locator( 'button', {
+			hasText: 'Create Campaign',
+		} );
+		this.addPaidCampaignButton = this.page.locator(
+			'.gla-all-programs-table-card button',
+			{
+				hasText: 'Add paid campaign',
+			}
+		);
 	}
 
 	/**
@@ -43,6 +57,20 @@ export default class DashboardPage extends MockRequests {
 			products: null,
 			intervals: null,
 			totals: {
+				clicks: 0,
+				impressions: 0,
+			},
+			next_page: null,
+		} );
+
+		await this.fulfillAdsReportProgram( {
+			products: null,
+			campaigns: null,
+			intervals: null,
+			totals: {
+				sales: 0,
+				conversions: 0,
+				spend: 0,
 				clicks: 0,
 				impressions: 0,
 			},
@@ -126,24 +154,5 @@ export default class DashboardPage extends MockRequests {
 	async clickContinueToEditButton() {
 		const continueToEditButton = await this.getContinueToEditButton();
 		await continueToEditButton.click();
-	}
-
-	/**
-	 * Get the Ads connection button.
-	 *
-	 * @param  {('programs-table'|'summary-card')} [type] The type of button to get. Either 'programs-table' or 'summary-card'.
-	 * @return {import('@playwright/test').Locator} Get the Ads connection button.
-	 */
-	getAdsConnectionAllProgramsButton( type = 'programs-table' ) {
-		return this.page.locator(
-			`${
-				type === 'programs-table'
-					? '.gla-all-programs-table-card button'
-					: '.gla-summary-card'
-			}`,
-			{
-				hasText: 'Add paid campaign',
-			}
-		);
 	}
 }

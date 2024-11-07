@@ -119,6 +119,7 @@ test.describe( 'Product Feed Page', () => {
 			await expect( createCampaignButton ).toBeVisible();
 			await createCampaignButton.click();
 			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
+			await productFeedPage.mockAdsAccountsResponse( [] );
 			await expect(
 				page.getByRole( 'heading', {
 					level: 1,

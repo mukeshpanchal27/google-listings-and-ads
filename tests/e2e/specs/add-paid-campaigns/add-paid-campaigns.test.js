@@ -43,11 +43,6 @@ let dashboardPage = null;
 let setupAdsAccounts = null;
 
 /**
- * @type {import('@playwright/test').Locator} adsConnectionButton
- */
-let adsConnectionButton = null;
-
-/**
  * @type {import('../../utils/pages/setup-ads/setup-budget.js').default} setupBudgetPage
  */
 let setupBudgetPage = null;
@@ -90,20 +85,14 @@ test.describe( 'Set up Ads account', () => {
 	} );
 
 	test( 'Dashboard page contains Add Paid campaign buttons', async () => {
-		//Add page campaign in the Performance (Paid Campaigns) section
-		await expect(
-			dashboardPage.getAdsConnectionAllProgramsButton( 'summary-card' )
-		).toBeEnabled();
-
 		//Add page campaign in the programs section.
-		adsConnectionButton = dashboardPage.getAdsConnectionAllProgramsButton();
-		await expect( adsConnectionButton ).toBeEnabled();
+		await expect( dashboardPage.addPaidCampaignButton ).toBeEnabled();
 	} );
 
 	test.describe( 'Set up your accounts page', async () => {
 		test.beforeAll( async () => {
 			await setupAdsAccounts.mockAdsAccountsResponse( [] );
-			await adsConnectionButton.click();
+			await dashboardPage.addPaidCampaignButton.click();
 			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 		} );
 
