@@ -77,6 +77,7 @@ test.describe( 'Paid Feature Listing', () => {
 			await page.close();
 		} );
 		test( 'When no campaign present', async () => {
+			await dashboardPage.fulfillAdsCampaignsRequest( [] );
 			await dashboardPage.goto();
 			await expect( dashboardPage.googleAdsSummaryCard ).toContainText(
 				'Google Ads'
@@ -98,7 +99,7 @@ test.describe( 'Paid Feature Listing', () => {
 			] );
 			await dashboardPage.goto();
 			await expect( dashboardPage.googleAdsSummaryCard ).toContainText(
-				'Google Ads'
+				/Google Ads.*Total Sales.*Total Spend/
 			);
 
 			await expect( dashboardPage.paidFeatures ).not.toBeVisible();
