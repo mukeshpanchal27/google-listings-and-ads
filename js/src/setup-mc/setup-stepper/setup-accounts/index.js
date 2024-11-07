@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { createInterpolateElement } from '@wordpress/element';
+import { createInterpolateElement, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -27,7 +27,6 @@ import './index.scss';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import useStoreAddressSynced from '.~/hooks/useStoreAddressSynced';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
 
 /**
  * Renders the disclaimer of Comparison Shopping Service (CSS).
@@ -95,21 +94,16 @@ const SetupAccounts = ( props ) => {
 	const { isAddressFilled } = useStoreAddressSynced();
 	const isGoogleAdsReady = useGoogleAdsAccountReady();
 	const { updateGoogleMCContactInformation } = useAppDispatch();
-	const { createNotice } = useDispatchCoreNotices();
+	const [ isSubmitting, setIsSubmitting ] = useState( false );
 
-	const handleContinueClick = async () => {
-		try {
-			await updateGoogleMCContactInformation();
-			onContinue();
-		} catch ( error ) {
-			createNotice(
-				'error',
-				__(
-					'Unable to update your contact information. Please try again later.',
-					'google-listings-and-ads'
-				)
-			);
-		}
+	const handleSubmitCallback = async () => {
+		setIsSubmitting( true );
+		await updateGoogleMCContactInformation().finally( () =>
+			// Error handling is done in the action.
+			setIsSubmitting( false )
+		);
+
+		onContinue();
 	};
 
 	/**
@@ -173,10 +167,10 @@ const SetupAccounts = ( props ) => {
 					<AppButton
 						isPrimary
 						disabled={ isContinueButtonDisabled }
-						onClick={ handleContinueClick }
-					>
-						{ __( 'Continue', 'google-listings-and-ads' ) }
-					</AppButton>
+						loading={ isSubmitting }
+						text={ __( 'Continue', 'google-listings-and-ads' ) }
+						onClick={ handleSubmitCallback }
+					/>
 				</StepContentActions>
 			</StepContentFooter>
 			<Section
