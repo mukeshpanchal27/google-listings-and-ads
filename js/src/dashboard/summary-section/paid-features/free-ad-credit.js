@@ -19,7 +19,7 @@ import AppDocumentationLink from '.~/components/app-documentation-link';
 const FreeAdCredit = () => {
 	return (
 		<div className="gla-free-ad-credit-claim">
-			<GridiconGift />
+			<GridiconGift size={ 16 } />
 			<div>
 				{ createInterpolateElement(
 					__(

@@ -15,7 +15,8 @@
 		text-align: left;
 
 		.gridicon {
-			fill: #5ec862;
+			fill: $gla-color-green;
+			flex: 0 0 auto;
 		}
 	}
 
@@ -23,13 +24,15 @@
 		text-align: left;
 		background-color: $white;
 		display: flex;
-		align-items: center;
-		gap: calc(var(--main-gap) / 3 * 2);
+		align-items: flex-start;
+		gap: $grid-unit;
 		padding: $grid-unit-20 $grid-unit-15;
 		color: $gray-900;
 
 		.gridicon {
 			fill: $gla-color-green;
+			margin: $grid-unit-10 / 2;
+			flex: 0 0 auto;
 		}
 	}
 
