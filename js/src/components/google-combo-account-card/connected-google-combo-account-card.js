@@ -94,8 +94,10 @@ const ConnectedGoogleComboAccountCard = () => {
 		( ! showConnectAds && finalizeAdsAccountCreation );
 
 	const showConversionMeasurementNotice =
-		googleAdsAccount.status === GOOGLE_ADS_ACCOUNT_STATUS.CONNECTED ||
-		googleAdsAccount.step === 'link_merchant';
+		( googleAdsAccount?.status === GOOGLE_ADS_ACCOUNT_STATUS.CONNECTED ||
+			googleAdsAccount?.step === 'link_merchant' ) &&
+		! shouldClaimGoogleAdsAccount;
+
 	return (
 		<div>
 			<AccountCard
