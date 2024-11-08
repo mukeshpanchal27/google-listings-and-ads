@@ -60,6 +60,9 @@ const ConnectedGoogleComboAccountCard = () => {
 
 	const hasExistingGoogleMCAccounts = existingGoogleMCAccounts?.length > 0;
 	const hasExistingGoogleAdsAccounts = existingGoogleAdsAccounts?.length > 0;
+	const shouldClaimGoogleAdsAccount = Boolean(
+		googleAdsAccount?.id && hasAccess === false
+	);
 	const finalizeAdsAccountCreation =
 		hasAccess === true && step === 'conversion_action';
 
@@ -78,10 +81,12 @@ const ConnectedGoogleComboAccountCard = () => {
 
 	useEffect( () => {
 		setShowConversionMeasurementNotice(
-			googleAdsAccount?.status === GOOGLE_ADS_ACCOUNT_STATUS.CONNECTED ||
-				googleAdsAccount?.step === 'link_merchant'
+			( googleAdsAccount?.status ===
+				GOOGLE_ADS_ACCOUNT_STATUS.CONNECTED ||
+				googleAdsAccount?.step === 'link_merchant' ) &&
+				! shouldClaimGoogleAdsAccount
 		);
-	}, [ googleAdsAccount ] );
+	}, [ googleAdsAccount, shouldClaimGoogleAdsAccount ] );
 
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
@@ -124,9 +129,6 @@ const ConnectedGoogleComboAccountCard = () => {
 	const showConnectMC =
 		( editMode && hasExistingGoogleMCAccounts ) ||
 		( ! isGoogleMCReady && hasExistingGoogleMCAccounts );
-	const shouldClaimGoogleAdsAccount = Boolean(
-		googleAdsAccount?.id && hasAccess === false
-	);
 
 	const showConnectAds =
 		( ( editMode && hasExistingGoogleAdsAccounts ) ||

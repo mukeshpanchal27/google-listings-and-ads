@@ -703,7 +703,7 @@ test.describe( 'Set up accounts', () => {
 			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
 			await expect(
 				googleAccountCard.getByRole( 'button', {
-					name: 'Claim your Google Ads account',
+					name: 'Claim account in Google Ads',
 				} )
 			).toBeVisible();
 		} );
@@ -715,7 +715,7 @@ test.describe( 'Set up accounts', () => {
 				page.waitForEvent( 'popup' ),
 				googleAccountCard
 					.getByRole( 'button', {
-						name: 'Claim your Google Ads account',
+						name: 'Claim account in Google Ads',
 					} )
 					.click(),
 			] );

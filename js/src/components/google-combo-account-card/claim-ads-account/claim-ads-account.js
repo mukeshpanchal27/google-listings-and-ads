@@ -20,12 +20,7 @@ import './claim-ads-account.scss';
 const ClaimAdsAccount = () => {
 	const [ updating, setUpdating ] = useState( false );
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
-
-	const checkUpdatedAdsAccountStatus = async () => {
-		await fetchGoogleAdsAccountStatus();
-	};
-
-	useWindowFocusCallbackIntervalEffect( checkUpdatedAdsAccountStatus, 30 );
+	useWindowFocusCallbackIntervalEffect( fetchGoogleAdsAccountStatus, 30 );
 
 	const handleOnClick = () => {
 		setUpdating( true );
