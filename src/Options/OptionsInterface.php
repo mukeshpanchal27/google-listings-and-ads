@@ -46,6 +46,7 @@ interface OptionsInterface {
 	public const UPDATE_ALL_PRODUCTS_LAST_SYNC             = 'update_all_products_last_sync';
 	public const WP_TOS_ACCEPTED                           = 'wp_tos_accepted';
 	public const WPCOM_REST_API_STATUS                     = 'wpcom_rest_api_status';
+	public const GTIN_MIGRATION_STATUS                     = 'gtin_migration_status';
 
 	public const VALID_OPTIONS = [
 		self::ADS_ACCOUNT_CURRENCY                      => true,
@@ -82,6 +83,7 @@ interface OptionsInterface {
 		self::WP_TOS_ACCEPTED                           => true,
 		self::WPCOM_REST_API_STATUS                     => true,
 		self::GOOGLE_WPCOM_AUTH_NONCE                   => true,
+		self::GTIN_MIGRATION_STATUS                     => true,
 	];
 
 	public const OPTION_TYPES = [

@@ -71,6 +71,7 @@ const DEFAULT_STATE = {
 			step: null,
 		},
 	},
+	gtinMigrationStatus: null,
 };
 
 /**
@@ -508,6 +509,11 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 				.setIn( 'inviteLink', inviteLink )
 				.setIn( 'step', step )
 				.end();
+		}
+
+		case TYPES.RECEIVE_GTIN_MIGRATION_STATUS: {
+			const { data } = action;
+			return setIn( state, 'gtinMigrationStatus', data?.status );
 		}
 
 		// Page will be reloaded after all accounts have been disconnected, so no need to mutate state.

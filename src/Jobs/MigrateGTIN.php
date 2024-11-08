@@ -4,8 +4,10 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Jobs;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\ActionScheduler\ActionSchedulerInterface;
+use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\GTINMigrationUtilities;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
+use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\AttributeManager;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductRepository;
 
@@ -21,6 +23,12 @@ defined( 'ABSPATH' ) || exit;
  */
 class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAwareInterface {
 	use OptionsAwareTrait;
+	use GTINMigrationUtilities;
+
+	public const GTIN_MIGRATION_COMPLETED   = 'completed';
+	public const GTIN_MIGRATION_STARTED     = 'started';
+	public const GTIN_MIGRATION_READY       = 'ready';
+	public const GTIN_MIGRATION_UNAVAILABLE = 'unavailable';
 
 	/**
 	 * @var ProductRepository
@@ -65,7 +73,7 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	 * @return bool Returns true if the job can be scheduled.
 	 */
 	public function can_schedule( $args = [] ): bool {
-		return parent::can_schedule( $args ) && $this->is_gtin_available_in_core();
+		return ! parent::is_running( $args ) && $this->is_gtin_available_in_core();
 	}
 
 	/**
@@ -74,8 +82,6 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	 * @param int[] $items A single batch of WooCommerce product IDs from the get_batch() method.
 	 */
 	protected function process_items( array $items ) {
-		// todo: prevent execution if migration was completed?
-
 		// update the product core GTIN using G4W GTIN
 		$products = $this->product_repository->find_by_ids( $items );
 		foreach ( $products as $product ) {
@@ -100,14 +106,25 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	}
 
 	/**
-	 * Called when the job is completed.
+	 * Tweak schedule function for adding a start flag.
 	 *
-	 * @param int $final_batch_number The final batch number when the job was completed.
-	 *                                If equal to 1 then no items were processed by the job.
+	 * @param array $args
 	 */
-	protected function handle_complete( int $final_batch_number ) {
-		// todo: set migration as completed?
+	public function schedule( array $args = [] ) {
+		$this->options->update( OptionsInterface::GTIN_MIGRATION_STATUS, self::GTIN_MIGRATION_STARTED );
+		parent::schedule( $args );
 	}
+
+	/**
+	 *
+	 * To run when the job is completed.
+	 *
+	 * @param int $final_batch_number
+	 */
+	public function handle_complete( int $final_batch_number ) {
+		$this->options->update( OptionsInterface::GTIN_MIGRATION_STATUS, self::GTIN_MIGRATION_COMPLETED );
+	}
+
 
 	/**
 	 * Get a single batch of items.
@@ -122,14 +139,5 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	 */
 	protected function get_batch( int $batch_number ): array {
 		return $this->product_repository->find_all_product_ids( $this->get_batch_size(), $this->get_query_offset( $batch_number ) );
-	}
-
-	/**
-	 * Verifies if GTIN logic is available in core.
-	 *
-	 * @return bool
-	 */
-	protected function is_gtin_available_in_core(): bool {
-		return method_exists( \WC_Product::class, 'get_global_unique_id' );
 	}
 }
