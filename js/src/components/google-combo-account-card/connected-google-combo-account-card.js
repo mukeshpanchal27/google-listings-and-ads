@@ -29,12 +29,17 @@ import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
 import './connected-google-combo-account-card.scss';
+import { set } from 'lodash';
 
 /**
  * Renders a Google account card UI with connected account information.
  * It will also kickoff Ads and Merchant Center account creation if the user does not have accounts.
  */
 const ConnectedGoogleComboAccountCard = () => {
+	const [
+		showConversionMeasurementNotice,
+		setShowConversionMeasurementNotice,
+	] = useState( false );
 	const [ editMode, setEditMode ] = useState( false );
 	const { hasDetermined, creatingWhich } = useAutoCreateAdsMCAccounts();
 
@@ -54,6 +59,8 @@ const ConnectedGoogleComboAccountCard = () => {
 	const { hasAccess, step } = useGoogleAdsAccountStatus();
 	const [ upsertAdsAccount, { action } ] = useUpsertAdsAccount();
 
+	const hasExistingGoogleMCAccounts = existingGoogleMCAccounts?.length > 0;
+	const hasExistingGoogleAdsAccounts = existingGoogleAdsAccounts?.length > 0;
 	const finalizeAdsAccountCreation =
 		hasAccess === true && step === 'conversion_action';
 
@@ -70,12 +77,24 @@ const ConnectedGoogleComboAccountCard = () => {
 		upsertAccount();
 	}, [ finalizeAdsAccountCreation, upsertAdsAccount, invalidateResolution ] );
 
+	useEffect( () => {
+		setShowConversionMeasurementNotice(
+			googleAdsAccount?.status === GOOGLE_ADS_ACCOUNT_STATUS.CONNECTED ||
+				googleAdsAccount?.step === 'link_merchant'
+		);
+	}, [ googleAdsAccount ] );
+
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
 	}
 
-	const toggleEditMode = () => {
-		setEditMode( ! editMode );
+	const onCancelClick = () => {
+		setShowConversionMeasurementNotice( false );
+		setEditMode( false );
+	};
+
+	const onEditClick = () => {
+		setEditMode( true );
 	};
 
 	const cardActions = (
@@ -89,7 +108,7 @@ const ConnectedGoogleComboAccountCard = () => {
 							'google-listings-and-ads'
 						) }
 					/>
-					<AppButton isTertiary onClick={ toggleEditMode }>
+					<AppButton isTertiary onClick={ onCancelClick }>
 						{ __( 'Cancel', 'google-listings-and-ads' ) }
 					</AppButton>
 				</>
@@ -97,20 +116,19 @@ const ConnectedGoogleComboAccountCard = () => {
 				<AppButton
 					isTertiary
 					text={ __( 'Edit', 'google-listings-and-ads' ) }
-					onClick={ toggleEditMode }
+					onClick={ onEditClick }
 				/>
 			) }
 		</div>
 	);
 
-	const hasExistingGoogleMCAccounts = existingGoogleMCAccounts?.length > 0;
 	const showConnectMC =
 		( editMode && hasExistingGoogleMCAccounts ) ||
 		( ! isGoogleMCReady && hasExistingGoogleMCAccounts );
 	const shouldClaimGoogleAdsAccount = Boolean(
 		googleAdsAccount?.id && hasAccess === false
 	);
-	const hasExistingGoogleAdsAccounts = existingGoogleAdsAccounts?.length > 0;
+
 	const showConnectAds =
 		( ( editMode && hasExistingGoogleAdsAccounts ) ||
 			( ! isConnected && hasExistingGoogleAdsAccounts ) ) &&
@@ -123,9 +141,6 @@ const ConnectedGoogleComboAccountCard = () => {
 		( Boolean( creatingWhich ) && ! shouldClaimGoogleAdsAccount ) ||
 		( ! showConnectAds && finalizeAdsAccountCreation );
 
-	const showConversionMeasurementNotice =
-		googleAdsAccount.status === GOOGLE_ADS_ACCOUNT_STATUS.CONNECTED ||
-		googleAdsAccount.step === 'link_merchant';
 	return (
 		<div>
 			<AccountCard
