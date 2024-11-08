@@ -150,7 +150,7 @@ test.describe( 'Set up accounts', () => {
 
 	test.describe( 'Connect Google account', () => {
 		test.beforeAll( async () => {
-			// Mock Jetpack as connected
+			// Mock Jetpack as not connected
 			await setUpAccountsPage.mockJetpackNotConnected();
 
 			// Mock google as not connected.
@@ -174,7 +174,7 @@ test.describe( 'Set up accounts', () => {
 		} );
 
 		test( 'should see their WPORG email, "Google" title & connect button', async () => {
-			// Mock Jetpack as disconnected
+			// Mock Jetpack as connected
 			await setUpAccountsPage.mockJetpackConnected();
 
 			await setUpAccountsPage.goto();
@@ -598,7 +598,7 @@ test.describe( 'Set up accounts', () => {
 					setUpAccountsPage.getGoogleAdsAccountCard();
 
 				const once = setUpAccountsPage.fulfillTimes( 1 );
-				await once.fulfillAdsAccounts( { id: 12345 } );
+				await once.fulfillAdsAccounts( [ { id: 12345 } ] );
 				await once.mockAdsAccountConnected();
 				await once.mockAdsStatusClaimed();
 
@@ -619,7 +619,7 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.mockGoogleConnected();
 			await setUpAccountsPage.mockMCHasAccounts();
 			await setUpAccountsPage.mockMCConnected();
-			await setUpAccountsPage.fulfillAdsAccounts( { id: 12345 } );
+			await setUpAccountsPage.fulfillAdsAccounts( [ { id: 12345 } ] );
 			await setUpAccountsPage.mockAdsAccountConnected();
 			await setUpAccountsPage.mockAdsStatusNotClaimed();
 
@@ -640,7 +640,7 @@ test.describe( 'Set up accounts', () => {
 
 			const [ popupPage ] = await Promise.all( [
 				page.waitForEvent( 'popup' ),
-				await googleAccountCard
+				googleAccountCard
 					.getByRole( 'button', {
 						name: 'Claim your Google Ads account',
 					} )
@@ -649,7 +649,7 @@ test.describe( 'Set up accounts', () => {
 
 			await popupPage.waitForLoadState();
 			const url = popupPage.url();
-			expect( url ).toMatch( /^https:\/\/example\.com(\/|\?|$)/ );
+			expect( url ).toMatch( /^https:\/\/example\.com\/?$/ );
 			await popupPage.close();
 		} );
 
