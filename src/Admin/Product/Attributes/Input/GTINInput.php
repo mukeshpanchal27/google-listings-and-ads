@@ -4,8 +4,7 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\Input;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Input\Text;
-use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
-use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
+use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\GTINMigrationUtilities;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -18,12 +17,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class GTINInput extends Text {
 
-	/**
-	 * Version since we start hiding the GTIN field.
-	 *
-	 * @var string
-	 */
-	private $hidden_since_version = '2.8.5';
+	use GTINMigrationUtilities;
 
 	/**
 	 * GTINInput constructor.
@@ -44,12 +38,9 @@ class GTINInput extends Text {
 	 * @return void
 	 */
 	public function set_field_visibility(): void {
-		$options         = woogle_get_container()->get( OptionsInterface::class );
-		$initial_version = $options->get( OptionsInterface::INSTALL_VERSION, false );
-		// 9.2 is the version when GTIN field was added in Woo Core. So we need to hide or set the field as read-only since then.
-		if ( version_compare( WC_VERSION, '9.2', '>=' ) ) {
-			// For versions after 2.8.5 hide the GTIN field from G4W tab. Otherwise, set as readonly.
-			if ( $initial_version && version_compare( $initial_version, $this->hidden_since_version, '>=' ) ) {
+		if ( $this->is_gtin_available_in_core() ) {
+			// For versions after the GTIN changes are published. Hide the GTIN field from G4W tab. Otherwise, set as readonly.
+			if ( $this->should_hide_gtin() ) {
 				$this->set_hidden( true );
 			} else {
 				$this->set_readonly( true );

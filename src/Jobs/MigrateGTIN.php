@@ -4,6 +4,7 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Jobs;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\ActionScheduler\ActionSchedulerInterface;
+use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\GTINMigrationUtilities;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
@@ -22,6 +23,12 @@ defined( 'ABSPATH' ) || exit;
  */
 class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAwareInterface {
 	use OptionsAwareTrait;
+	use GTINMigrationUtilities;
+
+	public const GTIN_MIGRATION_COMPLETED   = 'completed';
+	public const GTIN_MIGRATION_STARTED     = 'started';
+	public const GTIN_MIGRATION_READY       = 'ready';
+	public const GTIN_MIGRATION_UNAVAILABLE = 'unavailable';
 
 	/**
 	 * @var ProductRepository
@@ -104,8 +111,18 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	 * @param array $args
 	 */
 	public function schedule( array $args = [] ) {
-		$this->options->add( OptionsInterface::GTIN_MIGRATION_STARTED, true );
+		$this->options->update( OptionsInterface::GTIN_MIGRATION_STATUS, self::GTIN_MIGRATION_STARTED );
 		parent::schedule( $args );
+	}
+
+	/**
+	 *
+	 * To run when the job is completed.
+	 *
+	 * @param int $final_batch_number
+	 */
+	public function handle_complete( int $final_batch_number ) {
+		$this->options->update( OptionsInterface::GTIN_MIGRATION_STATUS, self::GTIN_MIGRATION_COMPLETED );
 	}
 
 
@@ -122,14 +139,5 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	 */
 	protected function get_batch( int $batch_number ): array {
 		return $this->product_repository->find_all_product_ids( $this->get_batch_size(), $this->get_query_offset( $batch_number ) );
-	}
-
-	/**
-	 * Verifies if GTIN logic is available in core.
-	 *
-	 * @return bool
-	 */
-	protected function is_gtin_available_in_core(): bool {
-		return method_exists( \WC_Product::class, 'get_global_unique_id' );
 	}
 }

@@ -1266,6 +1266,18 @@ export function* upsertTour( tour, upsertingClientStoreFirst = false ) {
 	}
 }
 
+/**
+ * Action to receive the GTIN Migration status.
+ *
+ * @param {string} status GTIN Migration status
+ */
+export function* receiveGtinMigrationStatus( status ) {
+	return {
+		type: TYPES.RECEIVE_GTIN_MIGRATION_STATUS,
+		data: status,
+	};
+}
+
 export function* fetchGoogleAdsAccountStatus() {
 	try {
 		const data = yield apiFetch( {

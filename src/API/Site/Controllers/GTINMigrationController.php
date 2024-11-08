@@ -4,6 +4,7 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\API\TransportMethods;
+use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\GTINMigrationUtilities;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\MigrateGTIN;
 use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\RESTServer;
 use Exception;
@@ -19,6 +20,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class GTINMigrationController extends BaseController {
 	use EmptySchemaPropertiesTrait;
+	use GTINMigrationUtilities;
 
 	/**
 	 * Job responsible to run the migration in the background.
@@ -43,13 +45,17 @@ class GTINMigrationController extends BaseController {
 	 */
 	public function register_routes(): void {
 		$this->register_route(
-			'gtin-migration-start',
+			'gtin-migration',
 			[
 				[
 					'methods'             => TransportMethods::CREATABLE,
 					'callback'            => $this->start_migration_callback(),
 					'permission_callback' => $this->get_permission_callback(),
 					'args'                => $this->get_schema_properties(),
+				],
+				[
+					'methods'  => TransportMethods::READABLE,
+					'callback' => $this->get_migration_status_callback(),
 				],
 				'schema' => $this->get_api_response_schema_callback(),
 			]
@@ -86,6 +92,22 @@ class GTINMigrationController extends BaseController {
 			} catch ( Exception $e ) {
 				return $this->response_from_exception( $e );
 			}
+		};
+	}
+
+	/**
+	 * Callback function for getting the current migration status.
+	 *
+	 * @return callable
+	 */
+	protected function get_migration_status_callback(): callable {
+		return function () {
+			return new Response(
+				[
+					'status' => $this->get_gtin_migration_status(),
+				],
+				200
+			);
 		};
 	}
 
