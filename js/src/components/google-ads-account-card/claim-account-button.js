@@ -27,10 +27,11 @@ import useEventPropertiesFilter from '.~/hooks/useEventPropertiesFilter';
  *
  * @param {Object} props React props.
  * @param {Function} [props.onClick] Function called back when the button is clicked.
+ * @param {boolean} [props.loading] If true, the button will be disabled and will display a loading spinner indicator beside the button text.
  * @param {Object} props.restProps Props to be forwarded to AppButton.
  */
-const ClaimAccountButton = ( { onClick = noop, ...restProps } ) => {
-	const { inviteLink, hasFinishedResolution } = useGoogleAdsAccountStatus();
+const ClaimAccountButton = ( { onClick = noop, loading, ...restProps } ) => {
+	const { inviteLink } = useGoogleAdsAccountStatus();
 	const getEventProps = useEventPropertiesFilter( FILTER_ONBOARDING );
 
 	const handleClaimAccountClick = ( event ) => {
@@ -41,14 +42,10 @@ const ClaimAccountButton = ( { onClick = noop, ...restProps } ) => {
 
 		onClick( event );
 	};
-
-	if ( ! hasFinishedResolution ) {
-		return null;
-	}
-
 	return (
 		<AppButton
 			{ ...restProps }
+			loading={ loading || ! inviteLink }
 			eventName="gla_open_ads_account_claim_invitation_button_click"
 			eventProps={ getEventProps() }
 			onClick={ handleClaimAccountClick }
