@@ -592,19 +592,28 @@ test.describe( 'Set up accounts', () => {
 			} );
 
 			test( 'should send an API request to connect existing Google Ads account', async () => {
+				const adsAccountsResponse =
+					setUpAccountsPage.registerAdsAccountsResponse();
+
 				const googleAdsAccountCard =
 					setUpAccountsPage.getGoogleAdsAccountCard();
+				await setUpAccountsPage.mockAdsStatusClaimed();
 
-				const once = setUpAccountsPage.fulfillTimes( 1 );
-
-				await once.mockAdsStatusClaimed();
-				await once.fulfillAdsAccounts( {
-					id: 111111,
-				} );
-
+				const adsAccountDropdown =
+					googleAdsAccountCard.locator( 'select' );
+				await adsAccountDropdown.selectOption( '222222' );
 				await googleAdsAccountCard
 					.getByRole( 'button', { name: 'Connect' } )
 					.click();
+
+				await setUpAccountsPage.mockAdsAccountConnected( 222222 );
+				await adsAccountsResponse;
+
+				const googleAccountCard =
+					setUpAccountsPage.getGoogleAccountCard();
+				await expect(
+					googleAccountCard.getByText( 'Google Ads ID: 222222' )
+				).toBeVisible();
 			} );
 		} );
 
@@ -648,7 +657,7 @@ test.describe( 'Set up accounts', () => {
 				await expect( cancelButton ).toHaveText( 'Cancel' );
 
 				// Click the cancel button to close the modal.
-				cancelButton.click();
+				await cancelButton.click();
 				await expect( setUpAccountsPage.getModal() ).not.toBeVisible();
 			} );
 
