@@ -2,13 +2,14 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
 import { useAppDispatch } from '.~/data';
+import { GOOGLE_ADS_ACCOUNT_STATUS } from '.~/constants';
 import AccountCard, { APPEARANCE } from '../account-card';
 import ConnectAds from './connect-ads';
 import AccountDetails from './account-details';
@@ -35,11 +36,6 @@ import './connected-google-combo-account-card.scss';
  */
 const ConnectedGoogleComboAccountCard = () => {
 	const [ editMode, setEditMode ] = useState( false );
-	const [
-		showConversionMeasurementNotice,
-		setShowConversionMeasurementNotice,
-	] = useState( false );
-	const initConnected = useRef( null );
 	const { hasDetermined, creatingWhich } = useAutoCreateAdsMCAccounts();
 
 	// We use a single instance of the hook to create a MC (Merchant Center) account,
@@ -60,22 +56,6 @@ const ConnectedGoogleComboAccountCard = () => {
 
 	const finalizeAdsAccountCreation =
 		hasAccess === true && step === 'conversion_action';
-
-	// Show the conversion measurement notice after the account is ready.
-	useEffect( () => {
-		if ( isConnected === null ) {
-			return;
-		}
-
-		if ( isConnected && initConnected.current === false ) {
-			setShowConversionMeasurementNotice( true );
-		}
-
-		// Store the initial isConnected state.
-		if ( initConnected.current === null ) {
-			initConnected.current = isConnected;
-		}
-	}, [ isConnected ] );
 
 	// Ideally updating the account should be done in ConnectMC component but the latter is not always rendered,
 	// (for e.g when the user is creating the first account).
@@ -143,6 +123,9 @@ const ConnectedGoogleComboAccountCard = () => {
 		( Boolean( creatingWhich ) && ! shouldClaimGoogleAdsAccount ) ||
 		( ! showConnectAds && finalizeAdsAccountCreation );
 
+	const showConversionMeasurementNotice =
+		googleAdsAccount.status === GOOGLE_ADS_ACCOUNT_STATUS.CONNECTED ||
+		googleAdsAccount.step === 'link_merchant';
 	return (
 		<div>
 			<AccountCard
