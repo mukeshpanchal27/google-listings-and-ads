@@ -6,6 +6,7 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\MigrateGTIN;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
+use Exception;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -83,5 +84,71 @@ trait GTINMigrationUtilities {
 	 */
 	protected function options() {
 		return $this->options ?? woogle_get_container()->get( OptionsInterface::class );
+	}
+
+	/**
+	 * Prepares the GTIN to be saved.
+	 *
+	 * @param string $gtin
+	 * @return string
+	 */
+	protected function prepare_gtin( string $gtin ) {
+		return str_replace( '-', '', $gtin );
+	}
+
+	/**
+	 * Gets the message when the GTIN is invalid.
+	 *
+	 * @param \WC_Product $product
+	 * @param string      $gtin
+	 * @return string
+	 */
+	protected function error_gtin_invalid( \WC_Product $product, string $gtin ) {
+		return sprintf( 'GTIN [ %s ] has been skipped for Product ID: %s - %s. Invalid GTIN was found.', $gtin, $product->get_id(), $product->get_name() );
+	}
+
+	/**
+	 * Gets the message when the GTIN is already in the Product Inventory
+	 *
+	 * @param \WC_Product $product
+	 * @return string
+	 */
+	protected function error_gtin_already_set( \WC_Product $product ) {
+		return sprintf( 'GTIN has been skipped for Product ID: %s - %s. GTIN was found in Product Inventory tab.', $product->get_id(), $product->get_name() );
+	}
+
+	/**
+	 * Gets the message when the GTIN is not found.
+	 *
+	 * @param \WC_Product $product
+	 * @return string
+	 */
+	protected function error_gtin_not_found( \WC_Product $product ) {
+		return sprintf( 'GTIN has been skipped for Product ID: %s - %s. No GTIN was found', $product->get_id(), $product->get_name() );
+	}
+
+	/**
+	 * Gets the message when the GTIN had an error when saving.
+	 *
+	 * @param \WC_Product $product
+	 * @param string      $gtin
+	 * @param Exception   $e
+	 *
+	 * @return string
+	 */
+	protected function error_gtin_not_saved( \WC_Product $product, string $gtin, Exception $e ) {
+		return sprintf( 'GTIN [ %s ] for Product ID: %s - %s has an error - %s', $gtin, $product->get_id(), $product->get_name(), $e->getMessage() );
+	}
+
+	/**
+	 * Gets the message when the GTIN is successfully migrated.
+	 *
+	 * @param \WC_Product $product
+	 * @param string      $gtin
+	 *
+	 * @return string
+	 */
+	protected function successful_migrated_gtin( \WC_Product $product, string $gtin ) {
+		return sprintf( 'GTIN [ %s ] has been migrated for Product ID: %s - %s', $gtin, $product->get_id(), $product->get_name() );
 	}
 }

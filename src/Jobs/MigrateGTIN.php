@@ -10,6 +10,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\AttributeManager;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductRepository;
+use Exception;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -85,11 +86,6 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 		// update the product core GTIN using G4W GTIN
 		$products = $this->product_repository->find_by_ids( $items );
 		foreach ( $products as $product ) {
-			// void if core GTIN is already set.
-			if ( $product->get_global_unique_id() ) {
-				continue;
-			}
-
 			// process variations
 			if ( $product instanceof \WC_Product_Variable ) {
 				$variations = $product->get_children();
@@ -98,9 +94,23 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 			}
 
 			$gtin = $this->attribute_manager->get_value( $product, 'gtin' );
-			if ( $gtin ) {
+			if ( ! $gtin ) {
+				$this->debug( $this->error_gtin_not_found( $product ) );
+				continue;
+			}
+
+			$gtin = $this->prepare_gtin( $gtin );
+			if ( ! is_numeric( $gtin ) ) {
+				$this->debug( $this->error_gtin_invalid( $product, $gtin ) );
+				continue;
+			}
+
+			try {
 				$product->set_global_unique_id( $gtin );
 				$product->save();
+				$this->debug( $this->successful_migrated_gtin( $product, $gtin ) );
+			} catch ( Exception $e ) {
+				$this->debug( $this->error_gtin_not_saved( $product, $gtin, $e ) );
 			}
 		}
 	}
@@ -139,5 +149,20 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 	 */
 	protected function get_batch( int $batch_number ): array {
 		return $this->product_repository->find_all_product_ids( $this->get_batch_size(), $this->get_query_offset( $batch_number ) );
+	}
+
+	/**
+	 * Debug info in the logs.
+	 *
+	 * @param string $message
+	 *
+	 * @return void
+	 */
+	protected function debug( string $message ): void {
+		do_action(
+			'woocommerce_gla_debug_message',
+			$message,
+			__METHOD__
+		);
 	}
 }
