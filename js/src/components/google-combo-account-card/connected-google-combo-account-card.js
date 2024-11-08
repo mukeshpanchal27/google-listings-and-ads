@@ -29,7 +29,6 @@ import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
 import './connected-google-combo-account-card.scss';
-import { set } from 'lodash';
 
 /**
  * Renders a Google account card UI with connected account information.
