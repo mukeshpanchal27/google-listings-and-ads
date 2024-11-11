@@ -163,10 +163,7 @@ export default function AssetGroup( { campaign } ) {
 						onClick={ handleLaunchClick }
 					>
 						{ isCreation
-							? __(
-									'Launch paid campaign',
-									'google-listings-and-ads'
-							  )
+							? __( 'Create campaign', 'google-listings-and-ads' )
 							: __( 'Save changes', 'google-listings-and-ads' ) }
 					</AppButton>
 				</StepContentActions>

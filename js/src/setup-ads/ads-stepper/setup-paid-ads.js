@@ -94,7 +94,7 @@ const SetupPaidAds = () => {
 		>
 			<AdsCampaign
 				headerTitle={ __(
-					'Create your paid campaign',
+					'Create your campaign',
 					'google-listings-and-ads'
 				) }
 				context="setup-ads"
@@ -102,7 +102,7 @@ const SetupPaidAds = () => {
 					<AppButton
 						isPrimary
 						text={ __(
-							'Launch paid campaign',
+							'Create campaign',
 							'google-listings-and-ads'
 						) }
 						disabled={

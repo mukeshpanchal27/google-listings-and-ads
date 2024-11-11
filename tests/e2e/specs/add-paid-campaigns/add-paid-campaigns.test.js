@@ -84,7 +84,7 @@ test.describe( 'Set up Ads account', () => {
 		await page.close();
 	} );
 
-	test( 'Dashboard page contains Add Paid campaign buttons', async () => {
+	test( 'Dashboard page contains Add campaign buttons', async () => {
 		//Add page campaign in the programs section.
 		await expect( dashboardPage.addPaidCampaignButton ).toBeEnabled();
 	} );
@@ -102,7 +102,7 @@ test.describe( 'Set up Ads account', () => {
 			).toBeVisible();
 			await expect(
 				page.getByText(
-					'Connect your Google account and your Google Ads account to set up a paid Performance Max campaign.'
+					'Connect your Google account and your Google Ads account to set up a Performance Max campaign.'
 				)
 			).toBeVisible();
 		} );
@@ -120,7 +120,7 @@ test.describe( 'Set up Ads account', () => {
 		} );
 	} );
 
-	test.describe( 'Add paid campaigns with no Ads account', async () => {
+	test.describe( 'Add campaigns with no Ads account', async () => {
 		test( 'Create an account should be visible', async () => {
 			const createAccountButton = page.getByRole( 'button', {
 				name: 'Create account',
@@ -230,7 +230,7 @@ test.describe( 'Set up Ads account', () => {
 		} );
 	} );
 
-	test.describe( 'Add paid campaigns with existing Ads accounts', () => {
+	test.describe( 'Add campaigns with existing Ads accounts', () => {
 		test.beforeAll( async () => {
 			await setupAdsAccounts.mockAdsAccountsResponse( ADS_ACCOUNTS );
 			//Disconnect the account from the previous test
@@ -280,13 +280,13 @@ test.describe( 'Set up Ads account', () => {
 		} );
 	} );
 
-	test.describe( 'Create your paid campaign', () => {
+	test.describe( 'Create your campaign', () => {
 		test( 'Continue to create paid ad campaign', async () => {
 			await setupAdsAccounts.clickContinue();
 			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 			await expect(
 				page.getByRole( 'heading', {
-					name: 'Create your paid campaign',
+					name: 'Create your campaign',
 				} )
 			).toBeVisible();
 
@@ -351,7 +351,7 @@ test.describe( 'Set up Ads account', () => {
 				await setupBudgetPage.fillBudget( budget );
 
 				await expect(
-					setupBudgetPage.getLaunchPaidCampaignButton()
+					setupBudgetPage.getCreateCampaignButton()
 				).toBeDisabled();
 			} );
 
@@ -360,7 +360,7 @@ test.describe( 'Set up Ads account', () => {
 				await setupBudgetPage.fillBudget( budget );
 
 				await expect(
-					setupBudgetPage.getLaunchPaidCampaignButton()
+					setupBudgetPage.getCreateCampaignButton()
 				).toBeDisabled();
 			} );
 
@@ -381,7 +381,7 @@ test.describe( 'Set up Ads account', () => {
 				await setupBudgetPage.fillBudget( budget );
 
 				await expect(
-					setupBudgetPage.getLaunchPaidCampaignButton()
+					setupBudgetPage.getCreateCampaignButton()
 				).toBeEnabled();
 			} );
 
@@ -400,7 +400,7 @@ test.describe( 'Set up Ads account', () => {
 					[ 'US' ]
 				);
 
-			await setupBudgetPage.getLaunchPaidCampaignButton().click();
+			await setupBudgetPage.getCreateCampaignButton().click();
 
 			await campaignCreation;
 
@@ -415,7 +415,7 @@ test.describe( 'Set up Ads account', () => {
 
 			await expect(
 				page.getByRole( 'heading', {
-					name: "You've set up a paid Performance Max Campaign!",
+					name: "You've set up a Performance Max Campaign!",
 				} )
 			).toBeVisible();
 

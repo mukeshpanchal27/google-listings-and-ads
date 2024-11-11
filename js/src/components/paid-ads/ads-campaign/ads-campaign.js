@@ -62,7 +62,7 @@ export default function AdsCampaign( {
 
 	let description = createInterpolateElement(
 		__(
-			'Paid Performance Max campaigns are automatically optimized for you by Google. <link>See what your ads will look like.</link>',
+			'Performance Max campaigns are automatically optimized for you by Google. <link>See what your ads will look like.</link>',
 			'google-listings-and-ads'
 		),
 		{

@@ -31,7 +31,7 @@ export default class DashboardPage extends MockRequests {
 		this.addPaidCampaignButton = this.page.locator(
 			'.gla-all-programs-table-card button',
 			{
-				hasText: 'Add paid campaign',
+				hasText: 'Add campaign',
 			}
 		);
 	}
