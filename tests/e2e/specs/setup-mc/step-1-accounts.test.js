@@ -620,6 +620,8 @@ test.describe( 'Set up accounts', () => {
 		test.describe( 'When new Google Ads account is created', () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountDisconnected();
+
+				await setUpAccountsPage.goto();
 			} );
 
 			test( 'should see the Create new Google Ads account link', async () => {
