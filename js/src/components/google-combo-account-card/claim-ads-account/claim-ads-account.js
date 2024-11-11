@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useState } from '@wordpress/element';
+import { useCallback, useState, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -12,18 +12,43 @@ import { useAppDispatch } from '.~/data';
 import useWindowFocusCallbackIntervalEffect from '.~/hooks/useWindowFocusCallbackIntervalEffect';
 import './claim-ads-account.scss';
 
+const CLAIM_RETRIES = 3;
+
 /**
  * ClaimAdsAccount component.
  *
  * @return {JSX.Element} ClaimAdsAccount component.
  */
 const ClaimAdsAccount = () => {
-	const [ updating, setUpdating ] = useState( false );
+	const [ claiming, setClaiming ] = useState( false );
+	const retries = useRef( CLAIM_RETRIES );
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
-	useWindowFocusCallbackIntervalEffect( fetchGoogleAdsAccountStatus, 30 );
+
+	const checkUpdatedAdsAccountStatus = useCallback( async () => {
+		if ( ! claiming ) {
+			return;
+		}
+
+		await fetchGoogleAdsAccountStatus()
+			.then( () => {
+				retries.current -= 1;
+				// Reset the claiming state after 3 retries.
+				if ( retries.current < 1 ) {
+					setClaiming( false );
+				}
+			} )
+			.catch( () => {
+				// Reset the claiming state if the API call fails.
+				setClaiming( false );
+			} );
+	}, [ claiming, fetchGoogleAdsAccountStatus ] );
+
+	useWindowFocusCallbackIntervalEffect( checkUpdatedAdsAccountStatus, 30 );
 
 	const handleOnClick = () => {
-		setUpdating( true );
+		// Reset retries.
+		retries.current = CLAIM_RETRIES;
+		setClaiming( true );
 	};
 
 	return (
@@ -47,16 +72,16 @@ const ClaimAdsAccount = () => {
 				) }
 			</p>
 			<ClaimAccountButton
-				loading={ updating }
+				loading={ claiming }
 				text={
-					updating
+					claiming
 						? __( 'Waiting…', 'google-listings-and-ads' )
 						: __(
 								'Claim account in Google Ads',
 								'google-listings-and-ads'
 						  )
 				}
-				isPrimary={ ! updating }
+				isPrimary={ ! claiming }
 				onClick={ handleOnClick }
 			/>
 		</div>
