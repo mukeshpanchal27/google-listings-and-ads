@@ -121,9 +121,8 @@ const ConnectedGoogleComboAccountCard = () => {
 
 			{ showConnectAds && (
 				<ConnectAds
-					isConnecting={ action === 'update' }
-					isCreating={ action === 'create' }
-					onCreate={ upsertAdsAccount }
+					onRequestCreate={ upsertAdsAccount }
+					upsertingAction={ action }
 				/>
 			) }
 
