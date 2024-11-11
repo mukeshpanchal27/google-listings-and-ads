@@ -48,7 +48,7 @@ const ConnectedGoogleComboAccountCard = () => {
 	const { invalidateResolution } = useAppDispatch();
 	const { googleAdsAccount } = useGoogleAdsAccount();
 	const { hasAccess, step } = useGoogleAdsAccountStatus();
-	const [ upsertAdsAccount ] = useUpsertAdsAccount();
+	const [ upsertAdsAccount, { loading } ] = useUpsertAdsAccount();
 
 	const finalizeAdsAccountCreation =
 		hasAccess === true && step === 'conversion_action';
@@ -73,7 +73,7 @@ const ConnectedGoogleComboAccountCard = () => {
 	// @TODO: edit mode implementation in 2605
 	const editMode = false;
 	const shouldClaimGoogleAdsAccount = Boolean(
-		googleAdsAccount?.id && hasAccess === false
+		! loading && googleAdsAccount?.id && hasAccess === false
 	);
 
 	const hasExistingGoogleMCAccounts = existingGoogleMCAccounts?.length > 0;
