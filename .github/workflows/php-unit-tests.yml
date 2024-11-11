@@ -65,7 +65,7 @@ jobs:
     strategy:
       matrix:
         php: [ 8.2 ]
-        wp-version: [ latest ]
+        wp-version: [ latest, '6.7-RC3' ]
         wc-versions: ${{ fromJson(needs.GetMatrix.outputs.wc-versions) }}
         include:
           - php: 8.3
