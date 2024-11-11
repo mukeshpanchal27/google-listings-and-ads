@@ -42,10 +42,16 @@ const ClaimAccountButton = ( { onClick = noop, loading, ...restProps } ) => {
 
 		onClick( event );
 	};
+
+	// If there is no invite link, we don't render the button.
+	if ( ! inviteLink ) {
+		return null;
+	}
+
 	return (
 		<AppButton
 			{ ...restProps }
-			loading={ loading || ! inviteLink }
+			loading={ loading }
 			eventName="gla_open_ads_account_claim_invitation_button_click"
 			eventProps={ getEventProps() }
 			onClick={ handleClaimAccountClick }
