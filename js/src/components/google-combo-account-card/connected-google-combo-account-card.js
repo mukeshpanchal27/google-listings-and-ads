@@ -7,7 +7,6 @@ import { useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import { useAppDispatch } from '.~/data';
-import { GOOGLE_ADS_ACCOUNT_STATUS } from '.~/constants';
 import AccountCard, { APPEARANCE } from '../account-card';
 import ConnectAds from './connect-ads';
 import AccountDetails from './account-details';
@@ -25,6 +24,7 @@ import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts'
 import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
+import showAdsConversionNotice from '.~/utils/showAdsConversionNotice';
 import './connected-google-combo-account-card.scss';
 
 /**
@@ -94,9 +94,7 @@ const ConnectedGoogleComboAccountCard = () => {
 		( ! showConnectAds && finalizeAdsAccountCreation );
 
 	const showConversionMeasurementNotice =
-		( googleAdsAccount?.status === GOOGLE_ADS_ACCOUNT_STATUS.CONNECTED ||
-			googleAdsAccount?.step === 'billing' ) &&
-		! shouldClaimGoogleAdsAccount;
+		showAdsConversionNotice( googleAdsAccount );
 
 	return (
 		<div>
