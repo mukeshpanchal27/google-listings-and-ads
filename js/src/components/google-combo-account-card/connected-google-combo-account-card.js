@@ -92,12 +92,12 @@ const ConnectedGoogleComboAccountCard = () => {
 		return <SpinnerCard />;
 	}
 
-	const onCancelClick = () => {
+	const handleCancelClick = () => {
 		setShowConversionMeasurementNotice( false );
 		setEditMode( false );
 	};
 
-	const onEditClick = () => {
+	const handleEditClick = () => {
 		setEditMode( true );
 	};
 
@@ -112,7 +112,7 @@ const ConnectedGoogleComboAccountCard = () => {
 							'google-listings-and-ads'
 						) }
 					/>
-					<AppButton isTertiary onClick={ onCancelClick }>
+					<AppButton isTertiary onClick={ handleCancelClick }>
 						{ __( 'Cancel', 'google-listings-and-ads' ) }
 					</AppButton>
 				</>
@@ -120,7 +120,7 @@ const ConnectedGoogleComboAccountCard = () => {
 				<AppButton
 					isTertiary
 					text={ __( 'Edit', 'google-listings-and-ads' ) }
-					onClick={ onEditClick }
+					onClick={ handleEditClick }
 				/>
 			) }
 		</div>
