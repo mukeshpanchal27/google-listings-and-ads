@@ -23,7 +23,7 @@ import ConnectButton from '.~/components/google-ads-account-card/connect-ads/con
  * Renders an account card to connect to an existing Google Ads account.
  *
  * @param {Object} props Component props.
- * @param {Function} props.onCreateClick A callback to fire when creating a new account.
+ * @param {Function} props.onCreateClick Callback when clicking on the button to create a new account
  */
 const ConnectExistingAccount = ( { onCreateClick } ) => {
 	const [ value, setValue ] = useState();
