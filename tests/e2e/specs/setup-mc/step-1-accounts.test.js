@@ -820,7 +820,7 @@ test.describe( 'Set up accounts', () => {
 		} );
 
 		test.describe( 'clicking the Edit button', async () => {
-			test( 'the "Connect to a different Google account" button is visible', async () => {
+			test( 'the "Or, connect to a different Google account" button is visible', async () => {
 				const editButton = setUpAccountsPage.getEditButton();
 				await editButton.click();
 

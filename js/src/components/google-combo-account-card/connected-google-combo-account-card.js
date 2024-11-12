@@ -108,7 +108,7 @@ const ConnectedGoogleComboAccountCard = () => {
 					<SwitchAccountButton
 						isTertiary
 						text={ __(
-							'Connect to a different Google account',
+							'Or, connect to a different Google account',
 							'google-listings-and-ads'
 						) }
 					/>

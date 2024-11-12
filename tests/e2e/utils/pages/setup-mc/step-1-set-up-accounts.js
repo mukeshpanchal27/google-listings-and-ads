@@ -394,13 +394,13 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
-	 * Get "Connect to a different Google account" button.
+	 * Get "Or, connect to a different Google account" button.
 	 *
-	 * @return {import('@playwright/test').Locator} Get "Connect to a different Google account" button.
+	 * @return {import('@playwright/test').Locator} Get "Or, connect to a different Google account" button.
 	 */
 	getConnectDifferentGoogleAccountButton() {
 		return this.page.getByRole( 'button', {
-			name: 'Connect to a different Google account',
+			name: 'Or, connect to a different Google account',
 			exact: true,
 		} );
 	}
