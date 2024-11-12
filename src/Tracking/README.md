@@ -546,7 +546,7 @@ Clicking on the "Scan for assets" button.
 - [`exports`](../../js/src/components/paid-ads/asset-group/assets-loader.js#L96)
 
 ### [`gla_launch_paid_campaign_button_click`](../../js/src/utils/tracks.js#L167)
-Triggered when the "Create campaign" button is clicked to add a new paid campaign in the Google Ads setup flow.
+Triggered when the "Create campaign" button is clicked to add a new campaign in the Google Ads setup flow.
 #### Properties
 | name | type | description |
 | ---- | ---- | ----------- |
