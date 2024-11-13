@@ -228,11 +228,6 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.mockJetpackConnected();
 			await setUpAccountsPage.mockGoogleConnected();
 
-			await setUpAccountsPage.fulfillAdsAccounts( [ { id: 1 } ] );
-			await setUpAccountsPage.mockMCHasAccounts();
-			await setUpAccountsPage.mockAdsAccountIncomplete();
-			await setUpAccountsPage.mockMCConnected();
-
 			const once = setUpAccountsPage.fulfillTimes( 1 );
 
 			await once.mockAdsHasNoAccounts();
@@ -591,24 +586,108 @@ test.describe( 'Set up accounts', () => {
 				).toBeEnabled();
 			} );
 
-			test( 'should display the correct Google Ads ID when connected', async () => {
+			test( 'should send an API request to connect existing Google Ads account', async () => {
+				const adsAccountsResponse =
+					setUpAccountsPage.registerAdsAccountsResponse();
+
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+				await setUpAccountsPage.mockAdsStatusClaimed();
+
+				const adsAccountDropdown =
+					googleAdsAccountCard.locator( 'select' );
+				await adsAccountDropdown.selectOption( '222222' );
+				await googleAdsAccountCard
+					.getByRole( 'button', { name: 'Connect' } )
+					.click();
+
+				await setUpAccountsPage.mockAdsAccountConnected( 222222 );
+				await adsAccountsResponse;
+
+				const googleAccountCard =
+					setUpAccountsPage.getGoogleAccountCard();
+				await expect(
+					googleAccountCard.getByText( 'Google Ads ID: 222222' )
+				).toBeVisible();
+			} );
+		} );
+
+		test.describe( 'When new Google Ads account is created', () => {
+			test.beforeAll( async () => {
+				await setUpAccountsPage.mockAdsAccountDisconnected();
+
+				await setUpAccountsPage.goto();
+			} );
+
+			test( 'should see the Create new Google Ads account link', async () => {
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+
+				await expect(
+					googleAdsAccountCard.getByText(
+						'Or, create a new Google Ads account',
+						{ exact: true }
+					)
+				).toBeVisible();
+			} );
+
+			test( 'clicking the "Create new Google Ads account" link should open the modal', async () => {
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+
+				await googleAdsAccountCard
+					.getByText( 'Or, create a new Google Ads account' )
+					.click();
+
+				await expect( setUpAccountsPage.getModal() ).toBeVisible();
+				await expect( setUpAccountsPage.getModalHeader() ).toHaveText(
+					'Create Google Ads Account'
+				);
+
+				// "Yes, I want a new account" button should be disabled and secondary.
+				const yesButton = setUpAccountsPage.getModalSecondaryButton();
+				const cancelButton = setUpAccountsPage.getModalPrimaryButton();
+				await expect( yesButton ).toHaveText(
+					'Yes, I want a new account'
+				);
+
+				await expect( cancelButton ).toHaveText( 'Cancel' );
+
+				// Click the cancel button to close the modal.
+				await cancelButton.click();
+				await expect( setUpAccountsPage.getModal() ).not.toBeVisible();
+			} );
+
+			test( 'clicking the "Yes, I want a new account" button should create a new Google Ads account', async () => {
 				const googleAccountCard =
 					setUpAccountsPage.getGoogleAccountCard();
 				const googleAdsAccountCard =
 					setUpAccountsPage.getGoogleAdsAccountCard();
 
-				const once = setUpAccountsPage.fulfillTimes( 1 );
-				await once.fulfillAdsAccounts( [ { id: 12345 } ] );
-				await once.mockAdsAccountConnected();
-				await once.mockAdsStatusClaimed();
+				await setUpAccountsPage.fulfillAdsAccounts( [
+					{
+						id: 111111,
+					},
+				] );
+
+				await setUpAccountsPage.mockAdsStatusNotClaimed();
+				await setUpAccountsPage.mockAdsAccountIncomplete();
 
 				await googleAdsAccountCard
-					.getByRole( 'button', { name: 'Connect' } )
+					.getByText( 'Or, create a new Google Ads account' )
 					.click();
 
-				await expect( googleAccountCard ).toContainText(
-					'Google Ads ID: 12345'
-				);
+				await expect( setUpAccountsPage.getModal() ).toBeVisible();
+
+				const yesButton = setUpAccountsPage.getModalSecondaryButton();
+				await yesButton.click();
+
+				await expect( setUpAccountsPage.getModal() ).not.toBeVisible();
+
+				// Google Ads ID should be displayed.
+				await expect(
+					googleAccountCard.getByText( 'Google Ads ID: 12345' )
+				).toBeVisible();
 			} );
 		} );
 	} );

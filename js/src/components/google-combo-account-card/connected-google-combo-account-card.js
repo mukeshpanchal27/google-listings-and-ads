@@ -48,7 +48,7 @@ const ConnectedGoogleComboAccountCard = () => {
 	const { invalidateResolution } = useAppDispatch();
 	const { googleAdsAccount } = useGoogleAdsAccount();
 	const { hasAccess, step } = useGoogleAdsAccountStatus();
-	const [ upsertAdsAccount, { loading } ] = useUpsertAdsAccount();
+	const [ upsertAdsAccount, { action, loading } ] = useUpsertAdsAccount();
 
 	const finalizeAdsAccountCreation =
 		hasAccess === true && step === 'conversion_action';
@@ -83,8 +83,9 @@ const ConnectedGoogleComboAccountCard = () => {
 
 	const hasExistingGoogleAdsAccounts = existingGoogleAdsAccounts?.length > 0;
 	const showConnectAds =
-		( editMode && hasExistingGoogleAdsAccounts ) ||
-		( ! isConnected && hasExistingGoogleAdsAccounts );
+		( ( editMode && hasExistingGoogleAdsAccounts ) ||
+			( ! isConnected && hasExistingGoogleAdsAccounts ) ) &&
+		! shouldClaimGoogleAdsAccount;
 
 	// Show the spinner if there's an account creation in progress and account should not be claimed.
 	// If we are not showing the ConnectMC screen, for e.g when we are creating the first account,
@@ -116,7 +117,12 @@ const ConnectedGoogleComboAccountCard = () => {
 				expandedDetail
 			/>
 
-			{ showConnectAds && <ConnectAds /> }
+			{ showConnectAds && (
+				<ConnectAds
+					onRequestCreate={ upsertAdsAccount }
+					upsertingAction={ action }
+				/>
+			) }
 
 			{ showConnectMC && (
 				<ConnectMC
