@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import { getEditStoreAddressUrl } from '.~/utils/urls';
 import Section from '.~/wcdl/section';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
 import AppDocumentationLink from '.~/components/app-documentation-link';
 import { StoreAddressCardPreview } from './store-address-card';
 
@@ -39,23 +38,21 @@ const settingsTitle = __( 'Contact information', 'google-listings-and-ads' );
  * Renders a preview of contact information section,
  * or a notice if contact information is outdated.
  */
-export function ContactInformationPreview() {
+export default function ContactInformationPreview() {
 	return (
 		<Section title={ settingsTitle } description={ description }>
-			<VerticalGapLayout size="overlap">
-				<StoreAddressCardPreview
-					editHref={ getEditStoreAddressUrl() }
-					learnMore={
-						<AppDocumentationLink
-							context="settings-no-store-address-notice"
-							linkId={ learnMoreLinkId }
-							href={ learnMoreUrl }
-						>
-							{ __( 'Learn more', 'google-listings-and-ads' ) }
-						</AppDocumentationLink>
-					}
-				/>
-			</VerticalGapLayout>
+			<StoreAddressCardPreview
+				editHref={ getEditStoreAddressUrl() }
+				learnMore={
+					<AppDocumentationLink
+						context="settings-no-store-address-notice"
+						linkId={ learnMoreLinkId }
+						href={ learnMoreUrl }
+					>
+						{ __( 'Learn more', 'google-listings-and-ads' ) }
+					</AppDocumentationLink>
+				}
+			/>
 		</Section>
 	);
 }

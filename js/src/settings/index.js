@@ -12,7 +12,7 @@ import useMenuEffect from '.~/hooks/useMenuEffect';
 import useGoogleAccount from '.~/hooks/useGoogleAccount';
 import useUpdateRestAPIAuthorizeStatusByUrlQuery from '.~/hooks/useUpdateRestAPIAuthorizeStatusByUrlQuery';
 import { subpaths, getReconnectAccountUrl } from '.~/utils/urls';
-import { ContactInformationPreview } from '.~/components/contact-information';
+import ContactInformationPreview from '.~/components/contact-information/contact-information-preview';
 import LinkedAccounts from './linked-accounts';
 import ReconnectWPComAccount from './reconnect-wpcom-account';
 import ReconnectGoogleAccount from './reconnect-google-account';
