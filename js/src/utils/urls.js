@@ -92,6 +92,7 @@ export const getEditStoreAddressUrl = () => {
 		null
 	);
 };
+
 /**
  * Returns the URL of the account re-connecting page.
  *
