@@ -6,10 +6,6 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import { useAppDispatch } from '.~/data';
-import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import AccountCard from '.~/components/account-card';
 import ConfirmCreateModal from './confirm-create-modal';
 import ConnectExistingAccount from './connect-existing-account';
