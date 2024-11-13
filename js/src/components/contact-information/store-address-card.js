@@ -108,11 +108,11 @@ const StoreAddressCard = () => {
 			.join( ', ' );
 
 		addressContent = (
-			<div className="gla-store-address-card__address">
-				<div>{ address }</div>
+			<>
+				{ address && <div>{ address }</div> }
 				{ address2 && <div>{ address2 }</div> }
 				<div>{ rest }</div>
-			</div>
+			</>
 		);
 	}
 
