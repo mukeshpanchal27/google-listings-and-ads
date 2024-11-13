@@ -37,7 +37,7 @@ const settingsTitle = __( 'Contact information', 'google-listings-and-ads' );
 
 /**
  * Renders a preview of contact information section,
- * or a <NoContactInformationCard> if contact information are not saved yet.
+ * or a notice if contact information is outdated.
  */
 export function ContactInformationPreview() {
 	return (
