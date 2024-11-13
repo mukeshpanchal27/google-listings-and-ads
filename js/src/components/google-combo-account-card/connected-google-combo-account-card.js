@@ -29,7 +29,6 @@ import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
 import showAdsConversionNotice from '.~/utils/showAdsConversionNotice';
 import './connected-google-combo-account-card.scss';
-import { use } from '@wordpress/data';
 
 /**
  * Renders a Google account card UI with connected account information.
