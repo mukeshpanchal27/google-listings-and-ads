@@ -115,7 +115,7 @@ const appearanceDict = {
 // The `center` is the default alignment, and no need to append any additional class name.
 const alignStyleName = {
 	center: false,
-	top: `gla-account-card__styled--align-top`,
+	top: 'gla-account-card__styled--align-top',
 };
 
 const indicatorAlignStyleName = {

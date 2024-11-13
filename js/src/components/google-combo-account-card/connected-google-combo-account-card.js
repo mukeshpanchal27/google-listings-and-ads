@@ -1,9 +1,16 @@
 /**
+ * External dependencies
+ */
+import { useEffect } from '@wordpress/element';
+
+/**
  * Internal dependencies
  */
+import { useAppDispatch } from '.~/data';
 import AccountCard, { APPEARANCE } from '../account-card';
 import ConnectAds from './connect-ads';
 import AccountDetails from './account-details';
+import ConnectedAdsAccountDetail from './connected-ads-account-detail';
 import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
@@ -15,6 +22,10 @@ import useCreateMCAccount from '.~/hooks/useCreateMCAccount';
 import ConnectMC from '.~/components/google-mc-account-card/connect-mc';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
+import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
+import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
+import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
+import showAdsConversionNotice from '.~/utils/showAdsConversionNotice';
 import './connected-google-combo-account-card.scss';
 
 /**
@@ -37,13 +48,37 @@ const ConnectedGoogleComboAccountCard = () => {
 	const isConnected = useGoogleAdsAccountReady();
 	const { hasGoogleMCConnection, hasFinishedResolution } =
 		useGoogleMCAccount();
+	const { invalidateResolution } = useAppDispatch();
+	const { googleAdsAccount } = useGoogleAdsAccount();
+	const { hasAccess, step } = useGoogleAdsAccountStatus();
+	const [ upsertAdsAccount, { action, loading } ] = useUpsertAdsAccount();
+
+	const finalizeAdsAccountCreation =
+		hasAccess === true && step === 'conversion_action';
+
+	// Ideally updating the account should be done in ConnectMC component but the latter is not always rendered,
+	// (for e.g when the user is creating the first account).
+	useEffect( () => {
+		const upsertAccount = async () => {
+			if ( finalizeAdsAccountCreation ) {
+				await upsertAdsAccount();
+				invalidateResolution( 'getExistingGoogleAdsAccounts', [] );
+			}
+		};
+
+		upsertAccount();
+	}, [ finalizeAdsAccountCreation, upsertAdsAccount, invalidateResolution ] );
 
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
 	}
 
 	// @TODO: edit mode implementation in 2605
-	const editMode = true;
+	const editMode = false;
+	const shouldClaimGoogleAdsAccount = Boolean(
+		! loading && googleAdsAccount?.id && hasAccess === false
+	);
+
 	const hasExistingGoogleMCAccounts = existingGoogleMCAccounts?.length > 0;
 	const showConnectMC =
 		( editMode && hasExistingGoogleMCAccounts ) ||
@@ -51,8 +86,19 @@ const ConnectedGoogleComboAccountCard = () => {
 
 	const hasExistingGoogleAdsAccounts = existingGoogleAdsAccounts?.length > 0;
 	const showConnectAds =
-		( editMode && hasExistingGoogleAdsAccounts ) ||
-		( ! isConnected && hasExistingGoogleAdsAccounts );
+		( ( editMode && hasExistingGoogleAdsAccounts ) ||
+			( ! isConnected && hasExistingGoogleAdsAccounts ) ) &&
+		! shouldClaimGoogleAdsAccount;
+
+	// Show the spinner if there's an account creation in progress and account should not be claimed.
+	// If we are not showing the ConnectMC screen, for e.g when we are creating the first account,
+	// then show the spinner in the Google combo card while the Ads account is being claimed.
+	const showSpinner =
+		( Boolean( creatingWhich ) && ! shouldClaimGoogleAdsAccount ) ||
+		( ! showConnectAds && finalizeAdsAccountCreation );
+
+	const showConversionMeasurementNotice =
+		showAdsConversionNotice( googleAdsAccount );
 
 	const showAddressCard = hasFinishedResolution && hasGoogleMCConnection;
 
@@ -64,12 +110,24 @@ const ConnectedGoogleComboAccountCard = () => {
 				className="gla-google-combo-account-card gla-google-combo-account-card--connected gla-google-combo-service-account-card--google"
 				description={ text || <AccountDetails /> }
 				helper={ subText }
-				indicator={
-					<Indicator showSpinner={ Boolean( creatingWhich ) } />
+				indicator={ <Indicator showSpinner={ showSpinner } /> }
+				detail={
+					<ConnectedAdsAccountDetail
+						showConversionMeasurementNotice={
+							showConversionMeasurementNotice
+						}
+						claimGoogleAdsAccount={ shouldClaimGoogleAdsAccount }
+					/>
 				}
+				expandedDetail
 			/>
 
-			{ showConnectAds && <ConnectAds /> }
+			{ showConnectAds && (
+				<ConnectAds
+					onRequestCreate={ upsertAdsAccount }
+					upsertingAction={ action }
+				/>
+			) }
 
 			{ showConnectMC && (
 				<ConnectMC

@@ -401,4 +401,17 @@ export default class SetUpAccountsPage extends MockRequests {
 			exact: true,
 		} );
 	}
+
+	/**
+	 * Register the response when connecting an Ads account
+	 *
+	 * @return {Promise<import('@playwright/test').Response>} The response.
+	 */
+	registerAdsAccountsResponse() {
+		return this.page.waitForResponse(
+			( response ) =>
+				response.url().includes( '/gla/ads/accounts' ) &&
+				response.status() === 200
+		);
+	}
 }
