@@ -11,7 +11,6 @@ import { getPath, getQuery } from '@woocommerce/navigation';
  * Internal dependencies
  */
 import useStoreAddress from '.~/hooks/useStoreAddress';
-import useStoreAddressSynced from '.~/hooks/useStoreAddressSynced';
 import AccountCard, { APPEARANCE } from '.~/components/account-card';
 import AppButton from '.~/components/app-button';
 import ContactInformationPreviewCard from './contact-information-preview-card';
@@ -49,7 +48,7 @@ import './store-address-card.scss';
  */
 const StoreAddressCard = () => {
 	const { loaded, data, refetch } = useStoreAddress();
-	const { isAddressFilled } = useStoreAddressSynced();
+	const { isAddressFilled } = data;
 	const path = getPath();
 	const { subpath } = getQuery();
 
