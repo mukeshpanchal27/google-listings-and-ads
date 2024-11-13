@@ -1,11 +1,11 @@
 .gla-google-combo-account-card {
 
-	&:not( :last-child ) {
+	&:not(:last-child) {
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
 	}
 
-	&:not( :first-child ) {
+	&:not(:first-child) {
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
 	}
