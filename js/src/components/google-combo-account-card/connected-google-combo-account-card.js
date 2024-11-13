@@ -7,7 +7,6 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
 import { useAppDispatch } from '.~/data';
 import AccountCard, { APPEARANCE } from '../account-card';
 import ConnectAds from './connect-ads';
@@ -16,6 +15,7 @@ import ConnectedAdsAccountDetail from './connected-ads-account-detail';
 import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
+import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
 import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
 import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
 import useCreateMCAccount from '.~/hooks/useCreateMCAccount';
