@@ -16,7 +16,7 @@ import UpsertingAccount from './upserting-account';
  *
  * @param {Object} props Component props.
  * @param {Function} props.onRequestCreate A callback to fire when creating a new account.
- * @param {string} props.upsertingAction The action the user is performing. Either 'create' or 'update'.
+ * @param {string|null} props.upsertingAction The action the user is performing. Possible values are 'create', 'update', or null.
  * @return {JSX.Element} {@link AccountCard} filled with content.
  */
 const ConnectAds = ( { onRequestCreate, upsertingAction } ) => {
