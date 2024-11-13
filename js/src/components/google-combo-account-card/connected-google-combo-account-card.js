@@ -29,6 +29,7 @@ import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
 import showAdsConversionNotice from '.~/utils/showAdsConversionNotice';
 import './connected-google-combo-account-card.scss';
+import { use } from '@wordpress/data';
 
 /**
  * Renders a Google account card UI with connected account information.
@@ -75,10 +76,6 @@ const ConnectedGoogleComboAccountCard = () => {
 		upsertAccount();
 	}, [ finalizeAdsAccountCreation, upsertAdsAccount, invalidateResolution ] );
 
-	if ( ! hasDetermined ) {
-		return <SpinnerCard />;
-	}
-
 	const handleCancelClick = () => {
 		setEditMode( false );
 	};
@@ -86,31 +83,6 @@ const ConnectedGoogleComboAccountCard = () => {
 	const handleEditClick = () => {
 		setEditMode( true );
 	};
-
-	const cardActions = (
-		<div className="gla-google-combo-account-card__description-actions">
-			{ editMode ? (
-				<>
-					<SwitchAccountButton
-						isTertiary
-						text={ __(
-							'Or, connect to a different Google account',
-							'google-listings-and-ads'
-						) }
-					/>
-					<AppButton isTertiary onClick={ handleCancelClick }>
-						{ __( 'Cancel', 'google-listings-and-ads' ) }
-					</AppButton>
-				</>
-			) : (
-				<AppButton
-					isTertiary
-					text={ __( 'Edit', 'google-listings-and-ads' ) }
-					onClick={ handleEditClick }
-				/>
-			) }
-		</div>
-	);
 
 	const showConnectMC =
 		( editMode && hasExistingGoogleMCAccounts ) ||
@@ -120,6 +92,56 @@ const ConnectedGoogleComboAccountCard = () => {
 		( ( editMode && hasExistingGoogleAdsAccounts ) ||
 			( ! isConnected && hasExistingGoogleAdsAccounts ) ) &&
 		! shouldClaimGoogleAdsAccount;
+
+	// When Ads and MC are disconnected in edit mode, exit edit mode.
+	useEffect( () => {
+		if ( editMode && ! isGoogleMCReady && ! isConnected ) {
+			setEditMode( false );
+		}
+	}, [ editMode, isConnected, isGoogleMCReady ] );
+
+	if ( ! hasDetermined ) {
+		return <SpinnerCard />;
+	}
+
+	const switchAccountButton = (
+		<SwitchAccountButton
+			isTertiary
+			text={ __(
+				'Or, connect to a different Google account',
+				'google-listings-and-ads'
+			) }
+		/>
+	);
+
+	const getCardActions = () => {
+		// Even when not in edit mode, only show the switch account button
+		// when both `ConnectAds and ConnectMC cards are visible.
+		if ( editMode ) {
+			return (
+				<div className="gla-google-combo-account-card__description-actions">
+					{ switchAccountButton }
+					<AppButton isTertiary onClick={ handleCancelClick }>
+						{ __( 'Cancel', 'google-listings-and-ads' ) }
+					</AppButton>
+				</div>
+			);
+		}
+
+		return (
+			<div className="gla-google-combo-account-card__description-actions">
+				{ showConnectAds && showConnectMC ? (
+					switchAccountButton
+				) : (
+					<AppButton
+						isTertiary
+						text={ __( 'Edit', 'google-listings-and-ads' ) }
+						onClick={ handleEditClick }
+					/>
+				) }
+			</div>
+		);
+	};
 
 	// Show the spinner if there's an account creation in progress and account should not be claimed.
 	// If we are not showing the ConnectMC screen, for e.g when we are creating the first account,
@@ -138,7 +160,7 @@ const ConnectedGoogleComboAccountCard = () => {
 				alignIcon="top"
 				className="gla-google-combo-account-card gla-google-combo-account-card--connected gla-google-combo-service-account-card--google"
 				description={ text || <AccountDetails /> }
-				actions={ cardActions }
+				actions={ getCardActions() }
 				helper={ subText }
 				indicator={ <Indicator showSpinner={ showSpinner } /> }
 				detail={
