@@ -756,6 +756,9 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.mockAdsAccountConnected();
 			await setUpAccountsPage.mockAdsStatusClaimed();
 			await setUpAccountsPage.mockMCHasAccounts();
+			await setUpAccountsPage.mockMCNotConnected();
+
+			await setUpAccountsPage.goto();
 		} );
 
 		test( 'should not be shown when MC is not connected', async () => {
