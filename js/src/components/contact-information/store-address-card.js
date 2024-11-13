@@ -116,31 +116,27 @@ const StoreAddressCard = () => {
 		);
 	}
 
-	const longDescription = (
+	const description = (
 		<p>
-			{ createInterpolateElement(
-				__(
-					'We’re using your store address for Google verification. This information won’t be public. Edit in <link>WooCommerce settings</link> if needed and update to review the changes.',
-					'google-listings-and-ads'
-				),
-				{
-					link: settingsLink,
-				}
-			) }
-		</p>
-	);
-
-	const shortDescription = (
-		<p>
-			{ createInterpolateElement(
-				__(
-					'Your store address is required by Google for verification. This information won’t be public. Complete that in <link>WooCommerce settings</link> and update to review the changes.',
-					'google-listings-and-ads'
-				),
-				{
-					link: settingsLink,
-				}
-			) }
+			{ isAddressFilled
+				? createInterpolateElement(
+						__(
+							'We’re using your store address for Google verification. This information won’t be public. Edit in <link>WooCommerce settings</link> if needed and update to review the changes.',
+							'google-listings-and-ads'
+						),
+						{
+							link: settingsLink,
+						}
+				  )
+				: createInterpolateElement(
+						__(
+							'Your store address is required by Google for verification. This information won’t be public. Complete that in <link>WooCommerce settings</link> and update to review the changes.',
+							'google-listings-and-ads'
+						),
+						{
+							link: settingsLink,
+						}
+				  ) }
 		</p>
 	);
 
@@ -159,7 +155,7 @@ const StoreAddressCard = () => {
 			appearance={ APPEARANCE.ADDRESS }
 			alignIcon="top"
 			alignIndicator="top"
-			description={ isAddressFilled ? longDescription : shortDescription }
+			description={ description }
 			detail={ detail }
 			indicator={ refreshButton }
 		/>
