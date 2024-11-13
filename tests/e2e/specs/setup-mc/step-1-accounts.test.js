@@ -149,12 +149,9 @@ test.describe( 'Set up accounts', () => {
 	} );
 
 	test.describe( 'Connect Google account', () => {
-		test.beforeEach( async () => {
-			// Mock Jetpack as connected
-			await setUpAccountsPage.mockJetpackConnected(
-				'Test user',
-				'jetpack@example.com'
-			);
+		test.beforeAll( async () => {
+			// Mock Jetpack as not connected
+			await setUpAccountsPage.mockJetpackNotConnected();
 
 			// Mock google as not connected.
 			// When pending even WPORG will not render yet.
@@ -165,7 +162,23 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.goto();
 		} );
 
+		test( 'should see the connect button and terms and conditions checkbox disabled when jetpack is not connected', async () => {
+			const connectButton = setUpAccountsPage
+				.getGoogleAccountCard()
+				.getByRole( 'button', { name: 'Connect' } );
+
+			await expect( connectButton ).toBeDisabled();
+
+			const termsCheckbox = setUpAccountsPage.getTermsCheckbox();
+			await expect( termsCheckbox ).toBeDisabled();
+		} );
+
 		test( 'should see their WPORG email, "Google" title & connect button', async () => {
+			// Mock Jetpack as connected
+			await setUpAccountsPage.mockJetpackConnected();
+
+			await setUpAccountsPage.goto();
+
 			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
 
 			await expect(
@@ -187,22 +200,6 @@ test.describe( 'Set up accounts', () => {
 			// Also ensure that connect button is disabled.
 			const connectButton = setUpAccountsPage.getConnectButton();
 			await expect( connectButton ).toBeDisabled();
-		} );
-
-		test( 'should see the connect button and terms and conditions checkbox disabled when jetpack is not connected', async () => {
-			// Mock Jetpack as disconnected
-			await setUpAccountsPage.mockJetpackNotConnected();
-
-			await setUpAccountsPage.goto();
-
-			const connectButton = setUpAccountsPage
-				.getGoogleAccountCard()
-				.getByRole( 'button', { name: 'Connect' } );
-
-			await expect( connectButton ).toBeDisabled();
-
-			const termsCheckbox = setUpAccountsPage.getTermsCheckbox();
-			await expect( termsCheckbox ).toBeDisabled();
 		} );
 
 		test( 'after clicking the "Connect your Google account" button should send an API request to connect Google account, and redirect to the returned URL', async ( {
@@ -601,7 +598,7 @@ test.describe( 'Set up accounts', () => {
 					setUpAccountsPage.getGoogleAdsAccountCard();
 
 				const once = setUpAccountsPage.fulfillTimes( 1 );
-				await once.fulfillAdsAccounts( { id: 12345 } );
+				await once.fulfillAdsAccounts( [ { id: 12345 } ] );
 				await once.mockAdsAccountConnected();
 				await once.mockAdsStatusClaimed();
 
@@ -613,6 +610,61 @@ test.describe( 'Set up accounts', () => {
 					'Google Ads ID: 12345'
 				);
 			} );
+		} );
+	} );
+
+	test.describe( 'Claim Google Ads Account', () => {
+		test.beforeAll( async () => {
+			await setUpAccountsPage.mockJetpackConnected();
+			await setUpAccountsPage.mockGoogleConnected();
+			await setUpAccountsPage.mockMCHasAccounts();
+			await setUpAccountsPage.mockMCConnected();
+			await setUpAccountsPage.fulfillAdsAccounts( [ { id: 12345 } ] );
+			await setUpAccountsPage.mockAdsAccountConnected();
+			await setUpAccountsPage.mockAdsStatusNotClaimed();
+
+			await setUpAccountsPage.goto();
+		} );
+
+		test( 'should see the claim button', async () => {
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+			await expect(
+				googleAccountCard.getByRole( 'button', {
+					name: 'Claim account in Google Ads',
+				} )
+			).toBeVisible();
+		} );
+
+		test( 'should open the popup when the claim button is clicked', async () => {
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+
+			const [ popupPage ] = await Promise.all( [
+				page.waitForEvent( 'popup' ),
+				googleAccountCard
+					.getByRole( 'button', {
+						name: 'Claim account in Google Ads',
+					} )
+					.click(),
+			] );
+
+			await popupPage.waitForLoadState();
+			const url = popupPage.url();
+			expect( url ).toMatch( /^https:\/\/example\.com\/?$/ );
+			await popupPage.close();
+		} );
+
+		test( 'should see the accounts card connected', async () => {
+			await setUpAccountsPage.mockAdsStatusClaimed();
+
+			await page.reload();
+
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+
+			await expect(
+				googleAccountCard.getByText( 'Connected', {
+					exact: true,
+				} )
+			).toBeVisible();
 		} );
 	} );
 

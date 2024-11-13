@@ -16,6 +16,7 @@ import NonConnected from './non-connected';
 import AuthorizeAds from './authorize-ads';
 import DisabledCard from './disabled-card';
 import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
+import showAdsConversionNotice from '.~/utils/showAdsConversionNotice';
 
 export default function GoogleAdsAccountCard() {
 	const {
@@ -60,9 +61,7 @@ export default function GoogleAdsAccountCard() {
 		return <NonConnected />;
 	}
 
-	const showSuccessNotice =
-		googleAdsAccount.status === GOOGLE_ADS_ACCOUNT_STATUS.CONNECTED ||
-		googleAdsAccount.step === 'link_merchant';
+	const showSuccessNotice = showAdsConversionNotice( googleAdsAccount );
 
 	return (
 		<ConnectedGoogleAdsAccountCard googleAdsAccount={ googleAdsAccount }>
