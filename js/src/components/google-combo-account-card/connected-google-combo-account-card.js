@@ -9,7 +9,6 @@ import { useState, useEffect } from '@wordpress/element';
  */
 import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
 import { useAppDispatch } from '.~/data';
-import { GOOGLE_ADS_ACCOUNT_STATUS } from '.~/constants';
 import AccountCard, { APPEARANCE } from '../account-card';
 import ConnectAds from './connect-ads';
 import AccountDetails from './account-details';
@@ -28,6 +27,7 @@ import SwitchAccountButton from '.~/components/google-account-card/switch-accoun
 import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
+import showAdsConversionNotice from '.~/utils/showAdsConversionNotice';
 import './connected-google-combo-account-card.scss';
 
 /**
@@ -35,10 +35,6 @@ import './connected-google-combo-account-card.scss';
  * It will also kickoff Ads and Merchant Center account creation if the user does not have accounts.
  */
 const ConnectedGoogleComboAccountCard = () => {
-	const [
-		showConversionMeasurementNotice,
-		setShowConversionMeasurementNotice,
-	] = useState( false );
 	const [ editMode, setEditMode ] = useState( false );
 	const { hasDetermined, creatingWhich } = useAutoCreateAdsMCAccounts();
 
@@ -56,12 +52,12 @@ const ConnectedGoogleComboAccountCard = () => {
 	const { invalidateResolution } = useAppDispatch();
 	const { googleAdsAccount } = useGoogleAdsAccount();
 	const { hasAccess, step } = useGoogleAdsAccountStatus();
-	const [ upsertAdsAccount, { action } ] = useUpsertAdsAccount();
+	const [ upsertAdsAccount, { action, loading } ] = useUpsertAdsAccount();
 
 	const hasExistingGoogleMCAccounts = existingGoogleMCAccounts?.length > 0;
 	const hasExistingGoogleAdsAccounts = existingGoogleAdsAccounts?.length > 0;
 	const shouldClaimGoogleAdsAccount = Boolean(
-		googleAdsAccount?.id && hasAccess === false
+		! loading && googleAdsAccount?.id && hasAccess === false
 	);
 	const finalizeAdsAccountCreation =
 		hasAccess === true && step === 'conversion_action';
@@ -79,21 +75,11 @@ const ConnectedGoogleComboAccountCard = () => {
 		upsertAccount();
 	}, [ finalizeAdsAccountCreation, upsertAdsAccount, invalidateResolution ] );
 
-	useEffect( () => {
-		setShowConversionMeasurementNotice(
-			( googleAdsAccount?.status ===
-				GOOGLE_ADS_ACCOUNT_STATUS.CONNECTED ||
-				googleAdsAccount?.step === 'link_merchant' ) &&
-				! shouldClaimGoogleAdsAccount
-		);
-	}, [ googleAdsAccount, shouldClaimGoogleAdsAccount ] );
-
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
 	}
 
 	const handleCancelClick = () => {
-		setShowConversionMeasurementNotice( false );
 		setEditMode( false );
 	};
 
@@ -142,6 +128,9 @@ const ConnectedGoogleComboAccountCard = () => {
 		( Boolean( creatingWhich ) && ! shouldClaimGoogleAdsAccount ) ||
 		( ! showConnectAds && finalizeAdsAccountCreation );
 
+	const showConversionMeasurementNotice =
+		showAdsConversionNotice( googleAdsAccount );
+
 	return (
 		<div>
 			<AccountCard
@@ -165,9 +154,8 @@ const ConnectedGoogleComboAccountCard = () => {
 
 			{ showConnectAds && (
 				<ConnectAds
-					isConnecting={ action === 'update' }
-					isCreating={ action === 'create' }
-					onCreate={ upsertAdsAccount }
+					onRequestCreate={ upsertAdsAccount }
+					upsertingAction={ action }
 				/>
 			) }
 
