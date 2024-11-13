@@ -228,11 +228,6 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.mockJetpackConnected();
 			await setUpAccountsPage.mockGoogleConnected();
 
-			await setUpAccountsPage.fulfillAdsAccounts( [ { id: 1 } ] );
-			await setUpAccountsPage.mockMCHasAccounts();
-			await setUpAccountsPage.mockAdsAccountIncomplete();
-			await setUpAccountsPage.mockMCConnected();
-
 			const once = setUpAccountsPage.fulfillTimes( 1 );
 
 			await once.mockAdsHasNoAccounts();
