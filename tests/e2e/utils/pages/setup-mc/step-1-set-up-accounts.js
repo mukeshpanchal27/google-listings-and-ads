@@ -312,6 +312,17 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
+	 * Click "Continue" button.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async clickContinueButton() {
+		const continueButton = this.getContinueButton();
+		await continueButton.click();
+		await this.page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
+	}
+
+	/**
 	 * Get link of Google Merchant Center Help.
 	 *
 	 * @return {import('@playwright/test').Locator} Get link of Google Merchant Center Help.
@@ -403,7 +414,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
-	 * Register the response when connecting an Ads account
+	 * Register the response when connecting an Ads account.
 	 *
 	 * @return {Promise<import('@playwright/test').Response>} The response.
 	 */
@@ -412,6 +423,19 @@ export default class SetUpAccountsPage extends MockRequests {
 			( response ) =>
 				response.url().includes( '/gla/ads/accounts' ) &&
 				response.status() === 200
+		);
+	}
+
+	/**
+	 * Register the response when syncing the store address.
+	 *
+	 * @return {Promise<import('@playwright/test').Response>} The response.
+	 */
+	registerContactInformationSyncRequest() {
+		return this.page.waitForRequest(
+			( request ) =>
+				request.url().includes( '/gla/mc/contact-information' ) &&
+				request.method() === 'POST'
 		);
 	}
 }

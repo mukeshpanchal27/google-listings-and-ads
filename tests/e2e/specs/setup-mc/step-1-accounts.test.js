@@ -848,10 +848,7 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.mockAdsAccountDisconnected();
 				await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
 				await setUpAccountsPage.mockMCConnected();
-				await setUpAccountsPage.mockContactInformation( {
-					wcAddressErrors: [],
-					isMCAddressDifferent: false,
-				} );
+				await setUpAccountsPage.mockContactInformation();
 
 				await setUpAccountsPage.goto();
 			} );
@@ -885,14 +882,11 @@ test.describe( 'Set up accounts', () => {
 			} );
 		} );
 
-		test.describe( 'When all accounts are connected and store address is synced', async () => {
+		test.describe( 'When all accounts are connected and store address is fulfilled', async () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCConnected();
-				await setUpAccountsPage.mockContactInformation( {
-					wcAddressErrors: [],
-					isMCAddressDifferent: false,
-				} );
+				await setUpAccountsPage.mockContactInformation( {} );
 
 				await setUpAccountsPage.goto();
 			} );
@@ -902,6 +896,27 @@ test.describe( 'Set up accounts', () => {
 					await setUpAccountsPage.getContinueButton();
 
 				await expect( continueButton ).toBeEnabled();
+			} );
+
+			test( 'should sync the address and show the heading of the next step when clicked', async () => {
+				const requestPromise =
+					setUpAccountsPage.registerContactInformationSyncRequest();
+
+				await setUpAccountsPage.clickContinueButton();
+
+				const request = await requestPromise;
+				const response = await request.response();
+				const responseBody = await response.json();
+
+				expect( response.status() ).toBe( 200 );
+				expect( responseBody.wc_address_errors ).toStrictEqual( [] );
+
+				await expect(
+					page.getByRole( 'heading', {
+						name: 'Configure your product listings',
+						exact: true,
+					} )
+				).toBeVisible();
 			} );
 		} );
 	} );

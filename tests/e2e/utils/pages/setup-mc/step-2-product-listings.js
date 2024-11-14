@@ -281,19 +281,6 @@ export default class ProductListingsPage extends MockRequests {
 	}
 
 	/**
-	 * Register the requests when the continue button is clicked.
-	 *
-	 * @return {Promise<import('@playwright/test').Request[]>} The requests.
-	 */
-	registerContinueRequest() {
-		return this.page.waitForRequest(
-			( request ) =>
-				request.url().includes( '/gla/mc/contact-information' ) &&
-				request.method() === 'GET'
-		);
-	}
-
-	/**
 	 * Register settings request when the shipping rate radio button is checked.
 	 *
 	 * @param {string} shippingRate
