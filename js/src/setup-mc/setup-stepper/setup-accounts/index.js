@@ -96,14 +96,11 @@ const SetupAccounts = ( props ) => {
 	const { updateGoogleMCContactInformation } = useAppDispatch();
 	const [ isSubmitting, setIsSubmitting ] = useState( false );
 
-	const handleSubmitCallback = async () => {
+	const handleSubmitCallback = () => {
 		setIsSubmitting( true );
-		await updateGoogleMCContactInformation().finally( () =>
-			// Error handling is done in the action.
-			setIsSubmitting( false )
-		);
-
-		onContinue();
+		updateGoogleMCContactInformation()
+			.then( () => onContinue() )
+			.catch( () => setIsSubmitting( false ) );
 	};
 
 	/**
