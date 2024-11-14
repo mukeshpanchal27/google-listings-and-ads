@@ -152,17 +152,4 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Tweak - Use remote-site-status to check the WPCOM Auth status.
 * Tweak - WC 9.3.0 compatibility.
 
-= 2.8.4 - 2024-08-28 =
-* Dev - Align namespaces for unit tests.
-* Dev - Avoid accidentally using the event object to reset the asset group values in the CampaignAssetsForm component.
-* Dev - Migrate jest tests to use Node.js 20.
-* Dev - Rewrite the replacer of JSON.stringify in getReportKey to ensure it returns the same key regardless of the query keys' order.
-* Dev - Upgrade to use Node.js 20 and bump npm dependencies.
-* Dev - Use a fixed SKU number when testing product adapter.
-* Fix - issue with comma separators for Shipping Rates.
-* Tweak - Connect Test Page errors when WPCOM token is not connected.
-* Tweak - Make the Tooltip use the new placement prop when WordPress >= 6.4.
-* Tweak - Replace deprecated event.keyCode with event.code for the verification code inputs in the contact information setting.
-* Tweak - Update the copy in the "Linked accounts" of the accounts connection setting to include Google Ads account.
-
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
