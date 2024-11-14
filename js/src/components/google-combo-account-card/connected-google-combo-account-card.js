@@ -36,7 +36,6 @@ import './connected-google-combo-account-card.scss';
  */
 const ConnectedGoogleComboAccountCard = () => {
 	const [ editMode, setEditMode ] = useState( false );
-	const { hasDetermined, creatingWhich } = useAutoCreateAdsMCAccounts();
 
 	// We use a single instance of the hook to create a MC (Merchant Center) account,
 	// ensuring consistent results across both the main component (ConnectedGoogleComboAccountCard) and its child component (ConnectMC).
@@ -45,6 +44,8 @@ const ConnectedGoogleComboAccountCard = () => {
 	const [ createMCAccount, resultCreateMCAccount ] = useCreateMCAccount();
 	const { data: existingGoogleMCAccounts } = useExistingGoogleMCAccounts();
 	const { isReady: isGoogleMCReady } = useGoogleMCAccount();
+	const { hasDetermined, creatingWhich } =
+		useAutoCreateAdsMCAccounts( createMCAccount );
 	const { text, subText } = getAccountCreationTexts( creatingWhich );
 	const { existingAccounts: existingGoogleAdsAccounts } =
 		useExistingGoogleAdsAccounts();
