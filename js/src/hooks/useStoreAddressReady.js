@@ -12,7 +12,7 @@ import { STORE_KEY } from '.~/data/constants';
 /**
  * Checks if the store address is synchronized with the Merchant Center (GMC) account address.
  *
- * @return {boolean} Whether the store address is ready to by synced to MC.
+ * @return {boolean} Whether the store address is ready to be synced to MC.
  */
 export default function useStoreAddressReady() {
 	const { hasGoogleMCConnection } = useGoogleMCAccount();
