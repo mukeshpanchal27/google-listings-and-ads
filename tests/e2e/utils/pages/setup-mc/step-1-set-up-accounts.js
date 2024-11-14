@@ -391,9 +391,9 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
-	 * Get store address refresh to sync button.
+	 * Get the "Update store address" button on the store address card.
 	 *
-	 * @return {import('@playwright/test').Locator} Get store address refresh to sync button.
+	 * @return {import('@playwright/test').Locator} Get the "Update store address" button on the store address card.
 	 */
 	getStoreAddressButton() {
 		return this.getStoreAddressCard().getByRole( 'button', {
