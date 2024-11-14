@@ -7,7 +7,7 @@ const { test, expect } = require( '@playwright/test' );
  * Internal dependencies
  */
 import SetupBudgetPage from '../../utils/pages/setup-ads/setup-budget';
-import CompleteCampaign from '../../utils/pages/setup-mc/step-4-complete-campaign';
+import CompleteCampaign from '../../utils/pages/setup-mc/step-3-complete-campaign';
 import SetupAdsAccountPage from '../../utils/pages/setup-ads/setup-ads-accounts';
 import {
 	checkFAQExpandable,

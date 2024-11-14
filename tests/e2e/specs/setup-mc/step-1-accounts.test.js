@@ -747,6 +747,74 @@ test.describe( 'Set up accounts', () => {
 		} );
 	} );
 
+	test.describe( 'Store address card', () => {
+		test.beforeAll( async () => {
+			// Everything is set up except for the MC connection.
+			await setUpAccountsPage.mockJetpackConnected();
+			await setUpAccountsPage.mockGoogleConnected();
+			await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
+			await setUpAccountsPage.mockAdsAccountConnected();
+			await setUpAccountsPage.mockAdsStatusClaimed();
+			await setUpAccountsPage.mockMCHasAccounts();
+			await setUpAccountsPage.mockMCNotConnected();
+
+			await setUpAccountsPage.goto();
+		} );
+
+		test( 'should not be shown when MC is not connected', async () => {
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+			const storeAddressCard = setUpAccountsPage.getStoreAddressCard();
+
+			// Wait for UI to render before checking for no visibility.
+			await expect( googleAccountCard ).toBeVisible();
+			await expect( storeAddressCard ).not.toBeVisible();
+		} );
+
+		test( 'should be shown when MC is connected', async () => {
+			await setUpAccountsPage.mockMCConnected();
+			await setUpAccountsPage.mockContactInformation();
+
+			await page.reload();
+
+			const storeAddressCard = setUpAccountsPage.getStoreAddressCard();
+
+			await expect( storeAddressCard ).toBeVisible();
+		} );
+
+		test( 'should update the store address when the button is clicked', async () => {
+			await setUpAccountsPage.mockContactInformation( {
+				streetAddress: '123 Main St',
+			} );
+
+			const storeAddressCard = setUpAccountsPage.getStoreAddressCard();
+			const updateButton = setUpAccountsPage.getStoreAddressButton();
+
+			await updateButton.click();
+
+			await expect( storeAddressCard ).toContainText( '123 Main St' );
+		} );
+
+		test( 'should show an error message when the store address is not updated', async () => {
+			await setUpAccountsPage.mockContactInformation( {
+				streetAddress: '',
+				wcAddressErrors: [ 'address_1' ],
+			} );
+
+			const storeAddressCard = setUpAccountsPage.getStoreAddressCard();
+			const updateButton = setUpAccountsPage.getStoreAddressButton();
+
+			await updateButton.click();
+
+			await expect( storeAddressCard ).toContainText(
+				'Your store address is required by Google for verification.'
+			);
+
+			await expect( storeAddressCard ).toContainText(
+				'The address line of store address is required.'
+			);
+		} );
+	} );
+
 	test.describe( 'Continue button', () => {
 		test.beforeAll( async () => {
 			// Mock Jetpack as connected
@@ -760,6 +828,10 @@ test.describe( 'Set up accounts', () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCNotConnected();
+				await setUpAccountsPage.mockContactInformation( {
+					wcAddressErrors: [],
+					isMCAddressDifferent: false,
+				} );
 
 				await setUpAccountsPage.goto();
 			} );
@@ -776,6 +848,7 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.mockAdsAccountDisconnected();
 				await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
 				await setUpAccountsPage.mockMCConnected();
+				await setUpAccountsPage.mockContactInformation();
 
 				await setUpAccountsPage.goto();
 			} );
@@ -787,12 +860,33 @@ test.describe( 'Set up accounts', () => {
 			} );
 		} );
 
-		test.describe( 'When all accounts are connected', async () => {
+		test.describe( 'When the store address is invalid', async () => {
+			test.beforeAll( async () => {
+				await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
+				await setUpAccountsPage.mockAdsAccountConnected();
+				await setUpAccountsPage.mockAdsStatusClaimed();
+				await setUpAccountsPage.mockMCHasAccounts();
+				await setUpAccountsPage.mockMCConnected();
+				await setUpAccountsPage.mockContactInformation( {
+					streetAddress: '',
+					wcAddressErrors: [ 'address_1' ],
+				} );
+
+				await setUpAccountsPage.goto();
+			} );
+
+			test( 'should see "Continue" button disabled when the store address needs to be updated', async () => {
+				const continueButton =
+					await setUpAccountsPage.getContinueButton();
+				await expect( continueButton ).toBeDisabled();
+			} );
+		} );
+
+		test.describe( 'When all accounts are connected and store address is fulfilled', async () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCConnected();
-				await setUpAccountsPage.mockAdsAccountConnected();
-				await setUpAccountsPage.mockAdsStatusClaimed();
+				await setUpAccountsPage.mockContactInformation( {} );
 
 				await setUpAccountsPage.goto();
 			} );
@@ -802,6 +896,27 @@ test.describe( 'Set up accounts', () => {
 					await setUpAccountsPage.getContinueButton();
 
 				await expect( continueButton ).toBeEnabled();
+			} );
+
+			test( 'should sync the address and show the heading of the next step when clicked', async () => {
+				const requestPromise =
+					setUpAccountsPage.registerContactInformationSyncRequest();
+
+				await setUpAccountsPage.clickContinueButton();
+
+				const request = await requestPromise;
+				const response = await request.response();
+				const responseBody = await response.json();
+
+				expect( response.status() ).toBe( 200 );
+				expect( responseBody.wc_address_errors ).toStrictEqual( [] );
+
+				await expect(
+					page.getByRole( 'heading', {
+						name: 'Configure your product listings',
+						exact: true,
+					} )
+				).toBeVisible();
 			} );
 		} );
 	} );

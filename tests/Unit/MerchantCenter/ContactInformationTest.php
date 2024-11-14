@@ -56,11 +56,6 @@ class ContactInformationTest extends ContainerAwareUnitTest {
 		$contact_information = $this->contact_information->get_contact_information();
 
 		$this->assertEquals(
-			$this->valid_account_phone_number,
-			$contact_information->getPhoneNumber()
-		);
-
-		$this->assertEquals(
 			$this->get_sample_address()->getPostalCode(),
 			$contact_information->getAddress()->getPostalCode()
 		);

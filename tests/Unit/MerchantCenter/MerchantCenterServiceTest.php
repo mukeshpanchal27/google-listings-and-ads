@@ -423,41 +423,17 @@ class MerchantCenterServiceTest extends UnitTest {
 				]
 			);
 		$this->target_audience->method( 'get_target_countries' )->willReturn( [ 'US' ] );
+		$this->contact_information->method( 'get_contact_information' )
+			->willReturn( $this->get_valid_business_info() );
+		$this->settings->method( 'get_store_address' )
+			->willReturn( $this->get_sample_address() );
+		$this->address_utility->method( 'compare_addresses' )
+			->willReturn( true );
 
 		$this->assertEquals(
 			[
 				'status' => 'incomplete',
 				'step'   => 'product_listings',
-			],
-			$this->mc_service->get_setup_status()
-		);
-	}
-
-	public function test_get_setup_status_step_store_requirements() {
-		$this->options->method( 'get_merchant_id' )->willReturn( 1234 );
-		$this->merchant_account_state->method( 'last_incomplete_step' )->willReturn( '' );
-		$this->ads_service->method( 'connected_account' )->willReturn( true );
-		$this->options->method( 'get' )
-			->withConsecutive(
-				[ OptionsInterface::MC_SETUP_COMPLETED_AT, false ],
-				[ OptionsInterface::TARGET_AUDIENCE ],
-				[ OptionsInterface::MERCHANT_CENTER, [] ]
-			)->willReturnOnConsecutiveCalls(
-				false,
-				[
-					'location'  => 'selected',
-					'countries' => [ 'US' ],
-				],
-				[
-					'shipping_rate' => 'automatic',
-					'shipping_time' => 'manual',
-				]
-			);
-
-		$this->assertEquals(
-			[
-				'status' => 'incomplete',
-				'step'   => 'store_requirements',
 			],
 			$this->mc_service->get_setup_status()
 		);
@@ -497,11 +473,17 @@ class MerchantCenterServiceTest extends UnitTest {
 				]
 			);
 		$this->target_audience->method( 'get_target_countries' )->willReturn( [ 'GB' ] );
+		$this->contact_information->method( 'get_contact_information' )
+			->willReturn( $this->get_valid_business_info() );
+		$this->settings->method( 'get_store_address' )
+			->willReturn( $this->get_sample_address() );
+		$this->address_utility->method( 'compare_addresses' )
+			->willReturn( true );
 
 		$this->assertEquals(
 			[
 				'status' => 'incomplete',
-				'step'   => 'store_requirements',
+				'step'   => 'paid_ads',
 			],
 			$this->mc_service->get_setup_status()
 		);

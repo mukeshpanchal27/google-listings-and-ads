@@ -124,29 +124,6 @@ export const getGoogleMCContactInformation = ( state ) => {
 	return state.mc.contact;
 };
 
-/**
- * Select the state of phone number associated with the Google Merchant Center account.
- *
- * Create another selector to separate the `hasFinishedResolution` state with `getGoogleMCContactInformation`.
- *
- * @param {Object} state The current store state will be injected by `wp.data`.
- * @return {{ data: ContactInformation|null, loaded: boolean }} The payload of contact information associated with the Google Merchant Center account and its loaded state.
- */
-export const getGoogleMCPhoneNumber = createRegistrySelector(
-	( select ) => ( state ) => {
-		const selector = select( STORE_KEY );
-
-		const loaded =
-			!! getGoogleMCContactInformation( state ) ||
-			selector.hasFinishedResolution( 'getGoogleMCContactInformation' );
-
-		return {
-			loaded,
-			data: selector.getGoogleMCContactInformation(),
-		};
-	}
-);
-
 export const getMCCountriesAndContinents = createSelector(
 	( state ) => {
 		const { countries, continents } = state.mc;

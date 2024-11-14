@@ -14,6 +14,7 @@ import ConnectedAdsAccountDetail from './connected-ads-account-detail';
 import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
+import StoreAddressCard from '.~/components/contact-information/store-address-card';
 import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
 import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
 import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
@@ -45,6 +46,8 @@ const ConnectedGoogleComboAccountCard = () => {
 	const { existingAccounts: existingGoogleAdsAccounts } =
 		useExistingGoogleAdsAccounts();
 	const isConnected = useGoogleAdsAccountReady();
+	const { hasGoogleMCConnection, hasFinishedResolution } =
+		useGoogleMCAccount();
 	const { invalidateResolution } = useAppDispatch();
 	const { googleAdsAccount } = useGoogleAdsAccount();
 	const { hasAccess, step } = useGoogleAdsAccountStatus();
@@ -97,6 +100,8 @@ const ConnectedGoogleComboAccountCard = () => {
 	const showConversionMeasurementNotice =
 		showAdsConversionNotice( googleAdsAccount );
 
+	const showAddressCard = hasFinishedResolution && hasGoogleMCConnection;
+
 	return (
 		<div>
 			<AccountCard
@@ -131,6 +136,8 @@ const ConnectedGoogleComboAccountCard = () => {
 					className="gla-google-combo-account-card gla-google-combo-service-account-card--mc"
 				/>
 			) }
+
+			{ showAddressCard && <StoreAddressCard /> }
 		</div>
 	);
 };
