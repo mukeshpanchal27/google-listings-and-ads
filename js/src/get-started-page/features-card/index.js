@@ -114,7 +114,7 @@ const FeaturesCard = () => {
 						variant="label"
 					>
 						{ __(
-							'Promote products and drive more sales with paid ads',
+							'Promote products and drive more sales with ads',
 							'google-listings-and-ads'
 						) }
 					</Text>

@@ -48,7 +48,7 @@ class SetupCampaignTwoWeeks extends AbstractSetupCampaign {
 			$note->set_title( __( 'Reach more shoppers with paid listings on Google', 'google-listings-and-ads' ) );
 			$note->set_content(
 				__(
-					'Your products are ready for Google Ads! Connect with the right shoppers at the right moment when they’re searching for products like yours. Connect your Google Ads account to create your first paid ad campaign.',
+					'Your products are ready for Google Ads! Connect with the right shoppers at the right moment when they’re searching for products like yours. Connect your Google Ads account to create your first campaign.',
 					'google-listings-and-ads'
 				)
 			);

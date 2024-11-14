@@ -113,7 +113,7 @@ const EditPaidAdsCampaign = () => {
 				/>
 				<div>
 					{ __(
-						'Error in loading your paid ads campaign. Please try again later.',
+						'Error in loading your ads campaign. Please try again later.',
 						'google-listings-and-ads'
 					) }
 				</div>
