@@ -17,8 +17,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Service\ShoppingCo
  */
 trait MerchantTrait {
 
-	protected $valid_account_phone_number = '+18008675309';
-	protected $valid_account_id           = '123581321';
+	protected $valid_account_id = '123581321';
 
 	/**
 	 * Get a mocked instance of GoogleException that occurs within the runtime of
