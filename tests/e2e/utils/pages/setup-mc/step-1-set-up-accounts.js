@@ -159,7 +159,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Google combo card connected label.
 	 */
 	getGoogleComboConnectedLabel() {
-		return this.getGoogleComboAccountCard().locator(
+		return this.getGoogleAccountCard().locator(
 			'.gla-connected-icon-label'
 		);
 	}
@@ -312,6 +312,17 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
+	 * Click "Continue" button.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async clickContinueButton() {
+		const continueButton = this.getContinueButton();
+		await continueButton.click();
+		await this.page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
+	}
+
+	/**
 	 * Get link of Google Merchant Center Help.
 	 *
 	 * @return {import('@playwright/test').Locator} Get link of Google Merchant Center Help.
@@ -394,6 +405,27 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
+	 * Get store address card.
+	 *
+	 * @return {import('@playwright/test').Locator} Get store address card.
+	 */
+	getStoreAddressCard() {
+		return this.page.locator( '.gla-store-address-card' );
+	}
+
+	/**
+	 * Get the "Update store address" button on the store address card.
+	 *
+	 * @return {import('@playwright/test').Locator} Get the "Update store address" button on the store address card.
+	 */
+	getStoreAddressButton() {
+		return this.getStoreAddressCard().getByRole( 'button', {
+			name: 'Update store address',
+			exact: true,
+		} );
+	}
+
+	/**
 	 * Get "Or, connect to a different Google account" button.
 	 *
 	 * @return {import('@playwright/test').Locator} Get "Or, connect to a different Google account" button.
@@ -418,7 +450,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/*
-	 * Register the response when connecting an Ads account
+	 * Register the response when connecting an Ads account.
 	 *
 	 * @return {Promise<import('@playwright/test').Response>} The response.
 	 */
@@ -427,6 +459,19 @@ export default class SetUpAccountsPage extends MockRequests {
 			( response ) =>
 				response.url().includes( '/gla/ads/accounts' ) &&
 				response.status() === 200
+		);
+	}
+
+	/**
+	 * Register the response when syncing the store address.
+	 *
+	 * @return {Promise<import('@playwright/test').Response>} The response.
+	 */
+	registerContactInformationSyncRequest() {
+		return this.page.waitForRequest(
+			( request ) =>
+				request.url().includes( '/gla/mc/contact-information' ) &&
+				request.method() === 'POST'
 		);
 	}
 }

@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
-import GridiconPhone from 'gridicons/dist/phone';
 import { Icon, store as storeIcon } from '@wordpress/icons';
 
 /**
@@ -29,7 +28,6 @@ export const APPEARANCE = {
 	GOOGLE: 'google',
 	GOOGLE_MERCHANT_CENTER: 'google_merchant_center',
 	GOOGLE_ADS: 'google_ads',
-	PHONE: 'phone',
 	ADDRESS: 'address',
 	FINAL_URL: 'final_url',
 };
@@ -103,10 +101,6 @@ const appearanceDict = {
 			'Required to set up conversion measurement and create campaigns.',
 			'google-listings-and-ads'
 		),
-	},
-	[ APPEARANCE.PHONE ]: {
-		icon: <GridiconPhone size={ 32 } />,
-		title: __( 'Phone number', 'google-listings-and-ads' ),
 	},
 	[ APPEARANCE.ADDRESS ]: {
 		icon: <Icon icon={ storeIcon } size={ 32 } />,

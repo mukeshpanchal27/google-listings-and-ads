@@ -2,11 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { createInterpolateElement } from '@wordpress/element';
+import { createInterpolateElement, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { useAppDispatch } from '.~/data';
 import useJetpackAccount from '.~/hooks/useJetpackAccount';
 import useGoogleAccount from '.~/hooks/useGoogleAccount';
 import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
@@ -25,6 +26,7 @@ import Faqs from './faqs';
 import './index.scss';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
+import useStoreAddressReady from '.~/hooks/useStoreAddressReady';
 
 /**
  * Renders the disclaimer of Comparison Shopping Service (CSS).
@@ -89,7 +91,17 @@ const SetupAccounts = ( props ) => {
 		isReady: isGoogleMCReady,
 	} = useGoogleMCAccount();
 	const { hasFinishedResolution } = useGoogleAdsAccount();
+	const isStoreAddressReady = useStoreAddressReady();
 	const isGoogleAdsReady = useGoogleAdsAccountReady();
+	const { updateGoogleMCContactInformation } = useAppDispatch();
+	const [ isSubmitting, setIsSubmitting ] = useState( false );
+
+	const handleSubmitCallback = () => {
+		setIsSubmitting( true );
+		updateGoogleMCContactInformation()
+			.then( () => onContinue() )
+			.catch( () => setIsSubmitting( false ) );
+	};
 
 	/**
 	 * When jetpack is loading, or when google account is loading,
@@ -115,7 +127,8 @@ const SetupAccounts = ( props ) => {
 	const isContinueButtonDisabled = ! (
 		hasFinishedResolution &&
 		isGoogleAdsReady &&
-		isGoogleMCReady
+		isGoogleMCReady &&
+		isStoreAddressReady
 	);
 
 	return (
@@ -151,10 +164,10 @@ const SetupAccounts = ( props ) => {
 					<AppButton
 						isPrimary
 						disabled={ isContinueButtonDisabled }
-						onClick={ onContinue }
-					>
-						{ __( 'Continue', 'google-listings-and-ads' ) }
-					</AppButton>
+						loading={ isSubmitting }
+						text={ __( 'Continue', 'google-listings-and-ads' ) }
+						onClick={ handleSubmitCallback }
+					/>
 				</StepContentActions>
 			</StepContentFooter>
 			<Section
