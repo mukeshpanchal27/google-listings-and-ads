@@ -17,6 +17,7 @@ import AppButton from '.~/components/app-button';
 import Section from '.~/wcdl/section';
 import Subsection from '.~/wcdl/subsection';
 import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
+import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
 import { useAppDispatch } from '.~/data';
 import ContentButtonLayout from '.~/components/content-button-layout';
 import AccountCard, { APPEARANCE } from '.~/components/account-card';
@@ -32,19 +33,13 @@ import AppInputLinkControl from '.~/components/app-input-link-control';
 /**
  * @param {Object} props React props
  * @param {string} props.id Google Account ID
- * @param {boolean} props.hasExisting Whether there are existing MC accounts
  * @param {string} props.websiteUrl Website's URL
  * @param {Function} [props.onSwitchAccount] Callback when clicking on Switch Account
  * @fires gla_mc_account_reclaim_url_button_click
  * @fires gla_mc_account_switch_account_button_click with `context: 'reclaim-url'`
  * @fires gla_documentation_link_click with `{ context: 'setup-mc', link_id: 'claim-url', href: 'https://support.google.com/merchants/answer/176793' }`
  */
-const ReclaimUrlCard = ( {
-	id,
-	hasExisting,
-	websiteUrl,
-	onSwitchAccount = noop,
-} ) => {
+const ReclaimUrlCard = ( { id, websiteUrl, onSwitchAccount = noop } ) => {
 	const { invalidateResolution } = useAppDispatch();
 	const [ fetchClaimOverwrite, { loading, error, reset } ] =
 		useApiFetchCallback( {
@@ -53,6 +48,8 @@ const ReclaimUrlCard = ( {
 			data: { id },
 		} );
 	const homeUrl = getSetting( 'homeUrl' );
+	const { data: existingGoogleMCAccounts } = useExistingGoogleMCAccounts();
+	const hasExistingGoogleMCAccounts = existingGoogleMCAccounts?.length > 0;
 
 	const handleReclaimClick = async () => {
 		reset();
@@ -71,7 +68,7 @@ const ReclaimUrlCard = ( {
 				id
 			) }
 			indicator={
-				hasExisting ? (
+				hasExistingGoogleMCAccounts ? (
 					<AppButton
 						isSecondary
 						disabled={ loading }

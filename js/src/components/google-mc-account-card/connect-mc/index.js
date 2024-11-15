@@ -41,17 +41,11 @@ import CreatingCard from '../creating-card';
  * It is using createAccount and resultCreateAccount from the parent component.
  * @fires gla_mc_account_connect_button_click
  * @param {Object} props
- * @param {boolean} props.hasExisting Whether there are existing MC accounts.
  * @param {Function} props.createAccount Callback function for creating a new Merchant Center account.
  * @param {Object} props.resultCreateAccount The result of the create account request.
  * @param {string} [props.className] Additional class name to be added to the card.
  */
-const ConnectMC = ( {
-	createAccount,
-	hasExisting,
-	resultCreateAccount,
-	className,
-} ) => {
+const ConnectMC = ( { createAccount, resultCreateAccount, className } ) => {
 	const [ value, setValue ] = useState();
 	const [ handleConnectMC, resultConnectMC ] = useConnectMCAccount( value );
 	const {
@@ -90,7 +84,6 @@ const ConnectMC = ( {
 						resultConnectMC.error?.id ||
 						resultCreateAccount.error?.id
 					}
-					hasExisting={ hasExisting }
 					websiteUrl={
 						resultConnectMC.error?.website_url ||
 						resultCreateAccount.error?.website_url
