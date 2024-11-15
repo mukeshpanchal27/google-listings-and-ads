@@ -44,15 +44,17 @@ const ConnectedGoogleComboAccountCard = () => {
 	// The URL reclaim component is rendered within the ConnectMC component.
 	const [ createMCAccount, resultCreateMCAccount ] = useCreateMCAccount();
 	const { data: existingGoogleMCAccounts } = useExistingGoogleMCAccounts();
-	const { isReady: isGoogleMCReady } = useGoogleMCAccount();
 	const { hasDetermined, creatingWhich } =
 		useAutoCreateAdsMCAccounts( createMCAccount );
 	const { text, subText } = getAccountCreationTexts( creatingWhich );
 	const { existingAccounts: existingGoogleAdsAccounts } =
 		useExistingGoogleAdsAccounts();
 	const isConnected = useGoogleAdsAccountReady();
-	const { hasGoogleMCConnection, hasFinishedResolution } =
-		useGoogleMCAccount();
+	const {
+		isReady: isGoogleMCReady,
+		hasGoogleMCConnection,
+		hasFinishedResolution,
+	} = useGoogleMCAccount();
 	const { invalidateResolution } = useAppDispatch();
 	const { googleAdsAccount } = useGoogleAdsAccount();
 	const { hasAccess, step } = useGoogleAdsAccountStatus();
@@ -87,13 +89,27 @@ const ConnectedGoogleComboAccountCard = () => {
 		setEditMode( true );
 	};
 
-	const showConnectMC =
-		( editMode && hasExistingGoogleMCAccounts ) ||
-		( ! isGoogleMCReady && hasExistingGoogleMCAccounts );
+	// During MC account creation, we need to show the ConnectMC component
+	// when the account creation needs to show the Switch or Reclaim flow.
+	const googleMCHasError = [ 409, 403 ].includes(
+		resultCreateMCAccount.response?.status
+	);
 
+	// After creating a new account, it may be connected but not ready
+	// (e.g., needing to reclaim the URL). In this case, we show the ConnectMC
+	// component, even if the existing accounts list has not yet updated.
+	const showConnectMC =
+		( googleMCHasError ||
+			hasGoogleMCConnection ||
+			hasExistingGoogleMCAccounts ) &&
+		( editMode || ! isGoogleMCReady );
+
+	// After creating a new account, it may not show up in the existing accounts list
+	// immediately. In this case, we show the ConnectAds component in edit mode unless
+	// we're showing the claim notice in the upper card.
 	const showConnectAds =
-		( ( editMode && hasExistingGoogleAdsAccounts ) ||
-			( ! isConnected && hasExistingGoogleAdsAccounts ) ) &&
+		( isConnected || hasExistingGoogleAdsAccounts ) &&
+		( editMode || ! isConnected ) &&
 		! shouldClaimGoogleAdsAccount;
 
 	// When Ads and MC are disconnected in edit mode, exit edit mode.
@@ -189,6 +205,7 @@ const ConnectedGoogleComboAccountCard = () => {
 			{ showConnectMC && (
 				<ConnectMC
 					createAccount={ createMCAccount }
+					hasExisting={ hasExistingGoogleMCAccounts }
 					resultCreateAccount={ resultCreateMCAccount }
 					className="gla-google-combo-account-card gla-google-combo-service-account-card--mc"
 				/>

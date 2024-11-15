@@ -32,13 +32,19 @@ import AppInputLinkControl from '.~/components/app-input-link-control';
 /**
  * @param {Object} props React props
  * @param {string} props.id Google Account ID
+ * @param {boolean} props.hasExisting Whether there are existing MC accounts
  * @param {string} props.websiteUrl Website's URL
  * @param {Function} [props.onSwitchAccount] Callback when clicking on Switch Account
  * @fires gla_mc_account_reclaim_url_button_click
  * @fires gla_mc_account_switch_account_button_click with `context: 'reclaim-url'`
  * @fires gla_documentation_link_click with `{ context: 'setup-mc', link_id: 'claim-url', href: 'https://support.google.com/merchants/answer/176793' }`
  */
-const ReclaimUrlCard = ( { id, websiteUrl, onSwitchAccount = noop } ) => {
+const ReclaimUrlCard = ( {
+	id,
+	hasExisting,
+	websiteUrl,
+	onSwitchAccount = noop,
+} ) => {
 	const { invalidateResolution } = useAppDispatch();
 	const [ fetchClaimOverwrite, { loading, error, reset } ] =
 		useApiFetchCallback( {
@@ -65,17 +71,19 @@ const ReclaimUrlCard = ( { id, websiteUrl, onSwitchAccount = noop } ) => {
 				id
 			) }
 			indicator={
-				<AppButton
-					isSecondary
-					disabled={ loading }
-					eventName="gla_mc_account_switch_account_button_click"
-					eventProps={ {
-						context: 'reclaim-url',
-					} }
-					onClick={ onSwitchAccount }
-				>
-					{ __( 'Switch account', 'google-listings-and-ads' ) }
-				</AppButton>
+				hasExisting ? (
+					<AppButton
+						isSecondary
+						disabled={ loading }
+						eventName="gla_mc_account_switch_account_button_click"
+						eventProps={ {
+							context: 'reclaim-url',
+						} }
+						onClick={ onSwitchAccount }
+					>
+						{ __( 'Switch account', 'google-listings-and-ads' ) }
+					</AppButton>
+				) : null
 			}
 		>
 			<CardDivider />

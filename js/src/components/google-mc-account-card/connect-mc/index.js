@@ -41,24 +41,31 @@ import CreatingCard from '../creating-card';
  * It is using createAccount and resultCreateAccount from the parent component.
  * @fires gla_mc_account_connect_button_click
  * @param {Object} props
+ * @param {boolean} props.hasExisting Whether there are existing MC accounts.
  * @param {Function} props.createAccount Callback function for creating a new Merchant Center account.
  * @param {Object} props.resultCreateAccount The result of the create account request.
  * @param {string} [props.className] Additional class name to be added to the card.
  */
-const ConnectMC = ( { createAccount, resultCreateAccount, className } ) => {
+const ConnectMC = ( {
+	createAccount,
+	hasExisting,
+	resultCreateAccount,
+	className,
+} ) => {
 	const [ value, setValue ] = useState();
 	const [ handleConnectMC, resultConnectMC ] = useConnectMCAccount( value );
 	const {
 		googleMCAccount,
 		hasFinishedResolution,
 		isReady: isGoogleMCReady,
+		hasGoogleMCConnection,
 	} = useGoogleMCAccount();
 
 	useEffect( () => {
-		if ( isGoogleMCReady ) {
+		if ( hasGoogleMCConnection ) {
 			setValue( googleMCAccount.id );
 		}
-	}, [ googleMCAccount, isGoogleMCReady ] );
+	}, [ googleMCAccount, hasGoogleMCConnection ] );
 
 	if ( ! isGoogleMCReady ) {
 		if ( resultConnectMC.response?.status === 409 ) {
@@ -83,6 +90,7 @@ const ConnectMC = ( { createAccount, resultCreateAccount, className } ) => {
 						resultConnectMC.error?.id ||
 						resultCreateAccount.error?.id
 					}
+					hasExisting={ hasExisting }
 					websiteUrl={
 						resultConnectMC.error?.website_url ||
 						resultCreateAccount.error?.website_url
@@ -152,14 +160,14 @@ const ConnectMC = ( { createAccount, resultCreateAccount, className } ) => {
 			indicator={ getIndicator() }
 			detail={
 				<MerchantCenterSelect
-					isConnected={ isGoogleMCReady }
+					isConnected={ hasGoogleMCConnection }
 					value={ value }
 					onChange={ setValue }
 				/>
 			}
 			actions={
 				<Actions
-					isConnected={ isGoogleMCReady }
+					isConnected={ hasGoogleMCConnection }
 					resultConnectMC={ resultConnectMC }
 					resultCreateAccount={ resultCreateAccount }
 					onCreateAccount={ createAccount }
