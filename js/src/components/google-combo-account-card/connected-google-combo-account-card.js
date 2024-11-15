@@ -145,11 +145,12 @@ const ConnectedGoogleComboAccountCard = () => {
 			);
 		}
 
-		// When not in edit mode, only show the edit button if both
-		// the `ConnectAds and ConnectMC cards are not already shown.
+		// When not in edit mode, only show the edit button if clicking the
+		// button would change the visibility of the ConnectAds or ConnectMC cards.
 		return (
 			<div className="gla-google-combo-account-card__description-actions">
-				{ showConnectAds && showConnectMC ? (
+				{ ( showConnectAds || shouldClaimGoogleAdsAccount ) &&
+				showConnectMC ? (
 					switchAccountButton
 				) : (
 					<AppButton
