@@ -75,6 +75,7 @@ const ConnectMC = ( { createAccount, resultCreateAccount, className } ) => {
 		}
 
 		if (
+			googleMCAccount?.step === 'claim' ||
 			resultConnectMC.response?.status === 403 ||
 			resultCreateAccount.response?.status === 403
 		) {
