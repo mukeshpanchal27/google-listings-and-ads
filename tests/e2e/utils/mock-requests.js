@@ -241,7 +241,7 @@ export default class MockRequests {
 	 * Fulfill the Ads Account request.
 	 *
 	 * @param {Object} payload
-	 * @param {number} status
+	 * @param {number} [status=200]
 	 * @param {string[]} [methods]
 	 * @return {Promise<void>}
 	 */
