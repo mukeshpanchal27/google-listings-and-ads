@@ -233,9 +233,11 @@ test.describe( 'Set up accounts', () => {
 			await once.mockAdsHasNoAccounts();
 			await once.mockMCHasNoAccounts();
 			await once.mockAdsAccountDisconnected();
+			await once.mockAdsStatusDisconnected();
 			await once.mockMCNotConnected();
 
 			await setUpAccountsPage.goto();
+
 			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
 
 			await expect(
@@ -246,6 +248,37 @@ test.describe( 'Set up accounts', () => {
 					}
 				)
 			).toBeVisible();
+		} );
+
+		test( 'should show Ads claim and MC Reclaim after auto-creation, when appropriate', async () => {
+			await setUpAccountsPage.mockJetpackConnected();
+			await setUpAccountsPage.mockGoogleConnected();
+			await setUpAccountsPage.mockMCCreateAccountWebsiteClaimed();
+			await setUpAccountsPage.mockAdsCreateAccount();
+			await setUpAccountsPage.mockAdsAccountIncomplete( 'claim_account' );
+			await setUpAccountsPage.mockAdsStatusNotClaimed();
+
+			const once = setUpAccountsPage.fulfillTimes( 1 );
+
+			await once.mockAdsHasNoAccounts();
+			await once.mockMCHasNoAccounts();
+			await once.mockAdsAccountDisconnected();
+			await once.mockAdsStatusDisconnected();
+			await once.mockMCNotConnected();
+
+			await setUpAccountsPage.goto();
+
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+			const googleMCReclaimButton =
+				setUpAccountsPage.getReclaimMyURLButton();
+
+			await expect(
+				googleAccountCard.getByRole( 'button', {
+					name: 'Claim account in Google Ads',
+				} )
+			).toBeVisible();
+
+			await expect( googleMCReclaimButton ).toBeVisible();
 		} );
 
 		test.describe( 'After connecting Google account', () => {
