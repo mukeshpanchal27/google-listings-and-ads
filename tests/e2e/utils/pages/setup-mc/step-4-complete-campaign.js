@@ -74,7 +74,7 @@ export default class CompleteCampaign extends MockRequests {
 	 */
 	getSkipPaidAdsCreationButton() {
 		return this.page.getByRole( 'button', {
-			name: 'Skip paid ads creation',
+			name: 'Skip ads creation',
 			exact: true,
 		} );
 	}

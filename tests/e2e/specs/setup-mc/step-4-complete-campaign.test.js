@@ -186,7 +186,7 @@ test.describe( 'Complete your campaign', () => {
 				await expect( completeSetupButton ).toBeDisabled();
 			} );
 
-			test( 'should see "Skip paid ads creation" button is enabled', async () => {
+			test( 'should see "Skip ads creation" button is enabled', async () => {
 				const skipPaidAdsCreationButton =
 					completeCampaign.getSkipPaidAdsCreationButton();
 				await expect( skipPaidAdsCreationButton ).toBeVisible();
@@ -199,7 +199,7 @@ test.describe( 'Complete your campaign', () => {
 					await expect( budgetSection ).toBeVisible();
 				} );
 
-				test( 'should see "Skip paid ads creation" is enabled and "Complete setup" button is disabled', async () => {
+				test( 'should see "Skip ads creation" is enabled and "Complete setup" button is disabled', async () => {
 					const completeButton =
 						completeCampaign.getCompleteSetupButton();
 					await expect( completeButton ).toBeVisible();
