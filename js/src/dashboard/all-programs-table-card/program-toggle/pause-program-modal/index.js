@@ -52,7 +52,7 @@ const PauseProgramModal = ( props ) => {
 		>
 			<p>
 				{ __(
-					'Results typically improve with time with Google Ads campaigns. If you pause, your products won’t be shown to people looking for what you offer.',
+					'Results typically improve with time. If you pause, your products won’t be shown to people looking for what you offer.',
 					'google-listings-and-ads'
 				) }
 			</p>
