@@ -2,6 +2,9 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { createInterpolateElement } from '@wordpress/element';
+import { Icon } from '@wordpress/components';
+import { external as externalIcon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -40,13 +43,15 @@ const ClaimAdsAccount = () => {
 					'google-listings-and-ads'
 				) }
 			</p>
-			<ClaimAccountButton
-				text={ __(
-					'Claim account in Google Ads',
-					'google-listings-and-ads'
+			<ClaimAccountButton isPrimary>
+				{ createInterpolateElement(
+					__(
+						'Claim account in Google Ads <icon />',
+						'google-listings-and-ads'
+					),
+					{ icon: <Icon icon={ externalIcon } size={ 20 } /> }
 				) }
-				isPrimary
-			/>
+			</ClaimAccountButton>
 		</div>
 	);
 };
