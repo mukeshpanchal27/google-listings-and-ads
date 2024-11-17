@@ -55,7 +55,7 @@ module.exports = async ( config ) => {
 			await adminPage
 				.locator( 'input[name="pwd"]' )
 				.fill( admin.password );
-			await adminPage.locator( 'text=Log In' ).click();
+			await adminPage.getByRole( 'button', { name: 'Log In' } ).click();
 			await adminPage.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 			await adminPage.goto( `/wp-admin` );
 			await adminPage.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );

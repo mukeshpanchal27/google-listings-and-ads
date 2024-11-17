@@ -113,7 +113,7 @@ const EditPaidAdsCampaign = () => {
 				/>
 				<div>
 					{ __(
-						'Error in loading your paid ads campaign. Please try again later.',
+						'Error in loading your ads campaign. Please try again later.',
 						'google-listings-and-ads'
 					) }
 				</div>
@@ -197,7 +197,7 @@ const EditPaidAdsCampaign = () => {
 						{
 							key: STEP.CAMPAIGN,
 							label: __(
-								'Edit paid campaign',
+								'Edit campaign',
 								'google-listings-and-ads'
 							),
 							content: (
@@ -205,7 +205,7 @@ const EditPaidAdsCampaign = () => {
 									campaign={ campaign }
 									context={ eventContext }
 									headerTitle={ __(
-										'Edit your paid campaign',
+										'Edit your campaign',
 										'google-listings-and-ads'
 									) }
 									continueButton={ ( formContext ) => (

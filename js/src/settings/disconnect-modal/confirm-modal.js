@@ -35,7 +35,7 @@ const textDict = {
 				'google-listings-and-ads'
 			),
 			__(
-				'Any ongoing paid campaigns will continue to run. They can be managed, edited, or deleted manually from Google Ads (ads.google.com).',
+				'Any ongoing campaigns will continue to run. They can be managed, edited, or deleted manually from Google Ads (ads.google.com).',
 				'google-listings-and-ads'
 			),
 		],
@@ -57,7 +57,7 @@ const textDict = {
 				'google-listings-and-ads'
 			),
 			__(
-				'Any ongoing paid campaigns will continue to run. They can be managed, edited, or deleted manually from Google Ads (ads.google.com).',
+				'Any ongoing campaigns will continue to run. They can be managed, edited, or deleted manually from Google Ads (ads.google.com).',
 				'google-listings-and-ads'
 			),
 			__(

@@ -104,7 +104,7 @@ const CreatePaidAdsCampaign = () => {
 			createNotice(
 				'success',
 				__(
-					'You’ve successfully created a paid campaign!',
+					'You’ve successfully created a campaign!',
 					'google-listings-and-ads'
 				)
 			);
@@ -125,7 +125,7 @@ const CreatePaidAdsCampaign = () => {
 		<>
 			<TopBar
 				title={ __(
-					'Create your paid campaign',
+					'Create your campaign',
 					'google-listings-and-ads'
 				) }
 				helpButton={ <HelpIconButton eventContext={ eventContext } /> }
@@ -144,13 +144,13 @@ const CreatePaidAdsCampaign = () => {
 						{
 							key: STEP.CAMPAIGN,
 							label: __(
-								'Create paid campaign',
+								'Create campaign',
 								'google-listings-and-ads'
 							),
 							content: (
 								<AdsCampaign
 									headerTitle={ __(
-										'Create your paid campaign',
+										'Create your campaign',
 										'google-listings-and-ads'
 									) }
 									context={ eventContext }

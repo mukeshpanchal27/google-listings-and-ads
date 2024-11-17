@@ -27,7 +27,7 @@ const SetupAdsTopBar = () => {
 
 	return (
 		<TopBar
-			title={ __( 'Set up paid campaign', 'google-listings-and-ads' ) }
+			title={ __( 'Set up your campaign', 'google-listings-and-ads' ) }
 			helpButton={ <HelpIconButton eventContext="setup-ads" /> }
 			backHref={ getNewPath( {}, '/google/dashboard' ) }
 			onBackButtonClick={ handleBackButtonClick }

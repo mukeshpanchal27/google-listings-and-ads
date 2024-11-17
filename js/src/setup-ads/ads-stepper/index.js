@@ -96,7 +96,7 @@ const AdsStepper = () => {
 		},
 		{
 			key: '2',
-			label: __( 'Create your paid campaign', 'google-listings-and-ads' ),
+			label: __( 'Create your campaign', 'google-listings-and-ads' ),
 			content: <SetupPaidAds />,
 			onClick: handleStepClick,
 		},

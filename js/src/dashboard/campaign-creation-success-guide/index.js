@@ -88,7 +88,7 @@ export default function CampaignCreationSuccessGuide( {
 			</div>
 			<GuidePageContent
 				title={ __(
-					`You've set up a paid Performance Max Campaign!`,
+					`You've set up a Performance Max Campaign!`,
 					'google-listings-and-ads'
 				) }
 			>

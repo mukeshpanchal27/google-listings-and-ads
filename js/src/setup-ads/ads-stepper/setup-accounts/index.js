@@ -49,7 +49,7 @@ const SetupAccounts = ( props ) => {
 					'google-listings-and-ads'
 				) }
 				description={ __(
-					'Connect your Google account and your Google Ads account to set up a paid Performance Max campaign.',
+					'Connect your Google account and your Google Ads account to set up a Performance Max campaign.',
 					'google-listings-and-ads'
 				) }
 			/>

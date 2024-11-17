@@ -39,7 +39,7 @@ export { default as ProductsReport } from './products';
 /**
  * @typedef {Object} ProgramsReportData
  * @property {Array<ProgramsData>} freeListings Free listings data
- * @property {Array<ProgramsData>} campaigns Paid campaigns data.
+ * @property {Array<ProgramsData>} campaigns Ad campaigns data.
  * @property {Array<IntervalsData> | null} intervals Intervals data.
  * @property {PerformanceData} totals Performance data.
  */

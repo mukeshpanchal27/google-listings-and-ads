@@ -191,7 +191,7 @@ const reportSourceConfig = {
 	filters: [
 		{
 			value: REPORT_SOURCE_PAID,
-			label: __( 'Paid campaigns', 'google-listings-and-ads' ),
+			label: __( 'Ad campaigns', 'google-listings-and-ads' ),
 		},
 		{
 			value: REPORT_SOURCE_FREE,
