@@ -173,7 +173,7 @@ const ConnectedGoogleComboAccountCard = () => {
 	const showConversionMeasurementNotice =
 		showAdsConversionNotice( googleAdsAccount );
 
-	const showAddressCard = hasFinishedResolution && hasGoogleMCConnection;
+	const showAddressCard = hasFinishedResolution && isGoogleMCReady;
 
 	return (
 		<div>
