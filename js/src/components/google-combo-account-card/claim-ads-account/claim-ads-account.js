@@ -44,13 +44,11 @@ const ClaimAdsAccount = () => {
 				) }
 			</p>
 			<ClaimAccountButton isPrimary>
-				{ createInterpolateElement(
-					__(
-						'Claim account in Google Ads <icon />',
-						'google-listings-and-ads'
-					),
-					{ icon: <Icon icon={ externalIcon } size={ 20 } /> }
+				{ __(
+					'Claim account in Google Ads',
+					'google-listings-and-ads'
 				) }
+				<Icon icon={ externalIcon } size={ 20 } />
 			</ClaimAccountButton>
 		</div>
 	);
