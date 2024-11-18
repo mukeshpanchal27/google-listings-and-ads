@@ -75,13 +75,13 @@ const ConnectMC = ( { createAccount, resultCreateAccount, className } ) => {
 		}
 
 		if (
-			googleMCAccount?.step === 'claim' ||
 			resultConnectMC.response?.status === 403 ||
 			resultCreateAccount.response?.status === 403
 		) {
 			return (
 				<ReclaimUrlCard
 					id={
+						googleMCAccount?.id ||
 						resultConnectMC.error?.id ||
 						resultCreateAccount.error?.id
 					}
@@ -154,14 +154,14 @@ const ConnectMC = ( { createAccount, resultCreateAccount, className } ) => {
 			indicator={ getIndicator() }
 			detail={
 				<MerchantCenterSelect
-					isConnected={ hasGoogleMCConnection }
+					isConnected={ isGoogleMCReady }
 					value={ value }
 					onChange={ setValue }
 				/>
 			}
 			actions={
 				<Actions
-					isConnected={ hasGoogleMCConnection }
+					isConnected={ isGoogleMCReady }
 					resultConnectMC={ resultConnectMC }
 					resultCreateAccount={ resultCreateAccount }
 					onCreateAccount={ createAccount }
