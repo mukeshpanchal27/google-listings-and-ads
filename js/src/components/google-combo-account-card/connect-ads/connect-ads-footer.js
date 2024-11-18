@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import AppButton from '.~/components/app-button';
 import DisconnectAccount from '.~/components/google-ads-account-card/disconnect-account';
+import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 
 /**
  * Footer component.
@@ -23,7 +24,9 @@ const ConnectAdsFooter = ( {
 	onCreateNewClick,
 	...restProps
 } ) => {
-	if ( isConnected ) {
+	const { existingAccounts } = useExistingGoogleAdsAccounts();
+
+	if ( isConnected && existingAccounts.length > 1 ) {
 		return <DisconnectAccount />;
 	}
 

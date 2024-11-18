@@ -21,7 +21,6 @@ import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
 import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
 import useCreateMCAccount from '.~/hooks/useCreateMCAccount';
 import ConnectMC from '.~/components/google-mc-account-card/connect-mc';
-import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import AppButton from '.~/components/app-button';
 import SwitchAccountButton from '.~/components/google-account-card/switch-account-button';
@@ -49,7 +48,6 @@ const ConnectedGoogleComboAccountCard = () => {
 	const { text, subText } = getAccountCreationTexts( creatingWhich );
 	const { existingAccounts: existingGoogleAdsAccounts } =
 		useExistingGoogleAdsAccounts();
-	const isConnected = useGoogleAdsAccountReady();
 	const {
 		isReady: isGoogleMCReady,
 		hasGoogleMCConnection,
@@ -98,18 +96,19 @@ const ConnectedGoogleComboAccountCard = () => {
 	// After creating a new account, it may be connected but not ready
 	// (e.g., needing to reclaim the URL). In this case, we show the ConnectMC
 	// component, even if the existing accounts list has not yet updated.
-	const showConnectMC =
-		( googleMCHasError ||
-			hasGoogleMCConnection ||
-			hasExistingGoogleMCAccounts ) &&
-		( editMode || ! isGoogleMCReady );
+	const canShowConnectMC =
+		googleMCHasError ||
+		hasExistingGoogleMCAccounts ||
+		hasGoogleMCConnection;
+	const showConnectMC = canShowConnectMC && ( editMode || ! isGoogleMCReady );
 
 	// After creating a new account, it may not show up in the existing accounts list
 	// immediately. In this case, we show the ConnectAds component in edit mode unless
 	// we're showing the claim notice in the upper card.
+	const canShowConnectAds =
+		hasGoogleAdsConnection || hasExistingGoogleAdsAccounts;
 	const showConnectAds =
-		( hasGoogleAdsConnection || hasExistingGoogleAdsAccounts ) &&
-		( editMode || ! hasGoogleAdsConnection );
+		canShowConnectAds && ( editMode || ! hasGoogleAdsConnection );
 
 	// When Ads and MC are disconnected in edit mode, exit edit mode.
 	useEffect( () => {
@@ -148,7 +147,8 @@ const ConnectedGoogleComboAccountCard = () => {
 		// button would change the visibility of the ConnectAds or ConnectMC cards.
 		return (
 			<div className="gla-google-combo-account-card__description-actions">
-				{ showConnectAds && showConnectMC ? (
+				{ ( showConnectAds || ! canShowConnectAds ) &&
+				( showConnectMC || ! canShowConnectMC ) ? (
 					switchAccountButton
 				) : (
 					<AppButton
