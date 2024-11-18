@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class YoastWooCommerceSeo implements IntegrationInterface {
 
-	protected const VALUE_KEY = 'yoast_seo';
+	public const VALUE_KEY = 'yoast_seo';
 
 	/**
 	 * @var array Meta values stored by Yoast WooCommerce SEO plugin (per product).
@@ -109,7 +109,7 @@ class YoastWooCommerceSeo implements IntegrationInterface {
 	 *
 	 * @return mixed
 	 */
-	protected function get_gtin( $value, WC_Product $product ) {
+	public function get_gtin( $value, WC_Product $product ) {
 		if ( strpos( $value, self::VALUE_KEY ) === 0 ) {
 			$gtin_values = [
 				$this->get_identifier_value( 'isbn', $product ),
