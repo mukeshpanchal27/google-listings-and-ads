@@ -52,7 +52,7 @@ class MigrateGTINTest extends UnitTest {
 		parent::setUp();
 
 		$this->action_scheduler   = $this->createMock( ActionScheduler::class );
-		$this->options   		  = $this->createMock( OptionsInterface::class );
+		$this->options            = $this->createMock( OptionsInterface::class );
 		$this->monitor            = $this->createMock( ActionSchedulerJobMonitor::class );
 		$this->product_repository = $this->createMock( ProductRepository::class );
 		$this->attribute_manager  = $this->createMock( AttributeManager::class );
@@ -87,14 +87,14 @@ class MigrateGTINTest extends UnitTest {
 	public function test_schedule_updates_status_to_started() {
 		$this->options->expects( $this->exactly( 1 ) )
 			->method( 'update' )
-			->with( OptionsInterface::GTIN_MIGRATION_STATUS,  MigrateGTIN::GTIN_MIGRATION_STARTED );
+			->with( OptionsInterface::GTIN_MIGRATION_STATUS, MigrateGTIN::GTIN_MIGRATION_STARTED );
 		$this->job->schedule();
 	}
 
 	public function test_completed_job_updates_status_to_completed() {
 		$this->options->expects( $this->exactly( 1 ) )
 			->method( 'update' )
-			->with( OptionsInterface::GTIN_MIGRATION_STATUS,  MigrateGTIN::GTIN_MIGRATION_COMPLETED );
+			->with( OptionsInterface::GTIN_MIGRATION_STATUS, MigrateGTIN::GTIN_MIGRATION_COMPLETED );
 		$this->job->handle_complete( 2 );
 	}
 
@@ -102,7 +102,6 @@ class MigrateGTINTest extends UnitTest {
 		$this->product_repository->expects( $this->once() )
 			->method( 'find_all_product_ids' )
 			->willReturn( [] );
-
 
 		$this->action_scheduler->expects( $this->once() )
 			->method( 'has_scheduled_action' )->willReturn( false );
@@ -122,7 +121,6 @@ class MigrateGTINTest extends UnitTest {
 		$this->product_repository->expects( $this->once() )
 			->method( 'find_all_product_ids' )
 			->willReturn( $batch );
-
 
 		$this->action_scheduler->expects( $this->exactly( 3 ) )
 			->method( 'has_scheduled_action' )->willReturn( false );
@@ -176,7 +174,6 @@ class MigrateGTINTest extends UnitTest {
 			->method( 'find_by_ids' )
 			->with( [ 1 ] );
 
-
 		do_action( self::PROCESS_ITEM_HOOK, [ 1 ] );
 	}
 
@@ -186,7 +183,7 @@ class MigrateGTINTest extends UnitTest {
 			->expects( $this->once() )
 			->method( 'find_by_ids' )
 			->with( [ 1 ] )
-		    ->willReturn( [ $product ] );
+			->willReturn( [ $product ] );
 
 		$this->attribute_manager
 			->expects( $this->once() )
@@ -194,7 +191,7 @@ class MigrateGTINTest extends UnitTest {
 			->with( $product, 'gtin' )
 			->willReturn( '1234-5678' );
 
-        $this->assertEquals( $product->get_global_unique_id(), null );
+		$this->assertEquals( $product->get_global_unique_id(), null );
 		$this->job->handle_process_items_action( [ 1 ] );
 		$this->assertEquals( $product->get_global_unique_id(), '12345678' );
 	}
@@ -261,5 +258,4 @@ class MigrateGTINTest extends UnitTest {
 		$this->job->handle_process_items_action( [ 1 ] );
 		$this->assertEquals( $product->get_global_unique_id(), null );
 	}
-
 }

@@ -56,7 +56,7 @@ class AttributeInputCollectionTest extends UnitTest {
 	 */
 	public function setUp(): void {
 		parent::setUp();
-		$this->options   		  = $this->createMock( OptionsInterface::class );
+		$this->options = $this->createMock( OptionsInterface::class );
 	}
 
 	public function test_adult_input() {
