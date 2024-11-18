@@ -19,6 +19,8 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\Input\P
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\Input\SizeInput;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\Input\SizeSystemInput;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\Input\SizeTypeInput;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\MigrateGTIN;
+use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\Adult;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\AgeGroup;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\AvailabilityDate;
@@ -36,6 +38,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\Size;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\SizeSystem;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\SizeType;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\UnitTest;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Class AttributeInputCollectionTest
@@ -45,6 +48,17 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\UnitTest;
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\Admin\Product\Attributes
  */
 class AttributeInputCollectionTest extends UnitTest {
+
+	/** @var MockObject|OptionsInterface $options */
+	protected $options;
+	/**
+	 * Runs before each test is executed.
+	 */
+	public function setUp(): void {
+		parent::setUp();
+		$this->options   		  = $this->createMock( OptionsInterface::class );
+	}
+
 	public function test_adult_input() {
 		$input = new AdultInput();
 		$input
@@ -351,6 +365,36 @@ class AttributeInputCollectionTest extends UnitTest {
 			],
 			$input->get_block_config()
 		);
+	}
+
+	public function test_gtin_input_not_hidden() {
+		$input = new GTINInput();
+		$input->set_options_object( $this->options );
+		$this->options
+			->expects( $this->any() )
+			->method( 'get' )
+			->with( OptionsInterface::INSTALL_VERSION )
+			->willReturn( '2.8.6' );
+		$input
+			->set_id( GTIN::get_id() )
+			->set_name( GTIN::get_id() );
+		$input->set_field_visibility();
+		$this->assertFalse( $input->is_hidden() );
+	}
+
+	public function test_gtin_input_hidden() {
+		$input = new GTINInput();
+		$input->set_options_object( $this->options );
+		$this->options
+			->expects( $this->any() )
+			->method( 'get' )
+			->with( OptionsInterface::INSTALL_VERSION )
+			->willReturn( '2.8.7' );
+		$input
+			->set_id( GTIN::get_id() )
+			->set_name( GTIN::get_id() );
+		$input->set_field_visibility();
+		$this->assertTrue( $input->is_hidden() );
 	}
 
 	public function test_is_bundle_input() {
