@@ -81,7 +81,6 @@ const ConnectMC = ( { createAccount, resultCreateAccount, className } ) => {
 			return (
 				<ReclaimUrlCard
 					id={
-						googleMCAccount?.id ||
 						resultConnectMC.error?.id ||
 						resultCreateAccount.error?.id
 					}
