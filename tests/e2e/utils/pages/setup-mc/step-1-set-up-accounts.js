@@ -300,6 +300,18 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
+	 * Get create a new Merchant Center account button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get create a new Merchant Center account button.
+	 */
+	getCreateNewMCAccountButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Or, create a new Merchant Center account',
+			exact: true,
+		} );
+	}
+
+	/**
 	 * Get "Continue" button.
 	 *
 	 * @return {import('@playwright/test').Locator} Get "Continue" button.
@@ -381,6 +393,30 @@ export default class SetUpAccountsPage extends MockRequests {
 		return this.getGoogleAdsAccountCard().getByText(
 			'Conversion measurement has been set up. You can create a campaign later.'
 		);
+	}
+
+	/**
+	 * Get connect to a different Google Ads account button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get connect to a different Google Ads account button.
+	 */
+	getConnectDifferentAdsAccountButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Or, connect to a different Google Ads account',
+			exact: true,
+		} );
+	}
+
+	/**
+	 * Get create a new Google Ads account button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get create a new Google Ads account button.
+	 */
+	getCreateNewAdsAccountButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Or, create a new Google Ads account',
+			exact: true,
+		} );
 	}
 
 	/**

@@ -8,6 +8,7 @@ import {
 	getFAQPanelRow,
 	checkFAQExpandable,
 } from '../../utils/page';
+import SetupAdsAccount from '../../utils/pages/setup-ads/setup-ads-accounts';
 
 /**
  * External dependencies
@@ -957,8 +958,13 @@ test.describe( 'Set up accounts', () => {
 
 	test.describe( 'Edit button', () => {
 		test.beforeAll( async () => {
+			await setUpAccountsPage.mockJetpackConnected();
+			await setUpAccountsPage.mockGoogleConnected();
 			await setUpAccountsPage.mockMCConnected();
+			await setUpAccountsPage.mockMCHasAccounts();
+			await setUpAccountsPage.mockContactInformation();
 			await setUpAccountsPage.mockAdsAccountConnected();
+			await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
 			await setUpAccountsPage.mockAdsStatusClaimed();
 			await setUpAccountsPage.goto();
 		} );
@@ -1020,6 +1026,50 @@ test.describe( 'Set up accounts', () => {
 				const googleAdsAccountCard =
 					setUpAccountsPage.getGoogleAdsAccountCard();
 				await expect( googleAdsAccountCard ).not.toBeVisible();
+			} );
+		} );
+
+		test.describe( 'clicking "Edit" when an Ads account is being claimed', async () => {
+			test( 'should let you connect to a different account', async () => {
+				await setUpAccountsPage.mockAdsStatusNotClaimed();
+				await setUpAccountsPage.mockAdsAccountIncomplete(
+					'claim_account'
+				);
+
+				await setUpAccountsPage.goto();
+
+				const editButton = setUpAccountsPage.getEditButton();
+				await editButton.click();
+
+				const connectDifferentGoogleAdsAccountButton =
+					setUpAccountsPage.getConnectDifferentAdsAccountButton();
+
+				await expect(
+					connectDifferentGoogleAdsAccountButton
+				).toBeVisible();
+			} );
+		} );
+
+		test.describe( 'clicking "Edit" when there are no other existing accounts', async () => {
+			test( 'should let you create new accounts', async () => {
+				await setUpAccountsPage.mockAdsStatusClaimed();
+				await setUpAccountsPage.mockAdsAccountConnected();
+				await setUpAccountsPage.mockAdsHasNoAccounts();
+				await setUpAccountsPage.mockMCHasNoAccounts();
+				await setUpAccountsPage.mockMCConnected();
+
+				await setUpAccountsPage.goto();
+
+				const editButton = setUpAccountsPage.getEditButton();
+				await editButton.click();
+
+				const createNewAdsAccountButton =
+					setUpAccountsPage.getCreateNewAdsAccountButton();
+				const createNewMCAccountButton =
+					setUpAccountsPage.getCreateNewMCAccountButton();
+
+				await expect( createNewAdsAccountButton ).toBeVisible();
+				await expect( createNewMCAccountButton ).toBeVisible();
 			} );
 		} );
 	} );
