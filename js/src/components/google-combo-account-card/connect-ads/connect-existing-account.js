@@ -90,7 +90,11 @@ const ConnectExistingAccount = ( { onCreateClick } ) => {
 		}
 
 		return (
-			<ConnectButton accountID={ value } onClick={ handleConnectClick } />
+			<ConnectButton
+				disabled={ hasGoogleAdsConnection }
+				accountID={ value }
+				onClick={ handleConnectClick }
+			/>
 		);
 	};
 

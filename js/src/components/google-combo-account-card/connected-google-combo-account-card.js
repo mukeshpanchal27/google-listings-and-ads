@@ -56,7 +56,7 @@ const ConnectedGoogleComboAccountCard = () => {
 		hasFinishedResolution,
 	} = useGoogleMCAccount();
 	const { invalidateResolution } = useAppDispatch();
-	const { googleAdsAccount } = useGoogleAdsAccount();
+	const { googleAdsAccount, hasGoogleAdsConnection } = useGoogleAdsAccount();
 	const { hasAccess, step } = useGoogleAdsAccountStatus();
 	const [ upsertAdsAccount, { action, loading } ] = useUpsertAdsAccount();
 
@@ -108,16 +108,15 @@ const ConnectedGoogleComboAccountCard = () => {
 	// immediately. In this case, we show the ConnectAds component in edit mode unless
 	// we're showing the claim notice in the upper card.
 	const showConnectAds =
-		( isConnected || hasExistingGoogleAdsAccounts ) &&
-		( editMode || ! isConnected ) &&
-		! shouldClaimGoogleAdsAccount;
+		( hasGoogleAdsConnection || hasExistingGoogleAdsAccounts ) &&
+		( editMode || ! hasGoogleAdsConnection );
 
 	// When Ads and MC are disconnected in edit mode, exit edit mode.
 	useEffect( () => {
-		if ( editMode && ! isGoogleMCReady && ! isConnected ) {
+		if ( editMode && ! hasGoogleMCConnection && ! hasGoogleAdsConnection ) {
 			setEditMode( false );
 		}
-	}, [ editMode, isConnected, isGoogleMCReady ] );
+	}, [ editMode, hasGoogleAdsConnection, hasGoogleMCConnection ] );
 
 	if ( ! hasDetermined ) {
 		return <SpinnerCard />;
@@ -149,8 +148,7 @@ const ConnectedGoogleComboAccountCard = () => {
 		// button would change the visibility of the ConnectAds or ConnectMC cards.
 		return (
 			<div className="gla-google-combo-account-card__description-actions">
-				{ ( showConnectAds || shouldClaimGoogleAdsAccount ) &&
-				showConnectMC ? (
+				{ showConnectAds && showConnectMC ? (
 					switchAccountButton
 				) : (
 					<AppButton
