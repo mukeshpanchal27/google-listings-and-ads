@@ -213,7 +213,7 @@ class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 
 	/**
 	 * Add some info in the debug console.
-	 * Add --debug to see this kind of logs in WP CLI
+	 * Add --debug to see these logs in WP CLI
 	 *
 	 * @param string $message
 	 * @return void
