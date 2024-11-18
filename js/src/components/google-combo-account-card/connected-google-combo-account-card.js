@@ -174,7 +174,7 @@ const ConnectedGoogleComboAccountCard = () => {
 	const showAddressCard = hasFinishedResolution && isGoogleMCReady;
 
 	return (
-		<div>
+		<div className="gla-google-combo-account-card-wrapper">
 			<AccountCard
 				appearance={ APPEARANCE.GOOGLE }
 				alignIcon="top"

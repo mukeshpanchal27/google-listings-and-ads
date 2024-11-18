@@ -1,13 +1,15 @@
-.gla-google-combo-account-card {
+.gla-google-combo-account-card-wrapper {
 
-	&:not(:last-child) {
-		border-bottom-left-radius: 0;
-		border-bottom-right-radius: 0;
-	}
+	.components-card{
+		&:not(:last-child) {
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+		}
 
-	&:not(:first-child) {
-		border-top-left-radius: 0;
-		border-top-right-radius: 0;
+		&:not(:first-child) {
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+		}
 	}
 }
 
