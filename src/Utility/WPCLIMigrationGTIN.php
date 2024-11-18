@@ -3,6 +3,7 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Utility;
 
+use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\GTINMigrationUtilities;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Conditional;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
@@ -22,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
  * @since x.x.x
  */
 class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
-
+	use GTINMigrationUtilities;
 
 	/** @var AttributeManager  */
 	public AttributeManager $attribute_manager;
@@ -157,7 +158,6 @@ class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 	 * @return int The number of items processed.
 	 */
 	protected function process_items( array $items ): int {
-		// todo: refactor avoiding duplication with MigrateGTIN Job after https://github.com/woocommerce/google-listings-and-ads/pull/2656 gets merged.
 		// update the product core GTIN using G4W GTIN
 		$products  = $this->product_repository->find_by_ids( $items );
 		$processed = 0;
@@ -172,20 +172,19 @@ class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 
 			// void if core GTIN is already set.
 			if ( $product->get_global_unique_id() ) {
-				WP_CLI::debug( sprintf( 'GTIN has been skipped for Product ID: %s - %s. GTIN was found in Product Inventory tab.', $product->get_id(), $product->get_name() ) );
+				$this->debug( $this->error_gtin_already_set( $product ) );
 				continue;
 			}
 
 			$gtin = $this->attribute_manager->get_value( $product, 'gtin' );
 			if ( ! $gtin ) {
-				WP_CLI::debug( sprintf( 'GTIN has been skipped for Product ID: %s - %s. No GTIN was found', $product->get_id(), $product->get_name() ) );
+				$this->debug( $this->error_gtin_not_found( $product ) );
 				continue;
 			}
 
-			$gtin = str_replace( '-', '', $gtin );
-
+			$gtin = $this->prepare_gtin( $gtin );
 			if ( ! is_numeric( $gtin ) ) {
-				WP_CLI::debug( sprintf( 'GTIN [ %s ] has been skipped for Product ID: %s - %s. Invalid GTIN was found.', $gtin, $product->get_id(), $product->get_name() ) );
+				$this->debug( $this->error_gtin_invalid( $product, $gtin ) );
 				continue;
 			}
 
@@ -193,9 +192,9 @@ class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 				$product->set_global_unique_id( $gtin );
 				$product->save();
 				++$processed;
-				WP_CLI::debug( sprintf( 'GTIN [ %s ] has been migrated for Product ID: %s - %s', $gtin, $product->get_id(), $product->get_name() ) );
+				$this->debug( $this->successful_migrated_gtin( $product, $gtin ) );
 			} catch ( Exception $e ) {
-				WP_CLI::error( sprintf( 'GTIN [ %s ] for Product ID: %s - %s has an error - %s', $gtin, $product->get_id(), $product->get_name(), $e->getMessage() ), false );
+				$this->error( $this->error_gtin_not_saved( $product, $gtin, $e ) );
 			}
 		}
 
@@ -210,5 +209,26 @@ class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 	 */
 	public static function is_needed(): bool {
 		return defined( 'WP_CLI' ) && WP_CLI;
+	}
+
+	/**
+	 * Add some info in the debug console.
+	 * Add --debug to see these logs in WP CLI
+	 *
+	 * @param string $message
+	 * @return void
+	 */
+	protected function debug( string $message ): void {
+		WP_CLI::debug( $message );
+	}
+
+	/**
+	 * Add some info in the error console.
+	 *
+	 * @param string $message
+	 * @return void
+	 */
+	protected function error( string $message ): void {
+		WP_CLI::error( $message, false );
 	}
 }
