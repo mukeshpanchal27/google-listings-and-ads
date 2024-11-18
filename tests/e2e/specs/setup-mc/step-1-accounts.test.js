@@ -8,7 +8,6 @@ import {
 	getFAQPanelRow,
 	checkFAQExpandable,
 } from '../../utils/page';
-import SetupAdsAccount from '../../utils/pages/setup-ads/setup-ads-accounts';
 
 /**
  * External dependencies
