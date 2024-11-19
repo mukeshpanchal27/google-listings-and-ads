@@ -153,14 +153,14 @@ const ConnectMC = ( { createAccount, resultCreateAccount, className } ) => {
 			indicator={ getIndicator() }
 			detail={
 				<MerchantCenterSelect
-					isConnected={ isGoogleMCReady }
+					isConnected={ hasGoogleMCConnection }
 					value={ value }
 					onChange={ setValue }
 				/>
 			}
 			actions={
 				<Actions
-					isConnected={ isGoogleMCReady }
+					isConnected={ hasGoogleMCConnection }
 					resultConnectMC={ resultConnectMC }
 					resultCreateAccount={ resultCreateAccount }
 					onCreateAccount={ createAccount }
