@@ -26,7 +26,7 @@ const ConnectAdsFooter = ( {
 } ) => {
 	const { existingAccounts } = useExistingGoogleAdsAccounts();
 
-	if ( isConnected && existingAccounts.length > 1 ) {
+	if ( isConnected && existingAccounts.length > 0 ) {
 		return <DisconnectAccount />;
 	}
 

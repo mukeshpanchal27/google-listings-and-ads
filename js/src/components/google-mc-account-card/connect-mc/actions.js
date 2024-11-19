@@ -30,7 +30,7 @@ const Actions = ( {
 } ) => {
 	const { data: existingGoogleMCAccounts } = useExistingGoogleMCAccounts();
 
-	if ( isConnected && existingGoogleMCAccounts.length > 1 ) {
+	if ( isConnected && existingGoogleMCAccounts.length > 0 ) {
 		const handleOnDisconnected = () => {
 			resultConnectMC.reset();
 			resultCreateAccount.reset();
