@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class YoastWooCommerceSeo implements IntegrationInterface {
 
-	public const VALUE_KEY = 'yoast_seo';
+	protected const VALUE_KEY = 'yoast_seo';
 
 	/**
 	 * @var array Meta values stored by Yoast WooCommerce SEO plugin (per product).
@@ -76,6 +76,19 @@ class YoastWooCommerceSeo implements IntegrationInterface {
 			10,
 			2
 		);
+
+		add_filter(
+			'woocommerce_gla_gtin_migration_value',
+			function ( $gtin, $product ) {
+				if ( ! $gtin ) {
+					return $this->get_gtin( self::VALUE_KEY, $product );
+				}
+
+				return $gtin;
+			},
+			10,
+			2
+		);
 	}
 
 	/**
@@ -109,7 +122,7 @@ class YoastWooCommerceSeo implements IntegrationInterface {
 	 *
 	 * @return mixed
 	 */
-	public function get_gtin( $value, WC_Product $product ) {
+	protected function get_gtin( $value, WC_Product $product ) {
 		if ( strpos( $value, self::VALUE_KEY ) === 0 ) {
 			$gtin_values = [
 				$this->get_identifier_value( 'isbn', $product ),

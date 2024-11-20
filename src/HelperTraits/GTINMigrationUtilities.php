@@ -161,27 +161,10 @@ trait GTINMigrationUtilities {
 	 * @return string|null
 	 */
 	protected function get_gtin( WC_Product $product ): ?string {
-		$gtin = $this->attribute_manager->get_value( $product, 'gtin' );
-
-		if ( ! $gtin ) {
-			$gtin = $this->get_yoast_gtin( $product );
-		}
-
-		return $gtin;
-	}
-
-	/**
-	 * Gets the GTIN value from YOAST SEO
-	 *
-	 * @param WC_Product $product The product
-	 * @return string|null
-	 */
-	protected function get_yoast_gtin( WC_Product $product ): ?string {
-		if ( ! defined( 'WPSEO_WOO_VERSION' ) ) {
-			return null;
-		}
-
-		$yoast_seo_integration = new YoastWooCommerceSeo();
-		return $yoast_seo_integration->get_gtin( YoastWooCommerceSeo::VALUE_KEY, $product );
+		/**
+		 * Filters the value of the GTIN before performing the migration.
+		 * This value will be he one that we copy inside the Product Inventory GTIN.
+		 */
+		return apply_filters( 'woocommerce_gla_gtin_migration_value', $this->attribute_manager->get_value( $product, 'gtin' ), $product );
 	}
 }
