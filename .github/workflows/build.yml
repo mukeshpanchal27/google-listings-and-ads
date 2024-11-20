@@ -80,4 +80,4 @@ jobs:
           name: google-listings-and-ads.zip
           path: ${{ github.workspace }}/google-listings-and-ads.zip
           # Do not bloat the storage. Keep in only long enough for a caller workflow to pick it up and follow up with some manual debugging.
-          retention-days: 2
+          retention-days: 7
