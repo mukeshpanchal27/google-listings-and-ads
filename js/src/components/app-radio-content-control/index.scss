@@ -9,6 +9,8 @@
 	// Hack to align multiple lines of label after the radio/checkbox to the same indentation,
 	// by placing them on the same brid.
 	.components-radio-control,
+	.components-radio-control .components-flex,
+	.components-base-control__label,
 	.components-base-control__field,
 	.components-base-control__field .components-flex,
 	.components-radio-control__option {
