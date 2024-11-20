@@ -1047,6 +1047,24 @@ test.describe( 'Set up accounts', () => {
 					connectDifferentGoogleAdsAccountButton
 				).toBeVisible();
 			} );
+
+			test( 'should not let you connect to a different account if there are no other accounts', async () => {
+				await setUpAccountsPage.mockAdsStatusNotClaimed();
+				await setUpAccountsPage.mockAdsHasNoAccounts();
+				await setUpAccountsPage.mockAdsAccountIncomplete(
+					'claim_account'
+				);
+
+				await setUpAccountsPage.goto();
+
+				const editButton = setUpAccountsPage.getEditButton();
+				await editButton.click();
+
+				const createNewAdsAccountButton =
+					setUpAccountsPage.getCreateNewAdsAccountButton();
+
+				await expect( createNewAdsAccountButton ).toBeDisabled();
+			} );
 		} );
 
 		test.describe( 'clicking "Edit" when there are no other existing accounts', async () => {
