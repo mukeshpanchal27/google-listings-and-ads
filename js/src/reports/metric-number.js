@@ -61,7 +61,7 @@ const MetricNumber = ( {
 	// And Free Listings API may not respond with data.
 	if ( missingFreeListingsData !== MISSING_FREE_LISTINGS_DATA.NONE ) {
 		const text = __(
-			'This data is currently available for paid campaigns only.',
+			'This data is currently available for Google Ads campaigns only.',
 			'google-listings-and-ads'
 		);
 		infos.push( text );

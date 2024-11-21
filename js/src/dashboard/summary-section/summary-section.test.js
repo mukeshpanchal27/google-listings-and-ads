@@ -7,6 +7,7 @@ import { render } from '@testing-library/react';
  * Internal dependencies
  */
 import SummarySection from '.~/dashboard/summary-section';
+import useAdsCampaigns from '.~/hooks/useAdsCampaigns';
 
 // Mimic no data loaded.
 jest.mock( './usePerformance', () =>
@@ -22,34 +23,56 @@ jest.mock( '.~/hooks/useAdsCurrency', () =>
 	} )
 );
 jest.mock( '.~/hooks/useCurrencyFormat', () => jest.fn() );
+jest.mock( '.~/hooks/useAdsCampaigns', () =>
+	jest.fn().mockName( 'useAdsCampaigns' )
+);
 
 describe( 'SummarySection when no data is loaded', () => {
+	beforeAll( () => {
+		useAdsCampaigns.mockImplementation( () => {
+			return {
+				loading: false,
+				loaded: true,
+				data: [
+					{
+						id: 10,
+						name: 'PMax Campaign',
+						status: 'enabled',
+						type: 'performance_max',
+						amount: 20,
+						displayCountries: [ 'US' ],
+					},
+				],
+			};
+		} );
+	} );
+
 	it( 'Shows no data message for Free Campaigns', async () => {
-		const { queryByText } = render( <SummarySection /> );
+		const { findByText } = render( <SummarySection /> );
 
 		expect(
-			queryByText(
+			await findByText(
 				"We're having trouble loading this data. Try again later, or track your performance in Google Merchant Center."
 			)
 		).toBeTruthy();
 
-		const link = queryByText( 'Open Google Merchant Center' );
+		const link = await findByText( 'Open Google Merchant Center' );
 
 		expect( link ).toBeTruthy();
 		expect( link.href ).toBe(
 			'https://merchants.google.com/mc/reporting/dashboard'
 		);
 	} );
-	it( 'Shows no data message for Paid Campaigns', () => {
-		const { queryByText } = render( <SummarySection /> );
+	it( 'Shows no data message for Paid Campaigns', async () => {
+		const { findByText } = render( <SummarySection /> );
 
 		expect(
-			queryByText(
+			await findByText(
 				"We're having trouble loading this data. Try again later, or track your performance in Google Ads."
 			)
 		).toBeTruthy();
 
-		const link = queryByText( 'Open Google Ads' );
+		const link = await findByText( 'Open Google Ads' );
 
 		expect( link ).toBeTruthy();
 		expect( link.href ).toBe( 'https://ads.google.com/' );

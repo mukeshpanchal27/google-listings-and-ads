@@ -13,7 +13,7 @@ import { getCreateCampaignUrl } from '.~/utils/urls';
 import { recordGlaEvent } from '.~/utils/tracks';
 
 /**
- * "Add paid campaign" button is clicked.
+ * "Add campaign" button is clicked.
  *
  * @event gla_add_paid_campaign_clicked
  * @property {string} context Indicate the place where the button is located.
@@ -21,7 +21,7 @@ import { recordGlaEvent } from '.~/utils/tracks';
  */
 
 /**
- * Renders an AppButton with the text "Add Paid Campaign".
+ * Renders an AppButton with the text "Add campaign".
  * Clicking on the button will call `recordGlaEvent` and
  * redirect to Setup MC or Create New Campaign depending on
  * whether the users have completed ads setup or not.
@@ -68,7 +68,7 @@ const AddPaidCampaignButton = ( props ) => {
 
 	return (
 		<AppButton isSmall isSecondary onClick={ handleClick } { ...rest }>
-			{ children || __( 'Add paid campaign', 'google-listings-and-ads' ) }
+			{ children || __( 'Add campaign', 'google-listings-and-ads' ) }
 		</AppButton>
 	);
 };

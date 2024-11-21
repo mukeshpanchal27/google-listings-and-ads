@@ -64,10 +64,7 @@ export default function SkipButton( {
 		<>
 			<AppButton
 				isTertiary
-				text={ __(
-					'Skip paid ads creation',
-					'google-listings-and-ads'
-				) }
+				text={ __( 'Skip ads creation', 'google-listings-and-ads' ) }
 				loading={ loading }
 				disabled={ disabled }
 				onClick={ handleOnSkipClick }

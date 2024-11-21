@@ -90,6 +90,19 @@ export default class MockRequests {
 	}
 
 	/**
+	 * Fulfill the Ads Report Program request.
+	 *
+	 * @param {Object} payload
+	 * @return {Promise<void>}
+	 */
+	async fulfillAdsReportProgram( payload ) {
+		await this.fulfillRequest(
+			/\/wc\/gla\/ads\/reports\/programs\b/,
+			payload
+		);
+	}
+
+	/**
 	 * Fulfill the Target Audience request.
 	 *
 	 * @param {Object} payload

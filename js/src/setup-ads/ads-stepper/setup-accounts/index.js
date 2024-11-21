@@ -17,7 +17,6 @@ import GoogleAdsAccountCard from '.~/components/google-ads-account-card';
 import FreeAdCredit from '.~/components/free-ad-credit';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useGoogleAccount from '.~/hooks/useGoogleAccount';
-import useFreeAdCredit from '.~/hooks/useFreeAdCredit';
 import AppSpinner from '.~/components/app-spinner';
 import Section from '.~/wcdl/section';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
@@ -26,7 +25,6 @@ const SetupAccounts = ( props ) => {
 	const { onContinue = () => {} } = props;
 	const { google } = useGoogleAccount();
 	const { googleAdsAccount } = useGoogleAdsAccount();
-	const hasFreeAdCredit = useFreeAdCredit();
 	const isGoogleAdsReady = useGoogleAdsAccountReady();
 
 	if ( ! google || ( google.active === 'yes' && ! googleAdsAccount ) ) {
@@ -43,7 +41,7 @@ const SetupAccounts = ( props ) => {
 					'google-listings-and-ads'
 				) }
 				description={ __(
-					'Connect your Google account and your Google Ads account to set up a paid Performance Max campaign.',
+					'Connect your Google account and your Google Ads account to set up a Performance Max campaign.',
 					'google-listings-and-ads'
 				) }
 			/>
@@ -64,7 +62,7 @@ const SetupAccounts = ( props ) => {
 						) }
 					/>
 					<GoogleAdsAccountCard />
-					{ hasFreeAdCredit && <FreeAdCredit /> }
+					<FreeAdCredit />
 				</VerticalGapLayout>
 			</Section>
 			<StepContentFooter>
