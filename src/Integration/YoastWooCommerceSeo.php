@@ -80,7 +80,7 @@ class YoastWooCommerceSeo implements IntegrationInterface {
 		add_filter(
 			'woocommerce_gla_gtin_migration_value',
 			function ( $gtin, $product ) {
-				if ( ! $gtin ) {
+				if ( ! $gtin || self::VALUE_KEY === $gtin ) {
 					return $this->get_gtin( self::VALUE_KEY, $product );
 				}
 
