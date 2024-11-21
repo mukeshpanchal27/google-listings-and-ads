@@ -18,7 +18,7 @@ import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
  * @param {Object} props Props.
  * @param {boolean} props.isConnected Whether the account is connected.
  * @param {Function} props.onCreateNewClick Callback when clicking on the button to create a new account.
- * @param {boolean} props.disabled Whether the button is disabled.
+ * @param {boolean} props.disabled Whether to disable the create account button.
  * @param {Object} props.restProps Rest props. Passed to AppButton.
  * @return {JSX.Element} Footer component.
  */

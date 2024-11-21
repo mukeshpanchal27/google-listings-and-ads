@@ -1048,7 +1048,7 @@ test.describe( 'Set up accounts', () => {
 				).toBeVisible();
 			} );
 
-			test( 'should not let you connect to a different account if there are no other accounts', async () => {
+			test( 'should disable the create new account button if there are no other existing accounts', async () => {
 				await setUpAccountsPage.mockAdsStatusNotClaimed();
 				await setUpAccountsPage.mockAdsHasNoAccounts();
 				await setUpAccountsPage.mockAdsAccountIncomplete(
