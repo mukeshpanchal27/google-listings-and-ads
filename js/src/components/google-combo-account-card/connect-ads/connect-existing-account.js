@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AccountCard from '.~/components/account-card';
-import ConnectAdsFooter from './connect-ads-footer';
+import ConnectExistingAccountActions from './connect-existing-account-actions';
 import LoadingLabel from '.~/components/loading-label';
 import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
 import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
@@ -120,7 +120,7 @@ const ConnectExistingAccount = ( { onCreateClick } ) => {
 				/>
 			}
 			actions={
-				<ConnectAdsFooter
+				<ConnectExistingAccountActions
 					disabled={ isLoading }
 					isConnected={ hasGoogleAdsConnection }
 					onCreateNewClick={ onCreateClick }

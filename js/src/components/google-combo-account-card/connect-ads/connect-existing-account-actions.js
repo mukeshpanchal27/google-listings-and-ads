@@ -22,7 +22,7 @@ import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
  * @param {Object} props.restProps Rest props. Passed to AppButton.
  * @return {JSX.Element} Footer component.
  */
-const ConnectAdsFooter = ( {
+const ConnectExistingAccountActions = ( {
 	isConnected,
 	onCreateNewClick,
 	disabled,
@@ -57,4 +57,4 @@ const ConnectAdsFooter = ( {
 	);
 };
 
-export default ConnectAdsFooter;
+export default ConnectExistingAccountActions;
