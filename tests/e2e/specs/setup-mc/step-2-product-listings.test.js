@@ -64,11 +64,6 @@ test.describe( 'Configure product listings', () => {
 			productListingsPage.fulfillSettings(
 				{
 					shipping_rate: 'automatic',
-					website_live: false,
-					checkout_process_secure: false,
-					payment_methods_visible: false,
-					refund_tos_visible: false,
-					contact_info_visible: false,
 					tax_rate: 'destination',
 				},
 				200,
@@ -356,8 +351,6 @@ test.describe( 'Configure product listings', () => {
 
 	test.describe( 'Click "Continue" button', () => {
 		test.beforeAll( async () => {
-			// Mock MC contact information
-			productListingsPage.mockContactInformation();
 			await productListingsPage.checkRecommendedShippingRateRadioButton();
 			await productListingsPage.fillEstimatedShippingTimes( '14' );
 			await productListingsPage.fulfillBillingStatusRequest( {
