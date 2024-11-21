@@ -146,17 +146,6 @@ export default class ProductListingsPage extends MockRequests {
 	}
 
 	/**
-	 * Get audience card.
-	 *
-	 * @return {import('@playwright/test').Locator} Get audience card.
-	 */
-	getAudienceCard() {
-		return this.page
-			.locator( '.components-card' )
-			.filter( { hasText: 'Selected countries only' } );
-	}
-
-	/**
 	 * Get estimated shipping rates card.
 	 *
 	 * @return {import('@playwright/test').Locator} Get estimated shipping rates card.
@@ -278,19 +267,6 @@ export default class ProductListingsPage extends MockRequests {
 			name: 'Read more',
 			exact: true,
 		} );
-	}
-
-	/**
-	 * Register the requests when the continue button is clicked.
-	 *
-	 * @return {Promise<import('@playwright/test').Request[]>} The requests.
-	 */
-	registerContinueRequest() {
-		return this.page.waitForRequest(
-			( request ) =>
-				request.url().includes( '/gla/mc/contact-information' ) &&
-				request.method() === 'GET'
-		);
 	}
 
 	/**
