@@ -171,7 +171,7 @@ const SetupAccounts = ( props ) => {
 				</StepContentActions>
 			</StepContentFooter>
 			<Section
-				className="gla-google-mc-account-section"
+				className="gla-google-mc-disclaimer-section"
 				description={ <GoogleMCDisclaimer /> }
 				disabledLeft={ ! isGMCPreconditionReady }
 			>
