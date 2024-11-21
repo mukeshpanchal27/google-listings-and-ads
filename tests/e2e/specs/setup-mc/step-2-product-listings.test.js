@@ -358,8 +358,11 @@ test.describe( 'Configure product listings', () => {
 		test.beforeAll( async () => {
 			// Mock MC contact information
 			productListingsPage.mockContactInformation();
-			productListingsPage.checkRecommendedShippingRateRadioButton();
+			await productListingsPage.checkRecommendedShippingRateRadioButton();
 			await productListingsPage.fillEstimatedShippingTimes( '14' );
+			await productListingsPage.fulfillBillingStatusRequest( {
+				status: 'pending',
+			} );
 		} );
 
 		test( 'should see the heading of next step after clicking "Continue"', async () => {
