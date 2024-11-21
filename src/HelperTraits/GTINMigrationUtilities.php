@@ -7,6 +7,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\MigrateGTIN;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Exception;
+use WC_Product;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -35,7 +36,7 @@ trait GTINMigrationUtilities {
 	 * @return bool
 	 */
 	protected function is_gtin_available_in_core(): bool {
-		return version_compare( WC_VERSION, '9.2', '>=' ) && method_exists( \WC_Product::class, 'get_global_unique_id' );
+		return version_compare( WC_VERSION, '9.2', '>=' ) && method_exists( WC_Product::class, 'get_global_unique_id' );
 	}
 
 	/**
@@ -82,7 +83,7 @@ trait GTINMigrationUtilities {
 	 *
 	 * @return OptionsInterface
 	 */
-	protected function options() {
+	protected function options(): OptionsInterface {
 		return $this->options ?? woogle_get_container()->get( OptionsInterface::class );
 	}
 
@@ -92,63 +93,77 @@ trait GTINMigrationUtilities {
 	 * @param string $gtin
 	 * @return string
 	 */
-	protected function prepare_gtin( string $gtin ) {
+	protected function prepare_gtin( string $gtin ): string {
 		return str_replace( '-', '', $gtin );
 	}
 
 	/**
 	 * Gets the message when the GTIN is invalid.
 	 *
-	 * @param \WC_Product $product
-	 * @param string      $gtin
+	 * @param WC_Product $product
+	 * @param string     $gtin
 	 * @return string
 	 */
-	protected function error_gtin_invalid( \WC_Product $product, string $gtin ) {
+	protected function error_gtin_invalid( WC_Product $product, string $gtin ): string {
 		return sprintf( 'GTIN [ %s ] has been skipped for Product ID: %s - %s. Invalid GTIN was found.', $gtin, $product->get_id(), $product->get_name() );
 	}
 
 	/**
 	 * Gets the message when the GTIN is already in the Product Inventory
 	 *
-	 * @param \WC_Product $product
+	 * @param WC_Product $product
 	 * @return string
 	 */
-	protected function error_gtin_already_set( \WC_Product $product ) {
+	protected function error_gtin_already_set( WC_Product $product ): string {
 		return sprintf( 'GTIN has been skipped for Product ID: %s - %s. GTIN was found in Product Inventory tab.', $product->get_id(), $product->get_name() );
 	}
 
 	/**
 	 * Gets the message when the GTIN is not found.
 	 *
-	 * @param \WC_Product $product
+	 * @param WC_Product $product
 	 * @return string
 	 */
-	protected function error_gtin_not_found( \WC_Product $product ) {
+	protected function error_gtin_not_found( WC_Product $product ): string {
 		return sprintf( 'GTIN has been skipped for Product ID: %s - %s. No GTIN was found', $product->get_id(), $product->get_name() );
 	}
 
 	/**
 	 * Gets the message when the GTIN had an error when saving.
 	 *
-	 * @param \WC_Product $product
-	 * @param string      $gtin
-	 * @param Exception   $e
+	 * @param WC_Product $product
+	 * @param string     $gtin
+	 * @param Exception  $e
 	 *
 	 * @return string
 	 */
-	protected function error_gtin_not_saved( \WC_Product $product, string $gtin, Exception $e ) {
+	protected function error_gtin_not_saved( WC_Product $product, string $gtin, Exception $e ): string {
 		return sprintf( 'GTIN [ %s ] for Product ID: %s - %s has an error - %s', $gtin, $product->get_id(), $product->get_name(), $e->getMessage() );
 	}
 
 	/**
 	 * Gets the message when the GTIN is successfully migrated.
 	 *
-	 * @param \WC_Product $product
-	 * @param string      $gtin
+	 * @param WC_Product $product
+	 * @param string     $gtin
 	 *
 	 * @return string
 	 */
-	protected function successful_migrated_gtin( \WC_Product $product, string $gtin ) {
+	protected function successful_migrated_gtin( WC_Product $product, string $gtin ): string {
 		return sprintf( 'GTIN [ %s ] has been migrated for Product ID: %s - %s', $gtin, $product->get_id(), $product->get_name() );
+	}
+
+	/**
+	 * Gets the GTIN value
+	 *
+	 * @param WC_Product $product The product
+	 * @return string|null
+	 */
+	protected function get_gtin( WC_Product $product ): ?string {
+		/**
+		 * Filters the value of the GTIN before performing the migration.
+		 * This value will be he one that we copy inside the Product Inventory GTIN.
+		 */
+		return apply_filters( 'woocommerce_gla_gtin_migration_value', $this->attribute_manager->get_value( $product, 'gtin' ), $product );
 	}
 }
