@@ -98,7 +98,8 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 				continue;
 			}
 
-			$gtin = $this->attribute_manager->get_value( $product, 'gtin' );
+			$gtin = $this->get_gtin( $product );
+
 			if ( ! $gtin ) {
 				$this->debug( $this->error_gtin_not_found( $product ) );
 				continue;
