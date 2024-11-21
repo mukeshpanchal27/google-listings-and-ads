@@ -96,6 +96,14 @@ const ConnectedGoogleComboAccountCard = () => {
 	// After creating a new account, it may be connected but not ready
 	// (e.g., needing to reclaim the URL). In this case, we show the ConnectMC
 	// component, even if the existing accounts list has not yet updated.
+	//
+	// The last `hasGoogleMCConnection` condition exists for the scenario with these steps:
+	// 1. Automatically creating a Google Merchant Center account and reclaiming URL is required.
+	// 2. The merchant interrupts the onboarding flow and then resumes it.
+	//    This is also the case for refreshing webpage.
+	// 3. The newly created account is not yet among the existing accounts.
+	// 4. The condition enables the merchant to resume the Google Merchant Center connection
+	//    from the step of connecting the newly created account
 	const canShowConnectMC =
 		googleMCHasError ||
 		hasExistingGoogleMCAccounts ||
