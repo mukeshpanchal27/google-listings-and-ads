@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AppButton from '.~/components/app-button';
-import DisconnectAccount from '.~/components/google-ads-account-card/disconnect-account';
+import { DisconnectAccountButton } from '.~/components/google-ads-account-card';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
@@ -36,7 +36,7 @@ const ConnectExistingAccountActions = ( {
 	);
 
 	if ( isConnected && existingAccounts.length > 0 ) {
-		return <DisconnectAccount />;
+		return <DisconnectAccountButton />;
 	}
 
 	const disabledButton =

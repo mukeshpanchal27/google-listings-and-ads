@@ -8,22 +8,22 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import { useAppDispatch } from '.~/data';
-import AccountCard, { APPEARANCE } from '../account-card';
+import AccountCard, { APPEARANCE } from '.~/components/account-card';
 import ConnectAds from './connect-ads';
 import AccountDetails from './account-details';
 import ConnectedAdsAccountDetail from './connected-ads-account-detail';
 import Indicator from './indicator';
 import getAccountCreationTexts from './getAccountCreationTexts';
 import SpinnerCard from '.~/components/spinner-card';
-import StoreAddressCard from '.~/components/contact-information/store-address-card';
+import { StoreAddressCard } from '.~/components/contact-information';
 import useAutoCreateAdsMCAccounts from '.~/hooks/useAutoCreateAdsMCAccounts';
 import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
 import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
 import useCreateMCAccount from '.~/hooks/useCreateMCAccount';
-import ConnectMC from '.~/components/google-mc-account-card/connect-mc';
+import { ConnectMC } from '.~/components/google-mc-account-card';
 import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
 import AppButton from '.~/components/app-button';
-import SwitchAccountButton from '.~/components/google-account-card/switch-account-button';
+import { SwitchAccountButton } from '.~/components/google-account-card';
 import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';

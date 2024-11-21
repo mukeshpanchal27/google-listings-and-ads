@@ -19,7 +19,7 @@ import Section from '.~/wcdl/section';
 import AppButton from '.~/components/app-button';
 
 import AppDocumentationLink from '.~/components/app-documentation-link';
-import StoreAddressCard from '.~/components/contact-information/store-address-card';
+import { StoreAddressCard } from '.~/components/contact-information';
 
 const learnMoreLinkId = 'contact-information-read-more';
 const learnMoreUrl =

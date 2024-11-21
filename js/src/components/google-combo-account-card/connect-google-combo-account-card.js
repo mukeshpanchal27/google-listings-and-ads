@@ -11,8 +11,10 @@ import { CheckboxControl } from '@wordpress/components';
 import { glaData } from '.~/constants';
 import AccountCard, { APPEARANCE } from '.~/components/account-card';
 import AppButton from '.~/components/app-button';
-import readMoreLink from '../google-account-card/read-more-link';
-import useGoogleConnectFlow from '../google-account-card/use-google-connect-flow';
+import {
+	ReadMoreLink,
+	useGoogleConnectFlow,
+} from '.~/components/google-account-card';
 import AppDocumentationLink from '../app-documentation-link';
 
 /**
@@ -79,7 +81,7 @@ const ConnectGoogleComboAccountCard = ( { disabled } ) => {
 					'google-listings-and-ads'
 				),
 				{
-					link: readMoreLink,
+					link: ReadMoreLink,
 				}
 			) }
 			alignIndicator="top"

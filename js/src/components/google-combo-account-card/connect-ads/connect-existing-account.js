@@ -17,7 +17,7 @@ import { useAppDispatch } from '.~/data';
 import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 import AdsAccountSelectControl from '.~/components/ads-account-select-control';
 import ConnectedIconLabel from '.~/components/connected-icon-label';
-import ConnectButton from '.~/components/google-ads-account-card/connect-ads/connect-button';
+import { ConnectAccountButton } from '.~/components/google-ads-account-card';
 
 /**
  * Renders an account card to connect to an existing Google Ads account.
@@ -90,7 +90,7 @@ const ConnectExistingAccount = ( { onCreateClick } ) => {
 		}
 
 		return (
-			<ConnectButton
+			<ConnectAccountButton
 				disabled={ hasGoogleAdsConnection }
 				accountID={ value }
 				onClick={ handleConnectClick }
