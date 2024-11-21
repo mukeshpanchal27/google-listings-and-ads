@@ -209,6 +209,24 @@ test.describe( 'Complete your campaign', () => {
 		test.describe( 'Set up a campaign', () => {
 			test.beforeAll( async () => {
 				await setupAdsAccountPage.mockAdsAccountConnected();
+				await setupBudgetPage.fulfillBudgetRecommendations( {
+					currency: 'TWD',
+					recommendations: [
+						{
+							country: 'TW',
+							daily_budget: 8,
+						},
+						{
+							country: 'US',
+							daily_budget: 100,
+						},
+						{
+							country: 'GB',
+							daily_budget: 20,
+						},
+					],
+				} );
+
 				await completeCampaign.goto();
 			} );
 
@@ -217,38 +235,24 @@ test.describe( 'Complete your campaign', () => {
 					const dailyAverageCostInput =
 						setupBudgetPage.getBudgetInput();
 					await expect( dailyAverageCostInput ).toHaveValue(
-						'20.00'
+						'100.00'
 					);
 				} );
 
-				test( 'should see the low budget tip when the buget is set lower than the recommended value', async () => {
-					await setupBudgetPage.fillBudget( '1' );
+				test( 'should see the low budget tip when the budget is set lower than the recommended value', async () => {
+					await setupBudgetPage.fillBudget( '99.99' );
 					const lowBudgetTip = setupBudgetPage.getLowerBudgetTip();
 					await expect( lowBudgetTip ).toBeVisible();
 				} );
 
-				test( 'should not see the low budget tip when the buget is set higher than the recommended value', async () => {
-					await setupBudgetPage.fillBudget( '99999' );
+				test( 'should not see the low budget tip when the budget is not set lower than the recommended value', async () => {
+					await setupBudgetPage.fillBudget( '100' );
 					const lowBudgetTip = setupBudgetPage.getLowerBudgetTip();
 					await expect( lowBudgetTip ).not.toBeVisible();
 				} );
 			} );
 
 			test.describe( 'Validate budget percent', () => {
-				test.beforeAll( async () => {
-					await setupBudgetPage.fulfillBudgetRecommendations( {
-						currency: 'TWD',
-						recommendations: [
-							{
-								country: 'US',
-								daily_budget: 100,
-							},
-						],
-					} );
-
-					await completeCampaign.goto();
-				} );
-
 				test( 'should see validation error if lower than the 30%', async () => {
 					await setupBudgetPage.fillBudget( '10' );
 					await setupBudgetPage.getBudgetInput().blur();
