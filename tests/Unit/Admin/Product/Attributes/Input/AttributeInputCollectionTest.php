@@ -389,7 +389,7 @@ class AttributeInputCollectionTest extends UnitTest {
 			->expects( $this->any() )
 			->method( 'get' )
 			->with( OptionsInterface::INSTALL_VERSION )
-			->willReturn( '2.8.7' );
+			->willReturn( '2.8.8' );
 		$input
 			->set_id( GTIN::get_id() )
 			->set_name( GTIN::get_id() );
