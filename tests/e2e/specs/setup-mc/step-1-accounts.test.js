@@ -227,6 +227,8 @@ test.describe( 'Set up accounts', () => {
 		test( 'should create merchant center and ads account if does not exist for the user', async () => {
 			await setUpAccountsPage.mockJetpackConnected();
 			await setUpAccountsPage.mockGoogleConnected();
+			await setUpAccountsPage.mockAdsCreateAccount();
+			await setUpAccountsPage.mockMCCreateAccountWebsiteClaimed();
 
 			const once = setUpAccountsPage.fulfillTimes( 1 );
 
@@ -286,7 +288,9 @@ test.describe( 'Set up accounts', () => {
 				await setUpAccountsPage.mockJetpackConnected();
 				await setUpAccountsPage.mockGoogleConnected();
 				await setUpAccountsPage.mockMCConnected();
+				await setUpAccountsPage.mockContactInformation();
 				await setUpAccountsPage.mockAdsAccountConnected();
+				await setUpAccountsPage.mockAdsAccountsResponse( ADS_ACCOUNTS );
 				await setUpAccountsPage.mockMCHasAccounts();
 				await setUpAccountsPage.goto();
 			} );
@@ -578,6 +582,7 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.mockGoogleConnected();
 			await setUpAccountsPage.mockMCHasAccounts();
 			await setUpAccountsPage.mockMCConnected();
+			await setUpAccountsPage.mockContactInformation();
 			await setUpAccountsPage.mockAdsAccountDisconnected();
 			await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
 
@@ -731,6 +736,7 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.mockGoogleConnected();
 			await setUpAccountsPage.mockMCHasAccounts();
 			await setUpAccountsPage.mockMCConnected();
+			await setUpAccountsPage.mockContactInformation();
 			await setUpAccountsPage.fulfillAdsAccounts( [ { id: 12345 } ] );
 			await setUpAccountsPage.mockAdsAccountConnected();
 			await setUpAccountsPage.mockAdsStatusNotClaimed();

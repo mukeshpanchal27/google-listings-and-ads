@@ -772,6 +772,20 @@ export default class MockRequests {
 	}
 
 	/**
+	 * Mock the POST request to mark the Ads setup as completed.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async mockCompleteAdsSetup() {
+		await this.fulfillRequest(
+			/\/wc\/gla\/ads\/setup\/complete\b/,
+			null,
+			200,
+			[ 'POST' ]
+		);
+	}
+
+	/**
 	 * Mock the successful settings sync requesst.
 	 *
 	 * @return {Promise<void>}

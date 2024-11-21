@@ -130,6 +130,17 @@ test.describe( 'Complete your campaign', () => {
 				reviewEligibleRegions: [],
 				status: 'ONBOARDING',
 			} ),
+
+			completeCampaign.fulfillMCReportProgram( {
+				free_listings: null,
+				products: null,
+				intervals: null,
+				totals: {
+					clicks: 0,
+					impressions: 0,
+				},
+				next_page: null,
+			} ),
 		] );
 
 		await completeCampaign.goto();
@@ -376,7 +387,21 @@ test.describe( 'Complete your campaign', () => {
 				} );
 
 				test( 'should go to "Product Feed" when clicking "Complete setup" button', async () => {
-					await completeCampaign.fulfillAdsCampaignsRequest();
+					await completeCampaign.mockCompleteAdsSetup();
+					await completeCampaign.fulfillAdsCampaignsRequest(
+						{
+							id: 1,
+							name: 'Test Campaign',
+							status: 'enabled',
+							type: 'performance_max',
+							amount: 40,
+							country: 'US',
+							targeted_locations: [ 'US', 'TW', 'GB' ],
+						},
+						200,
+						[ 'POST' ]
+					);
+
 					const requestsPromises =
 						completeCampaign.registerCompleteSetupRequests();
 					await completeCampaign.clickCompleteSetupButton();
