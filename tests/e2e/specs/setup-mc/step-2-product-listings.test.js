@@ -64,11 +64,6 @@ test.describe( 'Configure product listings', () => {
 			productListingsPage.fulfillSettings(
 				{
 					shipping_rate: 'automatic',
-					website_live: false,
-					checkout_process_secure: false,
-					payment_methods_visible: false,
-					refund_tos_visible: false,
-					contact_info_visible: false,
 					tax_rate: 'destination',
 				},
 				200,
@@ -356,33 +351,22 @@ test.describe( 'Configure product listings', () => {
 
 	test.describe( 'Click "Continue" button', () => {
 		test.beforeAll( async () => {
-			// Mock MC contact information
-			productListingsPage.mockContactInformation();
-			productListingsPage.checkRecommendedShippingRateRadioButton();
+			await productListingsPage.checkRecommendedShippingRateRadioButton();
 			await productListingsPage.fillEstimatedShippingTimes( '14' );
+			await productListingsPage.fulfillBillingStatusRequest( {
+				status: 'pending',
+			} );
 		} );
 
-		test( 'should see the heading of next step and request for the contact information after clicking "Continue"', async () => {
-			const requestPromise =
-				productListingsPage.registerContinueRequest();
+		test( 'should see the heading of next step after clicking "Continue"', async () => {
 			await productListingsPage.clickContinueButton();
 
 			await expect(
 				page.getByRole( 'heading', {
-					name: 'Confirm store requirements',
+					name: 'Create a campaign to advertise your products',
 					exact: true,
 				} )
 			).toBeVisible();
-
-			const request = await requestPromise;
-			const response = await request.response();
-			const responseBody = await response.json();
-
-			expect( response.status() ).toBe( 200 );
-
-			expect( responseBody.wc_address.street_address ).toBe(
-				'Automata Road'
-			);
 		} );
 	} );
 } );

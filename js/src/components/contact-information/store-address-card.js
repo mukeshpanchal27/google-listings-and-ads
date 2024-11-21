@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useRef, createInterpolateElement } from '@wordpress/element';
-import { CardDivider } from '@wordpress/components';
 import { Spinner } from '@woocommerce/components';
 import { update as updateIcon } from '@wordpress/icons';
 import { getPath, getQuery } from '@woocommerce/navigation';
@@ -12,12 +11,10 @@ import { getPath, getQuery } from '@woocommerce/navigation';
  * Internal dependencies
  */
 import useStoreAddress from '.~/hooks/useStoreAddress';
-import Section from '.~/wcdl/section';
-import Subsection from '.~/wcdl/subsection';
 import AccountCard, { APPEARANCE } from '.~/components/account-card';
 import AppButton from '.~/components/app-button';
-import ValidationErrors from '.~/components/validation-errors';
 import ContactInformationPreviewCard from './contact-information-preview-card';
+import ValidationErrors from '.~/components/validation-errors';
 import TrackableLink from '.~/components/trackable-link';
 import mapStoreAddressErrors from './mapStoreAddressErrors';
 import { recordGlaEvent } from '.~/utils/tracks';
@@ -46,15 +43,12 @@ import './store-address-card.scss';
  * Renders a component with a given store address.
  *
  * @fires gla_edit_wc_store_address Whenever "Edit in WooCommerce Settings" button is clicked.
- * @fires gla_wc_store_address_validation Whenever the new store address data is fetched after clicking "Refresh to sync" button.
- *
- * @param {Object} props React props.
- * @param {boolean} [props.showValidation=false] Whether to show validation error messages.
- *
+ * @fires gla_wc_store_address_validation Whenever the new store address data is fetched after clicking "Update store address" button.
  * @return {JSX.Element} Filled AccountCard component.
  */
-const StoreAddressCard = ( { showValidation = false } ) => {
+const StoreAddressCard = () => {
 	const { loaded, data, refetch } = useStoreAddress();
+	const { isAddressFilled } = data;
 	const path = getPath();
 	const { subpath } = getQuery();
 
@@ -86,42 +80,23 @@ const StoreAddressCard = ( { showValidation = false } ) => {
 			icon={ updateIcon }
 			iconSize={ 20 }
 			iconPosition="right"
-			text={ __( 'Refresh to sync', 'google-listings-and-ads' ) }
+			text={ __( 'Update store address', 'google-listings-and-ads' ) }
 			onClick={ handleRefreshClick }
 			disabled={ ! loaded }
 		/>
 	);
 
-	let addressContent;
-	const description = (
-		<>
-			<p>
-				{ createInterpolateElement(
-					__(
-						'Edit your store address in your <link>WooCommerce settings</link>.',
-						'google-listings-and-ads'
-					),
-					{
-						link: (
-							<TrackableLink
-								target="_blank"
-								type="external"
-								href="admin.php?page=wc-settings"
-								eventName="gla_edit_wc_store_address"
-								eventProps={ { path, subpath } }
-							/>
-						),
-					}
-				) }
-			</p>
-			<p>
-				{ __(
-					'Once you’ve saved your new address there, refresh to sync your new address with Google.',
-					'google-listings-and-ads'
-				) }
-			</p>
-		</>
+	const settingsLink = (
+		<TrackableLink
+			target="_blank"
+			type="external"
+			href="admin.php?page=wc-settings"
+			eventName="gla_edit_wc_store_address"
+			eventProps={ { path, subpath } }
+		/>
 	);
+
+	let addressContent = <Spinner />;
 
 	if ( loaded ) {
 		const { address, address2, city, state, country, postcode } = data;
@@ -132,15 +107,46 @@ const StoreAddressCard = ( { showValidation = false } ) => {
 			.join( ', ' );
 
 		addressContent = (
-			<div>
-				<div>{ address }</div>
+			<>
+				{ address && <div>{ address }</div> }
 				{ address2 && <div>{ address2 }</div> }
 				<div>{ rest }</div>
-			</div>
+			</>
 		);
-	} else {
-		addressContent = <Spinner />;
 	}
+
+	const description = (
+		<p>
+			{ isAddressFilled
+				? createInterpolateElement(
+						__(
+							'We’re using your store address for Google verification. This information won’t be public. Edit in <link>WooCommerce settings</link> if needed and update to review the changes.',
+							'google-listings-and-ads'
+						),
+						{
+							link: settingsLink,
+						}
+				  )
+				: createInterpolateElement(
+						__(
+							'Your store address is required by Google for verification. This information won’t be public. Complete that in <link>WooCommerce settings</link> and update to review the changes.',
+							'google-listings-and-ads'
+						),
+						{
+							link: settingsLink,
+						}
+				  ) }
+		</p>
+	);
+
+	const detail = (
+		<>
+			{ addressContent }
+			{ ! isAddressFilled && (
+				<ValidationErrors messages={ mapStoreAddressErrors( data ) } />
+			) }
+		</>
+	);
 
 	return (
 		<AccountCard
@@ -149,21 +155,9 @@ const StoreAddressCard = ( { showValidation = false } ) => {
 			alignIcon="top"
 			alignIndicator="top"
 			description={ description }
+			detail={ detail }
 			indicator={ refreshButton }
-		>
-			<CardDivider />
-			<Section.Card.Body>
-				<Subsection.Title>
-					{ __( 'Store address', 'google-listings-and-ads' ) }
-				</Subsection.Title>
-				{ addressContent }
-				{ showValidation && (
-					<ValidationErrors
-						messages={ mapStoreAddressErrors( data ) }
-					/>
-				) }
-			</Section.Card.Body>
-		</AccountCard>
+		/>
 	);
 };
 

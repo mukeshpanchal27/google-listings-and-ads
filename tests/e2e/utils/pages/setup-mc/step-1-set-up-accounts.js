@@ -55,8 +55,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get MC "Create account" button from the page.
 	 */
 	getMCCreateAccountButtonFromPage() {
-		const button = this.getCreateAccountButton();
-		return button.locator( ':scope.is-secondary' ).nth( 1 );
+		return this.getMCCardFooterButton();
 	}
 
 	/**
@@ -86,9 +85,9 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Merchant Center description row.
 	 */
 	getMCDescriptionRow() {
-		return this.getMCAccountCard().locator(
-			'.gla-account-card__description'
-		);
+		return this.getGoogleDescriptionRow().locator( 'p', {
+			hasText: 'Merchant Center ID',
+		} );
 	}
 
 	/**
@@ -146,12 +145,14 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
-	 * Get Merchant Center connected label.
+	 * Get Google combo card connected label.
 	 *
-	 * @return {import('@playwright/test').Locator} Get Merchant Center connected label.
+	 * @return {import('@playwright/test').Locator} Get Google combo card connected label.
 	 */
-	getMCConnectedLabel() {
-		return this.getMCAccountCard().locator( '.gla-connected-icon-label' );
+	getGoogleComboConnectedLabel() {
+		return this.getGoogleAccountCard().locator(
+			'.gla-connected-icon-label'
+		);
 	}
 
 	/**
@@ -193,9 +194,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get select existing Merchant Center account title.
 	 */
 	getSelectExistingMCAccountTitle() {
-		return this.getMCAccountCard()
-			.locator( '.wcdl-subsection-title' )
-			.nth( 1 );
+		return this.getMCAccountCard().locator( '.gla-account-card__title' );
 	}
 
 	/**
@@ -204,7 +203,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get select MC accounts select element.
 	 */
 	getMCAccountsSelect() {
-		return this.page.locator( 'select[id*="inspector-select-control"]' );
+		return this.getMCAccountCard().getByRole( 'combobox' );
 	}
 
 	/**
@@ -220,22 +219,14 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
-	 * Get account cards.
-	 *
-	 * @param {Object} options
-	 * @return {import('@playwright/test').Locator} Get account cards.
-	 */
-	getAccountCards( options = {} ) {
-		return this.page.locator( '.gla-account-card', options );
-	}
-
-	/**
 	 * Get WordPress account card.
 	 *
 	 * @return {import('@playwright/test').Locator} Get WordPress account card.
 	 */
 	getWPAccountCard() {
-		return this.getAccountCards( { hasText: 'WordPress.com' } ).first();
+		return this.page.locator( '.gla-account-card', {
+			hasText: 'WordPress.com',
+		} );
 	}
 
 	/**
@@ -244,11 +235,9 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Google account card.
 	 */
 	getGoogleAccountCard() {
-		return this.getAccountCards( {
-			has: this.page.locator( '.gla-account-card__title', {
-				hasText: 'Google',
-			} ),
-		} ).first();
+		return this.page.locator(
+			'.gla-google-combo-service-account-card--google'
+		);
 	}
 
 	/**
@@ -257,11 +246,9 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Google Ads account card.
 	 */
 	getGoogleAdsAccountCard() {
-		return this.getAccountCards( {
-			has: this.page.locator( '.gla-account-card__title', {
-				hasText: 'Google Ads',
-			} ),
-		} ).first();
+		return this.page.locator(
+			'.gla-google-combo-service-account-card--ads'
+		);
 	}
 
 	/**
@@ -270,11 +257,9 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Merchant Center account card.
 	 */
 	getMCAccountCard() {
-		return this.getAccountCards( {
-			has: this.page.locator( '.gla-account-card__title', {
-				hasText: 'Google Merchant Center',
-			} ),
-		} ).first();
+		return this.page.locator(
+			'.gla-google-combo-service-account-card--mc'
+		);
 	}
 
 	/**
@@ -283,7 +268,7 @@ export default class SetUpAccountsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get Merchant Center card footer.
 	 */
 	getMCCardFooter() {
-		return this.getMCAccountCard().locator( '.wcdl-section-card-footer' );
+		return this.getMCAccountCard().locator( '.gla-account-card__actions' );
 	}
 
 	/**
@@ -296,6 +281,18 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
+	 * Get create a new Merchant Center account button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get create a new Merchant Center account button.
+	 */
+	getCreateNewMCAccountButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Or, create a new Merchant Center account',
+			exact: true,
+		} );
+	}
+
+	/**
 	 * Get "Continue" button.
 	 *
 	 * @return {import('@playwright/test').Locator} Get "Continue" button.
@@ -305,6 +302,17 @@ export default class SetUpAccountsPage extends MockRequests {
 			name: 'Continue',
 			exact: true,
 		} );
+	}
+
+	/**
+	 * Click "Continue" button.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async clickContinueButton() {
+		const continueButton = this.getContinueButton();
+		await continueButton.click();
+		await this.page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 	}
 
 	/**
@@ -334,37 +342,118 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
-	 * Click create account button.
+	 * Get connect to a different Google Ads account button.
 	 *
-	 * @return {Promise<void>}
+	 * @return {import('@playwright/test').Locator} Get connect to a different Google Ads account button.
 	 */
-	async clickCreateAdsAccountButton() {
-		const adsAccountCard = this.getGoogleAdsAccountCard();
-		const button = adsAccountCard.getByRole( 'button', {
-			name: 'Create account',
+	getConnectDifferentAdsAccountButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Or, connect to a different Google Ads account',
 			exact: true,
 		} );
-		await button.click();
-		await this.page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 	}
 
 	/**
-	 * Get ads account connected text.
+	 * Get create a new Google Ads account button.
 	 *
-	 * @return {import('@playwright/test').Locator} Ads account connected text.
+	 * @return {import('@playwright/test').Locator} Get create a new Google Ads account button.
 	 */
-	getAdsAccountConnectedText() {
-		return this.getGoogleAdsAccountCard().getByText( 'Connected' );
+	getCreateNewAdsAccountButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Or, create a new Google Ads account',
+			exact: true,
+		} );
 	}
 
 	/**
-	 * Get Ads account connected notice text.
+	 * Get terms checkbox.
 	 *
-	 * @return {import('@playwright/test').Locator} Ads account connected notice text.
+	 * @return {import('@playwright/test').Locator} Terms checkbox.
 	 */
-	getAdsAccountConnectedNotice() {
-		return this.getGoogleAdsAccountCard().getByText(
-			'Conversion measurement has been set up. You can create a campaign later.'
+	getTermsCheckbox() {
+		return this.page.getByLabel( /I accept the terms and conditions/ );
+	}
+
+	/**
+	 * Get "Edit" button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get "Edit" button.
+	 */
+	getEditButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Edit',
+			exact: true,
+		} );
+	}
+
+	/**
+	 * Get store address card.
+	 *
+	 * @return {import('@playwright/test').Locator} Get store address card.
+	 */
+	getStoreAddressCard() {
+		return this.page.locator( '.gla-store-address-card' );
+	}
+
+	/**
+	 * Get the "Update store address" button on the store address card.
+	 *
+	 * @return {import('@playwright/test').Locator} Get the "Update store address" button on the store address card.
+	 */
+	getStoreAddressButton() {
+		return this.getStoreAddressCard().getByRole( 'button', {
+			name: 'Update store address',
+			exact: true,
+		} );
+	}
+
+	/**
+	 * Get "Or, connect to a different Google account" button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get "Or, connect to a different Google account" button.
+	 */
+	getConnectDifferentGoogleAccountButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Or, connect to a different Google account',
+			exact: true,
+		} );
+	}
+
+	/**
+	 * Get "Cancel" button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get "Cancel" button.
+	 */
+	getCancelButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Cancel',
+			exact: true,
+		} );
+	}
+
+	/*
+	 * Register the response when connecting an Ads account.
+	 *
+	 * @return {Promise<import('@playwright/test').Response>} The response.
+	 */
+	registerAdsAccountsResponse() {
+		return this.page.waitForResponse(
+			( response ) =>
+				response.url().includes( '/gla/ads/accounts' ) &&
+				response.status() === 200
+		);
+	}
+
+	/**
+	 * Register the response when syncing the store address.
+	 *
+	 * @return {Promise<import('@playwright/test').Response>} The response.
+	 */
+	registerContactInformationSyncRequest() {
+		return this.page.waitForRequest(
+			( request ) =>
+				request.url().includes( '/gla/mc/contact-information' ) &&
+				request.method() === 'POST'
 		);
 	}
 }

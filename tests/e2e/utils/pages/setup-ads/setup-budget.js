@@ -13,26 +13,6 @@ export default class SetupBudget extends MockRequests {
 	}
 
 	/**
-	 * Get budget recommendation tip section.
-	 *
-	 * @return {import('@playwright/test').Locator} The budget recommendation tip.
-	 */
-	getBudgetRecommendationTip() {
-		return this.page.locator(
-			'.gla-budget-recommendation > .components-tip'
-		);
-	}
-
-	/**
-	 * Get budget recommendation text row.
-	 *
-	 * @return {import('@playwright/test').Locator} The budget recommendation text row.
-	 */
-	getBudgetRecommendationTextRow() {
-		return this.page.locator( '.components-tip p > em > strong' );
-	}
-
-	/**
 	 * Get budget input.
 	 *
 	 * @return {import('@playwright/test').Locator} The budget input box.
@@ -199,12 +179,7 @@ export default class SetupBudget extends MockRequests {
 	 */
 	async mockCampaignCreationAndAdsSetupCompletion( budget, targetLocations ) {
 		//This step is necessary; otherwise, it will set the ADS_SETUP_COMPLETED_AT option in the database, which could potentially impact other tests.
-		await this.fulfillRequest(
-			/\/wc\/gla\/ads\/setup\/complete\b/,
-			null,
-			200,
-			[ 'POST' ]
-		);
+		await this.mockCompleteAdsSetup();
 
 		await this.fulfillAdsCampaignsRequest(
 			{

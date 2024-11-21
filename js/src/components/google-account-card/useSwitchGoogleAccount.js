@@ -37,6 +37,14 @@ const useSwitchGoogleAccount = () => {
 			method: 'DELETE',
 		} );
 
+	const [
+		fetchGoogleAdsDisconnect,
+		{ loading: loadingGoogleAdsDisconnect },
+	] = useApiFetchCallback( {
+		path: `${ API_NAMESPACE }/ads/connection`,
+		method: 'DELETE',
+	} );
+
 	/**
 	 * Note: we are manually calling `DELETE /google/connect` instead of using
 	 * `disconnectGoogleAccount` action from wp-data store
@@ -66,6 +74,7 @@ const useSwitchGoogleAccount = () => {
 
 		try {
 			await fetchGoogleMCDisconnect();
+			await fetchGoogleAdsDisconnect();
 			await fetchGoogleDisconnect();
 			const { url } = await fetchGoogleConnect();
 			window.location.href = url;
@@ -83,6 +92,7 @@ const useSwitchGoogleAccount = () => {
 
 	const loading =
 		loadingGoogleMCDisconnect ||
+		loadingGoogleAdsDisconnect ||
 		loadingGoogleDisconnect ||
 		loadingGoogleConnect ||
 		dataGoogleConnect;
