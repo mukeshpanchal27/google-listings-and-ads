@@ -145,15 +145,6 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
-	 * Get Merchant Center connected label.
-	 *
-	 * @return {import('@playwright/test').Locator} Get Merchant Center connected label.
-	 */
-	getMCConnectedLabel() {
-		return this.getMCAccountCard().locator( '.gla-connected-icon-label' );
-	}
-
-	/**
 	 * Get Google combo card connected label.
 	 *
 	 * @return {import('@playwright/test').Locator} Get Google combo card connected label.
@@ -225,16 +216,6 @@ export default class SetUpAccountsPage extends MockRequests {
 			name: 'Connect',
 			exact: true,
 		} );
-	}
-
-	/**
-	 * Get Google combo account card.
-	 *
-	 * @param {Object} options
-	 * @return {import('@playwright/test').Locator} Get Google combo account card.
-	 */
-	getGoogleComboAccountCard( options = {} ) {
-		return this.page.locator( '.gla-google-combo-account-card', options );
 	}
 
 	/**
@@ -358,41 +339,6 @@ export default class SetUpAccountsPage extends MockRequests {
 			name,
 			exact: true,
 		} );
-	}
-
-	/**
-	 * Click create account button.
-	 *
-	 * @return {Promise<void>}
-	 */
-	async clickCreateAdsAccountButton() {
-		const adsAccountCard = this.getGoogleAdsAccountCard();
-		const button = adsAccountCard.getByRole( 'button', {
-			name: 'Create account',
-			exact: true,
-		} );
-		await button.click();
-		await this.page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
-	}
-
-	/**
-	 * Get ads account connected text.
-	 *
-	 * @return {import('@playwright/test').Locator} Ads account connected text.
-	 */
-	getAdsAccountConnectedText() {
-		return this.getGoogleAdsAccountCard().getByText( 'Connected' );
-	}
-
-	/**
-	 * Get Ads account connected notice text.
-	 *
-	 * @return {import('@playwright/test').Locator} Ads account connected notice text.
-	 */
-	getAdsAccountConnectedNotice() {
-		return this.getGoogleAdsAccountCard().getByText(
-			'Conversion measurement has been set up. You can create a campaign later.'
-		);
 	}
 
 	/**

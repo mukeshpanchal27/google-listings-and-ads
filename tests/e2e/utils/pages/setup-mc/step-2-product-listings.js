@@ -146,17 +146,6 @@ export default class ProductListingsPage extends MockRequests {
 	}
 
 	/**
-	 * Get audience card.
-	 *
-	 * @return {import('@playwright/test').Locator} Get audience card.
-	 */
-	getAudienceCard() {
-		return this.page
-			.locator( '.components-card' )
-			.filter( { hasText: 'Selected countries only' } );
-	}
-
-	/**
 	 * Get estimated shipping rates card.
 	 *
 	 * @return {import('@playwright/test').Locator} Get estimated shipping rates card.

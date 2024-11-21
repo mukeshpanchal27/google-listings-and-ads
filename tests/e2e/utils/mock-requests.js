@@ -291,34 +291,6 @@ export default class MockRequests {
 	}
 
 	/**
-	 * Fulfill phone verification request request.
-	 *
-	 * @param {Object} payload
-	 * @return {Promise<void>}
-	 */
-	async fulfillPhoneVerificationRequest( payload ) {
-		await this.fulfillRequest(
-			/\/wc\/gla\/mc\/phone-verification\/request\b/,
-			payload
-		);
-	}
-
-	/**
-	 * Fulfill phone verification verify request.
-	 *
-	 * @param {Object} payload
-	 * @param {number} status
-	 * @return {Promise<void>}
-	 */
-	async fulfillPhoneVerificationVerifyRequest( payload, status = 204 ) {
-		await this.fulfillRequest(
-			/\/wc\/gla\/mc\/phone-verification\/verify\b/,
-			payload,
-			status
-		);
-	}
-
-	/**
 	 * Fulfill the MC account issues request.
 	 *
 	 * @param {Object} payload
