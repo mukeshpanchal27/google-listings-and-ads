@@ -241,10 +241,17 @@ export default class MockRequests {
 	 * Fulfill the Ads Account request.
 	 *
 	 * @param {Object} payload
+	 * @param {number} [status=200]
+	 * @param {string[]} [methods]
 	 * @return {Promise<void>}
 	 */
-	async fulfillAdsAccounts( payload ) {
-		await this.fulfillRequest( /\/wc\/gla\/ads\/accounts\b/, payload );
+	async fulfillAdsAccounts( payload, status = 200, methods ) {
+		await this.fulfillRequest(
+			/\/wc\/gla\/ads\/accounts\b/,
+			payload,
+			status,
+			methods
+		);
 	}
 
 	/**
@@ -525,13 +532,13 @@ export default class MockRequests {
 	 *
 	 * @return {Promise<void>}
 	 */
-	async mockAdsAccountIncomplete() {
+	async mockAdsAccountIncomplete( step = 'billing' ) {
 		await this.fulfillAdsConnection( {
 			id: 12345,
 			currency: 'TWD',
 			symbol: 'NT$',
 			status: 'incomplete',
-			step: 'billing',
+			step,
 		} );
 	}
 
@@ -548,6 +555,23 @@ export default class MockRequests {
 			symbol: 'NT$',
 			status: 'connected',
 		} );
+	}
+
+	/**
+	 * Mock Ads create account.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async mockAdsCreateAccount() {
+		await this.fulfillAdsAccounts(
+			{
+				has_access: false,
+				invite_link: 'https://test.com',
+				step: 'claim_account',
+			},
+			200,
+			[ 'POST' ]
+		);
 	}
 
 	/**

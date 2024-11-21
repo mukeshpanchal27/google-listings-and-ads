@@ -8,6 +8,9 @@ import { __ } from '@wordpress/i18n';
  */
 import AppButton from '.~/components/app-button';
 import DisconnectAccount from '.~/components/google-ads-account-card/disconnect-account';
+import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
+import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
+import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
 
 /**
  * Footer component.
@@ -15,20 +18,37 @@ import DisconnectAccount from '.~/components/google-ads-account-card/disconnect-
  * @param {Object} props Props.
  * @param {boolean} props.isConnected Whether the account is connected.
  * @param {Function} props.onCreateNewClick Callback when clicking on the button to create a new account.
+ * @param {boolean} props.disabled Whether to disable the create account button.
  * @param {Object} props.restProps Rest props. Passed to AppButton.
  * @return {JSX.Element} Footer component.
  */
 const ConnectAdsFooter = ( {
 	isConnected,
 	onCreateNewClick,
+	disabled,
 	...restProps
 } ) => {
-	if ( isConnected ) {
+	const { existingAccounts } = useExistingGoogleAdsAccounts();
+	const { googleAdsAccount } = useGoogleAdsAccount();
+	const { hasAccess } = useGoogleAdsAccountStatus();
+	const shouldClaimGoogleAdsAccount = Boolean(
+		googleAdsAccount?.id && hasAccess === false
+	);
+
+	if ( isConnected && existingAccounts.length > 0 ) {
 		return <DisconnectAccount />;
 	}
 
+	const disabledButton =
+		disabled ||
+		( shouldClaimGoogleAdsAccount && ! existingAccounts.length );
 	return (
-		<AppButton isTertiary onClick={ onCreateNewClick } { ...restProps }>
+		<AppButton
+			isTertiary
+			onClick={ onCreateNewClick }
+			disabled={ disabledButton }
+			{ ...restProps }
+		>
 			{ __(
 				'Or, create a new Google Ads account',
 				'google-listings-and-ads'

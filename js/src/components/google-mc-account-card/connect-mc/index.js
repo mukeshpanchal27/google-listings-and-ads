@@ -52,13 +52,14 @@ const ConnectMC = ( { createAccount, resultCreateAccount, className } ) => {
 		googleMCAccount,
 		hasFinishedResolution,
 		isReady: isGoogleMCReady,
+		hasGoogleMCConnection,
 	} = useGoogleMCAccount();
 
 	useEffect( () => {
-		if ( isGoogleMCReady ) {
+		if ( hasGoogleMCConnection ) {
 			setValue( googleMCAccount.id );
 		}
-	}, [ googleMCAccount, isGoogleMCReady ] );
+	}, [ googleMCAccount, hasGoogleMCConnection ] );
 
 	if ( ! isGoogleMCReady ) {
 		if ( resultConnectMC.response?.status === 409 ) {
@@ -152,14 +153,14 @@ const ConnectMC = ( { createAccount, resultCreateAccount, className } ) => {
 			indicator={ getIndicator() }
 			detail={
 				<MerchantCenterSelect
-					isConnected={ isGoogleMCReady }
+					isConnected={ hasGoogleMCConnection }
 					value={ value }
 					onChange={ setValue }
 				/>
 			}
 			actions={
 				<Actions
-					isConnected={ isGoogleMCReady }
+					isConnected={ hasGoogleMCConnection }
 					resultConnectMC={ resultConnectMC }
 					resultCreateAccount={ resultCreateAccount }
 					onCreateAccount={ createAccount }

@@ -31,8 +31,12 @@ const ConnectExistingAccount = ( { onCreateClick } ) => {
 	const { createNotice } = useDispatchCoreNotices();
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
 	const isConnected = useGoogleAdsAccountReady();
-	const { googleAdsAccount, hasFinishedResolution, refetchGoogleAdsAccount } =
-		useGoogleAdsAccount();
+	const {
+		googleAdsAccount,
+		hasFinishedResolution,
+		hasGoogleAdsConnection,
+		refetchGoogleAdsAccount,
+	} = useGoogleAdsAccount();
 	const [ connectGoogleAdsAccount ] = useApiFetchCallback( {
 		path: '/wc/gla/ads/accounts',
 		method: 'POST',
@@ -40,10 +44,10 @@ const ConnectExistingAccount = ( { onCreateClick } ) => {
 	} );
 
 	useEffect( () => {
-		if ( isConnected ) {
+		if ( hasGoogleAdsConnection ) {
 			setValue( googleAdsAccount.id );
 		}
-	}, [ googleAdsAccount, isConnected ] );
+	}, [ googleAdsAccount, hasGoogleAdsConnection ] );
 
 	const handleConnectClick = async () => {
 		if ( ! value ) {
@@ -86,7 +90,11 @@ const ConnectExistingAccount = ( { onCreateClick } ) => {
 		}
 
 		return (
-			<ConnectButton accountID={ value } onClick={ handleConnectClick } />
+			<ConnectButton
+				disabled={ hasGoogleAdsConnection }
+				accountID={ value }
+				onClick={ handleConnectClick }
+			/>
 		);
 	};
 
@@ -108,13 +116,13 @@ const ConnectExistingAccount = ( { onCreateClick } ) => {
 					value={ value }
 					onChange={ setValue }
 					autoSelectFirstOption
-					nonInteractive={ isConnected }
+					nonInteractive={ hasGoogleAdsConnection }
 				/>
 			}
 			actions={
 				<ConnectAdsFooter
 					disabled={ isLoading }
-					isConnected={ isConnected }
+					isConnected={ hasGoogleAdsConnection }
 					onCreateNewClick={ onCreateClick }
 				/>
 			}

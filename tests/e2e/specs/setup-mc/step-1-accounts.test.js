@@ -233,9 +233,11 @@ test.describe( 'Set up accounts', () => {
 			await once.mockAdsHasNoAccounts();
 			await once.mockMCHasNoAccounts();
 			await once.mockAdsAccountDisconnected();
+			await once.mockAdsStatusDisconnected();
 			await once.mockMCNotConnected();
 
 			await setUpAccountsPage.goto();
+
 			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
 
 			await expect(
@@ -246,6 +248,37 @@ test.describe( 'Set up accounts', () => {
 					}
 				)
 			).toBeVisible();
+		} );
+
+		test( 'should show Ads claim and MC Reclaim after auto-creation, when appropriate', async () => {
+			await setUpAccountsPage.mockJetpackConnected();
+			await setUpAccountsPage.mockGoogleConnected();
+			await setUpAccountsPage.mockMCCreateAccountWebsiteClaimed();
+			await setUpAccountsPage.mockAdsCreateAccount();
+			await setUpAccountsPage.mockAdsAccountIncomplete( 'claim_account' );
+			await setUpAccountsPage.mockAdsStatusNotClaimed();
+
+			const once = setUpAccountsPage.fulfillTimes( 1 );
+
+			await once.mockAdsHasNoAccounts();
+			await once.mockMCHasNoAccounts();
+			await once.mockAdsAccountDisconnected();
+			await once.mockAdsStatusDisconnected();
+			await once.mockMCNotConnected();
+
+			await setUpAccountsPage.goto();
+
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+			const googleMCReclaimButton =
+				setUpAccountsPage.getReclaimMyURLButton();
+
+			await expect(
+				googleAccountCard.getByRole( 'button', {
+					name: 'Claim account in Google Ads',
+				} )
+			).toBeVisible();
+
+			await expect( googleMCReclaimButton ).toBeVisible();
 		} );
 
 		test.describe( 'After connecting Google account', () => {
@@ -886,6 +919,7 @@ test.describe( 'Set up accounts', () => {
 			test.beforeAll( async () => {
 				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCConnected();
+				await setUpAccountsPage.mockAdsStatusClaimed();
 				await setUpAccountsPage.mockContactInformation( {} );
 
 				await setUpAccountsPage.goto();
@@ -917,6 +951,142 @@ test.describe( 'Set up accounts', () => {
 						exact: true,
 					} )
 				).toBeVisible();
+			} );
+		} );
+	} );
+
+	test.describe( 'Edit button', () => {
+		test.beforeAll( async () => {
+			await setUpAccountsPage.mockJetpackConnected();
+			await setUpAccountsPage.mockGoogleConnected();
+			await setUpAccountsPage.mockMCConnected();
+			await setUpAccountsPage.mockMCHasAccounts();
+			await setUpAccountsPage.mockContactInformation();
+			await setUpAccountsPage.mockAdsAccountConnected();
+			await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
+			await setUpAccountsPage.mockAdsStatusClaimed();
+			await setUpAccountsPage.goto();
+		} );
+
+		test( 'should display the Edit button and the Ads and MC account cards are not visible', async () => {
+			const editButton = setUpAccountsPage.getEditButton();
+			await expect( editButton ).toBeVisible();
+
+			const googleMcAccountCard = setUpAccountsPage.getMCAccountCard();
+			await expect( googleMcAccountCard ).not.toBeVisible();
+
+			const googleAdsAccountCard =
+				setUpAccountsPage.getGoogleAdsAccountCard();
+			await expect( googleAdsAccountCard ).not.toBeVisible();
+		} );
+
+		test.describe( 'clicking the Edit button', async () => {
+			test( 'the "Or, connect to a different Google account" button is visible', async () => {
+				const editButton = setUpAccountsPage.getEditButton();
+				await editButton.click();
+
+				const connectDifferentGoogleAccountButton =
+					setUpAccountsPage.getConnectDifferentGoogleAccountButton();
+				await expect(
+					connectDifferentGoogleAccountButton
+				).toBeVisible();
+			} );
+
+			test( 'the "Cancel" button is visible', async () => {
+				const cancelButton = setUpAccountsPage.getCancelButton();
+				await expect( cancelButton ).toBeVisible();
+			} );
+
+			test( 'MC and Ads account cards are visible', async () => {
+				const googleMcAccountCard =
+					setUpAccountsPage.getMCAccountCard();
+				await expect( googleMcAccountCard ).toBeVisible();
+
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+				await expect( googleAdsAccountCard ).toBeVisible();
+			} );
+		} );
+
+		test.describe( 'clicking the Cancel button', async () => {
+			test( 'the "Edit" button is visible', async () => {
+				const cancelButton = setUpAccountsPage.getCancelButton();
+				await cancelButton.click();
+
+				const editButton = setUpAccountsPage.getEditButton();
+				await expect( editButton ).toBeVisible();
+			} );
+
+			test( 'MC and Ads account cards are not visible', async () => {
+				const googleMcAccountCard =
+					setUpAccountsPage.getMCAccountCard();
+				await expect( googleMcAccountCard ).not.toBeVisible();
+
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+				await expect( googleAdsAccountCard ).not.toBeVisible();
+			} );
+		} );
+
+		test.describe( 'clicking "Edit" when an Ads account is being claimed', async () => {
+			test( 'should let you connect to a different account', async () => {
+				await setUpAccountsPage.mockAdsStatusNotClaimed();
+				await setUpAccountsPage.mockAdsAccountIncomplete(
+					'claim_account'
+				);
+
+				await setUpAccountsPage.goto();
+
+				const editButton = setUpAccountsPage.getEditButton();
+				await editButton.click();
+
+				const connectDifferentGoogleAdsAccountButton =
+					setUpAccountsPage.getConnectDifferentAdsAccountButton();
+
+				await expect(
+					connectDifferentGoogleAdsAccountButton
+				).toBeVisible();
+			} );
+
+			test( 'should disable the create new account button if there are no other existing accounts', async () => {
+				await setUpAccountsPage.mockAdsStatusNotClaimed();
+				await setUpAccountsPage.mockAdsHasNoAccounts();
+				await setUpAccountsPage.mockAdsAccountIncomplete(
+					'claim_account'
+				);
+
+				await setUpAccountsPage.goto();
+
+				const editButton = setUpAccountsPage.getEditButton();
+				await editButton.click();
+
+				const createNewAdsAccountButton =
+					setUpAccountsPage.getCreateNewAdsAccountButton();
+
+				await expect( createNewAdsAccountButton ).toBeDisabled();
+			} );
+		} );
+
+		test.describe( 'clicking "Edit" when there are no other existing accounts', async () => {
+			test( 'should let you create new accounts', async () => {
+				await setUpAccountsPage.mockAdsStatusClaimed();
+				await setUpAccountsPage.mockAdsAccountConnected();
+				await setUpAccountsPage.mockAdsHasNoAccounts();
+				await setUpAccountsPage.mockMCHasNoAccounts();
+				await setUpAccountsPage.mockMCConnected();
+
+				await setUpAccountsPage.goto();
+
+				const editButton = setUpAccountsPage.getEditButton();
+				await editButton.click();
+
+				const createNewAdsAccountButton =
+					setUpAccountsPage.getCreateNewAdsAccountButton();
+				const createNewMCAccountButton =
+					setUpAccountsPage.getCreateNewMCAccountButton();
+
+				await expect( createNewAdsAccountButton ).toBeVisible();
+				await expect( createNewMCAccountButton ).toBeVisible();
 			} );
 		} );
 	} );

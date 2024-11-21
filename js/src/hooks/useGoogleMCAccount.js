@@ -59,10 +59,12 @@ const useGoogleMCAccount = () => {
 				googleMCAccountSelector
 			);
 
-			const hasGoogleMCConnection = [
-				GOOGLE_MC_ACCOUNT_STATUS.CONNECTED,
-				GOOGLE_MC_ACCOUNT_STATUS.INCOMPLETE,
-			].includes( acc?.status );
+			const hasGoogleMCConnection =
+				Boolean( acc?.id ) &&
+				[
+					GOOGLE_MC_ACCOUNT_STATUS.CONNECTED,
+					GOOGLE_MC_ACCOUNT_STATUS.INCOMPLETE,
+				].includes( acc?.status );
 
 			const isReady =
 				acc?.status === GOOGLE_MC_ACCOUNT_STATUS.CONNECTED ||

@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import CreateAccountButton from '../create-account-button';
 import DisconnectAccountButton from '../disconnect-account-button';
+import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
 
 /**
  * Actions component.
@@ -27,7 +28,9 @@ const Actions = ( {
 	resultCreateAccount,
 	onCreateAccount,
 } ) => {
-	if ( isConnected ) {
+	const { data: existingGoogleMCAccounts } = useExistingGoogleMCAccounts();
+
+	if ( isConnected && existingGoogleMCAccounts.length > 0 ) {
 		const handleOnDisconnected = () => {
 			resultConnectMC.reset();
 			resultCreateAccount.reset();

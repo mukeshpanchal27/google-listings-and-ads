@@ -29,7 +29,7 @@ const CreatingCard = ( props ) => {
 		<AccountCard
 			appearance={ APPEARANCE.GOOGLE_MERCHANT_CENTER }
 			description={ __(
-				'This may take a few minutes, please wait a moment…',
+				'This may take a few moments, please wait…',
 				'google-listings-and-ads'
 			) }
 			indicator={

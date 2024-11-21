@@ -2,6 +2,8 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Icon } from '@wordpress/components';
+import { external as externalIcon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -40,13 +42,13 @@ const ClaimAdsAccount = () => {
 					'google-listings-and-ads'
 				) }
 			</p>
-			<ClaimAccountButton
-				text={ __(
+			<ClaimAccountButton isPrimary>
+				{ __(
 					'Claim account in Google Ads',
 					'google-listings-and-ads'
 				) }
-				isPrimary
-			/>
+				<Icon icon={ externalIcon } size={ 20 } />
+			</ClaimAccountButton>
 		</div>
 	);
 };

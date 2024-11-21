@@ -300,6 +300,18 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
+	 * Get create a new Merchant Center account button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get create a new Merchant Center account button.
+	 */
+	getCreateNewMCAccountButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Or, create a new Merchant Center account',
+			exact: true,
+		} );
+	}
+
+	/**
 	 * Get "Continue" button.
 	 *
 	 * @return {import('@playwright/test').Locator} Get "Continue" button.
@@ -384,12 +396,48 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
+	 * Get connect to a different Google Ads account button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get connect to a different Google Ads account button.
+	 */
+	getConnectDifferentAdsAccountButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Or, connect to a different Google Ads account',
+			exact: true,
+		} );
+	}
+
+	/**
+	 * Get create a new Google Ads account button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get create a new Google Ads account button.
+	 */
+	getCreateNewAdsAccountButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Or, create a new Google Ads account',
+			exact: true,
+		} );
+	}
+
+	/**
 	 * Get terms checkbox.
 	 *
 	 * @return {import('@playwright/test').Locator} Terms checkbox.
 	 */
 	getTermsCheckbox() {
 		return this.page.getByLabel( /I accept the terms and conditions/ );
+	}
+
+	/**
+	 * Get "Edit" button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get "Edit" button.
+	 */
+	getEditButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Edit',
+			exact: true,
+		} );
 	}
 
 	/**
@@ -414,6 +462,30 @@ export default class SetUpAccountsPage extends MockRequests {
 	}
 
 	/**
+	 * Get "Or, connect to a different Google account" button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get "Or, connect to a different Google account" button.
+	 */
+	getConnectDifferentGoogleAccountButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Or, connect to a different Google account',
+			exact: true,
+		} );
+	}
+
+	/**
+	 * Get "Cancel" button.
+	 *
+	 * @return {import('@playwright/test').Locator} Get "Cancel" button.
+	 */
+	getCancelButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Cancel',
+			exact: true,
+		} );
+	}
+
+	/*
 	 * Register the response when connecting an Ads account.
 	 *
 	 * @return {Promise<import('@playwright/test').Response>} The response.

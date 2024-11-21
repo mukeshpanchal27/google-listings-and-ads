@@ -37,7 +37,7 @@ const UpsertingAccount = ( { upsertingAction } ) => {
 			className="gla-google-combo-service-account-card--ads"
 			title={ title }
 			helper={ __(
-				'This may take a few minutes, please wait a moment…',
+				'This may take a few moments, please wait…',
 				'google-listings-and-ads'
 			) }
 			indicator={ <LoadingLabel text={ indicatorLabel } /> }
