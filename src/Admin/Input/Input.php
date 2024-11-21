@@ -153,6 +153,13 @@ class Input extends Form implements InputInterface {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function is_readonly(): bool {
+		return $this->is_readonly;
+	}
+
+	/**
 	 * @param bool $value
 	 *
 	 * @return InputInterface

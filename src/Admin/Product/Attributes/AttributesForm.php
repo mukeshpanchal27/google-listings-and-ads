@@ -8,6 +8,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Input\FormException;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Input\InputInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Input\Select;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Input\SelectWithTextInput;
+use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\Input\GTINInput;
 use Automattic\WooCommerce\GoogleListingsAndAds\Exception\InvalidValue;
 use Automattic\WooCommerce\GoogleListingsAndAds\Exception\ValidateInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\AttributeInterface;
@@ -131,6 +132,13 @@ class AttributesForm extends Form {
 				$new_input = new SelectWithTextInput();
 				$new_input->set_label( $input->get_label() )
 					->set_description( $input->get_description() );
+
+				// Copy values from GTIN
+				if ( $input->name === 'gtin' ) {
+					$gtin_input = new GTINInput();
+					$new_input->set_hidden( $gtin_input->is_hidden() );
+					$new_input->set_readonly( $gtin_input->is_readonly() );
+				}
 
 				return self::init_input( $new_input, $attribute );
 			}
