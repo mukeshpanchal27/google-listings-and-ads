@@ -67,6 +67,10 @@ async function getAvailableProductAttributesWithTestValues(
 async function setAttributeValue( locator, value ) {
 	const tagName = await locator.evaluate( ( element ) => element.tagName );
 
+	if ( ( await locator.isEditable() ) === false ) {
+		return;
+	}
+
 	if ( tagName === 'SELECT' ) {
 		await locator.selectOption( value );
 	} else {
