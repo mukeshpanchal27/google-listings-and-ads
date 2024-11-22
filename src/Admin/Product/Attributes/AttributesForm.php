@@ -133,7 +133,7 @@ class AttributesForm extends Form {
 				$new_input->set_label( $input->get_label() )
 					->set_description( $input->get_description() );
 
-				// Copy values from GTIN
+				// When GTIN uses the SelectWithTextInput field, copy the readonly/hidden attributes from the GTINInput field.
 				if ( $input->name === 'gtin' ) {
 					$gtin_input = new GTINInput();
 					$new_input->set_hidden( $gtin_input->is_hidden() );
