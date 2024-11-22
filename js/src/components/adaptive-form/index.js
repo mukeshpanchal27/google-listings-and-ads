@@ -1,2 +1,5 @@
 export { default } from './adaptive-form';
-export { useAdaptiveFormContext } from './adaptive-form-context';
+export {
+	useAdaptiveFormContext,
+	useAdaptiveFormInputProps,
+} from './adaptive-form-context';

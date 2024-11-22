@@ -1,5 +1,16 @@
 .gla-minimum-order-input-control {
+	&.hide_input {
+		display: none;
+	}
+
 	& &__label {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: $grid-unit-10;
+	}
+
+	& &__label_country {
 		display: flex;
 		justify-content: space-between;
 		gap: $grid-unit-05;
