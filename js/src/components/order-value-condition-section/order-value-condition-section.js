@@ -25,7 +25,7 @@ const OrderValueConditionSection = () => {
 				</div>
 			}
 		>
-			<MinimumOrderCard { ...inputProps } />;
+			<MinimumOrderCard { ...inputProps } />
 		</Section>
 	);
 };
