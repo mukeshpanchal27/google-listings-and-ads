@@ -14,12 +14,13 @@ import getHighestBudget from '.~/utils/getHighestBudget';
  */
 
 /**
- * Fetch the highest budget recommendation for countries in a side effect.
+ * A hook to fetch the budget recommendations and the highest recommendation therein
+ * for the given countries.
  *
  * @param {Array<CountryCode>} [countryCodes] An array of country codes. If empty, the fetch will not be triggered.
  * @return {Object} Budget recommendation.
  */
-const useFetchBudgetRecommendation = ( countryCodes ) => {
+const useBudgetRecommendation = ( countryCodes ) => {
 	return useSelect(
 		( select ) => {
 			const { getAdsBudgetRecommendations, hasFinishedResolution } =
@@ -51,4 +52,4 @@ const useFetchBudgetRecommendation = ( countryCodes ) => {
 	);
 };
 
-export default useFetchBudgetRecommendation;
+export default useBudgetRecommendation;

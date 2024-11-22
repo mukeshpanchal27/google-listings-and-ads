@@ -23,7 +23,7 @@ import { GUIDE_NAMES, GOOGLE_ADS_BILLING_STATUS } from '.~/constants';
 import { ACTION_COMPLETE, ACTION_SKIP } from './constants';
 import SkipButton from './skip-button';
 import clientSession from './clientSession';
-import useFetchBudgetRecommendation from '.~/hooks/useFetchBudgetRecommendation';
+import useBudgetRecommendation from '.~/hooks/useBudgetRecommendation';
 import AppSpinner from '.~/components/app-spinner';
 
 /**
@@ -45,7 +45,7 @@ export default function SetupPaidAds() {
 	const { createNotice } = useDispatchCoreNotices();
 	const { data: countryCodes } = useTargetAudienceFinalCountryCodes();
 	const { highestDailyBudget, hasFinishedResolution } =
-		useFetchBudgetRecommendation( countryCodes );
+		useBudgetRecommendation( countryCodes );
 	const [ handleSetupComplete ] = useAdsSetupCompleteCallback();
 	const { billingStatus } = useGoogleAdsAccountBillingStatus();
 

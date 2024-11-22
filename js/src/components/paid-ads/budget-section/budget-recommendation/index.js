@@ -10,7 +10,7 @@ import GridiconNoticeOutline from 'gridicons/dist/notice-outline';
  * Internal dependencies
  */
 import useCountryKeyNameMap from '.~/hooks/useCountryKeyNameMap';
-import useFetchBudgetRecommendation from '.~/hooks/useFetchBudgetRecommendation';
+import useBudgetRecommendation from '.~/hooks/useBudgetRecommendation';
 import './index.scss';
 
 function toRecommendationRange( isMultiple, ...values ) {
@@ -36,7 +36,7 @@ function toRecommendationRange( isMultiple, ...values ) {
 const BudgetRecommendation = ( props ) => {
 	const { countryCodes, dailyAverageCost = Infinity } = props;
 	const { data, highestDailyBudgetCountryCode, highestDailyBudget } =
-		useFetchBudgetRecommendation( countryCodes );
+		useBudgetRecommendation( countryCodes );
 
 	const map = useCountryKeyNameMap();
 

@@ -13,8 +13,8 @@ import StepContentHeader from '.~/components/stepper/step-content-header';
 import StepContentFooter from '.~/components/stepper/step-content-footer';
 import StepContentActions from '.~/components/stepper/step-content-actions';
 import AppButton from '.~/components/app-button';
-import AssetGroupFaqsPanel from './faqs-panel';
 import AssetGroupSection from './asset-group-section';
+import Faqs from './faqs';
 import { recordGlaEvent } from '.~/utils/tracks';
 import useTargetAudienceFinalCountryCodes from '.~/hooks/useTargetAudienceFinalCountryCodes';
 
@@ -167,7 +167,7 @@ export default function AssetGroup( { campaign } ) {
 							: __( 'Save changes', 'google-listings-and-ads' ) }
 					</AppButton>
 				</StepContentActions>
-				<AssetGroupFaqsPanel />
+				<Faqs />
 			</StepContentFooter>
 		</StepContent>
 	);

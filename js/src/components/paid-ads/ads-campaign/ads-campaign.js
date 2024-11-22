@@ -16,7 +16,7 @@ import { useAdaptiveFormContext } from '.~/components/adaptive-form';
 import BillingCard from '.~/components/paid-ads/billing-card';
 import BudgetSection from '../budget-section';
 import { CampaignPreviewCard } from '../campaign-preview';
-import PaidAdsFaqsPanel from './faqs-panel';
+import Faqs from './faqs';
 import PaidAdsFeaturesSection from './paid-ads-features-section';
 import useTargetAudienceFinalCountryCodes from '.~/hooks/useTargetAudienceFinalCountryCodes';
 
@@ -115,7 +115,7 @@ export default function AdsCampaign( {
 						? continueButton( formContext )
 						: continueButton }
 				</StepContentActions>
-				<PaidAdsFaqsPanel />
+				<Faqs />
 			</StepContentFooter>
 		</StepContent>
 	);

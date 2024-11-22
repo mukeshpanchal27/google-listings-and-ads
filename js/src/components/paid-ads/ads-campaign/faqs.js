@@ -81,11 +81,11 @@ const faqItems = [
  */
 
 /**
- * Renders a toggleable FAQs section about Google Ads.
+ * Renders a toggleable FAQs about Google Ads.
  *
  * @fires gla_setup_ads_faq
  */
-const PaidAdsFaqsPanel = () => {
+const Faqs = () => {
 	return (
 		<FaqsPanel
 			trackName="gla_setup_ads_faq"
@@ -95,4 +95,4 @@ const PaidAdsFaqsPanel = () => {
 	);
 };
 
-export default PaidAdsFaqsPanel;
+export default Faqs;

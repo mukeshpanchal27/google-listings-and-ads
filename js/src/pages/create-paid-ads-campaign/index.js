@@ -33,7 +33,7 @@ import {
 	recordStepperChangeEvent,
 	recordStepContinueEvent,
 } from '.~/utils/tracks';
-import useFetchBudgetRecommendation from '.~/hooks/useFetchBudgetRecommendation';
+import useBudgetRecommendation from '.~/hooks/useBudgetRecommendation';
 
 const eventName = 'gla_paid_campaign_step';
 const eventContext = 'create-ads';
@@ -54,7 +54,7 @@ const CreatePaidAdsCampaign = () => {
 	const { createNotice } = useDispatchCoreNotices();
 	const { data: countryCodes } = useTargetAudienceFinalCountryCodes();
 	const { highestDailyBudget, hasFinishedResolution } =
-		useFetchBudgetRecommendation( countryCodes );
+		useBudgetRecommendation( countryCodes );
 
 	const handleStepperClick = ( nextStep ) => {
 		recordStepperChangeEvent(

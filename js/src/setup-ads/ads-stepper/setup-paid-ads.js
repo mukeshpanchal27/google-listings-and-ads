@@ -18,7 +18,7 @@ import useTargetAudienceFinalCountryCodes from '.~/hooks/useTargetAudienceFinalC
 import useAdsSetupCompleteCallback from '.~/hooks/useAdsSetupCompleteCallback';
 import CampaignAssetsForm from '.~/components/paid-ads/campaign-assets-form';
 import { recordGlaEvent } from '.~/utils/tracks';
-import useFetchBudgetRecommendation from '.~/hooks/useFetchBudgetRecommendation';
+import useBudgetRecommendation from '.~/hooks/useBudgetRecommendation';
 import AppSpinner from '.~/components/app-spinner';
 import { GOOGLE_ADS_BILLING_STATUS } from '.~/constants';
 
@@ -37,7 +37,7 @@ const SetupPaidAds = () => {
 	const adminUrl = useAdminUrl();
 	const { data: countryCodes } = useTargetAudienceFinalCountryCodes();
 	const { highestDailyBudget, hasFinishedResolution } =
-		useFetchBudgetRecommendation( countryCodes );
+		useBudgetRecommendation( countryCodes );
 
 	const initialValues = {
 		amount: highestDailyBudget,

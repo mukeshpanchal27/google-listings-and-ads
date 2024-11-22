@@ -33,7 +33,7 @@ import {
 	recordStepperChangeEvent,
 	recordStepContinueEvent,
 } from '.~/utils/tracks';
-import useFetchBudgetRecommendation from '.~/hooks/useFetchBudgetRecommendation';
+import useBudgetRecommendation from '.~/hooks/useBudgetRecommendation';
 
 const eventName = 'gla_paid_campaign_step';
 const eventContext = 'edit-ads';
@@ -73,7 +73,7 @@ const EditPaidAdsCampaign = () => {
 	const campaign = campaigns?.find( ( el ) => el.id === id );
 	const assetEntityGroup = assetEntityGroups?.at( 0 );
 	const { highestDailyBudget, hasFinishedResolution } =
-		useFetchBudgetRecommendation( campaign?.displayCountries );
+		useBudgetRecommendation( campaign?.displayCountries );
 	useEffect( () => {
 		if ( campaign && campaign.type !== CAMPAIGN_TYPE_PMAX ) {
 			getHistory().replace( dashboardURL );

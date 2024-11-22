@@ -63,14 +63,14 @@ const faqItems = [
 ];
 
 /**
- * Renders a toggleable FAQs section about the campaign assets of the Google Ads.
+ * Renders a toggleable FAQs about the campaign assets of the Google Ads.
  *
  * @fires gla_faq with `{ context: 'campaign-management', id: 'what-will-my-ads-look-like', action: 'expand' | 'collapse' }`.
  * @fires gla_faq with `{ context: 'campaign-management', id: 'what-makes-these-ads-different-from-product-ads', action: 'expand' | 'collapse' }`.
  * @fires gla_documentation_link_click with `{ context: 'assets-faq', linkId: 'assets-faq-about-ad-formats-available-in-different-campaign-types', href: 'https://support.google.com/google-ads/answer/1722124' }`.
  */
-const AssetGroupFaqsPanel = () => {
+const Faqs = () => {
 	return <FaqsPanel context="campaign-management" faqItems={ faqItems } />;
 };
 
-export default AssetGroupFaqsPanel;
+export default Faqs;
