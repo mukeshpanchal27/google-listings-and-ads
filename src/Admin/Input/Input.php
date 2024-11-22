@@ -258,15 +258,21 @@ class Input extends Form implements InputInterface {
 	public function get_block_attributes(): array {
 		$meta_key = $this->prefix_meta_key( $this->get_id() );
 
-		return array_merge(
+		$block_attributes = array_merge(
 			[
 				'property' => "meta_data.{$meta_key}",
 				'label'    => $this->get_label(),
 				'tooltip'  => $this->get_description(),
-				'disabled' => $this->is_readonly()
 			],
 			$this->block_attributes
 		);
+
+		// Set boolean disabled property only if it's needed.
+		if ( $this->is_readonly() ) {
+			$block_attributes['disabled'] = true;
+		}
+
+		return $block_attributes;
 	}
 
 	/**

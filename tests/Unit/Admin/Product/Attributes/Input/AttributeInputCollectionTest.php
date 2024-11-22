@@ -361,6 +361,7 @@ class AttributeInputCollectionTest extends UnitTest {
 					'property' => 'meta_data._wc_gla_gtin',
 					'label'    => 'Global Trade Item Number (GTIN)',
 					'tooltip'  => $description,
+					'disabled' => true,
 				],
 			],
 			$input->get_block_config()
