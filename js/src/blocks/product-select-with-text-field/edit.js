@@ -86,12 +86,14 @@ export default function Edit( { attributes, context } ) {
 				options={ options }
 				value={ optionValue }
 				onChange={ handleSelectionChange }
+				disabled={ attributes.disabled }
 			/>
 			{ isSelectedCustomInput && (
 				<TextControl
 					type="text"
 					value={ text }
 					onChange={ handleTextChange }
+					disabled={ attributes.disabled }
 				/>
 			) }
 		</div>

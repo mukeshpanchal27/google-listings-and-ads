@@ -586,7 +586,9 @@ test.describe( 'Classic Product Editor integration', () => {
 		await editorUtils.clickPluginTab();
 
 		for ( const [ attribute, value ] of pairs ) {
-			await expect( attribute ).toHaveValue( value );
+			if ( await attribute.isEditable() ) {
+				await expect( attribute ).toHaveValue( value );
+			}
 		}
 
 		/*
@@ -631,7 +633,9 @@ test.describe( 'Classic Product Editor integration', () => {
 		await editorUtils.gotoEditVariation();
 
 		for ( const [ attribute, value ] of pairs ) {
-			await expect( attribute ).toHaveValue( value );
+			if ( await attribute.isEditable() ) {
+				await expect( attribute ).toHaveValue( value );
+			}
 		}
 
 		/*

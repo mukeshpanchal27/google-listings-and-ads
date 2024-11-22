@@ -607,7 +607,9 @@ test.describe( 'Product Block Editor integration', () => {
 		await editorUtils.save();
 
 		for ( const [ attribute, value ] of pairs ) {
-			await expect( attribute ).toHaveValue( value );
+			if ( await attribute.isEditable() ) {
+				await expect( attribute ).toHaveValue( value );
+			}
 		}
 
 		/*
@@ -649,7 +651,9 @@ test.describe( 'Product Block Editor integration', () => {
 		await editorUtils.save();
 
 		for ( const [ attribute, value ] of pairs ) {
-			await expect( attribute ).toHaveValue( value );
+			if ( await attribute.isEditable() ) {
+				await expect( attribute ).toHaveValue( value );
+			}
 		}
 
 		/*
