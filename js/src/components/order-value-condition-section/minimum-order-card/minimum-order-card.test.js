@@ -14,6 +14,53 @@ jest.mock( '.~/hooks/useAppSelectDispatch' );
 jest.mock( '.~/hooks/useCountryKeyNameMap' );
 jest.mock( '.~/hooks/useStoreCurrency' );
 
+jest.mock( '.~/components/adaptive-form', () => ( {
+	useAdaptiveFormContext: jest
+		.fn()
+		.mockName( 'useAdaptiveFormContext' )
+		.mockImplementation( () => {
+			return {
+				getInputProps: () => {
+					return {
+						checked: true,
+						className: '',
+						help: null,
+						onBlur: () => {},
+						onChange: () => {},
+						selected: 'flat',
+						value: 'flat',
+					};
+				},
+				values: {
+					countries: [ 'ES' ],
+					language: 'English',
+					locale: 'en_US',
+					location: 'selected',
+					offer_free_shipping: false,
+					shipping_country_rates: [],
+					shipping_country_times: [],
+					shipping_rate: 'flat',
+					shipping_time: 'flat',
+					tax_rate: null,
+				},
+			};
+		} ),
+	useAdaptiveFormInputProps: jest
+		.fn()
+		.mockName( 'useAdaptiveFormInputProps' )
+		.mockImplementation( () => {
+			return {
+				checked: true,
+				className: '',
+				help: null,
+				onBlur: () => {},
+				onChange: () => {},
+				selected: 'flat',
+				value: 'flat',
+			};
+		} ),
+} ) );
+
 describe( 'MinimumOrderCard', () => {
 	describe( 'onChange callback property', () => {
 		let value, onChange, rendered;
@@ -78,6 +125,7 @@ describe( 'MinimumOrderCard', () => {
 			expectedValue[ 0 ].options.free_shipping_threshold = 30;
 			expect( onChange ).toHaveBeenCalledWith( expectedValue );
 		} );
+
 		test( 'When a minimum order value is changed for an existing group, calls the `onChange` callback with the new value containing `shippingRate.options.free_shipping_threshold`s set to the given value', async () => {
 			const user = userEvent.setup();
 
