@@ -26,7 +26,6 @@ test.describe( 'Product Block Editor integration', () => {
 		await editorUtils.toggleBlockFeature( true );
 		await api.setOnboardedMerchant();
 		await api.setVersionForHideGtin(); // be sure the version is set back for hiding GTIN
-
 	} );
 
 	test( 'Prompt to Get Started when not yet finished onboarding', async () => {

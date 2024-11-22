@@ -25,7 +25,6 @@ test.describe( 'Classic Product Editor integration', () => {
 
 		await api.setOnboardedMerchant();
 		await api.setVersionForHideGtin(); // be sure the version is set back for hiding GTIN
-
 	} );
 
 	test( 'Prompt to Get Started when not yet finished onboarding', async () => {
@@ -657,8 +656,8 @@ test.describe( 'Classic Product Editor integration', () => {
 		await api.setVersionForDisabledGtin();
 		await editorUtils.gotoAddProductPage();
 		await editorUtils.clickPluginTab();
-		const panel= editorUtils.getPluginPanel();
-		const gtin = await panel.getByLabel( /\(GTIN\)$/ );
+		const panel = editorUtils.getPluginPanel();
+		const gtin = panel.getByLabel( /\(GTIN\)$/ );
 		await expect( gtin ).toBeVisible();
 		await expect( gtin ).not.toBeEditable();
 		await api.setVersionForHideGtin(); // be sure the version is set back for hiding GTIN
