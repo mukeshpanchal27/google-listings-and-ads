@@ -24,7 +24,7 @@ test.describe( 'Classic Product Editor integration', () => {
 		editorUtils = getClassicProductEditorUtils( page );
 
 		await api.setOnboardedMerchant();
-		await api.setVersionForHideGtin(); // be sure the version is set back for hiding GTIN
+		await api.setVersionForHideGtin(); // be sure the version is set for hiding GTIN
 	} );
 
 	test( 'Prompt to Get Started when not yet finished onboarding', async () => {
