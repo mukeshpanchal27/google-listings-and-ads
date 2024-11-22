@@ -26,7 +26,7 @@ trait GTINMigrationUtilities {
 	 * @return string
 	 */
 	protected function get_gtin_hidden_version(): string {
-		return '2.8.8';
+		return '2.8.7';
 	}
 
 	/**
@@ -51,7 +51,7 @@ trait GTINMigrationUtilities {
 		}
 
 		$first_install_version = $this->options()->get( OptionsInterface::INSTALL_VERSION, false );
-		return $first_install_version && version_compare( $first_install_version, $this->get_gtin_hidden_version(), '>=' );
+		return $first_install_version && version_compare( $first_install_version, $this->get_gtin_hidden_version(), '>' );
 	}
 
 	/**
