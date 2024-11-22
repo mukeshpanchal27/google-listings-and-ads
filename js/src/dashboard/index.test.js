@@ -18,6 +18,13 @@ import isWCTracksEnabled from '.~/utils/isWCTracksEnabled';
 import RebrandingTour from '.~/components/tours/rebranding-tour';
 import { GUIDE_NAMES } from '.~/constants';
 
+jest.mock( '.~/hooks/useGTINMigrationStatus', () =>
+	jest
+		.fn()
+		.mockReturnValue( [ 'completed', false, jest.fn() ] )
+		.mockName( 'useGTINMigrationStatus' )
+);
+
 jest.mock( '.~/components/different-currency-notice', () =>
 	jest.fn().mockName( 'DifferentCurrencyNotice' )
 );

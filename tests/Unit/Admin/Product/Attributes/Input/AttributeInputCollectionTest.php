@@ -19,6 +19,8 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\Input\P
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\Input\SizeInput;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\Input\SizeSystemInput;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\Input\SizeTypeInput;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\MigrateGTIN;
+use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\Adult;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\AgeGroup;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\AvailabilityDate;
@@ -36,6 +38,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\Size;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\SizeSystem;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\Attributes\SizeType;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\UnitTest;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Class AttributeInputCollectionTest
@@ -45,6 +48,17 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\UnitTest;
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\Admin\Product\Attributes
  */
 class AttributeInputCollectionTest extends UnitTest {
+
+	/** @var MockObject|OptionsInterface $options */
+	protected $options;
+	/**
+	 * Runs before each test is executed.
+	 */
+	public function setUp(): void {
+		parent::setUp();
+		$this->options = $this->createMock( OptionsInterface::class );
+	}
+
 	public function test_adult_input() {
 		$input = new AdultInput();
 		$input
@@ -310,23 +324,32 @@ class AttributeInputCollectionTest extends UnitTest {
 	}
 
 	public function test_gtin_input() {
+		$description = 'Global Trade Item Number (GTIN) for your item. These identifiers include UPC (in North America), EAN (in Europe), JAN (in Japan), and ISBN (for books)';
+		$data        = [
+			'id'          => 'gla_gtin',
+			'type'        => 'text',
+			'label'       => 'Global Trade Item Number (GTIN)',
+			'description' => $description,
+			'desc_tip'    => true,
+			'value'       => null,
+			'name'        => 'gla_gtin',
+			'is_root'     => true,
+			'children'    => [],
+		];
+
+		if ( version_compare( WC_VERSION, '9.2', '>=' ) ) {
+			$description               = 'The Global Trade Item Number (GTIN) for your item can now be entered on the "Inventory" tab';
+			$data['description']       = $description;
+			$data['custom_attributes'] = [ 'readonly' => 'readonly' ];
+		}
+
 		$input = new GTINInput();
 		$input
 			->set_id( GTIN::get_id() )
 			->set_name( GTIN::get_id() );
 
 		$this->assertEquals(
-			[
-				'id'          => 'gla_gtin',
-				'type'        => 'text',
-				'label'       => 'Global Trade Item Number (GTIN)',
-				'description' => 'Global Trade Item Number (GTIN) for your item. These identifiers include UPC (in North America), EAN (in Europe), JAN (in Japan), and ISBN (for books)',
-				'desc_tip'    => true,
-				'value'       => null,
-				'name'        => 'gla_gtin',
-				'is_root'     => true,
-				'children'    => [],
-			],
+			$data,
 			$input->get_view_data()
 		);
 
@@ -337,11 +360,41 @@ class AttributeInputCollectionTest extends UnitTest {
 				'attributes' => [
 					'property' => 'meta_data._wc_gla_gtin',
 					'label'    => 'Global Trade Item Number (GTIN)',
-					'tooltip'  => 'Global Trade Item Number (GTIN) for your item. These identifiers include UPC (in North America), EAN (in Europe), JAN (in Japan), and ISBN (for books)',
+					'tooltip'  => $description,
 				],
 			],
 			$input->get_block_config()
 		);
+	}
+
+	public function test_gtin_input_not_hidden() {
+		$input = new GTINInput();
+		$input->set_options_object( $this->options );
+		$this->options
+			->expects( $this->any() )
+			->method( 'get' )
+			->with( OptionsInterface::INSTALL_VERSION )
+			->willReturn( '2.8.6' );
+		$input
+			->set_id( GTIN::get_id() )
+			->set_name( GTIN::get_id() );
+		$input->set_field_visibility();
+		$this->assertFalse( $input->is_hidden() );
+	}
+
+	public function test_gtin_input_hidden() {
+		$input = new GTINInput();
+		$input->set_options_object( $this->options );
+		$this->options
+			->expects( $this->any() )
+			->method( 'get' )
+			->with( OptionsInterface::INSTALL_VERSION )
+			->willReturn( '2.8.8' );
+		$input
+			->set_id( GTIN::get_id() )
+			->set_name( GTIN::get_id() );
+		$input->set_field_visibility();
+		$this->assertTrue( $input->is_hidden() );
 	}
 
 	public function test_is_bundle_input() {

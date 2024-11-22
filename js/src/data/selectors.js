@@ -401,3 +401,13 @@ export const getAdsBudgetRecommendations = ( state, countryCodes = [] ) => {
 	const key = getCountryCodesKey( countryCodes );
 	return state.ads.budgetRecommendations[ key ] || null;
 };
+
+/**
+ * Return the GTIN Migration status.
+ *
+ * @param {Object} state The state
+ * @return {Object} The GTIN Migration status.
+ */
+export const getGtinMigrationStatus = ( state ) => {
+	return state.gtinMigrationStatus;
+};

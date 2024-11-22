@@ -10,6 +10,7 @@ import { getNewPath, getPath } from '@woocommerce/navigation';
 import { glaData } from '.~/constants';
 import AppTabNav from '.~/components/app-tab-nav';
 import useMenuEffect from '.~/hooks/useMenuEffect';
+import GtinMigrationBanner from '.~/components/gtin-migration-banner';
 
 let tabs = [
 	{
@@ -55,7 +56,11 @@ const MainTabNav = () => {
 
 	const selectedKey = getSelectedTabKey();
 
-	return <AppTabNav tabs={ tabs } selectedKey={ selectedKey } />;
+	return (
+		<>
+			<GtinMigrationBanner />
+			<AppTabNav tabs={ tabs } selectedKey={ selectedKey } />
+		</>
+	);
 };
-
 export default MainTabNav;

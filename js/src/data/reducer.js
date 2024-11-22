@@ -71,6 +71,7 @@ const DEFAULT_STATE = {
 		},
 		budgetRecommendations: {},
 	},
+	gtinMigrationStatus: null,
 };
 
 /**
@@ -516,6 +517,11 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 					recommendations,
 				}
 			);
+		}
+
+		case TYPES.RECEIVE_GTIN_MIGRATION_STATUS: {
+			const { data } = action;
+			return setIn( state, 'gtinMigrationStatus', data?.status );
 		}
 
 		// Page will be reloaded after all accounts have been disconnected, so no need to mutate state.

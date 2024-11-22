@@ -46,6 +46,7 @@ import {
 	receiveMappingRules,
 	receiveStoreCategories,
 	receiveTour,
+	receiveGtinMigrationStatus,
 } from './actions';
 
 /**
@@ -561,3 +562,24 @@ export function* getAdsBudgetRecommendations( countryCodes ) {
 getAdsBudgetRecommendations.shouldInvalidate = ( action ) => {
 	return action.type === TYPES.DISCONNECT_ACCOUNTS_GOOGLE_ADS;
 };
+
+/**
+ * Resolver for getting the GTIN Migration status.
+ */
+export function* getGtinMigrationStatus() {
+	try {
+		const response = yield apiFetch( {
+			path: `${ API_NAMESPACE }/gtin-migration`,
+		} );
+
+		yield receiveGtinMigrationStatus( response );
+	} catch ( error ) {
+		handleApiError(
+			error,
+			__(
+				'There was an error getting the GTIN Migration Status.',
+				'google-listings-and-ads'
+			)
+		);
+	}
+}

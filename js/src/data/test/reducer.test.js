@@ -74,6 +74,7 @@ describe( 'reducer', () => {
 				},
 				budgetRecommendations: {},
 			},
+			gtinMigrationStatus: null,
 		} );
 
 		prepareState = prepareImmutableStateWithRefCheck.bind(
