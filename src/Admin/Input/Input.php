@@ -263,6 +263,7 @@ class Input extends Form implements InputInterface {
 				'property' => "meta_data.{$meta_key}",
 				'label'    => $this->get_label(),
 				'tooltip'  => $this->get_description(),
+				'disabled' => $this->is_readonly()
 			],
 			$this->block_attributes
 		);
