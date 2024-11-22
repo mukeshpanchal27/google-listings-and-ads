@@ -25,6 +25,7 @@ test.describe( 'Product Block Editor integration', () => {
 
 		await editorUtils.toggleBlockFeature( true );
 		await api.setOnboardedMerchant();
+		await api.setVersionForHideGtin(); // be sure the version is set for hiding GTIN
 	} );
 
 	test( 'Prompt to Get Started when not yet finished onboarding', async () => {
@@ -93,8 +94,7 @@ test.describe( 'Product Block Editor integration', () => {
 		await expect( panel.getByRole( 'combobox' ) ).toHaveCount( 9 );
 
 		/*
-		 * 9 <input type="text|date|time">:
-		 * - GTIN
+		 * 8 <input type="text|date|time">:
 		 * - MPN
 		 * - Size
 		 * - Color
@@ -104,11 +104,10 @@ test.describe( 'Product Block Editor integration', () => {
 		 * - Availability date
 		 * - Availability time
 		 */
-		await expect( panel.getByRole( 'textbox' ) ).toHaveCount( 9 );
+		await expect( panel.getByRole( 'textbox' ) ).toHaveCount( 8 );
 
 		/*
-		 * 16 pairs of <label> and help icon buttons:
-		 * - GTIN
+		 * 15 pairs of <label> and help icon buttons:
 		 * - MPN
 		 * - Brand
 		 * - Condition
@@ -128,11 +127,11 @@ test.describe( 'Product Block Editor integration', () => {
 		 */
 		await expect(
 			panel.locator( 'label' ).filter( { hasText: /\w+/ } )
-		).toHaveCount( 16 );
+		).toHaveCount( 15 );
 
 		await expect(
 			panel.getByRole( 'button', { name: 'help' } )
-		).toHaveCount( 16 );
+		).toHaveCount( 15 );
 
 		/*
 		 * Click the help icon to view the popover and its content for each type of field block
@@ -141,7 +140,7 @@ test.describe( 'Product Block Editor integration', () => {
 		const blocks = [
 			[
 				'woocommerce/product-text-field',
-				/global trade item number \(gtin\) for your item/i,
+				/This code uniquely identifies the product to its manufacturer/i,
 			],
 			[
 				'google-listings-and-ads/product-select-with-text-field',
@@ -232,7 +231,6 @@ test.describe( 'Product Block Editor integration', () => {
 
 		/*
 		 * 8 <input type="text|date|time"> for variation product:
-		 * - GTIN
 		 * - MPN
 		 * - Size
 		 * - Color
@@ -242,7 +240,7 @@ test.describe( 'Product Block Editor integration', () => {
 		 * - Availability date
 		 * - Availability time
 		 */
-		await expect( panel.getByRole( 'textbox' ) ).toHaveCount( 9 );
+		await expect( panel.getByRole( 'textbox' ) ).toHaveCount( 8 );
 	} );
 
 	test( 'Channel visibility is disabled when hiding in product catalog', async () => {
@@ -282,7 +280,7 @@ test.describe( 'Product Block Editor integration', () => {
 		await editorUtils.fillProductName();
 		await editorUtils.clickPluginTab();
 
-		const issueTexts = [ 'Invalid price', 'Invalid GTIN' ];
+		const issueTexts = [ 'Invalid price' ];
 		const { selection, notice, status, issues } =
 			editorUtils.getChannelVisibility();
 
@@ -591,7 +589,7 @@ test.describe( 'Product Block Editor integration', () => {
 		const pairs =
 			await editorUtils.getAvailableProductAttributesWithTestValues();
 
-		expect( pairs ).toHaveLength( 17 );
+		expect( pairs ).toHaveLength( 16 );
 
 		/*
 		 * Assert:
@@ -635,7 +633,7 @@ test.describe( 'Product Block Editor integration', () => {
 		const pairs =
 			await editorUtils.getAvailableProductAttributesWithTestValues();
 
-		expect( pairs ).toHaveLength( 16 );
+		expect( pairs ).toHaveLength( 15 );
 
 		/*
 		 * Assert:
@@ -669,6 +667,17 @@ test.describe( 'Product Block Editor integration', () => {
 		for ( const [ attribute ] of pairs ) {
 			await expect( attribute ).toHaveValue( '' );
 		}
+	} );
+
+	test( 'Test GTIN field is visible but disabled when gla_install_version is <= 2.8.7', async () => {
+		await api.setVersionForDisabledGtin();
+		await editorUtils.gotoAddProductPage();
+		await editorUtils.clickPluginTab();
+		const panel = page.getByRole( 'tabpanel' );
+		await expect( panel.getByLabel( /\(GTIN\)$/ ) ).toBeVisible();
+		await expect( panel.getByLabel( /\(GTIN\)$/ ) ).not.toBeEditable();
+
+		await api.setVersionForHideGtin(); // be sure the version is set back for hiding GTIN
 	} );
 
 	test.afterEach( async () => {
