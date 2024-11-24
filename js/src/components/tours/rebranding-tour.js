@@ -29,6 +29,7 @@ export default function RebrandingTour() {
 				referenceElements: {
 					desktop:
 						'.toplevel_page_woocommerce-marketing a[href*="google"]',
+					mobile: '#wp-admin-bar-menu-toggle',
 				},
 				meta: {
 					heading: (
@@ -59,7 +60,6 @@ export default function RebrandingTour() {
 			classNames: 'gla-admin-page,gla-rebranding-tour',
 			effects: { overlay: false },
 		},
-		placement: 'top',
 		closeHandler: () => setTourChecked( true ),
 	};
 
