@@ -12,30 +12,55 @@ export default class MockRequests {
 	}
 
 	/**
+	 * Fulfill a request multiple times.
+	 *
+	 * @param {number} times The number of times to fulfill the request.
+	 * @return {this} A proxied instance intercepts the subsequent fulfillRequest calls to attach the `times` option.
+	 */
+	fulfillTimes( times ) {
+		return new Proxy( this, {
+			get( target, property ) {
+				const value = Reflect.get( ...arguments );
+
+				if ( property === 'fulfillRequest' ) {
+					return function ( url, payload, status, methods ) {
+						const args = [ url, payload, status, methods, times ];
+						return value.apply( target, args );
+					};
+				}
+
+				return value;
+			},
+		} );
+	}
+
+	/**
 	 * Fulfill a request with a payload.
 	 *
 	 * @param {RegExp|string} url      The url to fulfill.
 	 * @param {Object}        payload  The payload to send.
 	 * @param {number}        status   The HTTP status in the response.
 	 * @param {Array}         methods  The HTTP methods in the request to be fulfill.
+	 * @param {number}        [times]    The number of times to fulfill the request. Optional.
 	 * @return {Promise<void>}
 	 */
-	async fulfillRequest( url, payload, status = 200, methods = [] ) {
-		await this.page.route( url, ( route ) => {
+	async fulfillRequest( url, payload, status = 200, methods = [], times ) {
+		const handler = async ( route ) => {
 			if (
 				methods.length === 0 ||
 				methods.includes( route.request().method() )
 			) {
-				route.fulfill( {
+				return route.fulfill( {
 					status,
-					content: 'application/json',
+					contentType: 'application/json',
 					headers: { 'Access-Control-Allow-Origin': '*' },
 					body: JSON.stringify( payload ),
 				} );
-			} else {
-				route.fallback();
 			}
-		} );
+			return route.fallback();
+		};
+
+		await this.page.route( url, handler, { times } );
 	}
 
 	/**
@@ -60,6 +85,19 @@ export default class MockRequests {
 	async fulfillMCReportProgram( payload ) {
 		await this.fulfillRequest(
 			/\/wc\/gla\/mc\/reports\/programs\b/,
+			payload
+		);
+	}
+
+	/**
+	 * Fulfill the Ads Report Program request.
+	 *
+	 * @param {Object} payload
+	 * @return {Promise<void>}
+	 */
+	async fulfillAdsReportProgram( payload ) {
+		await this.fulfillRequest(
+			/\/wc\/gla\/ads\/reports\/programs\b/,
 			payload
 		);
 	}
@@ -216,10 +254,17 @@ export default class MockRequests {
 	 * Fulfill the Ads Account request.
 	 *
 	 * @param {Object} payload
+	 * @param {number} [status=200]
+	 * @param {string[]} [methods]
 	 * @return {Promise<void>}
 	 */
-	async fulfillAdsAccounts( payload ) {
-		await this.fulfillRequest( /\/wc\/gla\/ads\/accounts\b/, payload );
+	async fulfillAdsAccounts( payload, status = 200, methods ) {
+		await this.fulfillRequest(
+			/\/wc\/gla\/ads\/accounts\b/,
+			payload,
+			status,
+			methods
+		);
 	}
 
 	/**
@@ -256,44 +301,6 @@ export default class MockRequests {
 			/\/wc\/gla\/mc\/contact-information\b/,
 			payload
 		);
-	}
-
-	/**
-	 * Fulfill phone verification request request.
-	 *
-	 * @param {Object} payload
-	 * @return {Promise<void>}
-	 */
-	async fulfillPhoneVerificationRequest( payload ) {
-		await this.fulfillRequest(
-			/\/wc\/gla\/mc\/phone-verification\/request\b/,
-			payload
-		);
-	}
-
-	/**
-	 * Fulfill phone verification verify request.
-	 *
-	 * @param {Object} payload
-	 * @param {number} status
-	 * @return {Promise<void>}
-	 */
-	async fulfillPhoneVerificationVerifyRequest( payload, status = 204 ) {
-		await this.fulfillRequest(
-			/\/wc\/gla\/mc\/phone-verification\/verify\b/,
-			payload,
-			status
-		);
-	}
-
-	/**
-	 * Fulfill policy check request.
-	 *
-	 * @param {Object} payload
-	 * @return {Promise<void>}
-	 */
-	async fulfillPolicyCheckRequest( payload ) {
-		await this.fulfillRequest( /\/wc\/gla\/mc\/policy_check\b/, payload );
 	}
 
 	/**
@@ -376,6 +383,21 @@ export default class MockRequests {
 	}
 
 	/**
+	 * Fulfill the budget recommendations request.
+	 *
+	 * @param {Object} payload
+	 * @return {Promise<void>}
+	 */
+	async fulfillBudgetRecommendations( payload ) {
+		await this.fulfillRequest(
+			/\/wc\/gla\/ads\/campaigns\/budget-recommendation\b/,
+			payload,
+			200,
+			[ 'GET' ]
+		);
+	}
+
+	/**
 	 * Mock the request to connect Jetpack
 	 *
 	 * @param {string} url
@@ -399,6 +421,17 @@ export default class MockRequests {
 			owner: 'yes',
 			displayName,
 			email,
+		} );
+	}
+
+	/**
+	 * Mock Jetpack as not connected.
+	 */
+	async mockJetpackNotConnected() {
+		await this.fulfillJetPackConnection( {
+			active: 'no',
+			displayName: '',
+			email: '',
 		} );
 	}
 
@@ -499,13 +532,13 @@ export default class MockRequests {
 	 *
 	 * @return {Promise<void>}
 	 */
-	async mockAdsAccountIncomplete() {
+	async mockAdsAccountIncomplete( step = 'billing' ) {
 		await this.fulfillAdsConnection( {
 			id: 12345,
 			currency: 'TWD',
 			symbol: 'NT$',
 			status: 'incomplete',
-			step: 'billing',
+			step,
 		} );
 	}
 
@@ -513,15 +546,34 @@ export default class MockRequests {
 	 * Mock Google Ads account as connected.
 	 *
 	 * @param {number} [id=12345]
+	 * @param {Object} [args={}] - Additional properties to customize the account connection details.
 	 * @return {Promise<void>}
 	 */
-	async mockAdsAccountConnected( id = 12345 ) {
+	async mockAdsAccountConnected( id = 12345, args = {} ) {
 		await this.fulfillAdsConnection( {
 			id,
 			currency: 'TWD',
 			symbol: 'NT$',
 			status: 'connected',
+			...args,
 		} );
+	}
+
+	/**
+	 * Mock Ads create account.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async mockAdsCreateAccount() {
+		await this.fulfillAdsAccounts(
+			{
+				has_access: false,
+				invite_link: 'https://test.com',
+				step: 'claim_account',
+			},
+			200,
+			[ 'POST' ]
+		);
 	}
 
 	/**
@@ -702,6 +754,20 @@ export default class MockRequests {
 			is_mc_address_different: options.isMCAddressDifferent,
 			wc_address_errors: options.wcAddressErrors,
 		} );
+	}
+
+	/**
+	 * Mock the POST request to mark the Ads setup as completed.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async mockCompleteAdsSetup() {
+		await this.fulfillRequest(
+			/\/wc\/gla\/ads\/setup\/complete\b/,
+			null,
+			200,
+			[ 'POST' ]
+		);
 	}
 
 	/**

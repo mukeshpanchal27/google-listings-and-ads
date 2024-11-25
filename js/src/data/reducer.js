@@ -17,7 +17,6 @@ const DEFAULT_STATE = {
 	mc: {
 		target_audience: null,
 		countries: null,
-		policy_check: null,
 		continents: null,
 		shipping: {
 			rates: [],
@@ -70,6 +69,7 @@ const DEFAULT_STATE = {
 			inviteLink: null,
 			step: null,
 		},
+		budgetRecommendations: {},
 	},
 	gtinMigrationStatus: null,
 };
@@ -417,11 +417,6 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 			return setIn( state, [ 'report', reportKey ], data );
 		}
 
-		case TYPES.POLICY_CHECK: {
-			const { data } = action;
-			return setIn( state, 'mc.policy_check', data );
-		}
-
 		case TYPES.RECEIVE_MAPPING_ATTRIBUTES: {
 			return setIn( state, 'mc.mapping.attributes', action.attributes );
 		}
@@ -509,6 +504,19 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 				.setIn( 'inviteLink', inviteLink )
 				.setIn( 'step', step )
 				.end();
+		}
+
+		case TYPES.RECEIVE_ADS_BUDGET_RECOMMENDATIONS: {
+			const { countryCodesKey, currency, recommendations } = action;
+
+			return setIn(
+				state,
+				[ 'ads', 'budgetRecommendations', countryCodesKey ],
+				{
+					currency,
+					recommendations,
+				}
+			);
 		}
 
 		case TYPES.RECEIVE_GTIN_MIGRATION_STATUS: {

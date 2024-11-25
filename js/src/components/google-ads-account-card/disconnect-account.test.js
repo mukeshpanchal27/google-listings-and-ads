@@ -63,6 +63,53 @@ describe( 'DisconnectAccount', () => {
 		expect( button ).toBeDisabled();
 	} );
 
+	it( 'should trigger the onDisconnected callback after the account is disconnected', async () => {
+		const user = userEvent.setup();
+		const handleDisconnected = jest.fn();
+		let resolve;
+
+		disconnectGoogleAdsAccount.mockReturnValue(
+			new Promise( ( _resolve ) => {
+				resolve = _resolve;
+			} )
+		);
+
+		render( <DisconnectAccount onDisconnected={ handleDisconnected } /> );
+		const button = screen.getByRole( 'button' );
+
+		expect( handleDisconnected ).toHaveBeenCalledTimes( 0 );
+
+		await user.click( button );
+
+		expect( handleDisconnected ).toHaveBeenCalledTimes( 0 );
+
+		await act( async () => resolve() );
+
+		expect( handleDisconnected ).toHaveBeenCalledTimes( 1 );
+	} );
+
+	it( 'should not trigger the onDisconnected callback after a failed disconnection', async () => {
+		const user = userEvent.setup();
+		const handleDisconnected = jest.fn();
+		let reject;
+
+		disconnectGoogleAdsAccount.mockReturnValue(
+			new Promise( ( _, _reject ) => {
+				reject = _reject;
+			} )
+		);
+
+		render( <DisconnectAccount onDisconnected={ handleDisconnected } /> );
+		const button = screen.getByRole( 'button' );
+
+		expect( handleDisconnected ).toHaveBeenCalledTimes( 0 );
+
+		await user.click( button );
+		await act( async () => reject() );
+
+		expect( handleDisconnected ).toHaveBeenCalledTimes( 0 );
+	} );
+
 	it( 'should enable the button after a failed disconnection', async () => {
 		const user = userEvent.setup();
 		let reject;

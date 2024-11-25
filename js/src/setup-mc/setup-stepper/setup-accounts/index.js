@@ -2,11 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { createInterpolateElement } from '@wordpress/element';
+import { createInterpolateElement, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { useAppDispatch } from '.~/data';
 import useJetpackAccount from '.~/hooks/useJetpackAccount';
 import useGoogleAccount from '.~/hooks/useGoogleAccount';
 import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
@@ -15,17 +16,17 @@ import AppSpinner from '.~/components/app-spinner';
 import StepContent from '.~/components/stepper/step-content';
 import StepContentHeader from '.~/components/stepper/step-content-header';
 import StepContentFooter from '.~/components/stepper/step-content-footer';
+import StepContentActions from '.~/components/stepper/step-content-actions';
 import Section from '.~/wcdl/section';
 import AppDocumentationLink from '.~/components/app-documentation-link';
 import VerticalGapLayout from '.~/components/vertical-gap-layout';
 import WPComAccountCard from '.~/components/wpcom-account-card';
-import GoogleAccountCard from '.~/components/google-account-card';
-import GoogleMCAccountCard from '.~/components/google-mc-account-card';
-import GoogleAdsAccountCard from '.~/components/google-ads-account-card';
+import GoogleComboAccountCard from '.~/components/google-combo-account-card';
 import Faqs from './faqs';
 import './index.scss';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
+import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
+import useStoreAddressReady from '.~/hooks/useStoreAddressReady';
 
 /**
  * Renders the disclaimer of Comparison Shopping Service (CSS).
@@ -84,11 +85,23 @@ const SetupAccounts = ( props ) => {
 	const { onContinue = () => {} } = props;
 	const { jetpack } = useJetpackAccount();
 	const { google, scope } = useGoogleAccount();
-	const { googleMCAccount, isPreconditionReady: isGMCPreconditionReady } =
-		useGoogleMCAccount();
-	const { hasFinishedResolution, hasGoogleAdsConnection } =
-		useGoogleAdsAccount();
-	const { hasAccess, step } = useGoogleAdsAccountStatus();
+	const {
+		googleMCAccount,
+		isPreconditionReady: isGMCPreconditionReady,
+		isReady: isGoogleMCReady,
+	} = useGoogleMCAccount();
+	const { hasFinishedResolution } = useGoogleAdsAccount();
+	const isStoreAddressReady = useStoreAddressReady();
+	const isGoogleAdsReady = useGoogleAdsAccountReady();
+	const { updateGoogleMCContactInformation } = useAppDispatch();
+	const [ isSubmitting, setIsSubmitting ] = useState( false );
+
+	const handleSubmitCallback = () => {
+		setIsSubmitting( true );
+		updateGoogleMCContactInformation()
+			.then( () => onContinue() )
+			.catch( () => setIsSubmitting( false ) );
+	};
 
 	/**
 	 * When jetpack is loading, or when google account is loading,
@@ -101,7 +114,9 @@ const SetupAccounts = ( props ) => {
 	 * and the whole page would display this AppSpinner, which is not desired.
 	 */
 	const isLoadingJetpack = ! jetpack;
-	const isLoadingGoogle = jetpack?.active === 'yes' && ! google;
+	const isJetpackActive = jetpack?.active === 'yes';
+
+	const isLoadingGoogle = isJetpackActive && ! google;
 	const isLoadingGoogleMCAccount =
 		google?.active === 'yes' && scope.gmcRequired && ! googleMCAccount;
 
@@ -109,29 +124,11 @@ const SetupAccounts = ( props ) => {
 		return <AppSpinner />;
 	}
 
-	const isGoogleAccountDisabled = jetpack?.active !== 'yes';
-
-	// Ads is ready when we have a connection and verified and verified access.
-	// Billing is not required, and the 'link_merchant' step will be resolved
-	// when the MC the account is connected.
-	const isGoogleAdsReady =
-		hasGoogleAdsConnection &&
-		hasAccess &&
-		[ '', 'billing', 'link_merchant' ].includes( step );
-
-	// MC is ready when we have a connection and preconditions are met.
-	// The `link_ads` step will be resolved when the Ads account is connected
-	// since these can be connected in any order.
-	const isGoogleMCReady =
-		isGMCPreconditionReady &&
-		( googleMCAccount?.status === 'connected' ||
-			( googleMCAccount?.status === 'incomplete' &&
-				googleMCAccount?.step === 'link_ads' ) );
-
 	const isContinueButtonDisabled = ! (
 		hasFinishedResolution &&
 		isGoogleAdsReady &&
-		isGoogleMCReady
+		isGoogleMCReady &&
+		isStoreAddressReady
 	);
 
 	return (
@@ -155,28 +152,31 @@ const SetupAccounts = ( props ) => {
 				) }
 			>
 				<VerticalGapLayout size="large">
-					<WPComAccountCard jetpack={ jetpack } />
-					<GoogleAccountCard disabled={ isGoogleAccountDisabled } />
-					<GoogleAdsAccountCard />
+					{ ! isJetpackActive && (
+						<WPComAccountCard jetpack={ jetpack } />
+					) }
+					<GoogleComboAccountCard disabled={ ! isJetpackActive } />
 				</VerticalGapLayout>
 			</Section>
+
+			<StepContentFooter>
+				<StepContentActions>
+					<AppButton
+						isPrimary
+						disabled={ isContinueButtonDisabled }
+						loading={ isSubmitting }
+						text={ __( 'Continue', 'google-listings-and-ads' ) }
+						onClick={ handleSubmitCallback }
+					/>
+				</StepContentActions>
+			</StepContentFooter>
 			<Section
-				className="gla-google-mc-account-section"
+				className="gla-google-mc-disclaimer-section"
 				description={ <GoogleMCDisclaimer /> }
 				disabledLeft={ ! isGMCPreconditionReady }
 			>
-				<GoogleMCAccountCard />
 				<Faqs />
 			</Section>
-			<StepContentFooter>
-				<AppButton
-					isPrimary
-					disabled={ isContinueButtonDisabled }
-					onClick={ onContinue }
-				>
-					{ __( 'Continue', 'google-listings-and-ads' ) }
-				</AppButton>
-			</StepContentFooter>
 		</StepContent>
 	);
 };

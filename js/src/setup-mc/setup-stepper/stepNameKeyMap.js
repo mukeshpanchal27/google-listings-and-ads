@@ -1,8 +1,7 @@
 const stepNameKeyMap = {
 	accounts: '1',
 	product_listings: '2',
-	store_requirements: '3',
-	paid_ads: '4',
+	paid_ads: '3',
 };
 
 export default stepNameKeyMap;

@@ -3,7 +3,7 @@
  */
 import AppDocumentationLink from '.~/components/app-documentation-link';
 
-const readMoreLink = (
+const ReadMoreLink = (
 	<AppDocumentationLink
 		context="setup-mc-accounts"
 		linkId="required-google-permissions"
@@ -11,4 +11,4 @@ const readMoreLink = (
 	/>
 );
 
-export default readMoreLink;
+export default ReadMoreLink;

@@ -9,36 +9,27 @@ import { __ } from '@wordpress/i18n';
 import AppButton from '.~/components/app-button';
 import StepContent from '.~/components/stepper/step-content';
 import StepContentHeader from '.~/components/stepper/step-content-header';
+import StepContentActions from '.~/components/stepper/step-content-actions';
 import StepContentFooter from '.~/components/stepper/step-content-footer';
 import VerticalGapLayout from '.~/components/vertical-gap-layout';
 import { ConnectedGoogleAccountCard } from '.~/components/google-account-card';
 import GoogleAdsAccountCard from '.~/components/google-ads-account-card';
-import FreeAdCredit from './free-ad-credit';
+import FreeAdCredit from '.~/components/free-ad-credit';
 import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
 import useGoogleAccount from '.~/hooks/useGoogleAccount';
-import useFreeAdCredit from '.~/hooks/useFreeAdCredit';
 import AppSpinner from '.~/components/app-spinner';
 import Section from '.~/wcdl/section';
+import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
 
 const SetupAccounts = ( props ) => {
 	const { onContinue = () => {} } = props;
 	const { google } = useGoogleAccount();
-	const { googleAdsAccount, hasGoogleAdsConnection } = useGoogleAdsAccount();
-	const { hasAccess, step } = useGoogleAdsAccountStatus();
-	const hasFreeAdCredit = useFreeAdCredit();
+	const { googleAdsAccount } = useGoogleAdsAccount();
+	const isGoogleAdsReady = useGoogleAdsAccountReady();
 
 	if ( ! google || ( google.active === 'yes' && ! googleAdsAccount ) ) {
 		return <AppSpinner />;
 	}
-
-	// Ads is ready when we have a connection and verified and verified access.
-	// Billing is not required, and the 'link_merchant' step will be resolved
-	// when the MC the account is connected.
-	const isGoogleAdsReady =
-		hasGoogleAdsConnection &&
-		hasAccess &&
-		[ '', 'billing', 'link_merchant' ].includes( step );
 
 	const isContinueButtonDisabled = ! isGoogleAdsReady;
 
@@ -50,7 +41,7 @@ const SetupAccounts = ( props ) => {
 					'google-listings-and-ads'
 				) }
 				description={ __(
-					'Connect your Google account and your Google Ads account to set up a paid Performance Max campaign.',
+					'Connect your Google account and your Google Ads account to set up a Performance Max campaign.',
 					'google-listings-and-ads'
 				) }
 			/>
@@ -71,17 +62,19 @@ const SetupAccounts = ( props ) => {
 						) }
 					/>
 					<GoogleAdsAccountCard />
-					{ hasFreeAdCredit && <FreeAdCredit /> }
+					<FreeAdCredit />
 				</VerticalGapLayout>
 			</Section>
 			<StepContentFooter>
-				<AppButton
-					isPrimary
-					disabled={ isContinueButtonDisabled }
-					onClick={ onContinue }
-				>
-					{ __( 'Continue', 'google-listings-and-ads' ) }
-				</AppButton>
+				<StepContentActions>
+					<AppButton
+						isPrimary
+						disabled={ isContinueButtonDisabled }
+						onClick={ onContinue }
+					>
+						{ __( 'Continue', 'google-listings-and-ads' ) }
+					</AppButton>
+				</StepContentActions>
 			</StepContentFooter>
 		</StepContent>
 	);
