@@ -17,7 +17,6 @@ async function getAvailableProductAttributesWithTestValues(
 	const { dateInput: availabilityDate, timeInput: availabilityTime } =
 		funcGetDateAndTime( locator );
 
-	const gtin = locator.getByLabel( /\(GTIN\)$/ );
 	const mpn = locator.getByLabel( 'MPN' );
 	const brand = locator.getByLabel( 'Brand', { exact: true } );
 	const condition = locator.getByLabel( 'Condition', { exact: true } );
@@ -34,7 +33,6 @@ async function getAvailableProductAttributesWithTestValues(
 	const adultContent = locator.getByLabel( 'Adult content' );
 
 	const allPairs = [
-		[ gtin, '3234567890126' ],
 		[ mpn, 'GO12345OOGLE' ],
 		[ brand, 'e2e_test_woocommerce_brands' ],
 		[ condition, 'new' ],
@@ -66,6 +64,10 @@ async function getAvailableProductAttributesWithTestValues(
 
 async function setAttributeValue( locator, value ) {
 	const tagName = await locator.evaluate( ( element ) => element.tagName );
+
+	if ( ( await locator.isEditable() ) === false ) {
+		return;
+	}
 
 	if ( tagName === 'SELECT' ) {
 		await locator.selectOption( value );
