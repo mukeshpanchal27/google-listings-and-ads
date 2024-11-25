@@ -72,6 +72,17 @@ const ConnectExistingAccount = ( { onCreateClick } ) => {
 		}
 	};
 
+	const handleDisconnected = () => {
+		/*
+		 * Prevent the `value` from staying on the unclaimed and disconnected account ID.
+		 * Please note that the reset works because the `AdsAccountSelectControl` happens to
+		 * switch between two different `AppSelectControls` so that `autoSelectFirstOption`
+		 * can be triggered again. Otherwise, it would need to specify `key={ Boolean(value) }`
+		 * in the `<AdsAccountSelectControl>` use of this component.
+		 */
+		setValue( undefined );
+	};
+
 	const getIndicator = () => {
 		if ( ! hasFinishedResolution ) {
 			return <LoadingLabel />;
@@ -124,6 +135,7 @@ const ConnectExistingAccount = ( { onCreateClick } ) => {
 					disabled={ isLoading }
 					isConnected={ hasGoogleAdsConnection }
 					onCreateNewClick={ onCreateClick }
+					onDisconnected={ handleDisconnected }
 				/>
 			}
 		/>

@@ -2,7 +2,8 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useCallback } from '@wordpress/element';
+import { noop } from 'lodash';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -24,18 +25,21 @@ import { FILTER_ONBOARDING } from '.~/utils/tracks';
  * Renders a button to disconnect the Google Ads account.
  *
  * @fires gla_ads_account_disconnect_button_click When the user clicks on the button to disconnect the Google Ads account.
+ *
+ * @param {Object} props React props.
+ * @param {Function} [props.onDisconnected] Callback after the account is disconnected.
  */
-const DisconnectAccount = () => {
+const DisconnectAccount = ( { onDisconnected = noop } ) => {
 	const { disconnectGoogleAdsAccount } = useAppDispatch();
 	const [ isDisconnecting, setDisconnecting ] = useState( false );
 	const getEventProps = useEventPropertiesFilter( FILTER_ONBOARDING );
 
-	const handleSwitch = useCallback( () => {
+	const handleSwitch = () => {
 		setDisconnecting( true );
-		disconnectGoogleAdsAccount( true ).catch( () =>
-			setDisconnecting( false )
-		);
-	}, [ disconnectGoogleAdsAccount ] );
+		disconnectGoogleAdsAccount( true )
+			.then( () => onDisconnected() )
+			.catch( () => setDisconnecting( false ) );
+	};
 
 	return (
 		<AppButton
