@@ -74,6 +74,7 @@ describe( 'reducer', () => {
 					step: null,
 				},
 			},
+			gtinMigrationStatus: null,
 		} );
 
 		prepareState = prepareImmutableStateWithRefCheck.bind(

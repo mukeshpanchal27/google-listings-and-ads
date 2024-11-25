@@ -410,3 +410,13 @@ export const getTour = ( state, tourId ) => {
 export const getGoogleAdsAccountStatus = ( state ) => {
 	return state.ads.accountStatus;
 };
+
+/**
+ * Return the GTIN Migration status.
+ *
+ * @param {Object} state The state
+ * @return {Object} The GTIN Migration status.
+ */
+export const getGtinMigrationStatus = ( state ) => {
+	return state.gtinMigrationStatus;
+};

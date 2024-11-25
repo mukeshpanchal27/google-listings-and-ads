@@ -24,6 +24,7 @@ test.describe( 'Classic Product Editor integration', () => {
 		editorUtils = getClassicProductEditorUtils( page );
 
 		await api.setOnboardedMerchant();
+		await api.setVersionForHideGtin(); // be sure the version is set for hiding GTIN
 	} );
 
 	test( 'Prompt to Get Started when not yet finished onboarding', async () => {
@@ -108,8 +109,7 @@ test.describe( 'Classic Product Editor integration', () => {
 		await expect( panel.getByRole( 'combobox' ) ).toHaveCount( 8 );
 
 		/*
-		 * 8 <input type="text|date|time">:
-		 * - GTIN
+		 * 7 <input type="text|date|time">:
 		 * - MPN
 		 * - Size
 		 * - Color
@@ -118,7 +118,7 @@ test.describe( 'Classic Product Editor integration', () => {
 		 * - Availability date
 		 * - Availability time
 		 */
-		await expect( panel.getByRole( 'textbox' ) ).toHaveCount( 8 );
+		await expect( panel.getByRole( 'textbox' ) ).toHaveCount( 7 );
 
 		/*
 		 * 1 <input type="number">:
@@ -127,8 +127,7 @@ test.describe( 'Classic Product Editor integration', () => {
 		await expect( panel.getByRole( 'spinbutton' ) ).toHaveCount( 1 );
 
 		/*
-		 * 16 pairs of <label> and help icon buttons:
-		 * - GTIN
+		 * 15 pairs of <label> and help icon buttons:
 		 * - MPN
 		 * - Brand
 		 * - Condition
@@ -145,9 +144,9 @@ test.describe( 'Classic Product Editor integration', () => {
 		 * - Availability date and time
 		 * - Adult content
 		 */
-		await expect( panel.locator( 'label:visible' ) ).toHaveCount( 16 );
+		await expect( panel.locator( 'label:visible' ) ).toHaveCount( 15 );
 		await expect( panel.locator( '.woocommerce-help-tip' ) ).toHaveCount(
-			16
+			15
 		);
 
 		/*
@@ -157,8 +156,8 @@ test.describe( 'Classic Product Editor integration', () => {
 		const fields = [
 			// Text
 			[
-				'.gla_attributes_gtin_field',
-				/global trade item number \(gtin\) for your item/i,
+				'.gla_attributes_mpn_field',
+				/This code uniquely identifies the product to its manufacturer/i,
 			],
 
 			// Select with text
@@ -275,8 +274,7 @@ test.describe( 'Classic Product Editor integration', () => {
 		await expect( variation.getByRole( 'combobox' ) ).toHaveCount( 7 );
 
 		/*
-		 * 8 <input type="text|date|time"> for variation product:
-		 * - GTIN
+		 * 7 <input type="text|date|time"> for variation product:
 		 * - MPN
 		 * - Size
 		 * - Color
@@ -285,7 +283,7 @@ test.describe( 'Classic Product Editor integration', () => {
 		 * - Availability date
 		 * - Availability time
 		 */
-		await expect( variation.getByRole( 'textbox' ) ).toHaveCount( 8 );
+		await expect( variation.getByRole( 'textbox' ) ).toHaveCount( 7 );
 
 		/*
 		 * 1 <input type="number"> for variation product:
@@ -569,7 +567,7 @@ test.describe( 'Classic Product Editor integration', () => {
 		const pairs =
 			await editorUtils.getAvailableProductAttributesWithTestValues();
 
-		expect( pairs ).toHaveLength( 17 );
+		expect( pairs ).toHaveLength( 16 );
 
 		/*
 		 * Assert:
@@ -586,7 +584,9 @@ test.describe( 'Classic Product Editor integration', () => {
 		await editorUtils.clickPluginTab();
 
 		for ( const [ attribute, value ] of pairs ) {
-			await expect( attribute ).toHaveValue( value );
+			if ( await attribute.isEditable() ) {
+				await expect( attribute ).toHaveValue( value );
+			}
 		}
 
 		/*
@@ -614,7 +614,7 @@ test.describe( 'Classic Product Editor integration', () => {
 				editorUtils.getPluginVariationMetaBox()
 			);
 
-		expect( pairs ).toHaveLength( 16 );
+		expect( pairs ).toHaveLength( 15 );
 
 		/*
 		 * Assert:
@@ -631,7 +631,9 @@ test.describe( 'Classic Product Editor integration', () => {
 		await editorUtils.gotoEditVariation();
 
 		for ( const [ attribute, value ] of pairs ) {
-			await expect( attribute ).toHaveValue( value );
+			if ( await attribute.isEditable() ) {
+				await expect( attribute ).toHaveValue( value );
+			}
 		}
 
 		/*
@@ -648,6 +650,17 @@ test.describe( 'Classic Product Editor integration', () => {
 		for ( const [ attribute ] of pairs ) {
 			await expect( attribute ).toHaveValue( '' );
 		}
+	} );
+
+	test( 'Test GTIN field is visible but disabled when gla_install_version is <= 2.8.7', async () => {
+		await api.setVersionForDisabledGtin();
+		await editorUtils.gotoAddProductPage();
+		await editorUtils.clickPluginTab();
+		const panel = editorUtils.getPluginPanel();
+		const gtin = panel.getByLabel( /\(GTIN\)$/ );
+		await expect( gtin ).toBeVisible();
+		await expect( gtin ).not.toBeEditable();
+		await api.setVersionForHideGtin(); // be sure the version is set back for hiding GTIN
 	} );
 
 	test.afterAll( async () => {
