@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - "release/**"
-      - "feature/2458-2459-2460-2509"
   pull_request:
     branches:
       - "release/**"
-      - "feature/2458-2459-2460-2509"
   workflow_dispatch:
     inputs:
       wp-rc-version:
