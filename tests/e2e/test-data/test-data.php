@@ -67,6 +67,30 @@ function register_routes() {
 			],
 		],
 	);
+
+	register_rest_route(
+		'wc/v3',
+		'gla-test/gtin-disabled',
+		[
+			[
+				'methods'             => 'POST',
+				'callback'            => __NAMESPACE__ . '\set_disabled_gtin_version',
+				'permission_callback' => __NAMESPACE__ . '\permissions',
+			],
+		],
+	);
+
+	register_rest_route(
+		'wc/v3',
+		'gla-test/gtin-hidden',
+		[
+			[
+				'methods'             => 'POST',
+				'callback'            => __NAMESPACE__ . '\set_hidden_gtin_version',
+				'permission_callback' => __NAMESPACE__ . '\permissions',
+			],
+		],
+	);
 }
 
 /**
@@ -163,3 +187,22 @@ function clear_notifications_ready() {
 	$options->delete( OptionsInterface::WPCOM_REST_API_STATUS );
 }
 
+/**
+ * Set gla_install_version as 2.9.0 for hiding the GTIN
+ * Notice GTIN should be hidden when gla_install_version > 2.8.7
+ */
+function set_hidden_gtin_version() {
+	/** @var OptionsInterface $options */
+	$options = woogle_get_container()->get( OptionsInterface::class );
+	$options->update( OptionsInterface::INSTALL_VERSION, '2.9.0' );
+}
+
+/**
+ * Set gla_install_version for set the GTIN as readonly
+ * Notice GTIN should be visible but disabled when gla_install_version <= 2.8.7
+ */
+function set_disabled_gtin_version() {
+	/** @var OptionsInterface $options */
+	$options = woogle_get_container()->get( OptionsInterface::class );
+	$options->update( OptionsInterface::INSTALL_VERSION, '2.8.7' );
+}

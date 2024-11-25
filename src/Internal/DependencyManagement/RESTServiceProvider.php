@@ -21,6 +21,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\Ads\Reports
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\Ads\SetupCompleteController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\Ads\AssetGroupController as AdsAssetGroupController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\Ads\AssetSuggestionsController;
+use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\GTINMigrationController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\TourController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\DisconnectController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\Google\AccountController as GoogleAccountController;
@@ -60,6 +61,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\DB\Query\ShippingRateQuery;
 use Automattic\WooCommerce\GoogleListingsAndAds\Google\RequestReviewStatuses;
 use Automattic\WooCommerce\GoogleListingsAndAds\Google\GoogleHelper;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\JobRepository;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\MigrateGTIN;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\ProductSyncStats;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\AccountService as MerchantAccountService;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\MerchantStatuses;
@@ -142,6 +144,7 @@ class RESTServiceProvider extends AbstractServiceProvider {
 		$this->share( AttributeMappingSyncerController::class, ProductSyncStats::class );
 		$this->share( TourController::class );
 		$this->share( RestAPIAuthController::class, OAuthService::class, MerchantAccountService::class );
+		$this->share( GTINMigrationController::class, MigrateGTIN::class );
 	}
 
 	/**

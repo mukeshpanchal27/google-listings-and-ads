@@ -105,6 +105,15 @@ class SelectWithTextInput extends Input {
 		// add custom value option
 		$select_input['options'][ self::CUSTOM_INPUT_KEY ] = __( 'Enter a custom value', 'google-listings-and-ads' );
 
+		if ( $this->is_readonly ) {
+			$select_input['custom_attributes'] = [
+				'disabled' => 'disabled',
+			];
+			$custom_input['custom_attributes'] = [
+				'readonly' => 'readonly',
+			];
+		}
+
 		$view_data['children'][ self::CUSTOM_INPUT_KEY ] = $custom_input;
 		$view_data['children'][ self::SELECT_INPUT_KEY ] = $select_input;
 
