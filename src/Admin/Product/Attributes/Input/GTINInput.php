@@ -34,7 +34,7 @@ class GTINInput extends Text {
 	 * Controls the inputs visibility based on the WooCommerce version and the
 	 * initial version of Google for WooCommerce at the time of installation.
 	 *
-	 * @since x.x.x
+	 * @since 2.9.0
 	 * @return void
 	 */
 	public function set_field_visibility(): void {

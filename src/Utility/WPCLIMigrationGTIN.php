@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Utility
  *
- * @since x.x.x
+ * @since 2.9.0
  */
 class WPCLIMigrationGTIN implements Service, Registerable, Conditional {
 	use GTINMigrationUtilities;
