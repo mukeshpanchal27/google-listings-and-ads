@@ -99,18 +99,6 @@ export default class SetupAdsAccount extends MockRequests {
 	}
 
 	/**
-	 * Get Claim account button in the Accept Invitation modal.
-	 *
-	 * @return {import('@playwright/test').Locator} Claim account button.
-	 */
-	getClaimAcceptAccountButtonModal() {
-		return this.getAcceptAccountModal().getByRole( 'button', {
-			name: 'Claim account in Google Ads',
-			exact: true,
-		} );
-	}
-
-	/**
 	 * Get claim account button in the Google Ads card.
 	 *
 	 * @return {import('@playwright/test').Locator} Claim account button.
@@ -131,18 +119,6 @@ export default class SetupAdsAccount extends MockRequests {
 		return this.page.getByText(
 			'Claim your new Google Ads account to complete this setup.'
 		);
-	}
-
-	/**
-	 * Get connect to a different account button.
-	 *
-	 * @return {import('@playwright/test').Locator} Get connect to a different account button.
-	 */
-	getConnectDifferentAccountButton() {
-		return this.page.getByRole( 'button', {
-			name: 'Or, connect to a different Google Ads account',
-			exact: true,
-		} );
 	}
 
 	/**
@@ -190,26 +166,6 @@ export default class SetupAdsAccount extends MockRequests {
 	}
 
 	/**
-	 * Click ToS checkbox from modal.
-	 *
-	 * @return {Promise<void>}
-	 */
-	async clickToSCheckboxFromModal() {
-		const checkbox = this.getAcceptTermCreateAccount();
-		await checkbox.check();
-	}
-
-	/**
-	 * Click create account button from modal.
-	 *
-	 * @return {Promise<void>}
-	 */
-	async clickCreateAccountButtonFromModal() {
-		const button = this.getCreateAdsAccountButtonModal();
-		await button.click();
-	}
-
-	/**
 	 * Click close button from modal.
 	 *
 	 * @return {Promise<void>}
@@ -220,12 +176,16 @@ export default class SetupAdsAccount extends MockRequests {
 	}
 
 	/**
-	 * Click connect to a different account button.
+	 * Await the response for ads connection.
 	 *
-	 * @return {Promise<void>}
+	 * @return {Promise<import('@playwright/test').Response>} The response.
 	 */
-	async clickConnectDifferentAccountButton() {
-		const button = this.getConnectDifferentAccountButton();
-		await button.click();
+	async awaitAdsConnectionResponse() {
+		return this.page.waitForResponse( ( response ) => {
+			return (
+				response.url().includes( '/gla/ads/connection' ) &&
+				response.status() === 200
+			);
+		} );
 	}
 }

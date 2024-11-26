@@ -17,7 +17,6 @@ import LinkedAccounts from './linked-accounts';
 import ReconnectWPComAccount from './reconnect-wpcom-account';
 import ReconnectGoogleAccount from './reconnect-google-account';
 import EditStoreAddress from './edit-store-address';
-import EditPhoneNumber from './edit-phone-number';
 import EnableNewProductSyncNotice from '.~/components/enable-new-product-sync-notice';
 import MainTabNav from '.~/components/main-tab-nav';
 import RebrandingTour from '.~/components/tours/rebranding-tour';
@@ -55,8 +54,6 @@ const Settings = () => {
 			);
 		case subpaths.reconnectGoogleAccount:
 			return <ReconnectGoogleAccount />;
-		case subpaths.editPhoneNumber:
-			return <EditPhoneNumber />;
 		case subpaths.editStoreAddress:
 			return <EditStoreAddress />;
 		default:

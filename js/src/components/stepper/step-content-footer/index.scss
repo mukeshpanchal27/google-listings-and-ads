@@ -1,9 +1,0 @@
-.gla-step-content-footer {
-	display: flex;
-	justify-content: flex-end;
-	gap: $grid-unit-05 * 5;
-
-	&[hidden] {
-		display: none;
-	}
-}

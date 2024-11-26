@@ -17,10 +17,12 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Connection;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Merchant;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Middleware;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\WP\NotificationsService;
+use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\GTINMigrationUtilities;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\CleanupProductsJob;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\DeleteAllProducts;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\MigrateGTIN;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\UpdateAllProducts;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\UpdateProducts;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\AccountService;
@@ -43,6 +45,7 @@ use WP_REST_Request as Request;
 class ConnectionTest implements Service, Registerable {
 
 	use PluginHelper;
+	use GTINMigrationUtilities;
 
 	/**
 	 * @var ContainerInterface
@@ -644,6 +647,21 @@ class ConnectionTest implements Service, Registerable {
 					<input name="merchant_id" type="hidden" value="<?php echo ! empty( $_GET['merchant_id'] ) ? intval( $_GET['merchant_id'] ) : ''; ?>" />
 					<input name="page" value="connection-test-admin-page" type="hidden" />
 					<input name="action" value="wcs-cleanup-products" type="hidden" />
+				</form>
+				<form action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>" method="GET">
+					<table class="form-table" role="presentation">
+						<tr>
+							<th><label>GTIN Migration:</label></th>
+							<td>
+								<p>
+									<code><?php echo $this->get_gtin_migration_status(); ?></code>
+								</p>
+								<p>
+									<a class="button" href="<?php echo esc_url( wp_nonce_url( add_query_arg( [ 'action' => 'migrate-gtin' ], $url ), 'migrate-gtin' ) ); ?>">Start GTIN Migration</a>
+								</p>
+							</td>
+						</tr>
+					</table>
 				</form>
 			<?php } ?>
 
@@ -1321,6 +1339,14 @@ class ConnectionTest implements Service, Registerable {
 				$this->response = 'Successfully scheduled a job to cleanup all products!';
 			}
 		}
+
+		if ( 'migrate-gtin' === $_GET['action'] && check_admin_referer( 'migrate-gtin' ) ) {
+			/** @var MigrateGTIN $job */
+			$job = $this->container->get( MigrateGTIN::class );
+			$job->schedule();
+			$this->response = 'Successfully scheduled a job to migrate GTIN';
+		}
+
 
 	}
 

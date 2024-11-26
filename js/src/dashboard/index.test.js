@@ -18,6 +18,13 @@ import isWCTracksEnabled from '.~/utils/isWCTracksEnabled';
 import RebrandingTour from '.~/components/tours/rebranding-tour';
 import { GUIDE_NAMES } from '.~/constants';
 
+jest.mock( '.~/hooks/useGTINMigrationStatus', () =>
+	jest
+		.fn()
+		.mockReturnValue( [ 'completed', false, jest.fn() ] )
+		.mockName( 'useGTINMigrationStatus' )
+);
+
 jest.mock( '.~/components/different-currency-notice', () =>
 	jest.fn().mockName( 'DifferentCurrencyNotice' )
 );
@@ -46,7 +53,7 @@ jest.mock( '@woocommerce/navigation', () => {
 jest.mock( '.~/utils/isWCTracksEnabled', () => jest.fn() );
 
 const CAMPAIGN_CREATION_SUCCESS_GUIDE_TEXT =
-	"You've set up a paid Performance Max Campaign!";
+	"You've set up a Performance Max Campaign!";
 const CES_PROMPT_TEXT = 'How easy was it to create a Google Ad campaign?';
 
 jest.mock( '.~/components/customer-effort-score-prompt', () => () => (

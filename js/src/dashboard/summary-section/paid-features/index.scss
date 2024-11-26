@@ -1,0 +1,44 @@
+.gla-paid-features {
+
+	&__content {
+		flex-direction: column;
+
+		@media (min-width: $break-small) {
+			align-items: flex-start;
+			flex-direction: row;
+			gap: $grid-unit-20;
+		}
+	}
+
+	&__feature-list {
+		display: flex;
+		flex-direction: column;
+		gap: $grid-unit-20;
+		line-height: $gla-line-height-smaller;
+		color: $gray-800;
+		text-align: left;
+
+		.gridicon {
+			fill: $alert-green;
+		}
+	}
+
+	.gla-free-ad-credit-claim {
+		text-align: left;
+		background-color: $white;
+		display: flex;
+		align-items: flex-start;
+		gap: $grid-unit;
+		padding: $grid-unit-20 $grid-unit-15;
+		color: $gray-900;
+
+		.gridicon {
+			fill: $gla-color-green;
+			flex: 0 0 auto;
+		}
+	}
+
+	.components-button {
+		align-self: flex-end;
+	}
+}

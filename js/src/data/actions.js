@@ -85,11 +85,6 @@ import { isWCIos, isWCAndroid } from '.~/utils/isMobileApp';
  * @property {'automatic'|'flat'|'manual'} [shipping_rate] Type of the shipping rate.
  * @property {'flat'|'manual'} [shipping_time] Type of the shipping time.
  * @property {string|null} [tax_rate] Type of tax rate, There are two possible values if US is selected: 'destination' and 'manual' otherwise will be null.
- * @property {boolean} [website_live] Whether the store website is live.
- * @property {boolean} [checkout_process_secure] Whether the checkout process is complete and secure.
- * @property {boolean} [payment_methods_visible] Whether the payment methods are visible on the website.
- * @property {boolean} [refund_tos_visible] Whether the refund policy and terms of service are visible on the website.
- * @property {boolean} [contact_info_visible] Whether the phone number, email, and/or address are visible on the website.
  */
 
 /**
@@ -619,130 +614,6 @@ export function* updateGoogleMCContactInformation() {
 	}
 }
 
-/**
- * Requests a phone verification code and returns a `verificationId` which is used for the next verification step.
- *
- * Important note:
- *   This action communicates with Google's production API.
- *   It will REALLY send the verification code to the phone number via SMS/phone call.
- *   When developing/testing, please make sure the passed number is your own or belongs to someone you know.
- *
- * @param {CountryCode} country The country code. Example: 'US'.
- * @param {string} phoneNumber The phone number string in E.164 format. Example: '+12133734253'.
- * @param {'SMS'|'PHONE_CALL'} method The verification method.
- * @return { { verificationId: string } } Verification id to be used for another call.
- * @throws { { display: string } } Will throws an identifiable error with the next step instruction for users.
- */
-export function* requestPhoneVerificationCode( country, phoneNumber, method ) {
-	try {
-		const response = yield apiFetch( {
-			path: `${ API_NAMESPACE }/mc/phone-verification/request`,
-			method: 'POST',
-			data: {
-				phone_region_code: country,
-				phone_number: phoneNumber,
-				verification_method: method,
-			},
-		} );
-
-		return {
-			verificationId: response.verification_id,
-		};
-	} catch ( error ) {
-		// Currently, 'badRequest' won't be presented and all error responses return the
-		// same reason 'backendError'. Maybe someday the error reason can be distinguished
-		// and then we can recheck if there is a better way to handle errors.
-		//
-		// Ref:
-		// - https://github.com/woocommerce/google-listings-and-ads/issues/1101
-		// - https://github.com/woocommerce/google-listings-and-ads/issues/1998
-		if ( error.reason === 'backendError' ) {
-			throw {
-				display: __(
-					'Unable to request the verification code. This may be due to an invalid phone number or the limit of five attempts to verify the same phone number every four hours.',
-					'google-listings-and-ads'
-				),
-			};
-		}
-
-		if ( error.reason === 'rateLimitExceeded' ) {
-			throw {
-				...error,
-				display: __(
-					'Unable to initiate the verification code request. A maximum of five attempts to verify the same phone number every four hours. Please try again later.',
-					'google-listings-and-ads'
-				),
-			};
-		}
-
-		handleApiError(
-			error,
-			__(
-				'Unable to request the phone verification code.',
-				'google-listings-and-ads'
-			)
-		);
-	}
-}
-
-/**
- * Verifies the phone number for users by passing the corresponding data used from the `requestPhoneVerificationCode` action.
- *
- * @param {string} verificationId The verification ID got from the `requestPhoneVerificationCode` action.
- * @param {string} code The six-digit verification code sent/call to the user's phone.
- * @param {'SMS'|'PHONE_CALL'} method The verification method. It should correspond with the verification ID got from the `requestPhoneVerificationCode` action.
- * @throws { { display: string } } Will throws an identifiable error with the next step instruction for users.
- */
-export function* verifyPhoneNumber( verificationId, code, method ) {
-	try {
-		yield apiFetch( {
-			path: `${ API_NAMESPACE }/mc/phone-verification/verify`,
-			method: 'POST',
-			data: {
-				verification_id: verificationId,
-				verification_code: code,
-				verification_method: method,
-			},
-		} );
-
-		return {
-			type: TYPES.VERIFIED_MC_PHONE_NUMBER,
-		};
-	} catch ( error ) {
-		const { reason, message = '' } = error;
-
-		if ( reason === 'badRequest' ) {
-			// Example of message format: '[verificationCode] Wrong code.'
-			const [ , errorCode ] = message.match( /^\[(\w+)\]/ ) || [];
-			const displayDict = {
-				verificationCode: __(
-					'Wrong verification code. Please try again.',
-					'google-listings-and-ads'
-				),
-				verificationId: __(
-					'The verification code has expired. Please initiate a new verification request by the resend button.',
-					'google-listings-and-ads'
-				),
-			};
-
-			if ( errorCode in displayDict ) {
-				throw {
-					...error,
-					display: displayDict[ errorCode ],
-				};
-			}
-		}
-
-		handleApiError(
-			error,
-			__(
-				'Unable to verify your phone number.',
-				'google-listings-and-ads'
-			)
-		);
-	}
-}
-
 export function* fetchTargetAudience() {
 	try {
 		const response = yield apiFetch( {
@@ -1264,6 +1135,18 @@ export function* upsertTour( tour, upsertingClientStoreFirst = false ) {
 			)
 		);
 	}
+}
+
+/**
+ * Action to receive the GTIN Migration status.
+ *
+ * @param {string} status GTIN Migration status
+ */
+export function* receiveGtinMigrationStatus( status ) {
+	return {
+		type: TYPES.RECEIVE_GTIN_MIGRATION_STATUS,
+		data: status,
+	};
 }
 
 export function* fetchGoogleAdsAccountStatus() {

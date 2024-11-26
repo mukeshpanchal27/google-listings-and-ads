@@ -2,7 +2,6 @@
  * Internal dependencies
  */
 import SetUpAccountsPage from '../../utils/pages/setup-mc/step-1-set-up-accounts';
-import SetupAdsAccountPage from '../../utils/pages/setup-ads/setup-ads-accounts';
 import { LOAD_STATE } from '../../utils/constants';
 import {
 	getFAQPanelTitle,
@@ -25,27 +24,36 @@ test.describe.configure( { mode: 'serial' } );
 let setUpAccountsPage = null;
 
 /**
- * @type {import('../../utils/pages/setup-ads/setup-ads-accounts.js').default} setupAdsAccountPage
- */
-let setupAdsAccountPage = null;
-
-/**
  * @type {import('@playwright/test').Page} page
  */
 let page = null;
+
+const ADS_ACCOUNTS = [
+	{
+		id: 111111,
+		name: 'gla',
+	},
+	{
+		id: 222222,
+		name: 'gla',
+	},
+	{
+		id: 333333,
+		name: 'gla',
+	},
+];
 
 test.describe( 'Set up accounts', () => {
 	test.beforeAll( async ( { browser } ) => {
 		page = await browser.newPage();
 		setUpAccountsPage = new SetUpAccountsPage( page );
-		setupAdsAccountPage = new SetupAdsAccountPage( page );
 	} );
 
 	test.afterAll( async () => {
 		await setUpAccountsPage.closePage();
 	} );
 
-	test( 'should see accounts step header, "Connect your WordPress.com account" & connect button', async () => {
+	test( 'JetpackDisconnected: should see accounts step header, "Connect your WordPress.com account" & connect button', async () => {
 		await setUpAccountsPage.goto();
 
 		await expect(
@@ -58,22 +66,13 @@ test.describe( 'Set up accounts', () => {
 			)
 		).toBeVisible();
 
-		await expect(
-			page.getByRole( 'button', { name: 'Connect' } ).first()
-		).toBeEnabled();
-
 		const wpAccountCard = setUpAccountsPage.getWPAccountCard();
 		await expect( wpAccountCard ).toBeEnabled();
 		await expect( wpAccountCard ).toContainText( 'WordPress.com' );
+		await expect( wpAccountCard.getByRole( 'button' ) ).toBeEnabled();
 
 		const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
 		await expect( googleAccountCard.getByRole( 'button' ) ).toBeDisabled();
-
-		const mcAccountCard = setUpAccountsPage.getMCAccountCard();
-		await expect( mcAccountCard.getByRole( 'button' ) ).not.toBeVisible();
-
-		const adsAccountCard = setUpAccountsPage.getGoogleAdsAccountCard();
-		await expect( adsAccountCard.getByRole( 'button' ) ).not.toBeVisible();
 
 		const continueButton = setUpAccountsPage.getContinueButton();
 		await expect( continueButton ).toBeDisabled();
@@ -116,7 +115,7 @@ test.describe( 'Set up accounts', () => {
 		} );
 	} );
 
-	test.describe( 'Connect Google account', () => {
+	test.describe( 'Connected WordPress.com account', async () => {
 		test.beforeAll( async () => {
 			// Mock Jetpack as connected
 			await setUpAccountsPage.mockJetpackConnected(
@@ -133,13 +132,52 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.goto();
 		} );
 
-		test( 'should see their WPORG email, "Google" title & connect button', async () => {
-			const jetpackDescriptionRow =
-				setUpAccountsPage.getJetpackDescriptionRow();
+		test( 'should not show the WP.org connection card when already connected', async () => {
+			await expect(
+				page.getByRole( 'heading', { name: 'Set up your accounts' } )
+			).toBeVisible();
 
-			await expect( jetpackDescriptionRow ).toContainText(
-				'jetpack@example.com'
-			);
+			await expect(
+				page.getByText(
+					'Connect the accounts required to use Google for WooCommerce.'
+				)
+			).toBeVisible();
+
+			const wpAccountCard = setUpAccountsPage.getWPAccountCard();
+			await expect( wpAccountCard ).not.toBeVisible();
+		} );
+	} );
+
+	test.describe( 'Connect Google account', () => {
+		test.beforeAll( async () => {
+			// Mock Jetpack as not connected
+			await setUpAccountsPage.mockJetpackNotConnected();
+
+			// Mock google as not connected.
+			// When pending even WPORG will not render yet.
+			// If not mocked will fail and render nothing,
+			// as Jetpack is mocked only on the client-side.
+			await setUpAccountsPage.mockGoogleNotConnected();
+
+			await setUpAccountsPage.goto();
+		} );
+
+		test( 'should see the connect button and terms and conditions checkbox disabled when jetpack is not connected', async () => {
+			const connectButton = setUpAccountsPage
+				.getGoogleAccountCard()
+				.getByRole( 'button', { name: 'Connect' } );
+
+			await expect( connectButton ).toBeDisabled();
+
+			const termsCheckbox = setUpAccountsPage.getTermsCheckbox();
+			await expect( termsCheckbox ).toBeDisabled();
+		} );
+
+		test( 'should see their WPORG email, "Google" title & connect button', async () => {
+			// Mock Jetpack as connected
+			await setUpAccountsPage.mockJetpackConnected();
+
+			await setUpAccountsPage.goto();
 
 			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
 
@@ -148,23 +186,20 @@ test.describe( 'Set up accounts', () => {
 			).toBeVisible();
 
 			await expect(
-				googleAccountCard
-					.getByRole( 'button', { name: 'Connect' } )
-					.first()
-			).toBeEnabled();
-
-			const mcAccountCard = setUpAccountsPage.getMCAccountCard();
-			await expect(
-				mcAccountCard.getByRole( 'button' )
-			).not.toBeVisible();
-
-			const adsAccountCard = setUpAccountsPage.getGoogleAdsAccountCard();
-			await expect(
-				adsAccountCard.getByRole( 'button' )
-			).not.toBeVisible();
+				googleAccountCard.getByRole( 'button', { name: 'Connect' } )
+			).toBeDisabled();
 
 			const continueButton = setUpAccountsPage.getContinueButton();
 			await expect( continueButton ).toBeDisabled();
+		} );
+
+		test( 'should see the terms and conditions checkbox unchecked by default', async () => {
+			const termsCheckbox = setUpAccountsPage.getTermsCheckbox();
+			await expect( termsCheckbox ).not.toBeChecked();
+
+			// Also ensure that connect button is disabled.
+			const connectButton = setUpAccountsPage.getConnectButton();
+			await expect( connectButton ).toBeDisabled();
 		} );
 
 		test( 'after clicking the "Connect your Google account" button should send an API request to connect Google account, and redirect to the returned URL', async ( {
@@ -174,6 +209,8 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.mockGoogleConnect(
 				baseURL + 'google_auth'
 			);
+
+			await setUpAccountsPage.getTermsCheckbox().check();
 
 			// Click the enabled connect button
 			page.locator(
@@ -186,177 +223,99 @@ test.describe( 'Set up accounts', () => {
 
 			expect( page.url() ).toMatch( baseURL + 'google_auth' );
 		} );
-	} );
 
-	test.describe( 'Google Ads', () => {
-		test.beforeAll( async () => {
-			// Mock Jetpack as connected
-			await setUpAccountsPage.mockJetpackConnected(
-				'Test user',
-				'jetpack@example.com'
-			);
-
-			// Mock google as connected.
+		test( 'should create merchant center and ads account if does not exist for the user', async () => {
+			await setUpAccountsPage.mockJetpackConnected();
 			await setUpAccountsPage.mockGoogleConnected();
+			await setUpAccountsPage.mockAdsCreateAccount();
+			await setUpAccountsPage.mockMCCreateAccountWebsiteClaimed();
 
-			// Start with no Ads account connected.
-			await setupAdsAccountPage.mockAdsAccountDisconnected();
-			await setupAdsAccountPage.mockAdsStatusDisconnected();
-			await setupAdsAccountPage.mockAdsHasNoAccounts();
+			const once = setUpAccountsPage.fulfillTimes( 1 );
 
-			// Mock MC as not connected and has not existing accounts
-			// to avoid errors when attempting to fetch accounts.
-			await setUpAccountsPage.mockMCNotConnected();
-			await setUpAccountsPage.mockMCHasNoAccounts();
+			await once.mockAdsHasNoAccounts();
+			await once.mockMCHasNoAccounts();
+			await once.mockAdsAccountDisconnected();
+			await once.mockAdsStatusDisconnected();
+			await once.mockMCNotConnected();
 
 			await setUpAccountsPage.goto();
-			await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
+
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+
+			await expect(
+				googleAccountCard.getByText(
+					'You don’t have Merchant Center nor Google Ads accounts, so we’re creating them for you.',
+					{
+						exact: true,
+					}
+				)
+			).toBeVisible();
 		} );
 
-		test( 'should see Google Ads section', async () => {
-			const section = setUpAccountsPage.getGoogleAdsAccountCard();
-			await expect( section ).toBeVisible();
+		test( 'should show Ads claim and MC Reclaim after auto-creation, when appropriate', async () => {
+			await setUpAccountsPage.mockJetpackConnected();
+			await setUpAccountsPage.mockGoogleConnected();
+			await setUpAccountsPage.mockMCCreateAccountWebsiteClaimed();
+			await setUpAccountsPage.mockAdsCreateAccount();
+			await setUpAccountsPage.mockAdsAccountIncomplete( 'claim_account' );
+			await setUpAccountsPage.mockAdsStatusNotClaimed();
+
+			const once = setUpAccountsPage.fulfillTimes( 1 );
+
+			await once.mockAdsHasNoAccounts();
+			await once.mockMCHasNoAccounts();
+			await once.mockAdsAccountDisconnected();
+			await once.mockAdsStatusDisconnected();
+			await once.mockMCNotConnected();
+
+			await setUpAccountsPage.goto();
+
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+			const googleMCReclaimButton =
+				setUpAccountsPage.getReclaimMyURLButton();
+
+			await expect(
+				googleAccountCard.getByRole( 'button', {
+					name: 'Claim account in Google Ads',
+				} )
+			).toBeVisible();
+
+			await expect( googleMCReclaimButton ).toBeVisible();
 		} );
 
-		test.describe( 'Google Ads account', () => {
-			test.describe( 'Create account', () => {
-				test.beforeAll( async () => {
-					await setUpAccountsPage.clickCreateAdsAccountButton();
-				} );
-
-				test( 'should see "Create Google Ads Account" modal', async () => {
-					const modal = setupAdsAccountPage.getCreateAccountModal();
-					await expect( modal ).toBeVisible();
-				} );
-
-				test( 'should see "ToS checkbox" from modal is unchecked', async () => {
-					const checkbox =
-						setupAdsAccountPage.getAcceptTermCreateAccount();
-					await expect( checkbox ).toBeVisible();
-					await expect( checkbox ).not.toBeChecked();
-				} );
-
-				test( 'should see "Create account" from modal is disabled', async () => {
-					const button =
-						setupAdsAccountPage.getCreateAdsAccountButtonModal();
-					await expect( button ).toBeVisible();
-					await expect( button ).toBeDisabled();
-				} );
-
-				test( 'should see "Create account" from modal is enabled when ToS checkbox is checked', async () => {
-					const button =
-						setupAdsAccountPage.getCreateAdsAccountButtonModal();
-					await setupAdsAccountPage.clickToSCheckboxFromModal();
-					await expect( button ).toBeEnabled();
-				} );
-
-				test( 'should see "Accept invitation" modal after creating account', async () => {
-					// Mock Ads account not claimed.
-					await setupAdsAccountPage.mockAdsAccountConnected();
-					await setupAdsAccountPage.mockAdsStatusNotClaimed();
-
-					await setupAdsAccountPage.clickCreateAccountButtonFromModal();
-
-					const modal = setupAdsAccountPage.getAcceptAccountModal();
-					await expect( modal ).toBeVisible();
-				} );
-
-				test( 'should see ads account claim message until ads account is accepted', async () => {
-					await setupAdsAccountPage.clickCloseAcceptAccountButtonFromModal();
-
-					const claimButton =
-						await setupAdsAccountPage.getAdsClaimAccountButton();
-					const claimText =
-						await setupAdsAccountPage.getAdsClaimAccountText();
-
-					await expect( claimButton ).toBeVisible();
-					await expect( claimText ).toBeVisible();
-				} );
+		test.describe( 'After connecting Google account', () => {
+			test.beforeEach( async () => {
+				await setUpAccountsPage.mockJetpackConnected();
+				await setUpAccountsPage.mockGoogleConnected();
+				await setUpAccountsPage.mockMCConnected();
+				await setUpAccountsPage.mockContactInformation();
+				await setUpAccountsPage.mockAdsAccountConnected();
+				await setUpAccountsPage.mockAdsAccountsResponse( ADS_ACCOUNTS );
+				await setUpAccountsPage.mockMCHasAccounts();
+				await setUpAccountsPage.goto();
 			} );
 
-			test.describe( 'Create an ads account with invitation accepted', () => {
-				test.beforeAll( async () => {
-					// Mock the ads account as claimed.
-					await setupAdsAccountPage.mockAdsStatusClaimed();
+			test( 'should see the merchant center id and ads account id if connected', async () => {
+				await setUpAccountsPage.mockAdsStatusClaimed();
 
-					await setUpAccountsPage.goto();
-					await page.waitForLoadState(
-						LOAD_STATE.DOM_CONTENT_LOADED
-					);
-				} );
+				const googleAccountCard =
+					setUpAccountsPage.getGoogleAccountCard();
 
-				test( 'should see ads account connected message once ads account is accepted', async () => {
-					const connectedText =
-						setUpAccountsPage.getAdsAccountConnectedText();
+				await expect(
+					googleAccountCard.getByText( 'Merchant Center ID: 1234', {
+						exact: true,
+					} )
+				).toBeVisible();
 
-					const connectedNotice =
-						setUpAccountsPage.getAdsAccountConnectedNotice();
+				await expect(
+					googleAccountCard.getByText( 'Google Ads ID: 12345', {
+						exact: true,
+					} )
+				).toBeVisible();
 
-					await expect( connectedText ).toBeVisible();
-					await expect( connectedNotice ).toBeVisible();
-				} );
-			} );
-
-			test.describe( 'Connect to an existing account', () => {
-				test.beforeAll( async () => {
-					await setupAdsAccountPage.mockAdsAccountsResponse( [
-						{
-							id: 12345,
-							name: 'Test Ad 1',
-						},
-						{
-							id: 23456,
-							name: 'Test Ad 2',
-						},
-					] );
-
-					await setupAdsAccountPage.mockAdsAccountDisconnected();
-					await setupAdsAccountPage.clickConnectDifferentAccountButton();
-				} );
-
-				test( 'should see the ads account select', async () => {
-					const select = setupAdsAccountPage.getAdsAccountSelect();
-					await expect( select ).toBeVisible();
-				} );
-
-				test( 'should see connect button is disabled when no ads account is selected', async () => {
-					const button = setupAdsAccountPage.getConnectAdsButton();
-					await expect( button ).toBeVisible();
-					await expect( button ).toBeDisabled();
-				} );
-
-				test( 'should see connect button is enabled when an ads account is selected', async () => {
-					await setupAdsAccountPage.selectAnExistingAdsAccount(
-						'23456'
-					);
-					const button = setupAdsAccountPage.getConnectAdsButton();
-					await expect( button ).toBeVisible();
-					await expect( button ).toBeEnabled();
-				} );
-
-				test( 'should see ads account connected text and ads/accounts request is triggered after clicking connect button', async () => {
-					await setupAdsAccountPage.mockAdsAccountsResponse( [
-						{
-							id: 23456,
-							name: 'Test Ad 2',
-						},
-					] );
-
-					await setupAdsAccountPage.mockAdsAccountConnected( 23456 );
-
-					const requestPromise =
-						setupAdsAccountPage.registerConnectAdsAccountRequests(
-							'23456'
-						);
-
-					await setupAdsAccountPage.clickConnectAds();
-
-					await requestPromise;
-
-					const connectedText =
-						setUpAccountsPage.getAdsAccountConnectedText();
-					await expect( connectedText ).toBeVisible();
-				} );
+				await expect(
+					googleAccountCard.getByText( 'Connected', { exact: true } )
+				).toBeVisible();
 			} );
 		} );
 	} );
@@ -365,37 +324,28 @@ test.describe( 'Set up accounts', () => {
 		test.beforeAll( async () => {
 			await Promise.all( [
 				// Mock Jetpack as connected.
-				setUpAccountsPage.mockJetpackConnected(
-					'Test user',
-					'jetpack@example.com'
-				),
+				setUpAccountsPage.mockJetpackConnected(),
 
 				// Mock google as connected.
 				setUpAccountsPage.mockGoogleConnected( 'google@example.com' ),
 
-				// Mock Google Ads as not connected.
-				setupAdsAccountPage.mockAdsAccountDisconnected(),
-				setupAdsAccountPage.mockAdsHasNoAccounts(),
+				// Mock Google Ads as connected.
+				setUpAccountsPage.mockAdsAccountConnected(),
+				setUpAccountsPage.mockAdsStatusClaimed(),
 
 				// Mock merchant center as not connected.
 				setUpAccountsPage.mockMCNotConnected(),
 			] );
 		} );
 
-		test.describe( 'Merchant Center has no existing accounts', () => {
+		test.describe( 'Create Merchant Center Account', () => {
 			test.beforeAll( async () => {
-				// Mock merchant center has no accounts
-				await setUpAccountsPage.mockMCHasNoAccounts();
+				await setUpAccountsPage.mockAdsAccountsResponse( ADS_ACCOUNTS );
+				await setUpAccountsPage.mockMCHasAccounts();
 				await setUpAccountsPage.goto();
 			} );
 
-			test( 'should see their WPORG email, Google email, "Google Merchant Center" title & "Create account" button', async () => {
-				const jetpackDescriptionRow =
-					setUpAccountsPage.getJetpackDescriptionRow();
-				await expect( jetpackDescriptionRow ).toContainText(
-					'jetpack@example.com'
-				);
-
+			test( 'should see their Google email, "Google Merchant Center" title & "Create account" button', async () => {
 				const googleDescriptionRow =
 					setUpAccountsPage.getGoogleDescriptionRow();
 				await expect( googleDescriptionRow ).toContainText(
@@ -404,12 +354,12 @@ test.describe( 'Set up accounts', () => {
 
 				const mcTitleRow = setUpAccountsPage.getMCTitleRow();
 				await expect( mcTitleRow ).toContainText(
-					'Google Merchant Center'
+					'Connect to existing Merchant Center account'
 				);
 
-				const createAccountButton =
-					setUpAccountsPage.getMCCreateAccountButtonFromPage();
-				await expect( createAccountButton ).toBeEnabled();
+				const mcFooterButton =
+					setUpAccountsPage.getMCCardFooterButton();
+				await expect( mcFooterButton ).toBeEnabled();
 
 				const continueButton = setUpAccountsPage.getContinueButton();
 				await expect( continueButton ).toBeDisabled();
@@ -420,7 +370,6 @@ test.describe( 'Set up accounts', () => {
 				const createAccountButton =
 					setUpAccountsPage.getMCCreateAccountButtonFromPage();
 				await createAccountButton.click();
-				await page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 
 				const modalHeader = setUpAccountsPage.getModalHeader();
 				await expect( modalHeader ).toContainText(
@@ -440,9 +389,7 @@ test.describe( 'Set up accounts', () => {
 			} );
 
 			test.describe( 'click "Create account" button from the modal', () => {
-				test( 'should see Merchant Center "Connected" when the website is not claimed', async ( {
-					baseURL,
-				} ) => {
+				test( 'should see Merchant Center account "Connected" when the website is not claimed', async () => {
 					await Promise.all( [
 						// Mock Merchant Center create accounts
 						setUpAccountsPage.mockMCCreateAccountWebsiteNotClaimed(),
@@ -454,20 +401,16 @@ test.describe( 'Set up accounts', () => {
 					const createAccountButtonFromModal =
 						setUpAccountsPage.getMCCreateAccountButtonFromModal();
 					await createAccountButtonFromModal.click();
-					await page.waitForLoadState(
-						LOAD_STATE.DOM_CONTENT_LOADED
-					);
 					const mcConnectedLabel =
-						setUpAccountsPage.getMCConnectedLabel();
+						setUpAccountsPage.getGoogleComboConnectedLabel();
 					await expect( mcConnectedLabel ).toContainText(
 						'Connected'
 					);
 
-					const host = new URL( baseURL ).host;
 					const mcDescriptionRow =
 						setUpAccountsPage.getMCDescriptionRow();
 					await expect( mcDescriptionRow ).toContainText(
-						`${ host } (12345)`
+						'Merchant Center ID: 12345'
 					);
 				} );
 
@@ -478,9 +421,6 @@ test.describe( 'Set up accounts', () => {
 						const host = new URL( baseURL ).host;
 
 						await Promise.all( [
-							// Mock merchant center has no accounts
-							setUpAccountsPage.mockMCHasNoAccounts(),
-
 							// Mock Merchant Center as not connected
 							setUpAccountsPage.mockMCNotConnected(),
 						] );
@@ -497,9 +437,6 @@ test.describe( 'Set up accounts', () => {
 						const createAccountButton =
 							setUpAccountsPage.getMCCreateAccountButtonFromPage();
 						await createAccountButton.click();
-						await page.waitForLoadState(
-							LOAD_STATE.DOM_CONTENT_LOADED
-						);
 
 						// Check the checkbox to accept ToS.
 						const modalCheckbox =
@@ -510,9 +447,6 @@ test.describe( 'Set up accounts', () => {
 						const createAccountButtonFromModal =
 							setUpAccountsPage.getMCCreateAccountButtonFromModal();
 						await createAccountButtonFromModal.click();
-						await page.waitForLoadState(
-							LOAD_STATE.DOM_CONTENT_LOADED
-						);
 
 						const reclaimButton =
 							setUpAccountsPage.getReclaimMyURLButton();
@@ -533,9 +467,7 @@ test.describe( 'Set up accounts', () => {
 						await expect( continueButton ).toBeDisabled();
 					} );
 
-					test( 'click "Reclaim my URL" should send a claim overwrite request and see Merchant Center "Connected"', async ( {
-						baseURL,
-					} ) => {
+					test( 'click "Reclaim my URL" should send a claim overwrite request and see Merchant Center "Connected"', async () => {
 						await Promise.all( [
 							// Mock Merchant Center accounts claim overwrite
 							setUpAccountsPage.mockMCAccountsClaimOverwrite(
@@ -549,48 +481,33 @@ test.describe( 'Set up accounts', () => {
 						const reclaimButton =
 							setUpAccountsPage.getReclaimMyURLButton();
 						await reclaimButton.click();
-						await page.waitForLoadState(
-							LOAD_STATE.DOM_CONTENT_LOADED
-						);
 
 						const mcConnectedLabel =
-							setUpAccountsPage.getMCConnectedLabel();
+							setUpAccountsPage.getGoogleComboConnectedLabel();
 						await expect( mcConnectedLabel ).toContainText(
 							'Connected'
 						);
 
-						const host = new URL( baseURL ).host;
 						const mcDescriptionRow =
 							setUpAccountsPage.getMCDescriptionRow();
 						await expect( mcDescriptionRow ).toContainText(
-							`${ host } (12345)`
+							'Merchant Center ID: 12345'
 						);
 					} );
 				} );
 			} );
 		} );
 
-		test.describe( 'Merchant Center has existing accounts', () => {
+		test.describe( 'Connect Merchant Center account', () => {
 			test.beforeAll( async () => {
 				await Promise.all( [
+					setUpAccountsPage.mockAdsAccountsResponse( ADS_ACCOUNTS ),
+
 					// Mock merchant center as not connected.
 					setUpAccountsPage.mockMCNotConnected(),
 
 					// Mock merchant center has accounts
-					setUpAccountsPage.fulfillMCAccounts( [
-						{
-							id: 12345,
-							subaccount: true,
-							name: 'MC Account 1',
-							domain: 'https://example.com',
-						},
-						{
-							id: 23456,
-							subaccount: true,
-							name: 'MC Account 2',
-							domain: 'https://example.com',
-						},
-					] ),
+					setUpAccountsPage.mockMCHasAccounts(),
 				] );
 
 				await setUpAccountsPage.goto();
@@ -601,7 +518,7 @@ test.describe( 'Set up accounts', () => {
 					const selectAccountTitle =
 						setUpAccountsPage.getSelectExistingMCAccountTitle();
 					await expect( selectAccountTitle ).toContainText(
-						'Select an existing account'
+						'Connect to existing Merchant Center account'
 					);
 				} );
 
@@ -623,9 +540,7 @@ test.describe( 'Set up accounts', () => {
 					await expect( continueButton ).toBeDisabled();
 				} );
 
-				test( 'select MC Account 2 and click "Connect" button should see Merchant Center "Connected"', async ( {
-					baseURL,
-				} ) => {
+				test( 'select MC Account 2 and click "Connect" button should see Merchant Center "Connected"', async () => {
 					await Promise.all( [
 						// Mock Merchant Center create accounts
 						setUpAccountsPage.mockMCCreateAccountWebsiteNotClaimed(),
@@ -644,90 +559,305 @@ test.describe( 'Set up accounts', () => {
 					// Click connect button
 					const connectButton = setUpAccountsPage.getConnectButton();
 					await connectButton.click();
-					await page.waitForLoadState(
-						LOAD_STATE.DOM_CONTENT_LOADED
-					);
 
 					const mcConnectedLabel =
-						setUpAccountsPage.getMCConnectedLabel();
+						setUpAccountsPage.getGoogleComboConnectedLabel();
 					await expect( mcConnectedLabel ).toContainText(
 						'Connected'
 					);
 
-					const host = new URL( baseURL ).host;
 					const mcDescriptionRow =
 						setUpAccountsPage.getMCDescriptionRow();
 					await expect( mcDescriptionRow ).toContainText(
-						`${ host } (23456)`
+						'Merchant Center ID: 23456'
 					);
 				} );
 			} );
+		} );
+	} );
 
-			test.describe( 'click "Or, create a new Merchant Center account"', () => {
-				test.beforeAll( async () => {
-					await Promise.all( [
-						// Mock merchant center as not connected.
-						setUpAccountsPage.mockMCNotConnected(),
+	test.describe( 'Google Ads card', () => {
+		test.beforeAll( async () => {
+			await setUpAccountsPage.mockJetpackConnected();
+			await setUpAccountsPage.mockGoogleConnected();
+			await setUpAccountsPage.mockMCHasAccounts();
+			await setUpAccountsPage.mockMCConnected();
+			await setUpAccountsPage.mockContactInformation();
+			await setUpAccountsPage.mockAdsAccountDisconnected();
+			await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
 
-						// Mock merchant center has accounts
-						setUpAccountsPage.fulfillMCAccounts( [
-							{
-								id: 12345,
-								subaccount: true,
-								name: 'MC Account 1',
-								domain: 'https://example.com',
-							},
-							{
-								id: 23456,
-								subaccount: true,
-								name: 'MC Account 2',
-								domain: 'https://example.com',
-							},
-						] ),
-					] );
+			await setUpAccountsPage.goto();
+		} );
 
-					await setUpAccountsPage.goto();
-				} );
+		test.describe( 'When existing Google Ads accounts are available, but not connected', () => {
+			test( 'should see the Google Ads card with the correct title and body', async () => {
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
 
-				test( 'should see see a modal to ensure the intention of creating a new account', async () => {
-					// Click 'Or, create a new Merchant Center account'
-					const mcFooterButton =
-						setUpAccountsPage.getMCCardFooterButton();
-					await mcFooterButton.click();
-					await page.waitForLoadState(
-						LOAD_STATE.DOM_CONTENT_LOADED
-					);
+				await expect(
+					googleAdsAccountCard.getByText(
+						'Connect to existing Google Ads account',
+						{ exact: true }
+					)
+				).toBeVisible();
 
-					const modalHeader = setUpAccountsPage.getModalHeader();
-					await expect( modalHeader ).toContainText(
-						'Create Google Merchant Center Account'
-					);
-
-					const modalCheckbox = setUpAccountsPage.getModalCheckbox();
-					await expect( modalCheckbox ).toBeEnabled();
-
-					const modalPrimaryButton =
-						setUpAccountsPage.getModalPrimaryButton();
-					await expect( modalPrimaryButton ).toContainText(
-						'Create account'
-					);
-					await expect( modalPrimaryButton ).toBeDisabled();
-
-					// Select the checkbox, the button should be enabled.
-					await modalCheckbox.click();
-					await expect( modalPrimaryButton ).toBeEnabled();
-				} );
+				await expect(
+					googleAdsAccountCard.getByText(
+						'Required to set up conversion measurement for your store.',
+						{ exact: true }
+					)
+				).toBeVisible();
 			} );
+
+			test( 'should see the button as enabled when selects the account from dropdown', async () => {
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+
+				const adsAccountDropdown =
+					googleAdsAccountCard.locator( 'select' );
+				await adsAccountDropdown.selectOption( '222222' );
+
+				await expect(
+					googleAdsAccountCard.getByRole( 'button', {
+						name: 'Connect',
+					} )
+				).toBeEnabled();
+			} );
+
+			test( 'should send an API request to connect existing Google Ads account', async () => {
+				const adsAccountsResponse =
+					setUpAccountsPage.registerAdsAccountsResponse();
+
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+				await setUpAccountsPage.mockAdsStatusClaimed();
+
+				const adsAccountDropdown =
+					googleAdsAccountCard.locator( 'select' );
+				await adsAccountDropdown.selectOption( '222222' );
+				await googleAdsAccountCard
+					.getByRole( 'button', { name: 'Connect' } )
+					.click();
+
+				await setUpAccountsPage.mockAdsAccountConnected( 222222 );
+				await adsAccountsResponse;
+
+				const googleAccountCard =
+					setUpAccountsPage.getGoogleAccountCard();
+				await expect(
+					googleAccountCard.getByText( 'Google Ads ID: 222222' )
+				).toBeVisible();
+			} );
+		} );
+
+		test.describe( 'When new Google Ads account is created', () => {
+			test.beforeAll( async () => {
+				await setUpAccountsPage.mockAdsAccountDisconnected();
+
+				await setUpAccountsPage.goto();
+			} );
+
+			test( 'should see the Create new Google Ads account link', async () => {
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+
+				await expect(
+					googleAdsAccountCard.getByText(
+						'Or, create a new Google Ads account',
+						{ exact: true }
+					)
+				).toBeVisible();
+			} );
+
+			test( 'clicking the "Create new Google Ads account" link should open the modal', async () => {
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+
+				await googleAdsAccountCard
+					.getByText( 'Or, create a new Google Ads account' )
+					.click();
+
+				await expect( setUpAccountsPage.getModal() ).toBeVisible();
+				await expect( setUpAccountsPage.getModalHeader() ).toHaveText(
+					'Create Google Ads Account'
+				);
+
+				// "Yes, I want a new account" button should be disabled and secondary.
+				const yesButton = setUpAccountsPage.getModalSecondaryButton();
+				const cancelButton = setUpAccountsPage.getModalPrimaryButton();
+				await expect( yesButton ).toHaveText(
+					'Yes, I want a new account'
+				);
+
+				await expect( cancelButton ).toHaveText( 'Cancel' );
+
+				// Click the cancel button to close the modal.
+				await cancelButton.click();
+				await expect( setUpAccountsPage.getModal() ).not.toBeVisible();
+			} );
+
+			test( 'clicking the "Yes, I want a new account" button should create a new Google Ads account', async () => {
+				const googleAccountCard =
+					setUpAccountsPage.getGoogleAccountCard();
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+
+				await setUpAccountsPage.fulfillAdsAccounts( [
+					{
+						id: 111111,
+					},
+				] );
+
+				await setUpAccountsPage.mockAdsStatusNotClaimed();
+				await setUpAccountsPage.mockAdsAccountIncomplete();
+
+				await googleAdsAccountCard
+					.getByText( 'Or, create a new Google Ads account' )
+					.click();
+
+				await expect( setUpAccountsPage.getModal() ).toBeVisible();
+
+				const yesButton = setUpAccountsPage.getModalSecondaryButton();
+				await yesButton.click();
+
+				await expect( setUpAccountsPage.getModal() ).not.toBeVisible();
+
+				// Google Ads ID should be displayed.
+				await expect(
+					googleAccountCard.getByText( 'Google Ads ID: 12345' )
+				).toBeVisible();
+			} );
+		} );
+	} );
+
+	test.describe( 'Claim Google Ads Account', () => {
+		test.beforeAll( async () => {
+			await setUpAccountsPage.mockJetpackConnected();
+			await setUpAccountsPage.mockGoogleConnected();
+			await setUpAccountsPage.mockMCHasAccounts();
+			await setUpAccountsPage.mockMCConnected();
+			await setUpAccountsPage.mockContactInformation();
+			await setUpAccountsPage.fulfillAdsAccounts( [ { id: 12345 } ] );
+			await setUpAccountsPage.mockAdsAccountConnected();
+			await setUpAccountsPage.mockAdsStatusNotClaimed();
+
+			await setUpAccountsPage.goto();
+		} );
+
+		test( 'should see the claim button', async () => {
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+			await expect(
+				googleAccountCard.getByRole( 'button', {
+					name: 'Claim account in Google Ads',
+				} )
+			).toBeVisible();
+		} );
+
+		test( 'should open the popup when the claim button is clicked', async () => {
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+
+			const [ popupPage ] = await Promise.all( [
+				page.waitForEvent( 'popup' ),
+				googleAccountCard
+					.getByRole( 'button', {
+						name: 'Claim account in Google Ads',
+					} )
+					.click(),
+			] );
+
+			await popupPage.waitForLoadState();
+			const url = popupPage.url();
+			expect( url ).toMatch( /^https:\/\/example\.com\/?$/ );
+			await popupPage.close();
+		} );
+
+		test( 'should see the accounts card connected', async () => {
+			await setUpAccountsPage.mockAdsStatusClaimed();
+
+			await page.reload();
+
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+
+			await expect(
+				googleAccountCard.getByText( 'Connected', {
+					exact: true,
+				} )
+			).toBeVisible();
+		} );
+	} );
+
+	test.describe( 'Store address card', () => {
+		test.beforeAll( async () => {
+			// Everything is set up except for the MC connection.
+			await setUpAccountsPage.mockJetpackConnected();
+			await setUpAccountsPage.mockGoogleConnected();
+			await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
+			await setUpAccountsPage.mockAdsAccountConnected();
+			await setUpAccountsPage.mockAdsStatusClaimed();
+			await setUpAccountsPage.mockMCHasAccounts();
+			await setUpAccountsPage.mockMCNotConnected();
+
+			await setUpAccountsPage.goto();
+		} );
+
+		test( 'should not be shown when MC is not connected', async () => {
+			const googleAccountCard = setUpAccountsPage.getGoogleAccountCard();
+			const storeAddressCard = setUpAccountsPage.getStoreAddressCard();
+
+			// Wait for UI to render before checking for no visibility.
+			await expect( googleAccountCard ).toBeVisible();
+			await expect( storeAddressCard ).not.toBeVisible();
+		} );
+
+		test( 'should be shown when MC is connected', async () => {
+			await setUpAccountsPage.mockMCConnected();
+			await setUpAccountsPage.mockContactInformation();
+
+			await page.reload();
+
+			const storeAddressCard = setUpAccountsPage.getStoreAddressCard();
+
+			await expect( storeAddressCard ).toBeVisible();
+		} );
+
+		test( 'should update the store address when the button is clicked', async () => {
+			await setUpAccountsPage.mockContactInformation( {
+				streetAddress: '123 Main St',
+			} );
+
+			const storeAddressCard = setUpAccountsPage.getStoreAddressCard();
+			const updateButton = setUpAccountsPage.getStoreAddressButton();
+
+			await updateButton.click();
+
+			await expect( storeAddressCard ).toContainText( '123 Main St' );
+		} );
+
+		test( 'should show an error message when the store address is not updated', async () => {
+			await setUpAccountsPage.mockContactInformation( {
+				streetAddress: '',
+				wcAddressErrors: [ 'address_1' ],
+			} );
+
+			const storeAddressCard = setUpAccountsPage.getStoreAddressCard();
+			const updateButton = setUpAccountsPage.getStoreAddressButton();
+
+			await updateButton.click();
+
+			await expect( storeAddressCard ).toContainText(
+				'Your store address is required by Google for verification.'
+			);
+
+			await expect( storeAddressCard ).toContainText(
+				'The address line of store address is required.'
+			);
 		} );
 	} );
 
 	test.describe( 'Continue button', () => {
 		test.beforeAll( async () => {
 			// Mock Jetpack as connected
-			await setUpAccountsPage.mockJetpackConnected(
-				'Test user',
-				'jetpack@example.com'
-			);
+			await setUpAccountsPage.mockJetpackConnected();
 
 			// Mock google as connected.
 			await setUpAccountsPage.mockGoogleConnected();
@@ -735,8 +865,12 @@ test.describe( 'Set up accounts', () => {
 
 		test.describe( 'When only Ads is connected', async () => {
 			test.beforeAll( async () => {
-				await setupAdsAccountPage.mockAdsAccountConnected();
+				await setUpAccountsPage.mockAdsAccountConnected();
 				await setUpAccountsPage.mockMCNotConnected();
+				await setUpAccountsPage.mockContactInformation( {
+					wcAddressErrors: [],
+					isMCAddressDifferent: false,
+				} );
 
 				await setUpAccountsPage.goto();
 			} );
@@ -750,8 +884,10 @@ test.describe( 'Set up accounts', () => {
 
 		test.describe( 'When only MC is connected', async () => {
 			test.beforeAll( async () => {
-				await setupAdsAccountPage.mockAdsAccountDisconnected();
+				await setUpAccountsPage.mockAdsAccountDisconnected();
+				await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
 				await setUpAccountsPage.mockMCConnected();
+				await setUpAccountsPage.mockContactInformation();
 
 				await setUpAccountsPage.goto();
 			} );
@@ -763,11 +899,34 @@ test.describe( 'Set up accounts', () => {
 			} );
 		} );
 
-		test.describe( 'When all accounts are connected', async () => {
+		test.describe( 'When the store address is invalid', async () => {
 			test.beforeAll( async () => {
-				await setupAdsAccountPage.mockAdsAccountConnected();
-				await setupAdsAccountPage.mockAdsStatusClaimed();
+				await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
+				await setUpAccountsPage.mockAdsAccountConnected();
+				await setUpAccountsPage.mockAdsStatusClaimed();
+				await setUpAccountsPage.mockMCHasAccounts();
 				await setUpAccountsPage.mockMCConnected();
+				await setUpAccountsPage.mockContactInformation( {
+					streetAddress: '',
+					wcAddressErrors: [ 'address_1' ],
+				} );
+
+				await setUpAccountsPage.goto();
+			} );
+
+			test( 'should see "Continue" button disabled when the store address needs to be updated', async () => {
+				const continueButton =
+					await setUpAccountsPage.getContinueButton();
+				await expect( continueButton ).toBeDisabled();
+			} );
+		} );
+
+		test.describe( 'When all accounts are connected and store address is fulfilled', async () => {
+			test.beforeAll( async () => {
+				await setUpAccountsPage.mockAdsAccountConnected();
+				await setUpAccountsPage.mockMCConnected();
+				await setUpAccountsPage.mockAdsStatusClaimed();
+				await setUpAccountsPage.mockContactInformation( {} );
 
 				await setUpAccountsPage.goto();
 			} );
@@ -777,6 +936,163 @@ test.describe( 'Set up accounts', () => {
 					await setUpAccountsPage.getContinueButton();
 
 				await expect( continueButton ).toBeEnabled();
+			} );
+
+			test( 'should sync the address and show the heading of the next step when clicked', async () => {
+				const requestPromise =
+					setUpAccountsPage.registerContactInformationSyncRequest();
+
+				await setUpAccountsPage.clickContinueButton();
+
+				const request = await requestPromise;
+				const response = await request.response();
+				const responseBody = await response.json();
+
+				expect( response.status() ).toBe( 200 );
+				expect( responseBody.wc_address_errors ).toStrictEqual( [] );
+
+				await expect(
+					page.getByRole( 'heading', {
+						name: 'Configure your product listings',
+						exact: true,
+					} )
+				).toBeVisible();
+			} );
+		} );
+	} );
+
+	test.describe( 'Edit button', () => {
+		test.beforeAll( async () => {
+			await setUpAccountsPage.mockJetpackConnected();
+			await setUpAccountsPage.mockGoogleConnected();
+			await setUpAccountsPage.mockMCConnected();
+			await setUpAccountsPage.mockMCHasAccounts();
+			await setUpAccountsPage.mockContactInformation();
+			await setUpAccountsPage.mockAdsAccountConnected();
+			await setUpAccountsPage.fulfillAdsAccounts( ADS_ACCOUNTS );
+			await setUpAccountsPage.mockAdsStatusClaimed();
+			await setUpAccountsPage.goto();
+		} );
+
+		test( 'should display the Edit button and the Ads and MC account cards are not visible', async () => {
+			const editButton = setUpAccountsPage.getEditButton();
+			await expect( editButton ).toBeVisible();
+
+			const googleMcAccountCard = setUpAccountsPage.getMCAccountCard();
+			await expect( googleMcAccountCard ).not.toBeVisible();
+
+			const googleAdsAccountCard =
+				setUpAccountsPage.getGoogleAdsAccountCard();
+			await expect( googleAdsAccountCard ).not.toBeVisible();
+		} );
+
+		test.describe( 'clicking the Edit button', async () => {
+			test( 'the "Or, connect to a different Google account" button is visible', async () => {
+				const editButton = setUpAccountsPage.getEditButton();
+				await editButton.click();
+
+				const connectDifferentGoogleAccountButton =
+					setUpAccountsPage.getConnectDifferentGoogleAccountButton();
+				await expect(
+					connectDifferentGoogleAccountButton
+				).toBeVisible();
+			} );
+
+			test( 'the "Cancel" button is visible', async () => {
+				const cancelButton = setUpAccountsPage.getCancelButton();
+				await expect( cancelButton ).toBeVisible();
+			} );
+
+			test( 'MC and Ads account cards are visible', async () => {
+				const googleMcAccountCard =
+					setUpAccountsPage.getMCAccountCard();
+				await expect( googleMcAccountCard ).toBeVisible();
+
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+				await expect( googleAdsAccountCard ).toBeVisible();
+			} );
+		} );
+
+		test.describe( 'clicking the Cancel button', async () => {
+			test( 'the "Edit" button is visible', async () => {
+				const cancelButton = setUpAccountsPage.getCancelButton();
+				await cancelButton.click();
+
+				const editButton = setUpAccountsPage.getEditButton();
+				await expect( editButton ).toBeVisible();
+			} );
+
+			test( 'MC and Ads account cards are not visible', async () => {
+				const googleMcAccountCard =
+					setUpAccountsPage.getMCAccountCard();
+				await expect( googleMcAccountCard ).not.toBeVisible();
+
+				const googleAdsAccountCard =
+					setUpAccountsPage.getGoogleAdsAccountCard();
+				await expect( googleAdsAccountCard ).not.toBeVisible();
+			} );
+		} );
+
+		test.describe( 'clicking "Edit" when an Ads account is being claimed', async () => {
+			test( 'should let you connect to a different account', async () => {
+				await setUpAccountsPage.mockAdsStatusNotClaimed();
+				await setUpAccountsPage.mockAdsAccountIncomplete(
+					'claim_account'
+				);
+
+				await setUpAccountsPage.goto();
+
+				const editButton = setUpAccountsPage.getEditButton();
+				await editButton.click();
+
+				const connectDifferentGoogleAdsAccountButton =
+					setUpAccountsPage.getConnectDifferentAdsAccountButton();
+
+				await expect(
+					connectDifferentGoogleAdsAccountButton
+				).toBeVisible();
+			} );
+
+			test( 'should disable the create new account button if there are no other existing accounts', async () => {
+				await setUpAccountsPage.mockAdsStatusNotClaimed();
+				await setUpAccountsPage.mockAdsHasNoAccounts();
+				await setUpAccountsPage.mockAdsAccountIncomplete(
+					'claim_account'
+				);
+
+				await setUpAccountsPage.goto();
+
+				const editButton = setUpAccountsPage.getEditButton();
+				await editButton.click();
+
+				const createNewAdsAccountButton =
+					setUpAccountsPage.getCreateNewAdsAccountButton();
+
+				await expect( createNewAdsAccountButton ).toBeDisabled();
+			} );
+		} );
+
+		test.describe( 'clicking "Edit" when there are no other existing accounts', async () => {
+			test( 'should let you create new accounts', async () => {
+				await setUpAccountsPage.mockAdsStatusClaimed();
+				await setUpAccountsPage.mockAdsAccountConnected();
+				await setUpAccountsPage.mockAdsHasNoAccounts();
+				await setUpAccountsPage.mockMCHasNoAccounts();
+				await setUpAccountsPage.mockMCConnected();
+
+				await setUpAccountsPage.goto();
+
+				const editButton = setUpAccountsPage.getEditButton();
+				await editButton.click();
+
+				const createNewAdsAccountButton =
+					setUpAccountsPage.getCreateNewAdsAccountButton();
+				const createNewMCAccountButton =
+					setUpAccountsPage.getCreateNewMCAccountButton();
+
+				await expect( createNewAdsAccountButton ).toBeVisible();
+				await expect( createNewMCAccountButton ).toBeVisible();
 			} );
 		} );
 	} );

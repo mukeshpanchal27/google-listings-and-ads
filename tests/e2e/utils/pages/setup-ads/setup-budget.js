@@ -13,15 +13,6 @@ export default class SetupBudget extends MockRequests {
 	}
 
 	/**
-	 * Get budget recommendation text row.
-	 *
-	 * @return {import('@playwright/test').Locator} The budget recommendation text row.
-	 */
-	getBudgetRecommendationTextRow() {
-		return this.page.locator( '.components-tip p > em > strong' );
-	}
-
-	/**
 	 * Get budget input.
 	 *
 	 * @return {import('@playwright/test').Locator} The budget input box.
@@ -85,33 +76,15 @@ export default class SetupBudget extends MockRequests {
 	}
 
 	/**
-	 * Extract budget recommendation value.
+	 * Get the Create campaign button.
 	 *
-	 * @param {string} text
-	 *
-	 * @return {string} The budget recommendation value.
+	 * @return {import('@playwright/test').Locator} Create campaign button.
 	 */
-	extractBudgetRecommendationValue( text ) {
-		const match = text.match( /set a daily budget of (\d+)/ );
-		if ( match ) {
-			return match[ 1 ];
-		}
-		return '';
-	}
-
-	/**
-	 * Register the responses when removing an ads audience.
-	 *
-	 * @return {Promise<import('@playwright/test').Response>} The response.
-	 */
-	registerBudgetRecommendationResponse() {
-		return this.page.waitForResponse(
-			( response ) =>
-				response
-					.url()
-					.includes( '/gla/ads/campaigns/budget-recommendation' ) &&
-				response.status() === 200
-		);
+	getCreateCampaignButton() {
+		return this.page.getByRole( 'button', {
+			name: 'Create campaign',
+			exact: true,
+		} );
 	}
 
 	/**
@@ -124,6 +97,16 @@ export default class SetupBudget extends MockRequests {
 	async fillBudget( budget = '0' ) {
 		const input = this.getBudgetInput();
 		await input.fill( budget );
+	}
+
+	/**
+	 * Focus the budget input.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async focusBudget() {
+		const input = this.getBudgetInput();
+		await input.focus();
 	}
 
 	/**
@@ -196,12 +179,7 @@ export default class SetupBudget extends MockRequests {
 	 */
 	async mockCampaignCreationAndAdsSetupCompletion( budget, targetLocations ) {
 		//This step is necessary; otherwise, it will set the ADS_SETUP_COMPLETED_AT option in the database, which could potentially impact other tests.
-		await this.fulfillRequest(
-			/\/wc\/gla\/ads\/setup\/complete\b/,
-			null,
-			200,
-			[ 'POST' ]
-		);
+		await this.mockCompleteAdsSetup();
 
 		await this.fulfillAdsCampaignsRequest(
 			{

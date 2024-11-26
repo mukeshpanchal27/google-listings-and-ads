@@ -8,7 +8,12 @@ import createSelector from 'rememo';
  * Internal dependencies
  */
 import { STORE_KEY } from './constants';
-import { getReportQuery, getReportKey, getPerformanceQuery } from './utils';
+import {
+	getReportQuery,
+	getReportKey,
+	getPerformanceQuery,
+	getCountryCodesKey,
+} from './utils';
 
 /**
  * @typedef {import('.~/data/actions').CountryCode} CountryCode
@@ -124,29 +129,6 @@ export const getGoogleMCContactInformation = ( state ) => {
 	return state.mc.contact;
 };
 
-/**
- * Select the state of phone number associated with the Google Merchant Center account.
- *
- * Create another selector to separate the `hasFinishedResolution` state with `getGoogleMCContactInformation`.
- *
- * @param {Object} state The current store state will be injected by `wp.data`.
- * @return {{ data: ContactInformation|null, loaded: boolean }} The payload of contact information associated with the Google Merchant Center account and its loaded state.
- */
-export const getGoogleMCPhoneNumber = createRegistrySelector(
-	( select ) => ( state ) => {
-		const selector = select( STORE_KEY );
-
-		const loaded =
-			!! getGoogleMCContactInformation( state ) ||
-			selector.hasFinishedResolution( 'getGoogleMCContactInformation' );
-
-		return {
-			loaded,
-			data: selector.getGoogleMCContactInformation(),
-		};
-	}
-);
-
 export const getMCCountriesAndContinents = createSelector(
 	( state ) => {
 		const { countries, continents } = state.mc;
@@ -217,10 +199,6 @@ export const getMCProductStatistics = ( state ) => {
 
 export const getMCReviewRequest = ( state ) => {
 	return state.mc_review_request;
-};
-
-export const getPolicyCheck = ( state ) => {
-	return state.mc.policy_check;
 };
 
 // note: we use rememo createSelector here to cache the sliced issues array,
@@ -409,4 +387,27 @@ export const getTour = ( state, tourId ) => {
  */
 export const getGoogleAdsAccountStatus = ( state ) => {
 	return state.ads.accountStatus;
+};
+
+/**
+ * Retrieves ad budget recommendations for provided country codes.
+ * If no recommendations are found, it returns `null`.
+ *
+ * @param {Object} state The state
+ * @param {Array<CountryCode>} [countryCodes] - An array of country code strings to retrieve the budget recommendations for.
+ * @return {Object|null} The recommendations. It will be `null` if not yet fetched or fetched but doesn't exist.
+ */
+export const getAdsBudgetRecommendations = ( state, countryCodes = [] ) => {
+	const key = getCountryCodesKey( countryCodes );
+	return state.ads.budgetRecommendations[ key ] || null;
+};
+
+/**
+ * Return the GTIN Migration status.
+ *
+ * @param {Object} state The state
+ * @return {Object} The GTIN Migration status.
+ */
+export const getGtinMigrationStatus = ( state ) => {
+	return state.gtinMigrationStatus;
 };

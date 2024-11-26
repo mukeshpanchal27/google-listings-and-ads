@@ -126,6 +126,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Utility\AddressUtility;
 use Automattic\WooCommerce\GoogleListingsAndAds\Utility\DateTimeUtility;
 use Automattic\WooCommerce\GoogleListingsAndAds\Utility\ImageUtility;
 use Automattic\WooCommerce\GoogleListingsAndAds\Utility\ISOUtility;
+use Automattic\WooCommerce\GoogleListingsAndAds\Utility\WPCLIMigrationGTIN;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\ISO3166\ISO3166DataProvider;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Psr\Container\ContainerInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\View\PHPViewFactory;
@@ -216,6 +217,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		AttributeMapping::class          => true,
 		MarketingChannelRegistrar::class => true,
 		OAuthService::class              => true,
+		WPCLIMigrationGTIN::class        => true,
 	];
 
 	/**
@@ -431,5 +433,8 @@ class CoreServiceProvider extends AbstractServiceProvider {
 			$this->share_with_tags( GLAChannel::class, MerchantCenterService::class, AdsCampaign::class, Ads::class, MerchantStatuses::class, ProductSyncStats::class );
 			$this->share_with_tags( MarketingChannelRegistrar::class, GLAChannel::class, WC::class );
 		}
+
+		// ClI Classes
+		$this->conditionally_share_with_tags( WPCLIMigrationGTIN::class, ProductRepository::class, AttributeManager::class );
 	}
 }

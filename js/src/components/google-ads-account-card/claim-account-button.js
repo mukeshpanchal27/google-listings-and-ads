@@ -42,6 +42,11 @@ const ClaimAccountButton = ( { onClick = noop, ...restProps } ) => {
 		onClick( event );
 	};
 
+	// If there is no invite link, we don't render the button.
+	if ( ! inviteLink ) {
+		return null;
+	}
+
 	return (
 		<AppButton
 			{ ...restProps }
