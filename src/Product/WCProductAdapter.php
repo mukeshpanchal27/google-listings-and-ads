@@ -931,7 +931,7 @@ class WCProductAdapter extends GoogleProduct implements Validatable {
 	/**
 	 * Map the WooCommerce core global unique ID (GTIN) value if it's available.
 	 *
-	 * @since x.x.x
+	 * @since 2.9.0
 	 *
 	 * @return $this
 	 */
