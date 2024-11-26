@@ -77,3 +77,10 @@
 .wp-admin .woocommerce-customer-effort-score__intro {
 	margin-bottom: 1em;
 }
+
+
+.gla-admin-page {
+	.components-notice:not(.app-notice) {
+		margin-bottom: $grid-unit-15;
+	}
+}
