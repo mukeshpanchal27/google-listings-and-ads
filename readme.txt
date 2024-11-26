@@ -154,11 +154,4 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Tweak - Adjust WP Proxy Response to force the string type for the price fields.
 * Tweak - Logic for Delete notifications.
 
-= 2.8.5 - 2024-09-05 =
-* Break - Remove WooCommerce Navigation integration.
-* Fix - Issue with syncing shipping rates with more than two decimals.
-* Fix - Log exceptions triggered by assets being enqueued before being registered.
-* Tweak - Use remote-site-status to check the WPCOM Auth status.
-* Tweak - WC 9.3.0 compatibility.
-
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
