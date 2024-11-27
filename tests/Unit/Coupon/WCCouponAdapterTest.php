@@ -260,6 +260,10 @@ class WCCouponAdapterTest extends UnitTest {
 	}
 
 	public function test_brand_restrictions() {
+		if ( version_compare( WC_VERSION, '9.4', '<' ) ) {
+			self::markTestSkipped( 'WooCommerce 9.4 or newer is needed to test WooCommerce Brands in core.' );
+		}
+
 		require_once WC_ABSPATH . '/includes/class-wc-brands.php';
 		\WC_Brands::init_taxonomy();
 
