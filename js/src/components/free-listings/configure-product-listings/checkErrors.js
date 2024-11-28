@@ -3,11 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 
-/**
- * Internal dependencies
- */
-import isNonFreeShippingRate from '.~/utils/isNonFreeShippingRate';
-
 const validlocationSet = new Set( [ 'all', 'selected' ] );
 const validShippingRateSet = new Set( [ 'automatic', 'flat', 'manual' ] );
 const validShippingTimeSet = new Set( [ 'flat', 'manual' ] );
@@ -61,16 +56,6 @@ const checkErrors = (
 	 * Check offer free shipping, only when shipping_rate is 'flat'.
 	 */
 	if ( values.shipping_rate === 'flat' ) {
-		if (
-			values.offer_free_shipping === undefined &&
-			values.shipping_country_rates.some( isNonFreeShippingRate )
-		) {
-			errors.offer_free_shipping = __(
-				'Please select an option for whether to offer free shipping.',
-				'google-listings-and-ads'
-			);
-		}
-
 		if (
 			values.offer_free_shipping === true &&
 			values.shipping_country_rates.every(

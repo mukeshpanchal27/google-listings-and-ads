@@ -253,20 +253,6 @@ describe( 'checkErrors', () => {
 				expect( errors ).not.toHaveProperty( 'offer_free_shipping' );
 			} );
 
-			it( 'When there are some non-free shipping rates, and offer free shipping is unchecked, should not pass', () => {
-				const values = {
-					...defaultFormValues,
-					shipping_rate: 'flat',
-					shipping_country_rates: toRates( [ 'US', 0 ], [ 'JP', 1 ] ),
-					offer_free_shipping: undefined,
-				};
-				const codes = [ 'US', 'JP' ];
-
-				const errors = checkErrors( values, [], codes );
-
-				expect( errors ).toHaveProperty( 'offer_free_shipping' );
-			} );
-
 			it( 'When there are some non-free shipping rates, and offer free shipping is checked, and there is minimum order amount for non-free shipping rates, should pass', () => {
 				const values = {
 					...defaultFormValues,
