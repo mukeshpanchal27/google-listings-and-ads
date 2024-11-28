@@ -59,25 +59,18 @@ const EditFreeCampaign = () => {
 	const [ settings, updateSettings ] = useState( savedSettings );
 
 	const {
-		hasFinishedResolution: hfrShippingRates,
+		hasFinishedResolution: hasResolvedShippingRates,
 		data: savedShippingRates,
 	} = useShippingRates();
 	const [ shippingRates, updateShippingRates ] =
 		useState( savedShippingRates );
-	// This is a quick and not safe workaround for
-	// https://github.com/woocommerce/google-listings-and-ads/pull/422#discussion_r607796375
-	// - `<Form>` element ignoring changes to its `initialValues` prop
-	// - default state of shipping* data of `[]`
-	// - resolver not signaling, that data is not ready yet
-	const loadedShippingRates = ! hfrShippingRates ? null : shippingRates;
 
 	const {
-		hasFinishedResolution: hfrShippingTimes,
+		hasFinishedResolution: hasResolvedShippingTimes,
 		data: savedShippingTimes,
 	} = useShippingTimes();
 	const [ shippingTimes, updateShippingTimes ] =
 		useState( savedShippingTimes );
-	const loadedShippingTimes = ! hfrShippingTimes ? null : shippingTimes;
 
 	// TODO: Consider making it less repetitive.
 	useEffect( () => updateSettings( savedSettings ), [ savedSettings ] );
@@ -188,6 +181,11 @@ const EditFreeCampaign = () => {
 		}
 	};
 
+	const initialAudience = targetAudience?.countries ? targetAudience : null;
+	const initialSettings = settings?.shipping_rate ? settings : null;
+	const initialRates = hasResolvedShippingRates ? savedShippingRates : null;
+	const initialTimes = hasResolvedShippingTimes ? savedShippingTimes : null;
+
 	return (
 		<>
 			<TopBar
@@ -202,14 +200,14 @@ const EditFreeCampaign = () => {
 					'Edit your listings',
 					'google-listings-and-ads'
 				) }
-				targetAudience={ targetAudience }
+				targetAudience={ initialAudience }
 				resolveFinalCountries={ getFinalCountries }
 				onTargetAudienceChange={ updateTargetAudience }
-				settings={ settings }
+				settings={ initialSettings }
 				onSettingsChange={ updateSettings }
-				shippingRates={ loadedShippingRates }
+				shippingRates={ initialRates }
 				onShippingRatesChange={ updateShippingRates }
-				shippingTimes={ loadedShippingTimes }
+				shippingTimes={ initialTimes }
 				onShippingTimesChange={ updateShippingTimes }
 				onContinue={ handleSetupFreeListingsContinue }
 				submitLabel={ __( 'Save changes', 'google-listings-and-ads' ) }
