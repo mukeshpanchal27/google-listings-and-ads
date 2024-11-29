@@ -286,10 +286,16 @@ class WCCouponAdapterTest extends UnitTest {
 
 		$coupon = $this->create_ready_to_sync_coupon();
 
-		// Include brand 1 for the coupon.
+		// Include product 3 for the coupon.
+		$coupon->set_product_ids( [ $product_3_id ] );
+
+		// Include brand 1 (product 1 and 2) for the coupon.
 		update_post_meta( $coupon->get_id(), 'product_brands', $brand_1['term_id'] );
 
-		// Exclude brand 2 for the coupon.
+		// Exclude product 2 for the coupon.
+		$coupon->set_excluded_product_ids( [ $product_2_id ] );
+
+		// Exclude brand 2 (product 3) for the coupon.
 		update_post_meta( $coupon->get_id(), 'exclude_product_brands', $brand_2['term_id'] );
 
 		$coupon->save();
@@ -301,8 +307,11 @@ class WCCouponAdapterTest extends UnitTest {
 			]
 		);
 
+		// The brand inclusion will override the product inclusion, so the product 3 won't appear in the inclusion list at the moment.
 		$this->assertEquals( [ "gla_{$product_1_id}", "gla_{$product_2_id}" ], $adapted_coupon->getItemId() );
-		$this->assertEquals( [ "gla_{$product_3_id}" ], $adapted_coupon->getItemIdExclusion() );
+
+		// The brand exclusion will respect the product inclusion, so the product 2 appears in the exclusion list.
+		$this->assertEquals( [ "gla_{$product_2_id}", "gla_{$product_3_id}" ], $adapted_coupon->getItemIdExclusion() );
 	}
 
 	public function test_load_validator_metadata() {

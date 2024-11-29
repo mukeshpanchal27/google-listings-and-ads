@@ -244,9 +244,25 @@ class WCCouponAdapter extends GooglePromotion implements Validatable {
 			$this->setItemId( $google_product_ids );
 		}
 
-		$wc_excluded_product_ids = $wc_coupon->get_excluded_product_ids();
-		if ( ! empty( $wc_excluded_product_ids ) ) {
-			$google_product_ids      = array_map( $get_offer_id, $wc_excluded_product_ids );
+		// Currently the brand inclusion restriction will override the product inclustion restriction.
+		// It's align with the current coupon discounts behaviour in WooCommerce.
+		$wc_product_ids_in_brand = $this->get_product_ids_in_brand( $wc_coupon );
+		if ( ! empty( $wc_product_ids_in_brand ) ) {
+			$google_product_ids      = array_map( $get_offer_id, $wc_product_ids_in_brand );
+			$has_product_restriction = true;
+			$this->setItemId( $google_product_ids );
+		}
+
+		// Get excluded product IDs and excluded product IDs in brand.
+		$wc_excluded_product_ids          = $wc_coupon->get_excluded_product_ids();
+		$wc_excluded_product_ids_in_brand = $this->get_product_ids_in_brand( $wc_coupon, true );
+		if ( ! empty( $wc_excluded_product_ids ) || ! empty( $wc_excluded_product_ids_in_brand ) ) {
+			$google_product_ids = array_merge(
+				array_map( $get_offer_id, $wc_excluded_product_ids ),
+				array_map( $get_offer_id, $wc_excluded_product_ids_in_brand )
+			);
+			$google_product_ids = array_values( array_unique( $google_product_ids ) );
+
 			$has_product_restriction = true;
 			$this->setItemIdExclusion( $google_product_ids );
 		}
@@ -265,20 +281,6 @@ class WCCouponAdapter extends GooglePromotion implements Validatable {
 			WCProductAdapter::convert_product_types( $wc_excluded_product_catetories );
 			$has_product_restriction = true;
 			$this->setProductTypeExclusion( $str_product_categories );
-		}
-
-		$wc_product_ids_in_brand = $this->get_product_ids_in_brand( $wc_coupon );
-		if ( ! empty( $wc_product_ids_in_brand ) ) {
-			$google_product_ids      = array_map( $get_offer_id, $wc_product_ids_in_brand );
-			$has_product_restriction = true;
-			$this->setItemId( $google_product_ids );
-		}
-
-		$wc_excluded_product_ids_in_brand = $this->get_product_ids_in_brand( $wc_coupon, true );
-		if ( ! empty( $wc_excluded_product_ids_in_brand ) ) {
-			$google_product_ids      = array_map( $get_offer_id, $wc_excluded_product_ids_in_brand );
-			$has_product_restriction = true;
-			$this->setItemIdExclusion( $google_product_ids );
 		}
 
 		if ( $has_product_restriction ) {
