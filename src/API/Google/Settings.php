@@ -24,6 +24,15 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Class Settings
  *
+ * Container used for:
+ * - OptionsInterface
+ * - ShippingRateQuery
+ * - ShippingTimeQuery
+ * - ShippingZone
+ * - ShoppingContent
+ * - TargetAudience
+ * - WC
+ *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\API\Google
  */
 class Settings {
@@ -277,10 +286,7 @@ class Settings {
 	 * @return string
 	 */
 	protected function get_store_country(): string {
-		/** @var WC $wc */
-		$wc = $this->container->get( WC::class );
-
-		return $wc->get_wc_countries()->get_base_country();
+		return $this->container->get( WC::class )->get_base_country();
 	}
 
 	/**
