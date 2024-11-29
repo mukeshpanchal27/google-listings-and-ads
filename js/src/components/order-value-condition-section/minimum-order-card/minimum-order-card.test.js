@@ -308,7 +308,7 @@ describe( 'MinimumOrderCard', () => {
 				'.gla-minimum-order-input-control'
 			);
 
-			expect( inputControl ).toHaveClass( 'hide_input' );
+			expect( inputControl ).toBeNull();
 		} );
 
 		test( 'When free shipping is offered, do not hide the input field', async () => {
@@ -336,7 +336,7 @@ describe( 'MinimumOrderCard', () => {
 				'.gla-minimum-order-input-control'
 			);
 
-			expect( inputControl ).not.toHaveClass( 'hide_input' );
+			expect( inputControl ).not.toBeNull();
 		} );
 	} );
 } );

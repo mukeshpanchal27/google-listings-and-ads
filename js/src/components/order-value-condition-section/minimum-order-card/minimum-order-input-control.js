@@ -50,11 +50,13 @@ const MinimumOrderInputControl = ( props ) => {
 
 	const shouldHideInput = ! values.offer_free_shipping;
 
+	if ( shouldHideInput ) {
+		return null;
+	}
+
 	return (
 		<AppInputPriceControl
-			className={ `gla-minimum-order-input-control ${
-				shouldHideInput ? 'hide_input' : ''
-			}` }
+			className="gla-minimum-order-input-control"
 			label={
 				<div className="gla-minimum-order-input-control__label">
 					<div className="gla-minimum-order-input-control__label_country">
@@ -77,9 +79,7 @@ const MinimumOrderInputControl = ( props ) => {
 							}
 						/>
 					</div>
-					{ ! shouldHideInput && currency && (
-						<>{ `Cost (${ currency })` }</>
-					) }
+					<>{ `Cost (${ currency })` }</>
 				</div>
 			}
 			value={ threshold }
