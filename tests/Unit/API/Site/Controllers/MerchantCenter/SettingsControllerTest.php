@@ -38,14 +38,9 @@ class SettingsControllerTest extends RESTControllerUnitTest {
 
 	public function test_get_settings() {
 		$options = [
-			'shipping_rate'           => 'flat',
-			'shipping_time'           => 'flat',
-			'tax_rate'                => null,
-			'website_live'            => true,
-			'checkout_process_secure' => true,
-			'payment_methods_visible' => true,
-			'refund_tos_visible'      => true,
-			'contact_info_visible'    => true,
+			'shipping_rate' => 'flat',
+			'shipping_time' => 'flat',
+			'tax_rate'      => 'destination',
 
 		];
 
@@ -66,15 +61,9 @@ class SettingsControllerTest extends RESTControllerUnitTest {
 
 	public function test_edit_settings() {
 		$options = [
-			'shipping_rate'           => 'flat',
-			'shipping_time'           => 'flat',
-			'tax_rate'                => null,
-			'website_live'            => true,
-			'checkout_process_secure' => true,
-			'payment_methods_visible' => true,
-			'refund_tos_visible'      => true,
-			'contact_info_visible'    => true,
-
+			'shipping_rate' => 'flat',
+			'shipping_time' => 'flat',
+			'tax_rate'      => 'destination',
 		];
 
 		$this->options->expects( $this->once() )->method( 'get' )->willReturn(
