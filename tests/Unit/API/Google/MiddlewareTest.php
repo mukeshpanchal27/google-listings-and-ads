@@ -10,6 +10,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Exception\InvalidDomainName;
 use Automattic\WooCommerce\GoogleListingsAndAds\Google\GoogleHelper;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\TransientsInterface;
+use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\WC;
 use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\WP;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Tools\HelperTrait\GuzzleClientTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\UnitTest;
@@ -41,6 +42,9 @@ class MiddlewareTest extends UnitTest {
 
 	/** @var MockObject|Merchant $merchant */
 	protected $merchant;
+
+	/** @var MockObject|WC $wc */
+	protected $wc;
 
 	/** @var MockObject|WP $wp */
 	protected $wp;
@@ -76,6 +80,7 @@ class MiddlewareTest extends UnitTest {
 		$this->merchant      = $this->createMock( Merchant::class );
 		$this->options       = $this->createMock( OptionsInterface::class );
 		$this->transients    = $this->createMock( TransientsInterface::class );
+		$this->wc            = $this->createMock( WC::class );
 		$this->wp            = $this->createMock( WP::class );
 
 		$this->container->share( Ads::class, $this->ads );
@@ -83,6 +88,7 @@ class MiddlewareTest extends UnitTest {
 		$this->container->share( GoogleHelper::class, $this->google_helper );
 		$this->container->share( Merchant::class, $this->merchant );
 		$this->container->share( TransientsInterface::class, $this->transients );
+		$this->container->share( WC::class, $this->wc );
 		$this->container->share( WP::class, $this->wp );
 
 		$this->middleware = new Middleware( $this->container );
