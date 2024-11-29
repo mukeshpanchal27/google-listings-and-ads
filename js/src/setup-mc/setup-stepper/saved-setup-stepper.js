@@ -20,7 +20,6 @@ import useSaveShippingTimes from '.~/hooks/useSaveShippingTimes';
 import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
 import SetupAccounts from './setup-accounts';
 import SetupFreeListings from '.~/components/free-listings/setup-free-listings';
-import StoreRequirements from './store-requirements';
 import SetupPaidAds from './setup-paid-ads';
 import stepNameKeyMap from './stepNameKeyMap';
 import {
@@ -33,8 +32,8 @@ import {
 /**
  * @param {Object} props React props
  * @param {string} [props.savedStep] A saved step overriding the current step
- * @fires gla_setup_mc with `{ triggered_by: 'step1-continue-button' | 'step2-continue-button', 'step3-continue-button', action: 'go-to-step2' | 'go-to-step3' | 'go-to-step4' }`.
- * @fires gla_setup_mc with `{ triggered_by: 'stepper-step1-button' | 'stepper-step2-button' | 'stepper-step3-button', action: 'go-to-step1' | 'go-to-step2' | 'go-to-step3' }`.
+ * @fires gla_setup_mc with `{ triggered_by: 'step1-continue-button' | 'step2-continue-button', action: 'go-to-step2' | 'go-to-step3' }`.
+ * @fires gla_setup_mc with `{ triggered_by: 'stepper-step1-button' | 'stepper-step2-button', action: 'go-to-step1' | 'go-to-step2' }`.
  */
 const SavedSetupStepper = ( { savedStep } ) => {
 	const [ step, setStep ] = useState( savedStep );
@@ -102,10 +101,6 @@ const SavedSetupStepper = ( { savedStep } ) => {
 	};
 
 	const handleSetupListingsContinue = () => {
-		continueStep( stepNameKeyMap.store_requirements );
-	};
-
-	const handleStoreRequirementsContinue = () => {
 		continueStep( stepNameKeyMap.paid_ads );
 	};
 
@@ -170,6 +165,7 @@ const SavedSetupStepper = ( { savedStep } ) => {
 							targetAudience={ initTargetAudience }
 							settings={ initSettings }
 							shippingRates={ initShippingRates }
+							hideTaxRates={ true }
 							shippingTimes={ initShippingTimes }
 							resolveFinalCountries={ getFinalCountries }
 							onTargetAudienceChange={ handleFormChange.bind(
@@ -205,19 +201,6 @@ const SavedSetupStepper = ( { savedStep } ) => {
 								'Continue',
 								'google-listings-and-ads'
 							) }
-						/>
-					),
-					onClick: handleStepClick,
-				},
-				{
-					key: stepNameKeyMap.store_requirements,
-					label: __(
-						'Confirm store requirements',
-						'google-listings-and-ads'
-					),
-					content: (
-						<StoreRequirements
-							onContinue={ handleStoreRequirementsContinue }
 						/>
 					),
 					onClick: handleStepClick,

@@ -19,8 +19,8 @@ import SpinnerCard from '.~/components/spinner-card';
 import VerticalGapLayout from '.~/components/vertical-gap-layout';
 import { ConnectedWPComAccountCard } from '.~/components/wpcom-account-card';
 import { ConnectedGoogleAccountCard } from '.~/components/google-account-card';
-import { ConnectedGoogleMCAccountCard } from '.~/components/google-mc-account-card';
 import { ConnectedGoogleAdsAccountCard } from '.~/components/google-ads-account-card';
+import { MerchantCenterAccountInfoCard } from '.~/components/google-mc-account-card';
 import Section from '.~/wcdl/section';
 import LinkedAccountsSectionWrapper from './linked-accounts-section-wrapper';
 import DisconnectModal, { ALL_ACCOUNTS, ADS_ACCOUNT } from './disconnect-modal';
@@ -93,9 +93,8 @@ export default function LinkedAccounts() {
 						googleAccount={ google }
 						hideAccountSwitch
 					/>
-					<ConnectedGoogleMCAccountCard
+					<MerchantCenterAccountInfoCard
 						googleMCAccount={ googleMCAccount }
-						hideAccountSwitch
 					/>
 					{ hasAdsAccount && (
 						<ConnectedGoogleAdsAccountCard

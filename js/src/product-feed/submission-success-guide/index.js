@@ -203,7 +203,7 @@ const SubmissionSuccessGuide = () => {
 						action: 'create-paid-campaign',
 					} }
 				>
-					{ __( 'Create paid campaign', 'google-listings-and-ads' ) }
+					{ __( 'Create campaign', 'google-listings-and-ads' ) }
 				</AddPaidCampaignButton>
 			</>
 		);

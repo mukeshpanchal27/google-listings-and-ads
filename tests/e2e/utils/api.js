@@ -114,6 +114,20 @@ export async function clearOnboardedMerchant() {
 }
 
 /**
+ * Set Ads Completed At.
+ */
+export async function setCompletedAdsSetup() {
+	await api().post( 'gla-test/ads-completed' );
+}
+
+/**
+ * Clear Ads Completed At.
+ */
+export async function clearCompletedAdsSetup() {
+	await api().delete( 'gla-test/ads-completed' );
+}
+
+/**
  * Set Notifications Ready.
  */
 export async function setNotificationsReady() {

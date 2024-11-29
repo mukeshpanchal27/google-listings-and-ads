@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
  * Schedules GTIN migration for all the products in the store.
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Jobs
- * @since x.x.x
+ * @since 2.9.0
  */
 class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAwareInterface {
 	use OptionsAwareTrait;

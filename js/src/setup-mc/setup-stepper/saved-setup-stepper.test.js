@@ -31,9 +31,6 @@ jest.mock( './setup-accounts', () => jest.fn().mockName( 'SetupAccounts' ) );
 jest.mock( '.~/components/free-listings/setup-free-listings', () =>
 	jest.fn().mockName( 'SetupFreeListings' )
 );
-jest.mock( './store-requirements', () =>
-	jest.fn().mockName( 'StoreRequirements' )
-);
 jest.mock( './setup-paid-ads', () => jest.fn().mockName( 'SetupPaidAds' ) );
 
 /**
@@ -49,13 +46,11 @@ import { recordEvent } from '@woocommerce/tracks';
 import SavedSetupStepper from './saved-setup-stepper';
 import SetupAccounts from './setup-accounts';
 import SetupFreeListings from '.~/components/free-listings/setup-free-listings';
-import StoreRequirements from './store-requirements';
 import SetupPaidAds from './setup-paid-ads';
 
 describe( 'SavedSetupStepper', () => {
 	let continueToStep2;
 	let continueToStep3;
-	let continueToStep4;
 
 	beforeEach( () => {
 		SetupAccounts.mockImplementation( ( { onContinue } ) => {
@@ -68,11 +63,6 @@ describe( 'SavedSetupStepper', () => {
 			return null;
 		} );
 
-		StoreRequirements.mockImplementation( ( { onContinue } ) => {
-			continueToStep4 = onContinue;
-			return null;
-		} );
-
 		SetupPaidAds.mockReturnValue( null );
 	} );
 
@@ -80,7 +70,7 @@ describe( 'SavedSetupStepper', () => {
 		jest.clearAllMocks();
 	} );
 
-	async function continueUntilStep4() {
+	async function continueUntilStep3() {
 		continueToStep2();
 
 		// Wait for stepper content to be rendered.
@@ -89,21 +79,15 @@ describe( 'SavedSetupStepper', () => {
 		} );
 
 		continueToStep3();
-
-		await waitFor( () => {
-			expect( continueToStep4 ).toBeDefined();
-		} );
-
-		continueToStep4();
 	}
 
 	describe( 'tracks', () => {
 		it( 'Should record events after calling back to `onContinue`', async () => {
 			render( <SavedSetupStepper savedStep="1" /> );
 
-			await continueUntilStep4();
+			await continueUntilStep3();
 
-			expect( recordEvent ).toHaveBeenCalledTimes( 3 );
+			expect( recordEvent ).toHaveBeenCalledTimes( 2 );
 			expect( recordEvent ).toHaveBeenNthCalledWith( 1, 'gla_setup_mc', {
 				action: 'go-to-step2',
 				triggered_by: 'step1-continue-button',
@@ -112,51 +96,41 @@ describe( 'SavedSetupStepper', () => {
 				action: 'go-to-step3',
 				triggered_by: 'step2-continue-button',
 			} );
-			expect( recordEvent ).toHaveBeenNthCalledWith( 3, 'gla_setup_mc', {
-				action: 'go-to-step4',
-				triggered_by: 'step3-continue-button',
-			} );
 		} );
 
 		it( 'Should record events after clicking step navigation buttons', async () => {
 			const user = userEvent.setup();
 
-			render( <SavedSetupStepper savedStep="4" /> );
+			render( <SavedSetupStepper savedStep="3" /> );
 
 			const step1 = screen.getByRole( 'button', { name: /accounts/ } );
 			const step2 = screen.getByRole( 'button', { name: /listings/ } );
-			const step3 = screen.getByRole( 'button', { name: /store/ } );
 
-			// Step 4 -> Step 3 -> Step 2 -> Step 1
-			await user.click( step3 );
+			// Step 3 -> Step 2 -> Step 1
 			await user.click( step2 );
 			await user.click( step1 );
 
-			expect( recordEvent ).toHaveBeenCalledTimes( 3 );
+			expect( recordEvent ).toHaveBeenCalledTimes( 2 );
 			expect( recordEvent ).toHaveBeenNthCalledWith( 1, 'gla_setup_mc', {
-				action: 'go-to-step3',
-				triggered_by: 'stepper-step3-button',
-			} );
-			expect( recordEvent ).toHaveBeenNthCalledWith( 2, 'gla_setup_mc', {
 				action: 'go-to-step2',
 				triggered_by: 'stepper-step2-button',
 			} );
-			expect( recordEvent ).toHaveBeenNthCalledWith( 3, 'gla_setup_mc', {
+			expect( recordEvent ).toHaveBeenNthCalledWith( 2, 'gla_setup_mc', {
 				action: 'go-to-step1',
 				triggered_by: 'stepper-step1-button',
 			} );
 
-			// Step 4 -> Step 2
-			await continueUntilStep4();
+			// Step 3 -> Step 1
+			await continueUntilStep3();
 			recordEvent.mockClear();
 			expect( recordEvent ).toHaveBeenCalledTimes( 0 );
 
-			await user.click( step2 );
+			await user.click( step1 );
 
 			expect( recordEvent ).toHaveBeenCalledTimes( 1 );
 			expect( recordEvent ).toHaveBeenNthCalledWith( 1, 'gla_setup_mc', {
-				action: 'go-to-step2',
-				triggered_by: 'stepper-step2-button',
+				action: 'go-to-step1',
+				triggered_by: 'stepper-step1-button',
 			} );
 		} );
 	} );

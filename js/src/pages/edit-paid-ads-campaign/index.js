@@ -19,6 +19,7 @@ import TopBar from '.~/components/stepper/top-bar';
 import HelpIconButton from '.~/components/help-icon-button';
 import CampaignAssetsForm from '.~/components/paid-ads/campaign-assets-form';
 import AdsCampaign from '.~/components/paid-ads/ads-campaign';
+import ContinueButton from '.~/components/paid-ads/continue-button';
 import AppSpinner from '.~/components/app-spinner';
 import AssetGroup, {
 	ACTION_SUBMIT_CAMPAIGN_AND_ASSETS,
@@ -32,6 +33,7 @@ import {
 	recordStepperChangeEvent,
 	recordStepContinueEvent,
 } from '.~/utils/tracks';
+import useBudgetRecommendation from '.~/hooks/useBudgetRecommendation';
 
 const eventName = 'gla_paid_campaign_step';
 const eventContext = 'edit-ads';
@@ -70,7 +72,8 @@ const EditPaidAdsCampaign = () => {
 	} = useAppSelectDispatch( 'getCampaignAssetGroups', id );
 	const campaign = campaigns?.find( ( el ) => el.id === id );
 	const assetEntityGroup = assetEntityGroups?.at( 0 );
-
+	const { highestDailyBudget, hasFinishedResolution } =
+		useBudgetRecommendation( campaign?.displayCountries );
 	useEffect( () => {
 		if ( campaign && campaign.type !== CAMPAIGN_TYPE_PMAX ) {
 			getHistory().replace( dashboardURL );
@@ -83,7 +86,11 @@ const EditPaidAdsCampaign = () => {
 		getHistory().push( url );
 	};
 
-	if ( ! loaded || ! hasResolvedAssetEntityGroups ) {
+	if (
+		! loaded ||
+		! hasResolvedAssetEntityGroups ||
+		! hasFinishedResolution
+	) {
 		return (
 			<>
 				<TopBar
@@ -106,7 +113,7 @@ const EditPaidAdsCampaign = () => {
 				/>
 				<div>
 					{ __(
-						'Error in loading your paid ads campaign. Please try again later.',
+						'Error in loading your ads campaign. Please try again later.',
 						'google-listings-and-ads'
 					) }
 				</div>
@@ -179,8 +186,8 @@ const EditPaidAdsCampaign = () => {
 			<CampaignAssetsForm
 				initialCampaign={ {
 					amount: campaign.amount,
-					countryCodes: campaign.displayCountries,
 				} }
+				recommendedDailyBudget={ highestDailyBudget }
 				assetEntityGroup={ assetEntityGroup }
 				onSubmit={ handleSubmit }
 			>
@@ -190,16 +197,27 @@ const EditPaidAdsCampaign = () => {
 						{
 							key: STEP.CAMPAIGN,
 							label: __(
-								'Edit paid campaign',
+								'Edit campaign',
 								'google-listings-and-ads'
 							),
 							content: (
 								<AdsCampaign
 									campaign={ campaign }
-									trackingContext={ eventContext }
-									onContinue={ () =>
-										handleContinueClick( STEP.ASSET_GROUP )
-									}
+									context={ eventContext }
+									headerTitle={ __(
+										'Edit your campaign',
+										'google-listings-and-ads'
+									) }
+									continueButton={ ( formContext ) => (
+										<ContinueButton
+											formProps={ formContext }
+											onClick={ () =>
+												handleContinueClick(
+													STEP.ASSET_GROUP
+												)
+											}
+										/>
+									) }
 								/>
 							),
 							onClick: handleStepperClick,
