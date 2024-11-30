@@ -8,7 +8,7 @@
 	&-item {
 		background: transparent;
 		border: none;
-		box-shadow: none;
+		box-shadow: inset 0 -1px 0 #ccc;
 		border-radius: 0;
 		cursor: pointer;
 		height: $grid-unit-60;
@@ -16,7 +16,6 @@
 		margin-left: 0;
 		font-weight: 500;
 		box-sizing: border-box;
-		box-shadow: inset 0 -1px 0 #ccc;
 
 		// This pseudo-element "duplicates" the tab label and sets the text to bold.
 		// This ensures that the tab doesn't change width when selected.
