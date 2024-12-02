@@ -277,7 +277,7 @@ test.describe( 'Configure product listings', () => {
 		} );
 	} );
 
-	test.describe.only( 'Shipping rate is recommended', () => {
+	test.describe( 'Shipping rate is recommended', () => {
 		test.beforeAll( async () => {
 			productListingsPage.fulfillSettings(
 				{
