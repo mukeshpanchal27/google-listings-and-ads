@@ -253,6 +253,7 @@ export function* fetchShippingTimes() {
  * @typedef {Object} AggregatedShippingTime
  * @property {Array<CountryCode>} countries Array of destination country codes.
  * @property {number} time Shipping time.
+ * @property {number} maxTime Max shipping time.
  */
 
 /**
