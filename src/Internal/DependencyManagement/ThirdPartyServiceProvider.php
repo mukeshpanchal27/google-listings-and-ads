@@ -80,8 +80,7 @@ class ThirdPartyServiceProvider extends AbstractServiceProvider {
 			function () {
 				$manager = $this->getLeagueContainer()->get( Manager::class );
 				$manager->get_plugin()->add(
-					__( 'Google for WooCommerce', 'google-listings-and-ads' ),
-					[]
+					__( 'Google for WooCommerce', 'google-listings-and-ads' )
 				);
 			}
 		);
