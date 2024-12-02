@@ -98,15 +98,13 @@ export default class ProductListingsPage extends MockRequests {
 	}
 
 	/**
-	 * Get offer free shipping for orders button.
-	 *
-	 * @param {string} name
+	 * Get offer free shipping for orders checkbox.
 	 *
 	 * @return {import('@playwright/test').Locator} Get offer free shipping for orders button.
 	 */
-	getOfferFreeShippingForOrdersRadioRow( name = 'Yes' ) {
-		return this.page.getByRole( 'radio', {
-			name,
+	getOfferFreeShippingCheckbox() {
+		return this.page.getByRole( 'checkbox', {
+			name: 'Free shipping over a specific order value',
 			exact: true,
 		} );
 	}
@@ -218,7 +216,7 @@ export default class ProductListingsPage extends MockRequests {
 	 */
 	getOfferFreeShippingForOrdersText() {
 		return this.page.getByText(
-			'I offer free shipping for orders over a certain price'
+			'Free shipping over a specific order value'
 		);
 	}
 
@@ -228,9 +226,7 @@ export default class ProductListingsPage extends MockRequests {
 	 * @return {import('@playwright/test').Locator} Get "Minimum order to qualify for free shipping" text.
 	 */
 	getMinimumOrderForFreeShippingText() {
-		return this.page.getByText(
-			'Minimum order to qualify for free shipping'
-		);
+		return this.page.getByText( 'Minimum order for United States (US)' );
 	}
 
 	/**
@@ -357,13 +353,11 @@ export default class ProductListingsPage extends MockRequests {
 	/**
 	 * Check offer free shipping for order "Yes" radio button.
 	 *
-	 * @param {string} name
-	 *
 	 * @return {Promise<void>}
 	 */
-	async checkOfferFreeShippingForOrdersRadioButton( name = 'Yes' ) {
-		const radio = this.getOfferFreeShippingForOrdersRadioRow( name );
-		await radio.check();
+	async checkOfferFreeShippingCheckbox() {
+		const checkbox = this.getOfferFreeShippingCheckbox();
+		await checkbox.check();
 		await this.page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );
 	}
 
@@ -407,10 +401,10 @@ export default class ProductListingsPage extends MockRequests {
 		const estimatedTimesInputBox = this.getEstimatedShippingTimesInputBox();
 
 		await estimatedTimesInputBox.first().fill( min );
+		await estimatedTimesInputBox.first().press( 'Tab' );
 		await estimatedTimesInputBox.last().fill( max );
 
 		// A hack to finish typing in the input box, similar to pressing anywhere in the page.
-		await estimatedTimesInputBox.first().press( 'Tab' );
 		await estimatedTimesInputBox.last().press( 'Tab' );
 
 		await this.page.waitForLoadState( LOAD_STATE.DOM_CONTENT_LOADED );

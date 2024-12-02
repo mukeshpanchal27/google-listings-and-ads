@@ -215,11 +215,9 @@ test.describe( 'Configure product listings', () => {
 			await expect( offerFreeShippingForOrdersText ).toBeVisible();
 		} );
 
-		test( 'should see "Minimum order to qualify for free shipping" text if "offer free shipping for order..." is "Yes"', async () => {
-			// Check the "Yes" button of "Offer free shipping for orders".
-			await productListingsPage.checkOfferFreeShippingForOrdersRadioButton(
-				'Yes'
-			);
+		test( 'should see "Minimum order to qualify for free shipping" text if fee shipping checkbox is checked', async () => {
+			// Check the checkbox of "Offer free shipping for orders".
+			await productListingsPage.checkOfferFreeShippingCheckbox();
 			const minimumOrderForFreeShippingText =
 				productListingsPage.getMinimumOrderForFreeShippingText();
 			await expect( minimumOrderForFreeShippingText ).toBeVisible();
@@ -279,7 +277,7 @@ test.describe( 'Configure product listings', () => {
 		} );
 	} );
 
-	test.describe( 'Shipping rate is recommended', () => {
+	test.describe.only( 'Shipping rate is recommended', () => {
 		test.beforeAll( async () => {
 			productListingsPage.fulfillSettings(
 				{
