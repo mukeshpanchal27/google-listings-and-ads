@@ -15,6 +15,8 @@ import Section from '.~/wcdl/section';
 import AppButton from '.~/components/app-button';
 import AppButtonModalTrigger from '.~/components/app-button-modal-trigger';
 import VerticalGapLayout from '.~/components/vertical-gap-layout';
+import { useAdaptiveFormInputProps } from '.~/components/adaptive-form';
+import OfferFreeShippingCheckbox from '.~/components/order-value-condition-section/offer-free-shipping-checkbox';
 import isNonFreeShippingRate from '.~/utils/isNonFreeShippingRate';
 import MinimumOrderInputControl from './minimum-order-input-control';
 import { AddMinimumOrderFormModal } from './minimum-order-form-modals';
@@ -31,6 +33,10 @@ import './minimum-order-card.scss';
  * @param {(nextValue: Array<ShippingRate>) => void} props.onChange Callback called with the next data once shipping rates are changed.
  */
 const MinimumOrderCard = ( { value = [], helper, onChange } ) => {
+	const offerFreeShippingCardInputProps = useAdaptiveFormInputProps(
+		'offer_free_shipping'
+	);
+
 	const renderGroups = () => {
 		const nonZeroShippingRates = value.filter( isNonFreeShippingRate );
 		const groups =
@@ -106,7 +112,7 @@ const MinimumOrderCard = ( { value = [], helper, onChange } ) => {
 									icon={ <GridiconPlusSmall /> }
 								>
 									{ __(
-										'Add another minimum order',
+										'Add another condition',
 										'google-listings-and-ads'
 									) }
 								</AppButton>
@@ -132,11 +138,14 @@ const MinimumOrderCard = ( { value = [], helper, onChange } ) => {
 			<Section.Card.Body>
 				<Section.Card.Title>
 					{ __(
-						'Minimum order to qualify for free shipping',
+						'Only select if applicable',
 						'google-listings-and-ads'
 					) }
 				</Section.Card.Title>
 				<VerticalGapLayout size="large">
+					<OfferFreeShippingCheckbox
+						{ ...offerFreeShippingCardInputProps }
+					/>
 					{ renderGroups() }
 				</VerticalGapLayout>
 				{ helper }

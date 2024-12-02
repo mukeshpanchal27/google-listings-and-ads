@@ -62,7 +62,8 @@ test.describe( 'Configure product listings', () => {
 
 			// Mock MC settings
 			productListingsPage.fulfillSettings( {
-				shipping_rate: 'automatic',
+				shipping_rate: 'flat',
+				shipping_rates_count: 0,
 				tax_rate: 'destination',
 			} ),
 		] );
@@ -146,12 +147,24 @@ test.describe( 'Configure product listings', () => {
 		await productListingsPage.checkSelectedCountriesOnlyRadioButton();
 	} );
 
+	test.describe( 'Automatic rate', () => {
+		test.beforeAll( async () => {
+			await page.reload();
+		} );
+
+		test( 'shouldnt display automatic rate if no shipping methods are set up, shipping_rates_count = 0', async () => {
+			await expect(
+				productListingsPage.getRecommendedShippingRateRadioRow()
+			).toHaveCount( 0 );
+		} );
+	} );
+
 	test.describe( 'Shipping rate is simple', () => {
 		test.beforeAll( async () => {
 			await page.reload();
 
 			// Check another shipping rate first in case the simple shipping rate radio button is already checked.
-			await productListingsPage.checkRecommendedShippingRateRadioButton();
+			await productListingsPage.checkComplexShippingRateRadioButton();
 		} );
 
 		test( 'should send settings POST request after checking simple shipping rate radio button', async () => {
@@ -198,18 +211,16 @@ test.describe( 'Configure product listings', () => {
 			await expect( offerFreeShippingForOrdersText ).toBeVisible();
 		} );
 
-		test( 'should see "Minimum order to qualify for free shipping" text if "offer free shipping for order..." is "Yes"', async () => {
-			// Check the "Yes" button of "Offer free shipping for orders".
-			await productListingsPage.checkOfferFreeShippingForOrdersRadioButton(
-				'Yes'
-			);
+		test( 'should see "Minimum order to qualify for free shipping" text if fee shipping checkbox is checked', async () => {
+			// Check the checkbox of "Offer free shipping for orders".
+			await productListingsPage.checkOfferFreeShippingCheckbox();
 			const minimumOrderForFreeShippingText =
 				productListingsPage.getMinimumOrderForFreeShippingText();
 			await expect( minimumOrderForFreeShippingText ).toBeVisible();
 		} );
 
-		test( 'should show error message if clicking "Continue" button when shipping time is < 0', async () => {
-			await productListingsPage.fillEstimatedShippingTimes( '-1' );
+		test( 'should show error message if min shipping time is bigger than max time', async () => {
+			await productListingsPage.fillEstimatedShippingTimes( '9', '7' );
 			await productListingsPage.clickContinueButton();
 			const estimatedTimesError =
 				productListingsPage.getEstimatedShippingTimesError();
@@ -228,9 +239,6 @@ test.describe( 'Configure product listings', () => {
 				productListingsPage.getEstimatedShippingRatesCard();
 			estimatedTimesCard =
 				productListingsPage.getEstimatedShippingTimesCard();
-
-			// Check another shipping rate first in case the complex shipping rate radio button is already checked.
-			await productListingsPage.checkRecommendedShippingRateRadioButton();
 		} );
 
 		test( 'should send settings POST request after checking complex shipping rate radio button', async () => {
@@ -267,6 +275,16 @@ test.describe( 'Configure product listings', () => {
 
 	test.describe( 'Shipping rate is recommended', () => {
 		test.beforeAll( async () => {
+			productListingsPage.fulfillSettings(
+				{
+					shipping_rate: 'flat',
+					shipping_rates_count: 1, // Set shipping rates count to 1 to show the recommended shipping rate radio button.
+				},
+				200,
+				[ 'GET' ]
+			);
+
+			await page.reload();
 			// Check another shipping rate first in case the recommended shipping rate radio button is already checked.
 			await productListingsPage.checkSimpleShippingRateRadioButton();
 		} );
@@ -306,7 +324,7 @@ test.describe( 'Configure product listings', () => {
 					request.postDataJSON().time === 14
 			);
 
-			await productListingsPage.fillEstimatedShippingTimes( '14' );
+			await productListingsPage.fillEstimatedShippingTimes( '14', '20' );
 
 			const request = await requestPromise;
 			const response = await request.response();
@@ -348,7 +366,7 @@ test.describe( 'Configure product listings', () => {
 	test.describe( 'Click "Continue" button', () => {
 		test.beforeAll( async () => {
 			await productListingsPage.checkRecommendedShippingRateRadioButton();
-			await productListingsPage.fillEstimatedShippingTimes( '14' );
+			await productListingsPage.fillEstimatedShippingTimes( '14', '20' );
 			await productListingsPage.fulfillBillingStatusRequest( {
 				status: 'pending',
 			} );

@@ -3,11 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 
-/**
- * Internal dependencies
- */
-import isNonFreeShippingRate from '.~/utils/isNonFreeShippingRate';
-
 const validlocationSet = new Set( [ 'all', 'selected' ] );
 const validShippingRateSet = new Set( [ 'automatic', 'flat', 'manual' ] );
 const validShippingTimeSet = new Set( [ 'flat', 'manual' ] );
@@ -63,16 +58,6 @@ const checkErrors = (
 	 */
 	if ( values.shipping_rate === 'flat' ) {
 		if (
-			values.offer_free_shipping === undefined &&
-			values.shipping_country_rates.some( isNonFreeShippingRate )
-		) {
-			errors.offer_free_shipping = __(
-				'Please select an option for whether to offer free shipping.',
-				'google-listings-and-ads'
-			);
-		}
-
-		if (
 			values.offer_free_shipping === true &&
 			values.shipping_country_rates.every(
 				( shippingRate ) =>
@@ -99,10 +84,20 @@ const checkErrors = (
 	if (
 		values.shipping_time === 'flat' &&
 		( shippingTimes.length < finalCountryCodes.length ||
-			shippingTimes.some( ( el ) => el.time < 0 ) )
+			shippingTimes.some( ( el ) => el.time < 0 || el.maxTime < 0 ) )
 	) {
 		errors.shipping_country_times = __(
 			'Please specify estimated shipping times for all the countries, and the time cannot be less than 0.',
+			'google-listings-and-ads'
+		);
+	}
+
+	if (
+		values.shipping_time === 'flat' &&
+		shippingTimes.some( ( el ) => el.time > el.maxTime )
+	) {
+		errors.shipping_country_times = __(
+			'The minimum shipping time must not be more than the maximum shipping time.',
 			'google-listings-and-ads'
 		);
 	}

@@ -17,6 +17,8 @@ import ShippingRateSection from '.~/components/shipping-rate-section';
 import ShippingTimeSection from '.~/components/free-listings/configure-product-listings/shipping-time-section';
 import AppButton from '.~/components/app-button';
 import ConditionalSection from '.~/components/conditional-section';
+import OrderValueConditionSection from '.~/components/order-value-condition-section';
+import isNonFreeShippingRate from '.~/utils/isNonFreeShippingRate';
 
 /**
  * Form to configure free listigns.
@@ -34,6 +36,9 @@ const FormContent = ( {
 	const displayTaxRate = useDisplayTaxRate( adapter.audienceCountries );
 	const shouldDisplayTaxRate = ! hideTaxRates && displayTaxRate;
 	const shouldDisplayShippingTime = values.shipping_time === 'flat';
+	const shouldDisplayOrderValueCondition =
+		values.shipping_rate === 'flat' &&
+		values.shipping_country_rates.some( isNonFreeShippingRate );
 
 	const handleSubmitClick = ( event ) => {
 		if ( shouldDisplayTaxRate !== null && isValidForm ) {
@@ -47,6 +52,9 @@ const FormContent = ( {
 		<StepContent>
 			<ChooseAudienceSection />
 			<ShippingRateSection />
+			{ shouldDisplayOrderValueCondition && (
+				<OrderValueConditionSection />
+			) }
 			{ shouldDisplayShippingTime && <ShippingTimeSection /> }
 			<ConditionalSection show={ shouldDisplayTaxRate }>
 				<TaxRate />

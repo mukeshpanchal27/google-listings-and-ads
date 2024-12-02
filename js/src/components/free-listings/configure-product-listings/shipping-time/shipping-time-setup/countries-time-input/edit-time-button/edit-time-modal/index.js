@@ -4,16 +4,18 @@
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Form } from '@woocommerce/components';
+import { Flex, FlexItem } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import AppButton from '.~/components/app-button';
 import AppModal from '.~/components/app-modal';
-import AppInputNumberControl from '.~/components/app-input-number-control';
 import VerticalGapLayout from '.~/components/vertical-gap-layout';
 import SupportedCountrySelect from '.~/components/supported-country-select';
 import validateShippingTimeGroup from '.~/utils/validateShippingTimeGroup';
+import MinMaxShippingTimes from '../../../min-max-inputs';
+import '../index.scss';
 
 /**
  *Form to edit time for selected country(-ies).
@@ -57,12 +59,18 @@ const EditTimeModal = ( {
 			initialValues={ {
 				countries: time.countries,
 				time: time.time,
+				maxTime: time.maxTime,
 			} }
 			validate={ validateShippingTimeGroup }
 			onSubmit={ handleSubmitCallback }
 		>
 			{ ( formProps ) => {
-				const { getInputProps, isValidForm, handleSubmit } = formProps;
+				const { getInputProps, isValidForm, handleSubmit, errors } =
+					formProps;
+
+				const handleIncrement = ( numberValue, field ) => {
+					getInputProps( field ).onChange( numberValue );
+				};
 
 				return (
 					<AppModal
@@ -108,17 +116,32 @@ const EditTimeModal = ( {
 								}
 								{ ...getInputProps( 'countries' ) }
 							/>
-							<AppInputNumberControl
-								label={ __(
-									'Then the estimated shipping time displayed in the product listing is',
+
+							<div className="label">
+								{ __(
+									'Then the estimated shipping times displayed in the product listing are',
 									'google-listings-and-ads'
 								) }
-								suffix={ __(
-									'days',
-									'google-listings-and-ads'
-								) }
-								{ ...getInputProps( 'time' ) }
-							/>
+							</div>
+
+							<Flex
+								direction="column"
+								className="gla-countries-time-input-container"
+							>
+								<FlexItem>
+									<MinMaxShippingTimes
+										time={ getInputProps( 'time' ).value }
+										maxTime={
+											getInputProps( 'maxTime' ).value
+										}
+										handleBlur={ handleIncrement }
+										handleIncrement={ handleIncrement }
+									/>
+									<ul className="gla-validation-errors">
+										<li>{ errors.time }</li>
+									</ul>
+								</FlexItem>
+							</Flex>
 						</VerticalGapLayout>
 					</AppModal>
 				);
