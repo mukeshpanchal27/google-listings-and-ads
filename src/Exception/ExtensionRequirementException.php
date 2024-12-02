@@ -26,7 +26,7 @@ class ExtensionRequirementException extends RuntimeExceptionWithMessageFunction 
 	public static function missing_required_plugin( string $plugin_name ): ExtensionRequirementException {
 		return new static(
 			sprintf(
-				'Requires %1$s to be enabled.', // Fallback exception message.
+				'Google for WooCommerce requires %1$s to be enabled.', // Fallback exception message.
 				$plugin_name
 			),
 			0,
@@ -49,7 +49,7 @@ class ExtensionRequirementException extends RuntimeExceptionWithMessageFunction 
 	public static function incompatible_plugin( string $plugin_name ): ExtensionRequirementException {
 		return new static(
 			sprintf(
-				'Incompatible with %1$s.', // Fallback exception message.
+				'Google for WooCommerce is incompatible with %1$s.', // Fallback exception message.
 				$plugin_name
 			),
 			0,

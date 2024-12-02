@@ -28,7 +28,7 @@ class InvalidVersion extends RuntimeExceptionWithMessageFunction implements Goog
 	public static function from_requirement( string $requirement, string $found_version, string $minimum_version ): InvalidVersion {
 		return new static(
 			sprintf(
-				'Requires %1$s version %2$s or higher. You are using version %3$s.', // Fallback exception message.
+				'Google for WooCommerce requires %1$s version %2$s or higher. You are using version %3$s.', // Fallback exception message.
 				$requirement,
 				$minimum_version,
 				$found_version
@@ -56,7 +56,7 @@ class InvalidVersion extends RuntimeExceptionWithMessageFunction implements Goog
 	public static function requirement_missing( string $requirement, string $minimum_version ): InvalidVersion {
 		return new static(
 			sprintf(
-				'Requires %1$s version %2$s or higher.', // Fallback exception message.
+				'Google for WooCommerce requires %1$s version %2$s or higher.', // Fallback exception message.
 				$requirement,
 				$minimum_version
 			),
@@ -79,7 +79,7 @@ class InvalidVersion extends RuntimeExceptionWithMessageFunction implements Goog
 	 */
 	public static function invalid_architecture(): InvalidVersion {
 		return new static(
-			'Requires a 64 bit version of PHP.', // Fallback exception message.
+			'Google for WooCommerce requires a 64 bit version of PHP.', // Fallback exception message.
 			0,
 			null,
 			fn () => __( 'Google for WooCommerce requires a 64 bit version of PHP.', 'google-listings-and-ads' )
