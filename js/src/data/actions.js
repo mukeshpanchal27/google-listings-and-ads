@@ -212,6 +212,7 @@ export function* deleteShippingRates( ids ) {
  * @typedef {Object} ShippingTime
  * @property {CountryCode} countryCode Destination country code.
  * @property {number} time Shipping time.
+ * @property {number} maxTime Max shipping time.
  */
 
 /**
