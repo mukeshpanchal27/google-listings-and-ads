@@ -10,6 +10,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\TransientsInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\PluginHelper;
+use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\WC;
 use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\WP;
 use Automattic\WooCommerce\GoogleListingsAndAds\Utility\DateTimeUtility;
 use Automattic\WooCommerce\GoogleListingsAndAds\Value\TosAccepted;
@@ -32,6 +33,7 @@ defined( 'ABSPATH' ) || exit;
  * - DateTimeUtility
  * - GoogleHelper
  * - Merchant
+ * - WC
  * - WP
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\API\Google
@@ -290,7 +292,7 @@ class Middleware implements OptionsAwareInterface {
 	 */
 	public function create_ads_account(): array {
 		try {
-			$country = WC()->countries->get_base_country();
+			$country = $this->container->get( WC::class )->get_base_country();
 
 			/** @var GoogleHelper $google_helper */
 			$google_helper = $this->container->get( GoogleHelper::class );
