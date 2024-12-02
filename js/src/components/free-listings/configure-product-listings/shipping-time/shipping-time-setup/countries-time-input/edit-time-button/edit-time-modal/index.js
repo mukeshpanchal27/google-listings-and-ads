@@ -77,7 +77,6 @@ const EditTimeModal = ( {
 						overflow="visible"
 						shouldCloseOnEsc={ ! dropdownVisible }
 						shouldCloseOnClickOutside={ ! dropdownVisible }
-						className="gla-edit-time-modal"
 						title={ __(
 							'Estimate shipping time',
 							'google-listings-and-ads'
