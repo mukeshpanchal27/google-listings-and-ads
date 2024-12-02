@@ -61,14 +61,10 @@ test.describe( 'Configure product listings', () => {
 			} ),
 
 			// Mock MC settings
-			productListingsPage.fulfillSettings(
-				{
-					shipping_rate: 'automatic',
-					tax_rate: 'destination',
-				},
-				200,
-				[ 'GET' ]
-			),
+			productListingsPage.fulfillSettings( {
+				shipping_rate: 'automatic',
+				tax_rate: 'destination',
+			} ),
 		] );
 
 		await productListingsPage.goto();

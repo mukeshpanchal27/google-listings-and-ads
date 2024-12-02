@@ -36,6 +36,11 @@ test.describe( 'Edit Free Listings', () => {
 		page = await browser.newPage();
 		dashboardPage = new DashboardPage( page );
 		editFreeListingsPage = new EditFreeListingsPage( page );
+
+		await editFreeListingsPage.fulfillSettings( {
+			shipping_rate: 'flat',
+			tax_rate: 'destination',
+		} );
 		await setOnboardedMerchant();
 		await dashboardPage.mockRequests();
 		await dashboardPage.goto();
