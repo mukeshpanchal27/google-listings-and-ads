@@ -13,17 +13,17 @@ import getShippingTimeMapKey from '.~/utils/getShippingTimeMapKey';
  *     {
  *         countryCode: 'US',
  *         time: 10,
- *		   maxTime: 20,
+ *         maxTime: 20,
  *     },
  *     {
  *         countryCode: 'AU',
  *         time: 10,
- *		   maxTime: 20,
+ *         maxTime: 20,
  *     },
  *     {
  *         countryCode: 'CN',
  *         time: 15,
- *		   maxTime: 22,
+ *         maxTime: 22,
  *     },
  * ]
  *
@@ -34,12 +34,12 @@ import getShippingTimeMapKey from '.~/utils/getShippingTimeMapKey';
  * //     {
  * //         countries: ['US', 'AU'],
  * //         time: 10
- *  //		  maxTime: 20,
+ * //         maxTime: 20,
  * //     },
  * //     {
  * //         countries: ['CN'],
  * //         time: 15
- * //		  maxTime: 22,
+ * //         maxTime: 22,
  * //     },
  * ]
  * ```
