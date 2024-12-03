@@ -140,6 +140,12 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
+= 2.9.1 - 2024-12-03 =
+* Fix - Make the tab navigation tabs wrap when the screen narrows.
+* Fix - Prevent translations from being called early.
+* Fix - The initial values of the form on free listings editing page may be empty.
+* Update - New shipping settings.
+
 = 2.9.0 - 2024-11-26 =
 * Add - Add GTIN Migration Job.
 * Add - Banner for GTIN MIgration.
