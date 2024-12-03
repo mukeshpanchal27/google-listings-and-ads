@@ -63,3 +63,20 @@ export function useAdaptiveFormContext() {
 
 	return adaptiveFormContext;
 }
+
+/**
+ * AdaptiveForm's input props hook.
+ *
+ * @param {string} key Key of the form value.
+ * @param {string} [validationKey=key] Key of the form value to be used for validation.
+ *
+ * @return {Object} Props for an adaptive form input.
+ */
+export function useAdaptiveFormInputProps( key, validationKey = key ) {
+	const { getInputProps, adapter } = useAdaptiveFormContext();
+
+	return {
+		...getInputProps( key ),
+		helper: adapter.renderRequestedValidation( validationKey ),
+	};
+}

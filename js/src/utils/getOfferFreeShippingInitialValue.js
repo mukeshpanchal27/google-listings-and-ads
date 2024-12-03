@@ -11,9 +11,10 @@ import isNonFreeShippingRate from '.~/utils/isNonFreeShippingRate';
  * Get initial value for offer_free_shipping field, to be used in Form.
  *
  * If all the shipping rates are free shipping,
- * the offer_free_shipping value should be undefined,
+ * the OrderValueConditionSection should not be displayed,
+ * and the offer_free_shipping value should be false,
  * so that when users add a non-free shipping rate,
- * they would need to choose "Yes" / "No" for offer_free_shipping.
+ * they would need to use the checkbox to decide yes or no for offer_free_shipping.
  *
  * If there are non-free shipping rates,
  * the offer_free_shipping value should be true / false
@@ -24,7 +25,7 @@ import isNonFreeShippingRate from '.~/utils/isNonFreeShippingRate';
  */
 const getOfferFreeShippingInitialValue = ( shippingRates ) => {
 	if ( ! shippingRates.some( isNonFreeShippingRate ) ) {
-		return undefined;
+		return false;
 	}
 
 	return shippingRates.some(

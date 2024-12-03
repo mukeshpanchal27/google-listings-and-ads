@@ -36,6 +36,11 @@ test.describe( 'Edit Free Listings', () => {
 		page = await browser.newPage();
 		dashboardPage = new DashboardPage( page );
 		editFreeListingsPage = new EditFreeListingsPage( page );
+
+		await editFreeListingsPage.fulfillSettings( {
+			shipping_rate: 'flat',
+			tax_rate: 'destination',
+		} );
 		await setOnboardedMerchant();
 		await dashboardPage.mockRequests();
 		await dashboardPage.goto();
@@ -70,7 +75,7 @@ test.describe( 'Edit Free Listings', () => {
 
 	test( 'Check recommended shipping settings', async () => {
 		await editFreeListingsPage.checkRecommendShippingSettings();
-		await editFreeListingsPage.fillCountriesShippingTimeInput( '5' );
+		await editFreeListingsPage.fillCountriesShippingTimeInput( '5', '10' );
 		await editFreeListingsPage.checkDestinationBasedTaxRates();
 		const saveChangesButton =
 			await editFreeListingsPage.getSaveChangesButton();

@@ -78,7 +78,7 @@ const SavedSetupStepper = ( { savedStep } ) => {
 		if ( settings?.shipping_rate === null ) {
 			saveSettings( {
 				...settings,
-				shipping_rate: 'automatic',
+				shipping_rate: 'flat',
 				shipping_time: 'flat',
 			} );
 		}

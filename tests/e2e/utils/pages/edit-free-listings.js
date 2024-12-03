@@ -42,18 +42,21 @@ export default class EditFreeListingsPage extends MockRequests {
 	async checkRecommendShippingSettings() {
 		return this.page
 			.locator(
-				'text=Recommended: Automatically sync my store’s shipping settings to Google.'
+				'text=Automatically sync my store’s shipping settings to Google.'
 			)
 			.check();
 	}
 	/**
 	 * Fill the countries shipping time input.
 	 *
-	 * @param {string} input The shipping time
+	 * @param {string} min The minimum shipping time
+	 * @param {string} max The maximum shipping time
 	 * @return {Promise<void>}
 	 */
-	async fillCountriesShippingTimeInput( input ) {
-		await this.page.locator( '.countries-time input' ).fill( input );
+	async fillCountriesShippingTimeInput( min, max ) {
+		const timesLocator = this.page.locator( '.countries-time input' );
+		await timesLocator.first().fill( min );
+		await timesLocator.last().fill( max );
 	}
 
 	/**
