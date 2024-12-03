@@ -136,12 +136,17 @@ const SetupFreeListings = ( {
 				setValue( 'shipping_country_rates', nextValue );
 			}
 		} else if ( change.name === 'shipping_country_times' ) {
+			// Skip the call of `onShippingTimesChange` if any shipping times are invalid.
+			const error = handleValidate( values );
+			const isValid = ! error.hasOwnProperty( change.name );
+
 			// Skip the call of `onShippingTimesChange` if there are incomplete shipping times.
 			// This should only happen during onboarding when the shipping times haven't been stored yet.
 			const shippingIsIncomplete = values.shipping_country_times.some(
 				( item ) => item.time === null || item.maxTime === null
 			);
-			if ( ! shippingIsIncomplete ) {
+
+			if ( ! shippingIsIncomplete && isValid ) {
 				onShippingTimesChange( values.shipping_country_times );
 			}
 		} else if ( settingsFieldNames.includes( change.name ) ) {
