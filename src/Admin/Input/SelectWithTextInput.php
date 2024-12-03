@@ -134,8 +134,8 @@ class SelectWithTextInput extends Input {
 			return;
 		}
 
-		$select_value = is_array( $data ) ? $data[ self::SELECT_INPUT_KEY ] : $data;
-		$custom_value = is_array( $data ) ? $data[ self::CUSTOM_INPUT_KEY ] : $data;
+		$select_value = is_array( $data ) ? $data[ self::SELECT_INPUT_KEY ] ?? '' : $data;
+		$custom_value = is_array( $data ) ? $data[ self::CUSTOM_INPUT_KEY ] ?? '' : $data;
 		if ( ! isset( $this->get_options()[ $select_value ] ) ) {
 			$this->get_select_input()->set_data( self::CUSTOM_INPUT_KEY );
 			$this->get_custom_input()->set_data( $custom_value );
