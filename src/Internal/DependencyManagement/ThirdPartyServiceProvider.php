@@ -55,7 +55,7 @@ class ThirdPartyServiceProvider extends AbstractServiceProvider {
 				new RawArgument( 'connection' ),
 				[
 					'slug' => $jetpack_id->getValue(),
-					'name' => __( 'Google for WooCommerce', 'google-listings-and-ads' ),
+					'name' => 'Google for WooCommerce', // Use hardcoded name for initial registration.
 				],
 			]
 		);
@@ -71,6 +71,17 @@ class ThirdPartyServiceProvider extends AbstractServiceProvider {
 				return Validation::createValidatorBuilder()
 					->addMethodMapping( 'load_validator_metadata' )
 					->getValidator();
+			}
+		);
+
+		// Update Jetpack connection with a translatable name, after init is called.
+		add_action(
+			'init',
+			function () {
+				$manager = $this->getLeagueContainer()->get( Manager::class );
+				$manager->get_plugin()->add(
+					__( 'Google for WooCommerce', 'google-listings-and-ads' )
+				);
 			}
 		);
 	}

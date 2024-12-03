@@ -107,7 +107,7 @@ class RESTServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->share( SettingsController::class );
+		$this->share( SettingsController::class, ShippingZone::class );
 		$this->share( ConnectionController::class );
 		$this->share( AdsAccountController::class, AdsAccountService::class );
 		$this->share( AdsCampaignController::class, AdsCampaign::class );

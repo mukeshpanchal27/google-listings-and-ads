@@ -858,6 +858,8 @@ class ConnectionTest implements Service, Registerable {
 			/** @var OptionsInterface $options */
 			$options = $this->container->get( OptionsInterface::class );
 			$this->response .= "\n\n" . 'Saved Connection option = ' . ( $options->get( OptionsInterface::JETPACK_CONNECTED ) ? 'connected' : 'disconnected' );
+
+			$this->response .= "\n\n" . 'Connected plugins: ' . implode( ', ', array_column( $manager->get_connected_plugins(), 'name' ) ) . "\n";
 		}
 
 		if ( 'wcs-test' === $_GET['action'] && check_admin_referer( 'wcs-test' ) ) {

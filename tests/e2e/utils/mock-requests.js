@@ -237,11 +237,11 @@ export default class MockRequests {
 	 * Fulfill the Settings request.
 	 *
 	 * @param {Object} payload
-	 * @param {number} status
-	 * @param {Array}  methods
+	 * @param {number} [status=200]
+	 * @param {Array}  [methods=['GET']]
 	 * @return {Promise<void>}
 	 */
-	async fulfillSettings( payload, status = 200, methods = [] ) {
+	async fulfillSettings( payload, status = 200, methods = [ 'GET' ] ) {
 		await this.fulfillRequest(
 			/\/wc\/gla\/mc\/settings\b/,
 			payload,

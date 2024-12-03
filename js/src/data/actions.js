@@ -212,6 +212,7 @@ export function* deleteShippingRates( ids ) {
  * @typedef {Object} ShippingTime
  * @property {CountryCode} countryCode Destination country code.
  * @property {number} time Shipping time.
+ * @property {number} maxTime Max shipping time.
  */
 
 /**
@@ -228,6 +229,7 @@ export function* fetchShippingTimes() {
 			return {
 				countryCode: el.country_code,
 				time: Number( el.time ),
+				maxTime: Number( el.max_time ),
 			};
 		} );
 
@@ -252,6 +254,7 @@ export function* fetchShippingTimes() {
  * @typedef {Object} AggregatedShippingTime
  * @property {Array<CountryCode>} countries Array of destination country codes.
  * @property {number} time Shipping time.
+ * @property {number} maxTime Max shipping time.
  */
 
 /**
@@ -261,7 +264,7 @@ export function* fetchShippingTimes() {
  * @throws Will throw an error if the request failed.
  */
 export function* upsertShippingTimes( shippingTime ) {
-	const { countryCodes, time } = shippingTime;
+	const { countryCodes, time, maxTime } = shippingTime;
 
 	yield apiFetch( {
 		path: `${ API_NAMESPACE }/mc/shipping/times/batch`,
@@ -269,6 +272,7 @@ export function* upsertShippingTimes( shippingTime ) {
 		data: {
 			country_codes: countryCodes,
 			time,
+			max_time: maxTime,
 		},
 	} );
 
