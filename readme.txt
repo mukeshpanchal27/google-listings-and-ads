@@ -193,9 +193,4 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Tweak - WordPress 6.7 Compatibility: Adjust the layout of the radio control to align well with the extended content.
 * Tweak - WordPress 6.7 Compatibility: Avoid errors in the database where a TEXT type can't have a default value.
 
-= 2.8.6 - 2024-10-02 =
-* Dev - Fix missing blueprint dependency.
-* Tweak - Adjust WP Proxy Response to force the string type for the price fields.
-* Tweak - Logic for Delete notifications.
-
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
