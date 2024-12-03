@@ -17,7 +17,7 @@ import GuidePageContent, {
 	ContentLink,
 } from '.~/components/guide-page-content';
 import { GUIDE_NAMES } from '.~/constants';
-import headerImageURL from './header.svg';
+import headerImageURL from '.~/images/success-guide-header.svg';
 import {
 	CTA_CREATE_ANOTHER_CAMPAIGN,
 	CTA_CONFIRM,
