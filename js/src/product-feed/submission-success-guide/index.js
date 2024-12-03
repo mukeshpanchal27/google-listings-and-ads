@@ -22,7 +22,7 @@ import { glaData, GUIDE_NAMES, LOCAL_STORAGE_KEYS } from '.~/constants';
 import localStorage from '.~/utils/localStorage';
 import { getProductFeedUrl } from '.~/utils/urls';
 import wooLogoURL from '.~/images/logo/woocommerce-logo.svg';
-import googleLogoURL from '.~/images/google-logo.svg';
+import googleLogoURL from '.~/images/logo/google-logo.svg';
 import { recordGlaEvent } from '.~/utils/tracks';
 import './index.scss';
 
