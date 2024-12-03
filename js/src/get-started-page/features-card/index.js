@@ -9,9 +9,9 @@ import { createInterpolateElement } from '@wordpress/element';
  * Internal dependencies
  */
 import AppDocumentationLink from '.~/components/app-documentation-link';
-import freeListingsImageURL from './img-free-listings.svg';
-import productPromotionImageURL from './img-product-promotion.svg';
-import dashboardImageURL from './img-dashboard.svg';
+import freeListingsImageURL from '.~/images/get-started/img-free-listings.svg';
+import productPromotionImageURL from '.~/images/get-started/img-product-promotion.svg';
+import dashboardImageURL from '.~/images/get-started/img-dashboard.svg';
 import Text from '.~/components/app-text';
 import './index.scss';
 
