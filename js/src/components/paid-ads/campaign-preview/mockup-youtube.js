@@ -10,7 +10,7 @@ import GridiconExternal from 'gridicons/dist/external';
 import Placeholder from './components/placeholder';
 import ScaledText from './components/scaled-text';
 import ProductCover from './components/product-cover';
-import youTubeLogoURL from './images/youtube-logo.svg';
+import youTubeLogoURL from '.~/images/campaign-preview/youtube-logo.svg';
 
 /**
  * @typedef { import("./index.js").AdPreviewData } AdPreviewData
