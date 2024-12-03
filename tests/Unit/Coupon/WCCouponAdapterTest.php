@@ -260,6 +260,7 @@ class WCCouponAdapterTest extends UnitTest {
 	}
 
 	public function test_brand_restrictions() {
+		// compatibility-code "WC < 9.4" -- Brands in core was added in WooCommerce 9.4
 		if ( version_compare( WC_VERSION, '9.4', '<' ) ) {
 			self::markTestSkipped( 'WooCommerce 9.4 or newer is needed to test WooCommerce Brands in core.' );
 		}
