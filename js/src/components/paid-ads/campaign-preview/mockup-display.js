@@ -9,7 +9,7 @@ import GridiconChevronRight from 'gridicons/dist/chevron-right';
  */
 import Placeholder from './components/placeholder';
 import ProductCover from './components/product-cover';
-import adCornerButtonsImageURL from './images/ad-corner-buttons-image.svg';
+import adCornerButtonsImageURL from '.~/images/campaign-preview/ad-corner-buttons-image.svg';
 
 /**
  * @typedef { import("./index.js").AdPreviewData } AdPreviewData

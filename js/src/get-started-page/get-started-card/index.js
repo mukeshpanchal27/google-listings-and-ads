@@ -10,7 +10,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { glaData } from '.~/constants';
 import AppDocumentationLink from '.~/components/app-documentation-link';
-import motivationImageURL from './image.svg';
+import motivationImageURL from '.~/images/get-started/motivation.svg';
 import './index.scss';
 import Text from '.~/components/app-text';
 import AppButton from '.~/components/app-button';

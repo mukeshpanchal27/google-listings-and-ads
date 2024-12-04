@@ -10,11 +10,11 @@ import { Icon, store as storeIcon } from '@wordpress/icons';
  */
 import Section from '.~/wcdl/section';
 import Subsection from '.~/wcdl/subsection';
-import googleLogoURL from './gogole-g-logo.svg';
-import googleMCLogoURL from './google-merchant-center-logo.svg';
-import googleAdsLogoURL from './google-ads-logo.svg';
-import wpLogoURL from './wp-logo.svg';
-import finalUrlIconURL from './final-url-icon.svg';
+import googleLogoURL from '.~/images/logo/gogole-g-logo.svg';
+import googleMCLogoURL from '.~/images/logo/google-merchant-center-logo.svg';
+import googleAdsLogoURL from '.~/images/logo/google-ads-logo.svg';
+import wpLogoURL from '.~/images/logo/wp-logo.svg';
+import finalUrlIconURL from '.~/images/final-url-icon.svg';
 import './index.scss';
 
 /**
