@@ -32,8 +32,7 @@ const image = (
 			<img
 				src={ wooLogoURL }
 				alt={ __( 'WooCommerce Logo', 'google-listings-and-ads' ) }
-				width="145"
-				height="31"
+				width="150"
 			/>
 		</div>
 		<div className="gla-submission-success-guide__logo-separator-line" />
