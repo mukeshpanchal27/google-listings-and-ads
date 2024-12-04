@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\DB\Migration
  *
- * @since x.x.x
+ * @since 2.9.1
  */
 class Migration20240813T1653383133 extends AbstractMigration {
 
@@ -43,7 +43,7 @@ class Migration20240813T1653383133 extends AbstractMigration {
 	 * @return string A version number. For example: 1.4.1
 	 */
 	public function get_applicable_version(): string {
-		return 'x.x.x';
+		return '2.9.1';
 	}
 
 	/**
