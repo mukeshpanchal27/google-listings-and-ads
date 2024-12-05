@@ -72,7 +72,7 @@ final class Container implements ContainerInterface {
 			->invokeMethod( 'set_container', [ ContainerInterface::class ] );
 
 		foreach ( $this->service_providers as $service_provider_class ) {
-			$this->container->addServiceProvider( new ( $service_provider_class )() );
+			$this->container->addServiceProvider( new $service_provider_class() );
 		}
 	}
 
