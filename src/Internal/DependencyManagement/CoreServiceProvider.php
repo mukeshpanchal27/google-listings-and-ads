@@ -222,7 +222,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * Use the register method to register items with the container via the
-	 * protected $this->leagueContainer property or the `getLeagueContainer` method
+	 * protected $this->container property or the `getContainer` method
 	 * from the ContainerAwareTrait.
 	 *
 	 * @return void
@@ -240,13 +240,13 @@ class CoreServiceProvider extends AbstractServiceProvider {
 
 		// Set up Options, and inflect classes that need options.
 		$this->share_concrete( OptionsInterface::class, Options::class );
-		$this->getLeagueContainer()
+		$this->getContainer()
 			->inflector( OptionsAwareInterface::class )
 			->invokeMethod( 'set_options_object', [ OptionsInterface::class ] );
 
 		// Share helper classes, and inflect classes that need it.
 		$this->share_with_tags( GoogleHelper::class, WC::class );
-		$this->getLeagueContainer()
+		$this->getContainer()
 			->inflector( GoogleHelperAwareInterface::class )
 			->invokeMethod( 'set_google_helper_object', [ GoogleHelper::class ] );
 
@@ -262,14 +262,14 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		// Set up OAuthService service.
 		$this->share_with_tags( OAuthService::class );
 
-		$this->getLeagueContainer()
+		$this->getContainer()
 			->inflector( MerchantCenterAwareInterface::class )
 			->invokeMethod( 'set_merchant_center_object', [ MerchantCenterService::class ] );
 
 		// Set up Ads service, and inflect classes that need it.
 		$this->share_with_tags( AdsAccountState::class );
 		$this->share_with_tags( AdsService::class, AdsAccountState::class );
-		$this->getLeagueContainer()
+		$this->getContainer()
 			->inflector( AdsAwareInterface::class )
 			->invokeMethod( 'set_ads_object', [ AdsService::class ] );
 		$this->share_with_tags( AssetSuggestionsService::class, WP::class, WC::class, ImageUtility::class, wpdb::class, AdsAssetGroupAsset::class );
@@ -390,7 +390,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		);
 
 		// Set up inflector for tracks classes.
-		$this->getLeagueContainer()
+		$this->getContainer()
 			->inflector( TracksAwareInterface::class )
 			->invokeMethod( 'set_tracks', [ TracksInterface::class ] );
 
