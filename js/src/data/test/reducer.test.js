@@ -8,7 +8,7 @@ import { get } from 'lodash';
  */
 import reducer from '../reducer';
 import TYPES from '../action-types';
-import { deepFreeze, prepareImmutableStateWithRefCheck } from './__helpers__';
+import { deepFreeze, prepareImmutableState } from './__helpers__';
 
 describe( 'reducer', () => {
 	let defaultState;
@@ -77,10 +77,7 @@ describe( 'reducer', () => {
 			gtinMigrationStatus: null,
 		} );
 
-		prepareState = prepareImmutableStateWithRefCheck.bind(
-			null,
-			defaultState
-		);
+		prepareState = prepareImmutableState.bind( null, defaultState );
 	} );
 
 	describe( 'General reducer behaviors', () => {
@@ -120,7 +117,6 @@ describe( 'reducer', () => {
 				data,
 			} );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( `${ path }.version`, data.version );
 			expect( state ).toHaveProperty( `${ path }.mcId`, data.mcId );
 			expect( state ).toHaveProperty( `${ path }.adsId`, data.adsId );
@@ -152,7 +148,6 @@ describe( 'reducer', () => {
 			};
 			const state = reducer( prepareState(), action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( path, action.shippingRates );
 		} );
 
@@ -195,7 +190,6 @@ describe( 'reducer', () => {
 
 			const state = reducer( originalState, action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( path, [
 				{
 					id: '1',
@@ -245,7 +239,6 @@ describe( 'reducer', () => {
 
 			const state = reducer( originalState, action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( path, [
 				{
 					id: '1',
@@ -277,7 +270,6 @@ describe( 'reducer', () => {
 			};
 			const state = reducer( prepareState(), action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( path, action.shippingTimes );
 		} );
 
@@ -301,7 +293,6 @@ describe( 'reducer', () => {
 			};
 			const state = reducer( originalState, action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( path, [
 				{
 					countryCode: 'US',
@@ -339,7 +330,6 @@ describe( 'reducer', () => {
 			};
 			const state = reducer( originalState, action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( path, [
 				{
 					countryCode: 'CA',
@@ -362,19 +352,14 @@ describe( 'reducer', () => {
 			};
 			const state = reducer( prepareState(), action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( path, action.settings );
 		} );
 
 		it( 'should return with partially updated Merchant Center settings', () => {
-			const originalState = prepareState(
-				path,
-				{
-					existingSettingA: 'should be kept',
-					existingSettingB: 'should be updated from old value',
-				},
-				true
-			);
+			const originalState = prepareState( path, {
+				existingSettingA: 'should be kept',
+				existingSettingB: 'should be updated from old value',
+			} );
 			const action = {
 				type: TYPES.SAVE_SETTINGS,
 				settings: {
@@ -384,7 +369,6 @@ describe( 'reducer', () => {
 			};
 			const state = reducer( originalState, action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( path, {
 				existingSettingA: 'should be kept',
 				existingSettingB: 'should be updated to new value',
@@ -403,16 +387,14 @@ describe( 'reducer', () => {
 			};
 			const state = reducer( prepareState(), action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( path, action.account );
 		} );
 
 		it( 'should return with default Google Ads account connection when getting disconnect action', () => {
-			const originalState = prepareState( path, { id: 123456789 }, true );
+			const originalState = prepareState( path, { id: 123456789 } );
 			const action = { type: TYPES.DISCONNECT_ACCOUNTS_GOOGLE_ADS };
 			const state = reducer( originalState, action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( path, get( defaultState, path ) );
 		} );
 	} );
@@ -437,7 +419,6 @@ describe( 'reducer', () => {
 			};
 			const state = reducer( prepareState(), action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( 'mc.countries', data.countries );
 			expect( state ).toHaveProperty( 'mc.continents', data.continents );
 		} );
@@ -454,7 +435,6 @@ describe( 'reducer', () => {
 			};
 			const state = reducer( prepareState(), action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( path, action.adsCampaigns );
 		} );
 
@@ -468,8 +448,6 @@ describe( 'reducer', () => {
 				createdCampaign: { id: 456 },
 			} );
 
-			createdToInitialState.assertConsistentRef();
-			createdToLoadedState.assertConsistentRef();
 			expect( createdToInitialState ).toHaveProperty( path, [
 				{ id: 123 },
 			] );
@@ -501,7 +479,6 @@ describe( 'reducer', () => {
 			};
 			const state = reducer( originalState, action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( path, [
 				{
 					id: 123,
@@ -527,7 +504,6 @@ describe( 'reducer', () => {
 			const action = { type: TYPES.DELETE_ADS_CAMPAIGN, id: 456 };
 			const state = reducer( originalState, action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( path, [
 				{ id: 123 },
 				{ id: 789 },
@@ -542,7 +518,6 @@ describe( 'reducer', () => {
 			};
 			const state = reducer( prepareState(), action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( pathAllAds, action.adsCampaigns );
 		} );
 	} );
@@ -559,7 +534,6 @@ describe( 'reducer', () => {
 				assetGroups: groupsA,
 			} );
 
-			firstState.assertConsistentRef();
 			expect( firstState ).toHaveProperty( `${ path }.123`, groupsA );
 
 			// Store other asset groups individually.
@@ -569,7 +543,6 @@ describe( 'reducer', () => {
 				assetGroups: groupsB,
 			} );
 
-			secondState.assertConsistentRef();
 			expect( secondState ).toHaveProperty( `${ path }.123`, groupsA );
 			expect( secondState ).toHaveProperty( `${ path }.456`, groupsB );
 		} );
@@ -583,7 +556,6 @@ describe( 'reducer', () => {
 				assetGroup: groupA,
 			} );
 
-			firstState.assertConsistentRef();
 			expect( firstState ).toHaveProperty( `${ path }.123`, [ groupA ] );
 
 			const secondState = reducer( firstState, {
@@ -592,7 +564,6 @@ describe( 'reducer', () => {
 				assetGroup: groupB,
 			} );
 
-			secondState.assertConsistentRef();
 			expect( secondState ).toHaveProperty( `${ path }.123`, [
 				groupA,
 				groupB,
@@ -627,10 +598,6 @@ describe( 'reducer', () => {
 				query: { page: 2, per_page: 2, issue_type: 'account' },
 				data: { total: 5, issues: accountIssuesPage2 },
 			} );
-
-			accountIssuesState.assertConsistentRef();
-			productIssuesState.assertConsistentRef();
-			accountIssuesStatePage2.assertConsistentRef();
 
 			expect( accountIssuesState ).toHaveProperty( accountPath, {
 				total: 5,
@@ -682,10 +649,6 @@ describe( 'reducer', () => {
 					data: { total: 5, issues: [ '#5' ] },
 				} );
 
-				pageOneState.assertConsistentRef();
-				pageTwoState.assertConsistentRef();
-				pageThreeState.assertConsistentRef();
-
 				expect( pageOneState ).toHaveProperty( path, {
 					total: 5,
 					issues: [ '#1', '#2' ],
@@ -734,8 +697,6 @@ describe( 'reducer', () => {
 				},
 			} );
 
-			pageOneState.assertConsistentRef();
-			pageFourState.assertConsistentRef();
 			expect( pageOneState ).toHaveProperty( path, {
 				order: 'asc',
 				orderby: 'title',
@@ -769,10 +730,7 @@ describe( 'reducer', () => {
 					total: 7,
 					pages: { 1: [ '#1', '#2' ], 4: [ '#7' ] },
 				};
-				const originalState = prepareState( path, initValue, [
-					path,
-					`${ path }.pages`,
-				] );
+				const originalState = prepareState( path, initValue );
 				const action = {
 					type: TYPES.RECEIVE_MC_PRODUCT_FEED,
 					query: {
@@ -787,7 +745,6 @@ describe( 'reducer', () => {
 				};
 				const state = reducer( originalState, action );
 
-				state.assertConsistentRef();
 				expect( state ).toHaveProperty( path, {
 					...baseQuery,
 					[ key ]: value,
@@ -810,7 +767,6 @@ describe( 'reducer', () => {
 				data: '#1',
 			} );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( [ path, reportKey ], '#1' );
 		} );
 
@@ -827,8 +783,6 @@ describe( 'reducer', () => {
 				data: '#4',
 			} );
 
-			pageOneState.assertConsistentRef();
-			pageFourState.assertConsistentRef();
 			expect( pageOneState ).toHaveProperty( `${ path }.key1`, '#1' );
 			expect( pageFourState ).toHaveProperty( `${ path }.key1`, '#1' );
 			expect( pageFourState ).toHaveProperty( `${ path }.key4`, '#4' );
@@ -845,7 +799,6 @@ describe( 'reducer', () => {
 				tour,
 			} );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( [ path, tour.id ], tour );
 		} );
 
@@ -862,7 +815,6 @@ describe( 'reducer', () => {
 				tour: tourUpdated,
 			} );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( [ path, tour.id ], tourUpdated );
 		} );
 	} );
@@ -892,7 +844,6 @@ describe( 'reducer', () => {
 			};
 			const state = reducer( prepareState(), action );
 
-			state.assertConsistentRef();
 			expect( state ).toHaveProperty( `${ path }.mu_sg`, {
 				currency: recommendation.currency,
 				recommendations: recommendation.recommendations,
@@ -929,7 +880,6 @@ describe( 'reducer', () => {
 				const action = { type, [ key ]: payload };
 				const state = reducer( prepareState(), action );
 
-				state.assertConsistentRef();
 				expect( state ).toHaveProperty( path, payload );
 			}
 		);
