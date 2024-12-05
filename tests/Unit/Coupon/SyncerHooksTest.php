@@ -281,7 +281,7 @@ class SyncerHooksTest extends ContainerAwareUnitTest {
 
 		// Create products and brands.
 		/**
-		 * @var WC_Product $product
+		 * @var WC_Product $product_1
 		 */
 		$product_1 = WC_Helper_Product::create_simple_product();
 		$product_2 = WC_Helper_Product::create_simple_product();
