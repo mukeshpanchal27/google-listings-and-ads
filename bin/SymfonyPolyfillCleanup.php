@@ -45,7 +45,7 @@ class SymfonyPolyfillCleanup {
 	 * @param Event|null  $event Composer event.
 	 * @param string|null $path  Path of the Symfony library.
 	 */
-	public function __construct( Event $event = null, string $path = null ) {
+	public function __construct( ?Event $event = null, ?string $path = null ) {
 		$this->event = $event;
 		$this->path  = $path ?: dirname( __DIR__ ) . '/vendor/symfony/';
 	}
@@ -62,9 +62,9 @@ class SymfonyPolyfillCleanup {
 	/**
 	 * Remove PHP 8.0 specific code of Symfony polyfills
 	 *
-	 * @param Event $event Event context provided by Composer
+	 * @param Event|null $event Event context provided by Composer
 	 */
-	public static function remove( Event $event = null ) {
+	public static function remove( ?Event $event = null ) {
 		$cleanup = new SymfonyPolyfillCleanup( $event );
 		$cleanup->remove_bootstraps80();
 	}
