@@ -96,17 +96,17 @@ class MerchantStatusesTest extends UnitTest {
 		$this->merchant_issue_table = $this->createMock( MerchantIssueTable::class );
 
 		$container = new Container();
-		$container->share( Merchant::class, $this->merchant );
-		$container->share( MerchantIssueQuery::class, $this->merchant_issue_query );
-		$container->share( MerchantCenterService::class, $this->merchant_center_service );
-		$container->share( TransientsInterface::class, $this->transients );
-		$container->share( ProductRepository::class, $this->product_repository );
-		$container->share( ProductMetaQueryHelper::class, $this->product_meta_query_helper );
-		$container->share( ProductHelper::class, $this->product_helper );
-		$container->share( MerchantIssueTable::class, $this->merchant_issue_table );
-		$container->share( UpdateMerchantProductStatuses::class, $this->update_merchant_product_statuses_job );
-		$container->share( UpdateAllProducts::class, $this->update_all_product_job );
-		$container->share( DeleteAllProducts::class, $this->delete_all_product_job );
+		$container->addShared( Merchant::class, $this->merchant );
+		$container->addShared( MerchantIssueQuery::class, $this->merchant_issue_query );
+		$container->addShared( MerchantCenterService::class, $this->merchant_center_service );
+		$container->addShared( TransientsInterface::class, $this->transients );
+		$container->addShared( ProductRepository::class, $this->product_repository );
+		$container->addShared( ProductMetaQueryHelper::class, $this->product_meta_query_helper );
+		$container->addShared( ProductHelper::class, $this->product_helper );
+		$container->addShared( MerchantIssueTable::class, $this->merchant_issue_table );
+		$container->addShared( UpdateMerchantProductStatuses::class, $this->update_merchant_product_statuses_job );
+		$container->addShared( UpdateAllProducts::class, $this->update_all_product_job );
+		$container->addShared( DeleteAllProducts::class, $this->delete_all_product_job );
 
 		$this->container         = $container;
 		$this->merchant_statuses = new MerchantStatuses();

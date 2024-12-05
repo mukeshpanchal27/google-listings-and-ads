@@ -84,9 +84,9 @@ class AdsCampaignTest extends UnitTest {
 		$this->google_helper = new GoogleHelper( $this->wc );
 
 		$this->container = new Container();
-		$this->container->share( AdsAssetGroup::class, $this->asset_group );
-		$this->container->share( TransientsInterface::class, $this->transients );
-		$this->container->share( WC::class, $this->wc );
+		$this->container->addShared( AdsAssetGroup::class, $this->asset_group );
+		$this->container->addShared( TransientsInterface::class, $this->transients );
+		$this->container->addShared( WC::class, $this->wc );
 
 		$this->campaign = new AdsCampaign( $this->client, $this->budget, $this->criterion, $this->google_helper, $this->campaign_label );
 		$this->campaign->set_options_object( $this->options );

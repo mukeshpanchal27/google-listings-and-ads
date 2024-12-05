@@ -99,9 +99,9 @@ class OAuthServiceTest extends UnitTest {
 			2
 		);
 
-		$this->container->share( Middleware::class, $this->middleware );
-		$this->container->share( Jetpack::class, $this->jp );
-		$this->container->share( AccountService::class, $this->account_service );
+		$this->container->addShared( Middleware::class, $this->middleware );
+		$this->container->addShared( Jetpack::class, $this->jp );
+		$this->container->addShared( AccountService::class, $this->account_service );
 		$this->service = new OAuthService();
 		$this->service->set_options_object( $this->options );
 		$this->service->set_container( $this->container );

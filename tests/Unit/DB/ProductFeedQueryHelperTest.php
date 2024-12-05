@@ -63,9 +63,9 @@ class ProductFeedQueryHelperTest extends UnitTest {
 		$this->job                = $this->createMock( UpdateMerchantProductStatuses::class );
 
 		$container = new Container();
-		$container->share( MerchantCenterService::class, $this->mc_service );
-		$container->share( MerchantStatuses::class, $this->merchant_statuses );
-		$container->share( ProductHelper::class, $this->product_helper );
+		$container->addShared( MerchantCenterService::class, $this->mc_service );
+		$container->addShared( MerchantStatuses::class, $this->merchant_statuses );
+		$container->addShared( ProductHelper::class, $this->product_helper );
 
 		$this->product_feed_query_helper = new ProductFeedQueryHelper( $this->wpdb, $this->product_repository );
 		$this->product_feed_query_helper->set_container( $container );
