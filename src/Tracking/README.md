@@ -511,14 +511,14 @@ Clicking on a Google Merchant Center link.
 - [`FreePerformanceCard`](../../js/src/dashboard/summary-section/index.js#L23) with `{ context: 'dashboard' }`
 - [`MetricNumber`](../../js/src/reports/metric-number.js#L42) with `{ context: 'reports' }`
 
-### [`gla_help_click`](../../js/src/components/help-icon-button.js#L12)
+### [`gla_help_click`](../../js/src/components/help-icon-button/index.js#L13)
 "Help" button is clicked.
 #### Properties
 | name | type | description |
 | ---- | ---- | ----------- |
 `context` | `string` | Indicates the place where the button is located, e.g. `setup-ads`.
 #### Emitters
-- [`HelpIconButton`](../../js/src/components/help-icon-button.js#L30)
+- [`HelpIconButton`](../../js/src/components/help-icon-button/index.js#L31)
 
 ### [`gla_import_assets_by_final_url_button_click`](../../js/src/components/paid-ads/asset-group/assets-loader.js#L80)
 Clicking on the "Scan for assets" button.
