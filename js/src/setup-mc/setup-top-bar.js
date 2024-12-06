@@ -14,7 +14,7 @@ import { recordGlaEvent } from '.~/utils/tracks';
 /**
  * @fires gla_setup_mc with `{ triggered_by: 'back-button', action: 'leave' }`.
  */
-const SetupMCTopBar = () => {
+const SetupTopBar = () => {
 	const handleBackButtonClick = () => {
 		recordGlaEvent( 'gla_setup_mc', {
 			triggered_by: 'back-button',
@@ -35,4 +35,4 @@ const SetupMCTopBar = () => {
 	);
 };
 
-export default SetupMCTopBar;
+export default SetupTopBar;

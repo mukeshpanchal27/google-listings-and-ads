@@ -8,4 +8,4 @@ const glaDateTimeFormat =
 	( glaData.dateFormat.trim() && glaData.timeFormat.trim() ? ', ' : '' ) +
 	glaData.timeFormat;
 
-export default glaDateTimeFormat;
+export { glaDateTimeFormat };

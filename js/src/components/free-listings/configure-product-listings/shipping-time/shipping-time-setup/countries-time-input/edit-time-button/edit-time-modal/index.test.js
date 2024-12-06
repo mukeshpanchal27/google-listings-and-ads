@@ -7,7 +7,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import EditTimeModal from './index';
+import EditTimeModal from './';
 import useMCCountryTreeOptions from '.~/components/supported-country-select/useMCCountryTreeOptions';
 
 jest.mock( '.~/components/supported-country-select/useMCCountryTreeOptions' );

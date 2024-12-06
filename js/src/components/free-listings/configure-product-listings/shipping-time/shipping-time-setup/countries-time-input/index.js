@@ -9,7 +9,7 @@ import { Flex, FlexItem } from '@wordpress/components';
 import AppSpinner from '.~/components/app-spinner';
 import ShippingTimeInputControlLabelText from '.~/components/shipping-time-input-control-label-text';
 import EditTimeButton from './edit-time-button';
-import MinMaxShippingTimes from '../min-max-inputs';
+import MinMaxShippingTimes from '../min-max-shipping-times';
 import './index.scss';
 
 /**

@@ -3,4 +3,4 @@ export { default as ConnectedGoogleAccountCard } from './connected-google-accoun
 export { default as RequestFullAccessGoogleAccountCard } from './request-full-access-google-account-card';
 export { default as SwitchAccountButton } from './switch-account-button';
 export { default as ReadMoreLink } from './read-more-link';
-export { default as useGoogleConnectFlow } from './use-google-connect-flow';
+export { default as useGoogleConnectFlow } from './useGoogleConnectFlow';

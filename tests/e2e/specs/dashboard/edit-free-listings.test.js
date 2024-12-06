@@ -9,8 +9,8 @@ import { expect, test } from '@playwright/test';
 import { clearOnboardedMerchant, setOnboardedMerchant } from '../../utils/api';
 import { LOAD_STATE } from '../../utils/constants';
 import { checkSnackBarMessage } from '../../utils/page';
-import DashboardPage from '../../utils/pages/dashboard.js';
-import EditFreeListingsPage from '../../utils/pages/edit-free-listings.js';
+import DashboardPage from '../../utils/pages/dashboard';
+import EditFreeListingsPage from '../../utils/pages/edit-free-listings';
 
 test.use( { storageState: process.env.ADMINSTATE } );
 

@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import Status from '.~/product-feed/product-statistics/status-box/status';
 import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
-import REVIEW_STATUSES from '.~/product-feed/review-request/review-request-statuses';
+import { REVIEW_STATUSES } from '../../constants';
 
 /**
  * Shows the user's Google Merchant Account status. That is the account status in the Free Listing program and Shopping Ads Program.

@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { createProgramsFilterConfig } from './filter-config';
+import { createProgramsFilterConfig } from './filterConfig';
 import { FREE_LISTINGS_PROGRAM_ID } from '.~/constants';
 
 function getAutocompleterOptions( config ) {

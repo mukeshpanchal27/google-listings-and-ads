@@ -11,7 +11,7 @@ import { glaData } from '.~/constants';
 import AccountCard, { APPEARANCE } from '.~/components/account-card';
 import AppButton from '.~/components/app-button';
 import readMoreLink from './read-more-link';
-import useGoogleConnectFlow from './use-google-connect-flow';
+import useGoogleConnectFlow from './useGoogleConnectFlow';
 
 /**
  * @param {Object} props React props

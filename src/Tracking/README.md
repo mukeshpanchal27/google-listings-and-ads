@@ -356,7 +356,7 @@ When a documentation link is clicked.
 - [`ProductStatusHelpPopover`](../../js/src/product-feed/product-statistics/product-status-help-popover/index.js#L16) with `{ context: 'product-feed', link_id: 'product-sync-statuses', href: 'https://support.google.com/merchants/answer/160491' }`
 - [`ReclaimUrlCard`](../../js/src/components/google-mc-account-card/reclaim-url-card/index.js#L42) with `{ context: 'setup-mc', link_id: 'claim-url', href: 'https://support.google.com/merchants/answer/176793' }`
 - [`RequestFullAccessGoogleAccountCard`](../../js/src/components/google-account-card/request-full-access-google-account-card.js#L26) with `{ context: 'setup-mc-accounts', link_id: 'required-google-permissions', href: 'https://woocommerce.com/document/google-for-woocommerce/get-started/setup-and-configuration/#required-google-permissions' }`
-- [`ShippingRateSection`](../../js/src/components/shipping-rate-section/shipping-rate-section.js#L23)
+- [`ShippingRateSection`](../../js/src/components/shipping-rate-section/shipping-rate-section.js#L25)
 	- with `{ context: 'setup-mc-shipping', link_id: 'shipping-read-more', href: 'https://support.google.com/merchants/answer/7050921' }`
 	- with `{ context: 'setup-mc-shipping', link_id: 'shipping-manual', href: 'https://www.google.com/retail/solutions/merchant-center/' }`
 - [`ShippingTimeSection`](../../js/src/components/free-listings/configure-product-listings/shipping-time-section.js#L17) with `{ context: 'setup-mc-shipping', link_id: 'shipping-read-more', href: 'https://support.google.com/merchants/answer/7050921' }`
@@ -703,7 +703,7 @@ Triggered on events during ads onboarding
 - [`AdsStepper`](../../js/src/setup-ads/ads-stepper/index.js#L28)
 	- with `{ triggered_by: 'step1-continue-button', action: 'go-to-step2' }`.
 	- with `{ triggered_by: 'stepper-step1-button', action: 'go-to-step1'}`.
-- [`SetupAdsTopBar`](../../js/src/setup-ads/top-bar/index.js#L17) with given `{ triggered_by: 'back-button', action: 'leave' }` when back button is clicked.
+- [`SetupTopBar`](../../js/src/setup-ads/setup-top-bar.js#L17) with given `{ triggered_by: 'back-button', action: 'leave' }` when back button is clicked.
 
 ### [`gla_setup_ads_faq`](../../js/src/components/paid-ads/ads-campaign/faqs.js#L75)
 Clicking on faq items to collapse or expand it in the Onboarding Flow or creating/editing a campaign
@@ -729,7 +729,7 @@ Setup Merchant Center
 - [`SavedSetupStepper`](../../js/src/setup-mc/setup-stepper/saved-setup-stepper.js#L38)
 	- with `{ triggered_by: 'step1-continue-button' | 'step2-continue-button', action: 'go-to-step2' | 'go-to-step3' }`.
 	- with `{ triggered_by: 'stepper-step1-button' | 'stepper-step2-button', action: 'go-to-step1' | 'go-to-step2' }`.
-- [`SetupMCTopBar`](../../js/src/setup-mc/top-bar/index.js#L17) with `{ triggered_by: 'back-button', action: 'leave' }`.
+- [`SetupTopBar`](../../js/src/setup-mc/setup-top-bar.js#L17) with `{ triggered_by: 'back-button', action: 'leave' }`.
 
 ### [`gla_submit_campaign_button_click`](../../js/src/components/paid-ads/asset-group/asset-group.js#L28)
 Clicking on the submit button on the campaign creation or editing page.

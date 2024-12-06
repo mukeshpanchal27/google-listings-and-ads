@@ -14,7 +14,7 @@ import { recordGlaEvent } from '.~/utils/tracks';
 /**
  * @fires gla_setup_ads with given `{ triggered_by: 'back-button', action: 'leave' }` when back button is clicked.
  */
-const SetupAdsTopBar = () => {
+const SetupTopBar = () => {
 	// We record the intent to go back or to help - clicking buttons.
 	// Those events are fired before the actual navigation happens.
 	// The navigation itself may or maynot be blocked, for example to avoid leaving unsaved chanes.
@@ -35,4 +35,4 @@ const SetupAdsTopBar = () => {
 	);
 };
 
-export default SetupAdsTopBar;
+export default SetupTopBar;

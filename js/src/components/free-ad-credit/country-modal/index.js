@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AppModal from '.~/components/app-modal';
-import countryAmount from './country-amount';
+import countryAmount from './countryAmount';
 import './index.scss';
 import useCountryKeyNameMap from '.~/hooks/useCountryKeyNameMap';
 

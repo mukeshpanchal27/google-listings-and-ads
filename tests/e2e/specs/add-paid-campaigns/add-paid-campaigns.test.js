@@ -7,8 +7,8 @@ import { expect, test } from '@playwright/test';
  * Internal dependencies
  */
 import { clearOnboardedMerchant, setOnboardedMerchant } from '../../utils/api';
-import DashboardPage from '../../utils/pages/dashboard.js';
-import SetupAdsAccountsPage from '../../utils/pages/setup-ads/setup-ads-accounts.js';
+import DashboardPage from '../../utils/pages/dashboard';
+import SetupAdsAccountsPage from '../../utils/pages/setup-ads/setup-ads-accounts';
 import SetupBudgetPage from '../../utils/pages/setup-ads/setup-budget';
 import { LOAD_STATE } from '../../utils/constants';
 import {

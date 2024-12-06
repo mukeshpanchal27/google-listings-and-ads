@@ -6,7 +6,7 @@ import { render } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import SummarySection from '.~/dashboard/summary-section';
+import SummarySection from './';
 import useAdsCampaigns from '.~/hooks/useAdsCampaigns';
 
 // Mimic no data loaded.

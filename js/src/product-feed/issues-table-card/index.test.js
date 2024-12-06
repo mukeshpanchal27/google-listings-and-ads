@@ -23,7 +23,7 @@ import { render, screen } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import IssuesTableCard from '.~/product-feed/issues-table-card/index';
+import IssuesTableCard from './';
 import useMCIssuesTypeFilter from '.~/hooks/useMCIssuesTypeFilter';
 
 describe( 'Issues Table Card', () => {

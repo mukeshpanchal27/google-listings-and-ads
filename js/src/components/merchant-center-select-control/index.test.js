@@ -26,7 +26,7 @@ import '@testing-library/jest-dom';
 /**
  * Internal dependencies
  */
-import MerchantCenterSelectControl from '.~/components/merchant-center-select-control/index';
+import MerchantCenterSelectControl from './';
 
 describe( 'Merchant Center Select Control', () => {
 	test( 'First option selected by default', () => {

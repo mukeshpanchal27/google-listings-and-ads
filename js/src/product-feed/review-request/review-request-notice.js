@@ -9,7 +9,7 @@ import { Flex, FlexItem } from '@wordpress/components';
  * Internal dependencies
  */
 import AppButton from '.~/components/app-button';
-import REVIEW_STATUSES from './review-request-statuses';
+import { REVIEW_STATUSES } from '../constants';
 import { glaData } from '.~/constants';
 import Text from '.~/components/app-text';
 
