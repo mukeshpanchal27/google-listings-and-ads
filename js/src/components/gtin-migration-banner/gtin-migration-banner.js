@@ -14,7 +14,7 @@ import AppModal from '.~/components/app-modal';
 import { recordGlaEvent } from '.~/utils/tracks';
 import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
 import useGTINMigrationStatus from '.~/hooks/useGTINMigrationStatus';
-import './index.scss';
+import './gtin-migration-banner.scss';
 
 const GTIN_MIGRATION_BANNER_CONTEXT = 'gtin_migration_banner';
 const GTIN_MIGRATION_READY = 'ready';

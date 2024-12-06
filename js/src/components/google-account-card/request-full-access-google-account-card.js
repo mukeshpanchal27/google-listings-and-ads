@@ -11,7 +11,7 @@ import { glaData } from '.~/constants';
 import AppButton from '.~/components/app-button';
 import AccountCard, { APPEARANCE } from '.~/components/account-card';
 import readMoreLink from './read-more-link';
-import useGoogleConnectFlow from './use-google-connect-flow';
+import useGoogleConnectFlow from './useGoogleConnectFlow';
 import './request-full-access-google-account-card.scss';
 
 /**

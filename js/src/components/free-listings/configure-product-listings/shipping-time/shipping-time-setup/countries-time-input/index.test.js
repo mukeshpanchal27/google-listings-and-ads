@@ -54,7 +54,8 @@ describe( 'CountriesTimeInput', () => {
 			expect( getByDisplayValue( '' ) ).toBeInTheDocument();
 		} );
 	} );
-	describe( 'Test Stepper', () => {
+
+	describe( 'Test TimeStepper', () => {
 		it( 'Should call onChange when increasing an decreasing the days', async () => {
 			const onChange = jest.fn();
 			const { queryAllByRole } = render(

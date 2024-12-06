@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Stepper from '../time-stepper';
+import TimeStepper from './time-stepper';
 
 const MinMaxShippingTimes = ( {
 	handleBlur,
@@ -19,7 +19,7 @@ const MinMaxShippingTimes = ( {
 		<Flex justify="space-between" gap="4">
 			<FlexItem>
 				<div className="gla-countries-time-input">
-					<Stepper
+					<TimeStepper
 						handleBlur={ handleBlur }
 						time={ time }
 						handleIncrement={ handleIncrement }
@@ -32,7 +32,7 @@ const MinMaxShippingTimes = ( {
 			</FlexItem>
 			<FlexItem>
 				<div className="gla-countries-time-input">
-					<Stepper
+					<TimeStepper
 						handleBlur={ handleBlur }
 						handleIncrement={ handleIncrement }
 						time={ maxTime }

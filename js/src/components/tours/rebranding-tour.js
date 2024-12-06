@@ -9,7 +9,7 @@ import { TourKit } from '@woocommerce/components';
  * Internal dependencies
  */
 import useTour from '.~/hooks/useTour';
-import './rebrading-tour.scss';
+import './rebranding-tour.scss';
 
 const TOUR_ID = 'rebranding-tour';
 

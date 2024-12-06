@@ -14,7 +14,7 @@ import AppModal from '.~/components/app-modal';
 import VerticalGapLayout from '.~/components/vertical-gap-layout';
 import SupportedCountrySelect from '.~/components/supported-country-select';
 import validateShippingTimeGroup from '.~/utils/validateShippingTimeGroup';
-import MinMaxShippingTimes from '../../../min-max-inputs';
+import MinMaxShippingTimes from '../../../min-max-shipping-times';
 import '../index.scss';
 
 /**
