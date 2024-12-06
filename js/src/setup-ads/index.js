@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import useLayout from '.~/hooks/useLayout';
-import SetupAdsTopBar from './top-bar';
+import SetupTopBar from './setup-top-bar';
 import AdsStepper from './ads-stepper';
 
 const SetupAds = () => {
@@ -10,7 +10,7 @@ const SetupAds = () => {
 
 	return (
 		<>
-			<SetupAdsTopBar />
+			<SetupTopBar />
 			<AdsStepper />
 		</>
 	);

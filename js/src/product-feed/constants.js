@@ -92,4 +92,4 @@ const REVIEW_STATUSES = {
 	ONBOARDING,
 };
 
-export default REVIEW_STATUSES;
+export { REVIEW_STATUSES };

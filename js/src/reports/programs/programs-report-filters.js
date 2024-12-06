@@ -18,7 +18,7 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
 /**
  * Internal dependencies
  */
-import { createProgramsFilterConfig } from './filter-config';
+import { createProgramsFilterConfig } from './filterConfig';
 import useAdsCampaigns from '.~/hooks/useAdsCampaigns';
 import useStoreCurrency from '.~/hooks/useStoreCurrency';
 import ReportFilters from '.~/external-components/woocommerce/filters';

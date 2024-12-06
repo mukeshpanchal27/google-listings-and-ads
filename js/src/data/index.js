@@ -15,7 +15,7 @@ import * as selectors from './selectors';
 import * as resolvers from './resolvers';
 import { controls } from './controls';
 import reducer from './reducer';
-import { createErrorResponseCatcher } from './api-fetch-middlewares';
+import { createErrorResponseCatcher } from './apiFetchMiddlewares';
 import { getReconnectAccountUrl } from '.~/utils/urls';
 
 registerStore( STORE_KEY, {

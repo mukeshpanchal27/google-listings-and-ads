@@ -10,7 +10,7 @@ import {
 	trackEvent,
 } from './utils';
 
-describe( 'gtagEvents', () => {
+describe( 'gtag-events utils', () => {
 	beforeEach( () => {
 		window.gtag = jest.fn();
 		window.glaGtagData = {

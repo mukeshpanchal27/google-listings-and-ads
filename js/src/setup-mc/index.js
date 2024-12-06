@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import useLayout from '.~/hooks/useLayout';
-import SetupMCTopBar from './top-bar';
+import SetupTopBar from './setup-top-bar';
 import SetupStepper from './setup-stepper';
 
 const SetupMC = () => {
@@ -10,7 +10,7 @@ const SetupMC = () => {
 
 	return (
 		<>
-			<SetupMCTopBar />
+			<SetupTopBar />
 			<SetupStepper />
 		</>
 	);

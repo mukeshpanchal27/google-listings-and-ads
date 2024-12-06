@@ -10,7 +10,7 @@ import useActiveIssueType from '.~/hooks/useActiveIssueType';
 import ReviewRequestModal from './review-request-modal';
 import ReviewRequestNotice from './review-request-notice';
 import { ISSUE_TYPE_ACCOUNT, REQUEST_REVIEW } from '.~/constants';
-import REVIEW_STATUSES from './review-request-statuses';
+import { REVIEW_STATUSES } from '../constants';
 import useMCIssuesTypeFilter from '.~/hooks/useMCIssuesTypeFilter';
 import { recordGlaEvent } from '.~/utils/tracks';
 import './index.scss';
