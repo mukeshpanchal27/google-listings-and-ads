@@ -146,7 +146,7 @@ import userEvent from '@testing-library/user-event';
 /**
  * Internal dependencies
  */
-import AttributeMapping from './index';
+import AttributeMapping from './';
 import AttributeMappingTable from '.~/attribute-mapping/attribute-mapping-table';
 import AttributeMappingTableCategories from '.~/attribute-mapping/attribute-mapping-table-categories';
 import useMappingAttributes from '.~/hooks/useMappingAttributes';

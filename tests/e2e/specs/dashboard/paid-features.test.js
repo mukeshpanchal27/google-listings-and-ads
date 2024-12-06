@@ -12,7 +12,7 @@ import {
 	setCompletedAdsSetup,
 	clearCompletedAdsSetup,
 } from '../../utils/api';
-import DashboardPage from '../../utils/pages/dashboard.js';
+import DashboardPage from '../../utils/pages/dashboard';
 
 test.use( { storageState: process.env.ADMINSTATE } );
 

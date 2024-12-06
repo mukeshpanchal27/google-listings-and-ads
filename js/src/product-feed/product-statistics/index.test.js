@@ -7,7 +7,7 @@ import { render, screen } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import ProductStatistics from './index';
+import ProductStatistics from './';
 import useMCProductStatistics from '.~/hooks/useMCProductStatistics';
 import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
 

@@ -7,7 +7,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import CountriesTimeInput from './index';
+import CountriesTimeInput from './';
 
 describe( 'CountriesTimeInput', () => {
 	describe( 'Test Same delivery placeholder', () => {

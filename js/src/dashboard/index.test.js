@@ -13,7 +13,7 @@ import { getQuery } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import Dashboard from './index';
+import Dashboard from './';
 import isWCTracksEnabled from '.~/utils/isWCTracksEnabled';
 import RebrandingTour from '.~/components/tours/rebranding-tour';
 import { GUIDE_NAMES } from '.~/constants';

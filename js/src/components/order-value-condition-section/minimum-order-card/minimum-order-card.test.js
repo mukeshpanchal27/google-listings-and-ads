@@ -8,7 +8,7 @@ import userEvent from '@testing-library/user-event';
 /**
  * Internal dependencies
  */
-import MinimumOrderCard from './minimum-order-card.js';
+import MinimumOrderCard from './minimum-order-card';
 import * as adaptiveForm from '.~/components/adaptive-form';
 
 jest.mock( '.~/hooks/useAppSelectDispatch' );

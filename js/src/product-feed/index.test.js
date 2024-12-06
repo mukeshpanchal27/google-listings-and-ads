@@ -12,7 +12,7 @@ import { getQuery } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import ProductFeed from './index';
+import ProductFeed from './';
 import localStorage from '.~/utils/localStorage';
 import isWCTracksEnabled from '.~/utils/isWCTracksEnabled';
 import { GUIDE_NAMES } from '.~/constants';
