@@ -8,11 +8,11 @@ import { createHooks } from '@wordpress/hooks';
 /**
  * Internal dependencies
  */
-import { glaData } from '.~/constants';
-import { STORE_KEY } from '.~/data';
+import { glaData } from '~/constants';
+import { STORE_KEY } from '~/data';
 
 /**
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
  */
 
 export const hooks = createHooks();

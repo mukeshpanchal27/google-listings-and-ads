@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Section from '.~/wcdl/section';
-import { useAdaptiveFormInputProps } from '.~/components/adaptive-form';
+import Section from '~/wcdl/section';
+import { useAdaptiveFormInputProps } from '~/components/adaptive-form';
 import MinimumOrderCard from './minimum-order-card';
 
 const OrderValueConditionSection = () => {

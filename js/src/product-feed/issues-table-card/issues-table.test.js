@@ -1,5 +1,5 @@
-jest.mock( '.~/hooks/useActiveIssueType' );
-jest.mock( '.~/hooks/useMCIssuesTypeFilter', () => ( {
+jest.mock( '~/hooks/useActiveIssueType' );
+jest.mock( '~/hooks/useMCIssuesTypeFilter', () => ( {
 	__esModule: true,
 	default: jest.fn().mockName( 'useMCIssuesTypeFilter' ),
 } ) );
@@ -12,11 +12,11 @@ import { render } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import { ISSUE_TYPE_ACCOUNT, ISSUE_TYPE_PRODUCT } from '.~/constants';
-import IssuesTable from '.~/product-feed/issues-table-card/issues-table';
-import useMCIssuesTypeFilter from '.~/hooks/useMCIssuesTypeFilter';
-import useActiveIssueType from '.~/hooks/useActiveIssueType';
-import mockIssue from '.~/tests/mock-issue';
+import { ISSUE_TYPE_ACCOUNT, ISSUE_TYPE_PRODUCT } from '~/constants';
+import IssuesTable from '~/product-feed/issues-table-card/issues-table';
+import useMCIssuesTypeFilter from '~/hooks/useMCIssuesTypeFilter';
+import useActiveIssueType from '~/hooks/useActiveIssueType';
+import mockIssue from '~/tests/mock-issue';
 
 describe( 'Issues Table', () => {
 	describe( 'Rendering correctly the table', () => {

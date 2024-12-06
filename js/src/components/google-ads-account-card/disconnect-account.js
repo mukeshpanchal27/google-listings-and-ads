@@ -8,10 +8,10 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
-import AppButton from '.~/components/app-button';
-import useEventPropertiesFilter from '.~/hooks/useEventPropertiesFilter';
-import { FILTER_ONBOARDING } from '.~/utils/tracks';
+import { useAppDispatch } from '~/data';
+import AppButton from '~/components/app-button';
+import useEventPropertiesFilter from '~/hooks/useEventPropertiesFilter';
+import { FILTER_ONBOARDING } from '~/utils/tracks';
 
 /**
  * Clicking on the button to disconnect the Google Ads account.

@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 /**
  * Internal dependencies
  */
-import Control from '.~/components/tree-select-control/control';
+import Control from '~/components/tree-select-control/control';
 
 describe( 'TreeSelectControl - Control Component', () => {
 	const onTagsChange = jest.fn().mockName( 'onTagsChange' );

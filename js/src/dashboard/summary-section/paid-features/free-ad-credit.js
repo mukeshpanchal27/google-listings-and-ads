@@ -8,7 +8,7 @@ import { createInterpolateElement } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AppDocumentationLink from '.~/components/app-documentation-link';
+import AppDocumentationLink from '~/components/app-documentation-link';
 
 /**
  * Render the Free Ads Credit inside the Paid Features component.

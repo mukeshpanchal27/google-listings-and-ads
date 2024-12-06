@@ -1,4 +1,4 @@
-jest.mock( '.~/hooks/useMCIssuesTotals', () => ( {
+jest.mock( '~/hooks/useMCIssuesTotals', () => ( {
 	__esModule: true,
 	default: jest.fn().mockName( 'useMCIssuesTotals' ).mockReturnValue( {
 		account: 0,
@@ -16,8 +16,8 @@ import '@testing-library/jest-dom';
 /**
  * Internal dependencies
  */
-import IssuesTypeNavigation from '.~/product-feed/issues-table-card/issues-type-navigation';
-import useMCIssuesTotals from '.~/hooks/useMCIssuesTotals';
+import IssuesTypeNavigation from '~/product-feed/issues-table-card/issues-type-navigation';
+import useMCIssuesTotals from '~/hooks/useMCIssuesTotals';
 
 describe( 'Issues Type Navigation', () => {
 	describe( 'When totals are defined', () => {

@@ -8,7 +8,7 @@ import { pick, uniqueId } from 'lodash';
  * Internal dependencies
  */
 import useIsEqualRefValue from './useIsEqualRefValue';
-import { NAMESPACE, hooks, filterPropertiesMap } from '.~/utils/tracks';
+import { NAMESPACE, hooks, filterPropertiesMap } from '~/utils/tracks';
 
 /**
  * Hook to propagate event properties across multiple layers.

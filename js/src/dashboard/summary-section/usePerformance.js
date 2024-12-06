@@ -6,9 +6,9 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { STORE_KEY } from '.~/data/constants';
-import { mapReportFieldsToPerformance } from '.~/data/utils';
-import useUrlQuery from '.~/hooks/useUrlQuery';
+import { STORE_KEY } from '~/data/constants';
+import { mapReportFieldsToPerformance } from '~/data/utils';
+import useUrlQuery from '~/hooks/useUrlQuery';
 
 /**
  * Get performance results by program type.
@@ -58,5 +58,5 @@ export default function usePerformance( type ) {
  */
 
 /**
- * @typedef { import(".~/data/utils").PerformanceData } PerformanceData
+ * @typedef { import("~/data/utils").PerformanceData } PerformanceData
  */

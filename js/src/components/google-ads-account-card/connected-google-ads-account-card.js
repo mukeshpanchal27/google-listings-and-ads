@@ -6,10 +6,10 @@ import { ExternalLink } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import toAccountText from '.~/utils/toAccountText';
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
-import ConnectedIconLabel from '.~/components/connected-icon-label';
-import Section from '.~/wcdl/section';
+import toAccountText from '~/utils/toAccountText';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
+import ConnectedIconLabel from '~/components/connected-icon-label';
+import Section from '~/wcdl/section';
 import DisconnectAccount from './disconnect-account';
 
 /**

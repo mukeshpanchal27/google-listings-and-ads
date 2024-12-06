@@ -9,8 +9,8 @@ import GridiconNoticeOutline from 'gridicons/dist/notice-outline';
 /**
  * Internal dependencies
  */
-import useCountryKeyNameMap from '.~/hooks/useCountryKeyNameMap';
-import useBudgetRecommendation from '.~/hooks/useBudgetRecommendation';
+import useCountryKeyNameMap from '~/hooks/useCountryKeyNameMap';
+import useBudgetRecommendation from '~/hooks/useBudgetRecommendation';
 import './index.scss';
 
 function toRecommendationRange( isMultiple, ...values ) {

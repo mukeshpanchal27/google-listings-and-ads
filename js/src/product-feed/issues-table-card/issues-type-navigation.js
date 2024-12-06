@@ -7,10 +7,10 @@ import { getNewPath } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import { ISSUE_TYPE_ACCOUNT, ISSUE_TYPE_PRODUCT } from '.~/constants';
-import AppTabNav from '.~/components/app-tab-nav';
-import useMCIssuesTotals from '.~/hooks/useMCIssuesTotals';
-import useActiveIssueType from '.~/hooks/useActiveIssueType';
+import { ISSUE_TYPE_ACCOUNT, ISSUE_TYPE_PRODUCT } from '~/constants';
+import AppTabNav from '~/components/app-tab-nav';
+import useMCIssuesTotals from '~/hooks/useMCIssuesTotals';
+import useActiveIssueType from '~/hooks/useActiveIssueType';
 
 /**
  * The issue navigation tabs. It uses `useMCIssuesTotals` for getting the issue totals

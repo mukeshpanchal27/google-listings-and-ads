@@ -9,11 +9,11 @@ import { getNewPath } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
-import useAdminUrl from '.~/hooks/useAdminUrl';
-import AppButton from '.~/components/app-button';
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
-import Section from '.~/wcdl/section';
+import { useAppDispatch } from '~/data';
+import useAdminUrl from '~/hooks/useAdminUrl';
+import AppButton from '~/components/app-button';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
+import Section from '~/wcdl/section';
 import DisconnectModal, { ALL_ACCOUNTS } from '../disconnect-modal';
 
 export default function DisconnectGoogleAccountCard( { email } ) {

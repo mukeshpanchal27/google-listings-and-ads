@@ -8,8 +8,8 @@ import { Flex, FlexBlock, Card, CardHeader } from '@wordpress/components';
  * Internal dependencies
  */
 import './index.scss';
-import quoteImageURL from '.~/images/get-started/img-quote.svg';
-import Text from '.~/components/app-text';
+import quoteImageURL from '~/images/get-started/img-quote.svg';
+import Text from '~/components/app-text';
 
 const Quote = ( { quote, name } ) => {
 	return (

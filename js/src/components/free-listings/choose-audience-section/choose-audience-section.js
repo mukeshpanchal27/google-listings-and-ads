@@ -6,13 +6,13 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { useAdaptiveFormContext } from '.~/components/adaptive-form';
-import AppRadioContentControl from '.~/components/app-radio-content-control';
-import Section from '.~/wcdl/section';
-import Subsection from '.~/wcdl/subsection';
-import RadioHelperText from '.~/wcdl/radio-helper-text';
-import SupportedCountrySelect from '.~/components/supported-country-select';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
+import { useAdaptiveFormContext } from '~/components/adaptive-form';
+import AppRadioContentControl from '~/components/app-radio-content-control';
+import Section from '~/wcdl/section';
+import Subsection from '~/wcdl/subsection';
+import RadioHelperText from '~/wcdl/radio-helper-text';
+import SupportedCountrySelect from '~/components/supported-country-select';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
 import './choose-audience-section.scss';
 
 /**

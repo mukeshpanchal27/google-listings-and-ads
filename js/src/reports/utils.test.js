@@ -5,7 +5,7 @@ import {
 	freeFields,
 	paidFields,
 	MISSING_FREE_LISTINGS_DATA,
-} from '.~/data/utils';
+} from '~/data/utils';
 import {
 	getIdsFromQuery,
 	aggregateIntervals,

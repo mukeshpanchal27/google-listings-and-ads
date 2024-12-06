@@ -12,17 +12,17 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
 /**
  * Internal dependencies
  */
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import AppButton from '.~/components/app-button';
-import Section from '.~/wcdl/section';
-import Subsection from '.~/wcdl/subsection';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
-import { useAppDispatch } from '.~/data';
-import ContentButtonLayout from '.~/components/content-button-layout';
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
+import AppDocumentationLink from '~/components/app-documentation-link';
+import AppButton from '~/components/app-button';
+import Section from '~/wcdl/section';
+import Subsection from '~/wcdl/subsection';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
+import useExistingGoogleMCAccounts from '~/hooks/useExistingGoogleMCAccounts';
+import { useAppDispatch } from '~/data';
+import ContentButtonLayout from '~/components/content-button-layout';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
 import './index.scss';
-import AppInputLinkControl from '.~/components/app-input-link-control';
+import AppInputLinkControl from '~/components/app-input-link-control';
 
 /**
  * Clicking on the button to reclaim URL for a Google Merchant Center account.

@@ -6,7 +6,7 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AccountCard from '.~/components/account-card';
+import AccountCard from '~/components/account-card';
 import ConfirmCreateModal from './confirm-create-modal';
 import ConnectExistingAccount from './connect-existing-account';
 import UpsertingAccount from './upserting-account';

@@ -7,7 +7,7 @@ import GridiconHelpOutline from 'gridicons/dist/help-outline';
 /**
  * Internal dependencies
  */
-import AppIconButton from '.~/components/app-icon-button';
+import AppIconButton from '~/components/app-icon-button';
 
 /**
  * "Help" button is clicked.
@@ -25,7 +25,7 @@ import AppIconButton from '.~/components/app-icon-button';
  *
  * @param {Object} props Props
  * @param {string} props.eventContext Context to be used in `gla_help_click` track event.
- * @return {import(".~/components/app-icon-button").default} The button.
+ * @return {import("~/components/app-icon-button").default} The button.
  */
 const HelpIconButton = ( props ) => {
 	const { eventContext, ...rest } = props;

@@ -7,10 +7,10 @@ import { getCurrentDates } from '@woocommerce/date';
 /**
  * Internal dependencies
  */
-import round from '.~/utils/round';
+import round from '~/utils/round';
 
 /**
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
  */
 
 export const freeFields = [ 'clicks', 'impressions' ];

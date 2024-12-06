@@ -7,7 +7,7 @@ import { format as formatDate } from '@wordpress/date';
 /**
  * Internal dependencies
  */
-import ReviewRequestNotice from '.~/product-feed/review-request/review-request-notice';
+import ReviewRequestNotice from '~/product-feed/review-request/review-request-notice';
 
 describe( 'Request Review Notice', () => {
 	it.each( [ 'DISAPPROVED', 'WARNING' ] )(

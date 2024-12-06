@@ -7,9 +7,9 @@ import { getNewPath } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import useUrlQuery from '.~/hooks/useUrlQuery';
+import useUrlQuery from '~/hooks/useUrlQuery';
 import MetricNumber from './metric-number';
-import { recordGlaEvent } from '.~/utils/tracks';
+import { recordGlaEvent } from '~/utils/tracks';
 
 const noValidData = {
 	value: null,
@@ -84,5 +84,5 @@ export default SummarySection;
 
 /**
  * @typedef {import("./index.js").Metric} Metric
- * @typedef {import(".~/data/utils").PerformanceData } PerformanceData
+ * @typedef {import("~/data/utils").PerformanceData } PerformanceData
  */

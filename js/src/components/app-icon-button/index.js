@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
+import AppButton from '~/components/app-button';
 import './index.scss';
 
 const AppIconButton = ( props ) => {

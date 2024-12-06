@@ -10,7 +10,7 @@ import GridiconHelpOutline from 'gridicons/dist/help-outline';
 /**
  * Internal dependencies
  */
-import { recordGlaEvent } from '.~/utils/tracks';
+import { recordGlaEvent } from '~/utils/tracks';
 import './index.scss';
 
 /**

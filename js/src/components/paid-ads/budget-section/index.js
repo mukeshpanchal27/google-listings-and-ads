@@ -6,15 +6,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Section from '.~/wcdl/section';
+import Section from '~/wcdl/section';
 import getMonthlyMaxEstimated from './getMonthlyMaxEstimated';
 import './index.scss';
 import BudgetRecommendation from './budget-recommendation';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import AppInputPriceControl from '.~/components/app-input-price-control';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import AppInputPriceControl from '~/components/app-input-price-control';
 
 /**
- * @typedef {import('.~/data/actions').CountryCode} CountryCode
+ * @typedef {import('~/data/actions').CountryCode} CountryCode
  */
 
 const nonInteractableProps = {

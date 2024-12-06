@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * @typedef {import('.~/data/selectors').JetpackAccount} JetpackAccount
+ * @typedef {import('~/data/selectors').JetpackAccount} JetpackAccount
  */
 /**
  * Get a connected jetpack information for display on UI.

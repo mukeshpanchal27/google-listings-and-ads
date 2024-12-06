@@ -6,16 +6,16 @@ import { renderHook } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import useMCProductStatistics from '.~/hooks/useMCProductStatistics';
-import useCountdown from '.~/hooks/useCountdown';
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
-import { useAppDispatch } from '.~/data';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
+import useMCProductStatistics from '~/hooks/useMCProductStatistics';
+import useCountdown from '~/hooks/useCountdown';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
+import { useAppDispatch } from '~/data';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 
-jest.mock( '.~/hooks/useAppSelectDispatch' );
-jest.mock( '.~/hooks/useCountdown' );
-jest.mock( '.~/data' );
-jest.mock( '.~/hooks/useApiFetchCallback', () => ( {
+jest.mock( '~/hooks/useAppSelectDispatch' );
+jest.mock( '~/hooks/useCountdown' );
+jest.mock( '~/data' );
+jest.mock( '~/hooks/useApiFetchCallback', () => ( {
 	__esModule: true,
 	default: jest.fn().mockImplementation( () => {
 		return [ jest.fn(), null ];

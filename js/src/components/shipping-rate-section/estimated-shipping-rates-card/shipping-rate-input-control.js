@@ -7,16 +7,16 @@ import { Pill } from '@woocommerce/components';
 /**
  * Internal dependencies
  */
-import AppInputPriceControl from '.~/components/app-input-price-control';
-import AppButtonModalTrigger from '.~/components/app-button-modal-trigger';
-import AppButton from '.~/components/app-button';
+import AppInputPriceControl from '~/components/app-input-price-control';
+import AppButtonModalTrigger from '~/components/app-button-modal-trigger';
+import AppButton from '~/components/app-button';
 import { EditRateFormModal } from './rate-form-modals';
 import ShippingRateInputControlLabelText from './shipping-rate-input-control-label-text';
 import './shipping-rate-input-control.scss';
 
 /**
  * @typedef { import("./typedefs").ShippingRateGroup } ShippingRateGroup
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
  */
 
 /**

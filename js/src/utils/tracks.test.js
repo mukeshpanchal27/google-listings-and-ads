@@ -14,8 +14,8 @@ import { dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { recordGlaEvent, queueRecordGlaEvent } from '.~/utils/tracks';
-import { STORE_KEY } from '.~/data';
+import { recordGlaEvent, queueRecordGlaEvent } from '~/utils/tracks';
+import { STORE_KEY } from '~/data';
 
 function updateMcId( mcId ) {
 	dispatch( STORE_KEY ).hydratePrefetchedData( { mcId } );
@@ -27,7 +27,7 @@ function updateAdsId( adsId ) {
 
 describe( 'tracks', () => {
 	beforeAll( () => {
-		// Simulate that the version has been hydrated via the initialization of .~/data/index.js
+		// Simulate that the version has been hydrated via the initialization of ~/data/index.js
 		dispatch( STORE_KEY ).hydratePrefetchedData( { version: '1.2.3' } );
 	} );
 

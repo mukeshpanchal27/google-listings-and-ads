@@ -7,8 +7,8 @@ import { Card, CardBody, FlexItem } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import benefitsImageURL from '.~/images/get-started/benefits.png';
-import Text from '.~/components/app-text';
+import benefitsImageURL from '~/images/get-started/benefits.png';
+import Text from '~/components/app-text';
 import './index.scss';
 
 const BenefitsCard = () => {

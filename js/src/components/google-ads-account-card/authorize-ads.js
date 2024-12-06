@@ -6,11 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import useGoogleAuthorization from '.~/hooks/useGoogleAuthorization';
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
-import AppButton from '.~/components/app-button';
-import { glaData } from '.~/constants';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import useGoogleAuthorization from '~/hooks/useGoogleAuthorization';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
+import AppButton from '~/components/app-button';
+import { glaData } from '~/constants';
 
 /**
  * @param {Object} props React props

@@ -10,18 +10,18 @@ import { recordEvent } from '@woocommerce/tracks';
  * Internal dependencies
  */
 import BillingSetupCard from './billing-setup-card';
-import useWindowFocus from '.~/hooks/useWindowFocus';
-import { FILTER_ONBOARDING } from '.~/utils/tracks';
-import expectComponentToRecordEventWithFilteredProperties from '.~/tests/expectComponentToRecordEventWithFilteredProperties';
+import useWindowFocus from '~/hooks/useWindowFocus';
+import { FILTER_ONBOARDING } from '~/utils/tracks';
+import expectComponentToRecordEventWithFilteredProperties from '~/tests/expectComponentToRecordEventWithFilteredProperties';
 
-jest.mock( '.~/hooks/useGoogleAdsAccount', () =>
+jest.mock( '~/hooks/useGoogleAdsAccount', () =>
 	jest
 		.fn()
 		.mockName( 'useGoogleAdsAccount' )
 		.mockReturnValue( { googleAdsAccount: {} } )
 );
 
-jest.mock( '.~/hooks/useWindowFocus', () =>
+jest.mock( '~/hooks/useWindowFocus', () =>
 	jest.fn().mockName( 'useWindowFocus' ).mockReturnValue( true )
 );
 

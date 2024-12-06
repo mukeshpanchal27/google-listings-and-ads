@@ -7,7 +7,7 @@ import { render } from '@testing-library/react';
  * Internal dependencies
  */
 import SummarySection from './';
-import useAdsCampaigns from '.~/hooks/useAdsCampaigns';
+import useAdsCampaigns from '~/hooks/useAdsCampaigns';
 
 // Mimic no data loaded.
 jest.mock( './usePerformance', () =>
@@ -17,13 +17,13 @@ jest.mock( './usePerformance', () =>
 		.mockReturnValue( { data: false, loaded: true } )
 );
 // Mock currency hooks not to require WooCommerce settings.
-jest.mock( '.~/hooks/useAdsCurrency', () =>
+jest.mock( '~/hooks/useAdsCurrency', () =>
 	jest.fn().mockReturnValue( {
 		formatAmount: jest.fn().mockName( 'formatAmount' ),
 	} )
 );
-jest.mock( '.~/hooks/useCurrencyFormat', () => jest.fn() );
-jest.mock( '.~/hooks/useAdsCampaigns', () =>
+jest.mock( '~/hooks/useCurrencyFormat', () => jest.fn() );
+jest.mock( '~/hooks/useAdsCampaigns', () =>
 	jest.fn().mockName( 'useAdsCampaigns' )
 );
 

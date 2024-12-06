@@ -7,10 +7,10 @@ import { noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import useCategories from '.~/hooks/useCategories';
-import { CATEGORY_CONDITION_SELECT_TYPES } from '.~/constants';
-import SelectControl from '.~/wcdl/select-control';
-import AppSelectControl from '.~/components/app-select-control';
+import useCategories from '~/hooks/useCategories';
+import { CATEGORY_CONDITION_SELECT_TYPES } from '~/constants';
+import SelectControl from '~/wcdl/select-control';
+import AppSelectControl from '~/components/app-select-control';
 
 /**
  * Renders the selectors relative to the categories

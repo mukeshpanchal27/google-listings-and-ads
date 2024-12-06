@@ -6,8 +6,8 @@ import { useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import useIsEqualRefValue from '.~/hooks/useIsEqualRefValue';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
+import useIsEqualRefValue from '~/hooks/useIsEqualRefValue';
 
 /**
  * Calls apiFetch as a side effect. This uses useApiFetchCallback in a useEffect hook.

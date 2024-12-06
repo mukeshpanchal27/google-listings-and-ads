@@ -7,7 +7,7 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
+import { useAppDispatch } from '~/data';
 
 jest.mock( '@wordpress/api-fetch', () => {
 	const impl = jest.fn().mockName( '@wordpress/api-fetch' );

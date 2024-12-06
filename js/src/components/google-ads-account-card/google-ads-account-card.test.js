@@ -8,12 +8,12 @@ import '@testing-library/jest-dom';
  * Internal dependencies
  */
 import GoogleAdsAccountCard from './google-ads-account-card';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useGoogleAccount from '.~/hooks/useGoogleAccount';
-import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
+import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import useGoogleAccount from '~/hooks/useGoogleAccount';
+import useExistingGoogleAdsAccounts from '~/hooks/useExistingGoogleAdsAccounts';
 
-jest.mock( '.~/hooks/useGoogleAdsAccountStatus', () => ( {
+jest.mock( '~/hooks/useGoogleAdsAccountStatus', () => ( {
 	__esModule: true,
 	default: jest.fn().mockName( 'useGoogleAdsAccountStatus' ),
 } ) );
@@ -25,15 +25,15 @@ jest.mock( '@woocommerce/components', () => ( {
 		.mockName( 'Spinner' ),
 } ) );
 
-jest.mock( '.~/hooks/useGoogleAdsAccount', () =>
+jest.mock( '~/hooks/useGoogleAdsAccount', () =>
 	jest.fn().mockName( 'useGoogleAdsAccount' ).mockReturnValue( {} )
 );
 
-jest.mock( '.~/hooks/useGoogleAccount', () =>
+jest.mock( '~/hooks/useGoogleAccount', () =>
 	jest.fn().mockName( 'useGoogleAccount' ).mockReturnValue( {} )
 );
 
-jest.mock( '.~/hooks/useExistingGoogleAdsAccounts', () =>
+jest.mock( '~/hooks/useExistingGoogleAdsAccounts', () =>
 	jest.fn().mockName( 'useExistingGoogleAdsAccounts' ).mockReturnValue( {} )
 );
 

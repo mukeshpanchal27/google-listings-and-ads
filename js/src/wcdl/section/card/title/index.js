@@ -6,7 +6,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import Subsection from '.~/wcdl/subsection';
+import Subsection from '~/wcdl/subsection';
 import './index.scss';
 
 const Title = ( props ) => {

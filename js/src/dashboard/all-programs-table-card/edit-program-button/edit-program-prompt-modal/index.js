@@ -7,11 +7,11 @@ import { getHistory } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import { FREE_LISTINGS_PROGRAM_ID } from '.~/constants';
-import AppButton from '.~/components/app-button';
-import AppModal from '.~/components/app-modal';
-import { getEditFreeListingsUrl, getEditCampaignUrl } from '.~/utils/urls';
-import { recordGlaEvent } from '.~/utils/tracks';
+import { FREE_LISTINGS_PROGRAM_ID } from '~/constants';
+import AppButton from '~/components/app-button';
+import AppModal from '~/components/app-modal';
+import { getEditFreeListingsUrl, getEditCampaignUrl } from '~/utils/urls';
+import { recordGlaEvent } from '~/utils/tracks';
 import './index.scss';
 
 /**

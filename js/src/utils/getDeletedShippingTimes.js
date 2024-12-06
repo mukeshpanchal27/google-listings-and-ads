@@ -4,7 +4,7 @@
 import { differenceBy } from 'lodash';
 
 /**
- * @typedef {import('.~/data/actions').ShippingTime	} ShippingTime
+ * @typedef {import('~/data/actions').ShippingTime	} ShippingTime
  */
 
 /**

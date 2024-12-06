@@ -6,7 +6,7 @@ import $ from 'jquery';
 /**
  * Internal dependencies
  */
-import { glaProductData } from '.~/constants';
+import { glaProductData } from '~/constants';
 import './custom-inputs';
 import './index.scss';
 

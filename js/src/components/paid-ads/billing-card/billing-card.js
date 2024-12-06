@@ -8,11 +8,11 @@ import { Flex, FlexBlock } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import useGoogleAdsAccountBillingStatus from '.~/hooks/useGoogleAdsAccountBillingStatus';
-import SpinnerCard from '.~/components/spinner-card';
+import useGoogleAdsAccountBillingStatus from '~/hooks/useGoogleAdsAccountBillingStatus';
+import SpinnerCard from '~/components/spinner-card';
 import BillingSetupCard from './billing-setup-card';
 import fallbackBillingUrl from './fallbackBillingUrl';
-import { GOOGLE_ADS_BILLING_STATUS } from '.~/constants';
+import { GOOGLE_ADS_BILLING_STATUS } from '~/constants';
 import './billing-card.scss';
 
 const { APPROVED } = GOOGLE_ADS_BILLING_STATUS;

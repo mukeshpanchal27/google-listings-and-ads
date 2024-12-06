@@ -7,8 +7,8 @@ import GridiconExternal from 'gridicons/dist/external';
 /**
  * Internal dependencies
  */
-import AppModal from '.~/components/app-modal';
-import AppButton from '.~/components/app-button';
+import AppModal from '~/components/app-modal';
+import AppButton from '~/components/app-button';
 
 /**
  * Renders a modal showing information about a Google Merchant Center issue

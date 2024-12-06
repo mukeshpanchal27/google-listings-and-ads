@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { isWCIos, isWCAndroid } from '.~/utils/isMobileApp';
+import { isWCIos, isWCAndroid } from '~/utils/isMobileApp';
 
 describe( 'isMobileApp', () => {
 	let navigatorGetter;

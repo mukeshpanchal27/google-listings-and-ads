@@ -12,11 +12,11 @@ import {
 	REPORT_SOURCE_PAID,
 	REPORT_SOURCE_FREE,
 	ISSUE_TYPE_ACCOUNT,
-} from '.~/constants';
+} from '~/constants';
 import TYPES from './action-types';
 import { API_NAMESPACE } from './constants';
 import { getReportKey, getCountryCodesKey } from './utils';
-import { handleApiError } from '.~/utils/handleError';
+import { handleApiError } from '~/utils/handleError';
 import { adaptAdsCampaign, adaptAssetGroup } from './adapters';
 import { fetchWithHeaders, awaitPromise } from './controls';
 
@@ -50,7 +50,7 @@ import {
 } from './actions';
 
 /**
- * @typedef {import('.~/data/actions').CountryCode} CountryCode
+ * @typedef {import('~/data/actions').CountryCode} CountryCode
  */
 
 export function* getShippingRates() {

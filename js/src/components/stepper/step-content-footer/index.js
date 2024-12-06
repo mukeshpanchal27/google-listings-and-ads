@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import Section from '.~/wcdl/section';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
+import Section from '~/wcdl/section';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
 
 const StepContentFooter = ( { children } ) => {
 	return (

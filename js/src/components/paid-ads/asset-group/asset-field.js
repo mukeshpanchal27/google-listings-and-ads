@@ -16,8 +16,8 @@ import { Pill } from '@woocommerce/components';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import HelpPopover from '.~/components/help-popover';
+import AppButton from '~/components/app-button';
+import HelpPopover from '~/components/help-popover';
 import './asset-field.scss';
 
 /**

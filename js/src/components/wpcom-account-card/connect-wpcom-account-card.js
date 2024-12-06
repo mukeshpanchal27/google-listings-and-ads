@@ -7,12 +7,12 @@ import { addQueryArgs } from '@wordpress/url';
 /**
  * Internal dependencies
  */
-import { glaData } from '.~/constants';
-import { API_NAMESPACE } from '.~/data/constants';
-import AppButton from '.~/components/app-button';
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
+import { glaData } from '~/constants';
+import { API_NAMESPACE } from '~/data/constants';
+import AppButton from '~/components/app-button';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 
 /**
  * Clicking on the button to connect WordPress.com account.

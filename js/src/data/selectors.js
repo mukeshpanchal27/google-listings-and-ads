@@ -16,9 +16,9 @@ import {
 } from './utils';
 
 /**
- * @typedef {import('.~/data/actions').CountryCode} CountryCode
- * @typedef {import('.~/data/types.js').GeneralState} GeneralState
- * @typedef {import('.~/data/types.js').AssetEntityGroup} AssetEntityGroup
+ * @typedef {import('~/data/actions').CountryCode} CountryCode
+ * @typedef {import('~/data/types.js').GeneralState} GeneralState
+ * @typedef {import('~/data/types.js').AssetEntityGroup} AssetEntityGroup
  */
 
 /**
@@ -146,7 +146,7 @@ export const getTargetAudience = ( state ) => {
 };
 
 /**
- * @typedef {import('.~/data/actions').Campaign} Campaign
+ * @typedef {import('~/data/actions').Campaign} Campaign
  */
 
 /**
@@ -183,7 +183,7 @@ export const getMCSetup = ( state ) => {
 };
 
 /**
- * @typedef {import('.~/data/actions').ProductStatistics } ProductStatistics
+ * @typedef {import('~/data/actions').ProductStatistics } ProductStatistics
  */
 
 /**

@@ -6,11 +6,11 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import SpinnerCard from '.~/components/spinner-card';
+import SpinnerCard from '~/components/spinner-card';
 import CreateAccount from './create-account';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
-import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
+import useExistingGoogleAdsAccounts from '~/hooks/useExistingGoogleAdsAccounts';
 import ConnectAds from './connect-ads';
 
 const NonConnected = () => {

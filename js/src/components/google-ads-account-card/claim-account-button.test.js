@@ -10,11 +10,11 @@ import { recordEvent } from '@woocommerce/tracks';
  * Internal dependencies
  */
 import ClaimAccountButton from './claim-account-button';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
-import { FILTER_ONBOARDING } from '.~/utils/tracks';
-import expectComponentToRecordEventWithFilteredProperties from '.~/tests/expectComponentToRecordEventWithFilteredProperties';
+import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
+import { FILTER_ONBOARDING } from '~/utils/tracks';
+import expectComponentToRecordEventWithFilteredProperties from '~/tests/expectComponentToRecordEventWithFilteredProperties';
 
-jest.mock( '.~/hooks/useGoogleAdsAccountStatus', () =>
+jest.mock( '~/hooks/useGoogleAdsAccountStatus', () =>
 	jest.fn().mockName( 'useGoogleAdsAccountStatus' )
 );
 

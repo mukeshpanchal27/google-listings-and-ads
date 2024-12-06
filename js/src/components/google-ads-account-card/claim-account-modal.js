@@ -7,8 +7,8 @@ import { useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
-import AppModal from '.~/components/app-modal';
+import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
+import AppModal from '~/components/app-modal';
 import ClaimAccountButton from './claim-account-button';
 
 /**

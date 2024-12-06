@@ -9,14 +9,14 @@ import { external as externalIcon } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import AppSpinner from '.~/components/app-spinner';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import Section from '.~/wcdl/section';
-import AppButton from '.~/components/app-button';
-import useEventPropertiesFilter from '.~/hooks/useEventPropertiesFilter';
+import AppSpinner from '~/components/app-spinner';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import Section from '~/wcdl/section';
+import AppButton from '~/components/app-button';
+import useEventPropertiesFilter from '~/hooks/useEventPropertiesFilter';
 import useAutoCheckBillingStatusEffect from './useAutoCheckBillingStatusEffect';
-import getWindowFeatures from '.~/utils/getWindowFeatures';
-import { FILTER_ONBOARDING, recordGlaEvent } from '.~/utils/tracks';
+import getWindowFeatures from '~/utils/getWindowFeatures';
+import { FILTER_ONBOARDING, recordGlaEvent } from '~/utils/tracks';
 import './billing-setup-card.scss';
 
 /**

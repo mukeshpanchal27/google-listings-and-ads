@@ -7,25 +7,25 @@ import { createInterpolateElement } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import StepContent from '.~/components/stepper/step-content';
-import StepContentHeader from '.~/components/stepper/step-content-header';
-import StepContentFooter from '.~/components/stepper/step-content-footer';
-import StepContentActions from '.~/components/stepper/step-content-actions';
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import { useAdaptiveFormContext } from '.~/components/adaptive-form';
-import BillingCard from '.~/components/paid-ads/billing-card';
+import StepContent from '~/components/stepper/step-content';
+import StepContentHeader from '~/components/stepper/step-content-header';
+import StepContentFooter from '~/components/stepper/step-content-footer';
+import StepContentActions from '~/components/stepper/step-content-actions';
+import AppDocumentationLink from '~/components/app-documentation-link';
+import { useAdaptiveFormContext } from '~/components/adaptive-form';
+import BillingCard from '~/components/paid-ads/billing-card';
 import BudgetSection from '../budget-section';
 import { CampaignPreviewCard } from '../campaign-preview';
 import Faqs from './faqs';
 import PaidAdsFeaturesSection from './paid-ads-features-section';
-import useTargetAudienceFinalCountryCodes from '.~/hooks/useTargetAudienceFinalCountryCodes';
+import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
 
 /**
- * @typedef {import('.~/components/adaptive-form/adaptive-form-context').AdaptiveFormContext} AdaptiveFormContext
+ * @typedef {import('~/components/adaptive-form/adaptive-form-context').AdaptiveFormContext} AdaptiveFormContext
  */
 
 /**
- * @typedef {import('.~/data/actions').Campaign} Campaign
+ * @typedef {import('~/data/actions').Campaign} Campaign
  */
 
 /**

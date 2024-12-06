@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AppSelectControl from '.~/components/app-select-control';
+import AppSelectControl from '~/components/app-select-control';
 
 /**
  * Renders a selector for choosing the source field.

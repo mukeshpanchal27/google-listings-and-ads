@@ -1,10 +1,10 @@
-jest.mock( '.~/utils/tracks', () => {
+jest.mock( '~/utils/tracks', () => {
 	return {
 		recordGlaEvent: jest.fn(),
 	};
 } );
 
-jest.mock( '.~/data', () => ( {
+jest.mock( '~/data', () => ( {
 	__esModule: true,
 	useAppDispatch: jest.fn( () => {
 		return {
@@ -21,8 +21,8 @@ import { act, fireEvent, render } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import ReviewRequestModal from '.~/product-feed/review-request/review-request-modal';
-import { recordGlaEvent } from '.~/utils/tracks';
+import ReviewRequestModal from '~/product-feed/review-request/review-request-modal';
+import { recordGlaEvent } from '~/utils/tracks';
 
 const issues = [
 	{ code: '#1', issue: '#1' },

@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import getConnectedJetpackInfo from '.~/utils/getConnectedJetpackInfo';
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
-import ConnectedIconLabel from '.~/components/connected-icon-label';
+import getConnectedJetpackInfo from '~/utils/getConnectedJetpackInfo';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
+import ConnectedIconLabel from '~/components/connected-icon-label';
 
 const ConnectedWPComAccountCard = ( { jetpack } ) => {
 	return (

@@ -8,13 +8,13 @@ import { CheckboxControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { glaData } from '.~/constants';
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
-import AppButton from '.~/components/app-button';
+import { glaData } from '~/constants';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
+import AppButton from '~/components/app-button';
 import {
 	ReadMoreLink,
 	useGoogleConnectFlow,
-} from '.~/components/google-account-card';
+} from '~/components/google-account-card';
 import AppDocumentationLink from '../app-documentation-link';
 
 /**

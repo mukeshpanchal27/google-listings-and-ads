@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import useGoogleAuthorization from '.~/hooks/useGoogleAuthorization';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import useGoogleAuthorization from '~/hooks/useGoogleAuthorization';
 
 /**
  * A hook that returns a connect handler that initiates Google Connect with support for incremental OAuth process.

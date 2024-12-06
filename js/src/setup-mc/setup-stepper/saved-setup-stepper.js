@@ -8,18 +8,18 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
-import useEventPropertiesFilter from '.~/hooks/useEventPropertiesFilter';
+import { useAppDispatch } from '~/data';
+import useEventPropertiesFilter from '~/hooks/useEventPropertiesFilter';
 import useTargetAudienceWithSuggestions from './useTargetAudienceWithSuggestions';
-import useTargetAudienceFinalCountryCodes from '.~/hooks/useTargetAudienceFinalCountryCodes';
-import useSettings from '.~/components/free-listings/configure-product-listings/useSettings';
-import useShippingRates from '.~/hooks/useShippingRates';
-import useShippingTimes from '.~/hooks/useShippingTimes';
-import useSaveShippingRates from '.~/hooks/useSaveShippingRates';
-import useSaveShippingTimes from '.~/hooks/useSaveShippingTimes';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
+import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
+import useSettings from '~/components/free-listings/configure-product-listings/useSettings';
+import useShippingRates from '~/hooks/useShippingRates';
+import useShippingTimes from '~/hooks/useShippingTimes';
+import useSaveShippingRates from '~/hooks/useSaveShippingRates';
+import useSaveShippingTimes from '~/hooks/useSaveShippingTimes';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
 import SetupAccounts from './setup-accounts';
-import SetupFreeListings from '.~/components/free-listings/setup-free-listings';
+import SetupFreeListings from '~/components/free-listings/setup-free-listings';
 import SetupPaidAds from './setup-paid-ads';
 import stepNameKeyMap from './stepNameKeyMap';
 import {
@@ -27,7 +27,7 @@ import {
 	recordStepContinueEvent,
 	FILTER_ONBOARDING,
 	CONTEXT_EXTENSION_ONBOARDING,
-} from '.~/utils/tracks';
+} from '~/utils/tracks';
 
 /**
  * @param {Object} props React props

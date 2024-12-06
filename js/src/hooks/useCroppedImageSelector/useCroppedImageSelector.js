@@ -10,7 +10,7 @@ import { useCallback, useRef } from '@wordpress/element';
 import './useCroppedImageSelector.scss';
 
 /**
- * @typedef {import('.~/hooks/types.js').ImageMedia} ImageMedia
+ * @typedef {import('~/hooks/types.js').ImageMedia} ImageMedia
  */
 
 /**

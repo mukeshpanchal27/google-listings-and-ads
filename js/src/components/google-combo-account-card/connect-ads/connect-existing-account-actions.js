@@ -6,11 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import { DisconnectAccountButton } from '.~/components/google-ads-account-card';
-import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
+import AppButton from '~/components/app-button';
+import { DisconnectAccountButton } from '~/components/google-ads-account-card';
+import useExistingGoogleAdsAccounts from '~/hooks/useExistingGoogleAdsAccounts';
+import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
 
 /**
  * Footer component.

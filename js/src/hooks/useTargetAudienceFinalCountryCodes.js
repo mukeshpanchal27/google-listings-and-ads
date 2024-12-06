@@ -6,11 +6,11 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { STORE_KEY } from '.~/data';
-import useMCCountries from '.~/hooks/useMCCountries';
+import { STORE_KEY } from '~/data';
+import useMCCountries from '~/hooks/useMCCountries';
 
 /**
- * @typedef {import('.~/data/actions').CountryCode} CountryCode
+ * @typedef {import('~/data/actions').CountryCode} CountryCode
  */
 
 /**

@@ -1,4 +1,4 @@
-jest.mock( '.~/hooks/useExistingGoogleMCAccounts', () => ( {
+jest.mock( '~/hooks/useExistingGoogleMCAccounts', () => ( {
 	__esModule: true,
 	default: jest
 		.fn()

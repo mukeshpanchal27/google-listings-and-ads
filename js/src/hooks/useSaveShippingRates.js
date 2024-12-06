@@ -6,13 +6,13 @@ import { useCallback } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
-import getDifferentShippingRates from '.~/utils/getDifferentShippingRates';
-import getDeletedShippingRates from '.~/utils/getDeletedShippingRates';
+import { useAppDispatch } from '~/data';
+import getDifferentShippingRates from '~/utils/getDifferentShippingRates';
+import getDeletedShippingRates from '~/utils/getDeletedShippingRates';
 import useShippingRates from './useShippingRates';
 
 /**
- * @typedef { import(".~/data/actions").ShippingRate } ShippingRate
+ * @typedef { import("~/data/actions").ShippingRate } ShippingRate
  */
 
 const getDeleteIds = ( newShippingRates, oldShippingRates ) => {

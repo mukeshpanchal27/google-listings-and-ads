@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
+import AppButton from '~/components/app-button';
 import RemoveProgramModal from './remove-program-modal';
 
 const RemoveProgramButton = ( props ) => {

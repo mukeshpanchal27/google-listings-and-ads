@@ -1,4 +1,4 @@
-jest.mock( '.~/utils/tracks', () => {
+jest.mock( '~/utils/tracks', () => {
 	return {
 		recordGlaEvent: jest.fn(),
 	};
@@ -13,8 +13,8 @@ import '@testing-library/jest-dom';
  * Internal dependencies
  */
 import IssuesTableDataModal from './issues-table-data-modal';
-import mockIssue from '.~/tests/mock-issue';
-import { recordGlaEvent } from '.~/utils/tracks';
+import mockIssue from '~/tests/mock-issue';
+import { recordGlaEvent } from '~/utils/tracks';
 
 describe( 'Issues Data Table Modal', () => {
 	test( 'Render the issue details', () => {

@@ -8,13 +8,13 @@ import { Pagination, TablePlaceholder } from '@woocommerce/components';
 /**
  * Internal dependencies
  */
-import { ISSUE_TABLE_PER_PAGE } from '.~/constants';
+import { ISSUE_TABLE_PER_PAGE } from '~/constants';
 import ISSUES_TABLE_DATA_HEADERS from './issues-table-data-headers';
-import { recordTablePageEvent } from '.~/utils/tracks';
+import { recordTablePageEvent } from '~/utils/tracks';
 import IssuesTableData from './issues-table-data';
-import useMCIssuesTypeFilter from '.~/hooks/useMCIssuesTypeFilter';
-import usePagination from '.~/hooks/usePagination';
-import useActiveIssueType from '.~/hooks/useActiveIssueType';
+import useMCIssuesTypeFilter from '~/hooks/useMCIssuesTypeFilter';
+import usePagination from '~/hooks/usePagination';
+import useActiveIssueType from '~/hooks/useActiveIssueType';
 import './index.scss';
 
 /**

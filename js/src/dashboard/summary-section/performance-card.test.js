@@ -6,7 +6,7 @@ import { render } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import PerformanceCard from '.~/dashboard/summary-section/performance-card';
+import PerformanceCard from '~/dashboard/summary-section/performance-card';
 
 describe( 'Performance Card', () => {
 	it( 'Renders given no data message', () => {

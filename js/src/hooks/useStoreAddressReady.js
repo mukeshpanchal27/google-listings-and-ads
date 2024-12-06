@@ -6,8 +6,8 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
-import { STORE_KEY } from '.~/data/constants';
+import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
+import { STORE_KEY } from '~/data/constants';
 
 /**
  * Checks if the store address is synchronized with the Merchant Center (GMC) account address.

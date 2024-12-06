@@ -8,12 +8,12 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import TreeSelectControl from '.~/components/tree-select-control';
+import TreeSelectControl from '~/components/tree-select-control';
 import useMCCountryTreeOptions from './useMCCountryTreeOptions';
 import './supported-country-select.scss';
 
 /**
- * @typedef {import('.~/data/actions').CountryCode} CountryCode
+ * @typedef {import('~/data/actions').CountryCode} CountryCode
  */
 
 /**

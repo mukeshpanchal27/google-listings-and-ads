@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import AppDocumentationLink from '.~/components/app-documentation-link';
+import AppDocumentationLink from '~/components/app-documentation-link';
 
 const ReadMoreLink = (
 	<AppDocumentationLink

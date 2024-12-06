@@ -10,30 +10,30 @@ import { getHistory } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import useLayout from '.~/hooks/useLayout';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import useTargetAudienceFinalCountryCodes from '.~/hooks/useTargetAudienceFinalCountryCodes';
-import { useAppDispatch } from '.~/data';
-import { getDashboardUrl } from '.~/utils/urls';
-import convertToAssetGroupUpdateBody from '.~/components/paid-ads/convertToAssetGroupUpdateBody';
-import TopBar from '.~/components/stepper/top-bar';
-import ContinueButton from '.~/components/paid-ads/continue-button';
-import HelpIconButton from '.~/components/help-icon-button';
-import CampaignAssetsForm from '.~/components/paid-ads/campaign-assets-form';
-import AdsCampaign from '.~/components/paid-ads/ads-campaign';
+import useLayout from '~/hooks/useLayout';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
+import { useAppDispatch } from '~/data';
+import { getDashboardUrl } from '~/utils/urls';
+import convertToAssetGroupUpdateBody from '~/components/paid-ads/convertToAssetGroupUpdateBody';
+import TopBar from '~/components/stepper/top-bar';
+import ContinueButton from '~/components/paid-ads/continue-button';
+import HelpIconButton from '~/components/help-icon-button';
+import CampaignAssetsForm from '~/components/paid-ads/campaign-assets-form';
+import AdsCampaign from '~/components/paid-ads/ads-campaign';
 import AssetGroup, {
 	ACTION_SUBMIT_CAMPAIGN_AND_ASSETS,
-} from '.~/components/paid-ads/asset-group';
+} from '~/components/paid-ads/asset-group';
 import {
 	CAMPAIGN_STEP as STEP,
 	CAMPAIGN_STEP_NUMBER_MAP as STEP_NUMBER_MAP,
-} from '.~/constants';
-import { API_NAMESPACE } from '.~/data/constants';
+} from '~/constants';
+import { API_NAMESPACE } from '~/data/constants';
 import {
 	recordStepperChangeEvent,
 	recordStepContinueEvent,
-} from '.~/utils/tracks';
-import useBudgetRecommendation from '.~/hooks/useBudgetRecommendation';
+} from '~/utils/tracks';
+import useBudgetRecommendation from '~/hooks/useBudgetRecommendation';
 
 const eventName = 'gla_paid_campaign_step';
 const eventContext = 'create-ads';

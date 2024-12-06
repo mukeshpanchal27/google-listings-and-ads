@@ -9,23 +9,23 @@ import { isEqual } from 'lodash';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
-import TopBar from '.~/components/stepper/top-bar';
-import SetupFreeListings from '.~/components/free-listings/setup-free-listings';
-import useTargetAudienceFinalCountryCodes from '.~/hooks/useTargetAudienceFinalCountryCodes';
-import useSettings from '.~/components/free-listings/configure-product-listings/useSettings';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import useLayout from '.~/hooks/useLayout';
-import useNavigateAwayPromptEffect from '.~/hooks/useNavigateAwayPromptEffect';
-import useShippingRates from '.~/hooks/useShippingRates';
-import useShippingTimes from '.~/hooks/useShippingTimes';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import HelpIconButton from '.~/components/help-icon-button';
+import { useAppDispatch } from '~/data';
+import TopBar from '~/components/stepper/top-bar';
+import SetupFreeListings from '~/components/free-listings/setup-free-listings';
+import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
+import useSettings from '~/components/free-listings/configure-product-listings/useSettings';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
+import useLayout from '~/hooks/useLayout';
+import useNavigateAwayPromptEffect from '~/hooks/useNavigateAwayPromptEffect';
+import useShippingRates from '~/hooks/useShippingRates';
+import useShippingTimes from '~/hooks/useShippingTimes';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import HelpIconButton from '~/components/help-icon-button';
 import hasUnsavedShippingRates from './hasUnsavedShippingRates';
-import useSaveShippingRates from '.~/hooks/useSaveShippingRates';
-import useSaveShippingTimes from '.~/hooks/useSaveShippingTimes';
-import createErrorMessageForRejectedPromises from '.~/utils/createErrorMessageForRejectedPromises';
-import { recordGlaEvent } from '.~/utils/tracks';
+import useSaveShippingRates from '~/hooks/useSaveShippingRates';
+import useSaveShippingTimes from '~/hooks/useSaveShippingTimes';
+import createErrorMessageForRejectedPromises from '~/utils/createErrorMessageForRejectedPromises';
+import { recordGlaEvent } from '~/utils/tracks';
 
 /**
  * Saving changes to the free campaign.

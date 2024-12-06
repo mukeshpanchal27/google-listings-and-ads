@@ -6,7 +6,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { NOTICES_STORE_KEY } from '.~/data/constants';
+import { NOTICES_STORE_KEY } from '~/data/constants';
 
 /**
  * @typedef {import('@wordpress/notices').Notice} Notice

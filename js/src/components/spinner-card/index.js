@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import AppSpinner from '.~/components/app-spinner';
-import Section from '.~/wcdl/section';
+import AppSpinner from '~/components/app-spinner';
+import Section from '~/wcdl/section';
 
 const SpinnerCard = () => {
 	return (

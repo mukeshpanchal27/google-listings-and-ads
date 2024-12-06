@@ -8,10 +8,10 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AppModal from '.~/components/app-modal';
-import AppButton from '.~/components/app-button';
-import WarningIcon from '.~/components/warning-icon';
-import { useAppDispatch } from '.~/data';
+import AppModal from '~/components/app-modal';
+import AppButton from '~/components/app-button';
+import WarningIcon from '~/components/warning-icon';
+import { useAppDispatch } from '~/data';
 import { ALL_ACCOUNTS, ADS_ACCOUNT, API_DATA_FETCH_FEATURE } from './constants';
 
 const textDict = {

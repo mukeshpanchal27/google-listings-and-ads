@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AppTooltip from '.~/components/app-tooltip';
+import AppTooltip from '~/components/app-tooltip';
 import './campaign-name-cell.scss';
 
 /**

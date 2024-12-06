@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import createMessageForMultipleErrors from '.~/utils/createMessageForMultipleErrors';
+import createMessageForMultipleErrors from '~/utils/createMessageForMultipleErrors';
 
 /**
  * A function to create an error message for rejected promises.

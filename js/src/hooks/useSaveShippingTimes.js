@@ -6,15 +6,15 @@ import { useCallback } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
+import { useAppDispatch } from '~/data';
 import useShippingTimes from './useShippingTimes';
-import getDeletedShippingTimes from '.~/utils/getDeletedShippingTimes';
-import getDifferentShippingTimes from '.~/utils/getDifferentShippingTimes';
-import getShippingTimeMapKey from '.~/utils/getShippingTimeMapKey';
+import getDeletedShippingTimes from '~/utils/getDeletedShippingTimes';
+import getDifferentShippingTimes from '~/utils/getDifferentShippingTimes';
+import getShippingTimeMapKey from '~/utils/getShippingTimeMapKey';
 
 /**
- * @typedef { import(".~/data/actions").ShippingTime } ShippingTime
- * @typedef { import(".~/data/actions").AggregatedShippingTime } AggregatedShippingTime
+ * @typedef { import("~/data/actions").ShippingTime } ShippingTime
+ * @typedef { import("~/data/actions").AggregatedShippingTime } AggregatedShippingTime
  */
 
 /**

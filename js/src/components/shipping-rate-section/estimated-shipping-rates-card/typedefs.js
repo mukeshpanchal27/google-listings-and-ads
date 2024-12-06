@@ -1,5 +1,5 @@
 /**
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
  */
 
 /**

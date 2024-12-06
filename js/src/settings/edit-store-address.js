@@ -9,17 +9,17 @@ import { Flex } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { getSettingsUrl } from '.~/utils/urls';
-import { useAppDispatch } from '.~/data';
-import useLayout from '.~/hooks/useLayout';
-import useStoreAddress from '.~/hooks/useStoreAddress';
-import TopBar from '.~/components/stepper/top-bar';
-import HelpIconButton from '.~/components/help-icon-button';
-import Section from '.~/wcdl/section';
-import AppButton from '.~/components/app-button';
+import { getSettingsUrl } from '~/utils/urls';
+import { useAppDispatch } from '~/data';
+import useLayout from '~/hooks/useLayout';
+import useStoreAddress from '~/hooks/useStoreAddress';
+import TopBar from '~/components/stepper/top-bar';
+import HelpIconButton from '~/components/help-icon-button';
+import Section from '~/wcdl/section';
+import AppButton from '~/components/app-button';
 
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import { StoreAddressCard } from '.~/components/contact-information';
+import AppDocumentationLink from '~/components/app-documentation-link';
+import { StoreAddressCard } from '~/components/contact-information';
 
 const learnMoreLinkId = 'contact-information-read-more';
 const learnMoreUrl =

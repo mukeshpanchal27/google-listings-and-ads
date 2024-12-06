@@ -10,14 +10,14 @@ import { getPath, getQuery } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import useStoreAddress from '.~/hooks/useStoreAddress';
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
-import AppButton from '.~/components/app-button';
-import ValidationErrors from '.~/components/validation-errors';
+import useStoreAddress from '~/hooks/useStoreAddress';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
+import AppButton from '~/components/app-button';
+import ValidationErrors from '~/components/validation-errors';
 import ContactInformationPreviewCard from './contact-information-preview-card';
-import TrackableLink from '.~/components/trackable-link';
+import TrackableLink from '~/components/trackable-link';
 import mapStoreAddressErrors from './mapStoreAddressErrors';
-import { recordGlaEvent } from '.~/utils/tracks';
+import { recordGlaEvent } from '~/utils/tracks';
 import './store-address-card.scss';
 
 /**

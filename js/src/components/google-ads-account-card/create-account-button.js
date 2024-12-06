@@ -8,7 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import TermsModal from './terms-modal';
-import AppButton from '.~/components/app-button';
+import AppButton from '~/components/app-button';
 
 /**
  * Renders a Google Ads account creaton button.

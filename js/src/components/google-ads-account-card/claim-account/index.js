@@ -7,9 +7,9 @@ import { Fragment } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
-import Section from '.~/wcdl/section';
-import useWindowFocusCallbackIntervalEffect from '.~/hooks/useWindowFocusCallbackIntervalEffect';
+import { useAppDispatch } from '~/data';
+import Section from '~/wcdl/section';
+import useWindowFocusCallbackIntervalEffect from '~/hooks/useWindowFocusCallbackIntervalEffect';
 import DisconnectAccount from '../disconnect-account';
 import './index.scss';
 

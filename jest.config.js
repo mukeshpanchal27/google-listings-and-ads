@@ -14,8 +14,8 @@ module.exports = {
 		'\\.(png|jpg)$': '<rootDir>/tests/mocks/assets/imageMock.js',
 		'\\.svg$': '<rootDir>/tests/mocks/assets/svgrMock.js',
 		'\\.scss$': '<rootDir>/tests/mocks/assets/styleMock.js',
-		// Transform our `.~/` alias.
-		'^\\.~/(.*)$': '<rootDir>/js/src/$1',
+		// Transform our `~/` alias.
+		'^~/(.*)$': '<rootDir>/js/src/$1',
 		'@woocommerce/settings':
 			'<rootDir>/js/src/tests/dependencies/woocommerce/settings',
 		'@automattic/calypso-config':

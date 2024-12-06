@@ -8,10 +8,10 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AppModal from '.~/components/app-modal';
-import AppButton from '.~/components/app-button';
-import { useAppDispatch } from '.~/data';
-import { recordGlaEvent } from '.~/utils/tracks';
+import AppModal from '~/components/app-modal';
+import AppButton from '~/components/app-button';
+import { useAppDispatch } from '~/data';
+import { recordGlaEvent } from '~/utils/tracks';
 
 /**
  * Deletes the rule successfully

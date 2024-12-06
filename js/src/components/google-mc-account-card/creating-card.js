@@ -7,8 +7,8 @@ import { useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
+import AppButton from '~/components/app-button';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
 
 const CreatingCard = ( props ) => {
 	const { retryAfter, onRetry = () => {} } = props;

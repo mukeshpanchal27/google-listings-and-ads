@@ -8,7 +8,7 @@ import { useMemo } from '@wordpress/element';
  * Internal dependencies
  */
 import CompareTableCard from '../compare-table-card';
-import { FREE_LISTINGS_PROGRAM_ID } from '.~/constants';
+import { FREE_LISTINGS_PROGRAM_ID } from '~/constants';
 import CampaignNameCell from './campaign-name-cell';
 
 const compareBy = 'programs';

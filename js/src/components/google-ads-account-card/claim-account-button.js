@@ -6,11 +6,11 @@ import { noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import getWindowFeatures from '.~/utils/getWindowFeatures';
-import { FILTER_ONBOARDING } from '.~/utils/tracks';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
-import useEventPropertiesFilter from '.~/hooks/useEventPropertiesFilter';
+import AppButton from '~/components/app-button';
+import getWindowFeatures from '~/utils/getWindowFeatures';
+import { FILTER_ONBOARDING } from '~/utils/tracks';
+import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
+import useEventPropertiesFilter from '~/hooks/useEventPropertiesFilter';
 
 /**
  * Clicking on the button to open the invitation page for claiming the newly created Google Ads account.

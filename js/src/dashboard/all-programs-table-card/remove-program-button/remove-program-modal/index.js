@@ -7,9 +7,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AppModal from '.~/components/app-modal';
-import AppButton from '.~/components/app-button';
-import { useAppDispatch } from '.~/data';
+import AppModal from '~/components/app-modal';
+import AppButton from '~/components/app-button';
+import { useAppDispatch } from '~/data';
 import './index.scss';
 
 /**

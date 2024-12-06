@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { GOOGLE_ADS_ACCOUNT_STATUS } from '.~/constants';
+import { GOOGLE_ADS_ACCOUNT_STATUS } from '~/constants';
 
 /**
  * Helper for determining whether to show the ads conversion notice based on the

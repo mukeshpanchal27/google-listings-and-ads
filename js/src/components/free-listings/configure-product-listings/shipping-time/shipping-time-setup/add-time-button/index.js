@@ -8,7 +8,7 @@ import GridiconPlusSmall from 'gridicons/dist/plus-small';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
+import AppButton from '~/components/app-button';
 import AddTimeModal from './add-time-modal';
 
 /**

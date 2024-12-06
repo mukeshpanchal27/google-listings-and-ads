@@ -6,16 +6,16 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import AppButtonModalTrigger from '.~/components/app-button-modal-trigger';
-import AppInputPriceControl from '.~/components/app-input-price-control';
-import { useAdaptiveFormContext } from '.~/components/adaptive-form';
+import AppButton from '~/components/app-button';
+import AppButtonModalTrigger from '~/components/app-button-modal-trigger';
+import AppInputPriceControl from '~/components/app-input-price-control';
+import { useAdaptiveFormContext } from '~/components/adaptive-form';
 import { EditMinimumOrderFormModal } from './minimum-order-form-modals';
 import MinimumOrderInputControlLabelText from './minimum-order-input-control-label-text';
 import './minimum-order-input-control.scss';
 
 /**
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
  * @typedef { import("./typedefs").MinimumOrderGroup } MinimumOrderGroup
  */
 

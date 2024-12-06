@@ -9,16 +9,16 @@ import { useState, useRef } from '@wordpress/element';
  * Internal dependencies
  */
 import SetupAccounts from './setup-accounts';
-import AppSpinner from '.~/components/app-spinner';
-import useEventPropertiesFilter from '.~/hooks/useEventPropertiesFilter';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
+import AppSpinner from '~/components/app-spinner';
+import useEventPropertiesFilter from '~/hooks/useEventPropertiesFilter';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
 import {
 	recordStepperChangeEvent,
 	recordStepContinueEvent,
 	FILTER_ONBOARDING,
 	CONTEXT_ADS_ONBOARDING,
-} from '.~/utils/tracks';
+} from '~/utils/tracks';
 import SetupPaidAds from './setup-paid-ads';
 
 /**

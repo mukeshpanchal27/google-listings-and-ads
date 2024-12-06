@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import StepContentHeader from '.~/components/stepper/step-content-header';
-import heroImageURL from '.~/images/google-free-listings.png';
+import StepContentHeader from '~/components/stepper/step-content-header';
+import heroImageURL from '~/images/google-free-listings.png';
 import './index.scss';
 
 /**

@@ -7,10 +7,10 @@ import { getNewPath, getPath } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import { glaData } from '.~/constants';
-import AppTabNav from '.~/components/app-tab-nav';
-import useMenuEffect from '.~/hooks/useMenuEffect';
-import GtinMigrationBanner from '.~/components/gtin-migration-banner';
+import { glaData } from '~/constants';
+import AppTabNav from '~/components/app-tab-nav';
+import useMenuEffect from '~/hooks/useMenuEffect';
+import GtinMigrationBanner from '~/components/gtin-migration-banner';
 
 let tabs = [
 	{

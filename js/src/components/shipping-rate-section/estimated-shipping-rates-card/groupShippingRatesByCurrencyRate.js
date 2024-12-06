@@ -1,5 +1,5 @@
 /**
- * @typedef { import(".~/data/actions").ShippingRate } ShippingRate
+ * @typedef { import("~/data/actions").ShippingRate } ShippingRate
  * @typedef { import("./typedefs").ShippingRateGroup } ShippingRateGroup
  */
 

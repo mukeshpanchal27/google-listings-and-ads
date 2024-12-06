@@ -1,15 +1,15 @@
 /**
  * Internal dependencies
  */
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
 import AddTimeButton from './add-time-button';
 import CountriesTimeInput from './countries-time-input';
 import getCountriesTimeArray from './getCountriesTimeArray';
 
 /**
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
- * @typedef { import(".~/data/actions").ShippingTime } ShippingTime
- * @typedef { import(".~/data/actions").AggregatedShippingTime } AggregatedShippingTime
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/data/actions").ShippingTime } ShippingTime
+ * @typedef { import("~/data/actions").AggregatedShippingTime } AggregatedShippingTime
  */
 
 /**

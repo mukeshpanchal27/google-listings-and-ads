@@ -6,11 +6,11 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { STORE_KEY } from '.~/data/constants';
-import getHighestBudget from '.~/utils/getHighestBudget';
+import { STORE_KEY } from '~/data/constants';
+import getHighestBudget from '~/utils/getHighestBudget';
 
 /**
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
  */
 
 /**

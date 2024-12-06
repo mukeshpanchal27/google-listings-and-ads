@@ -6,7 +6,7 @@ import { renderHook, act } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import usePagination from '.~/hooks/usePagination';
+import usePagination from '~/hooks/usePagination';
 
 describe( 'usePagination', () => {
 	it( 'returns the correct default page per each paginator key', () => {

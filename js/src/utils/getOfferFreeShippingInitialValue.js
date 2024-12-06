@@ -1,10 +1,10 @@
 /**
  * Internal dependencies
  */
-import isNonFreeShippingRate from '.~/utils/isNonFreeShippingRate';
+import isNonFreeShippingRate from '~/utils/isNonFreeShippingRate';
 
 /**
- * @typedef {import('.~/data/actions').ShippingRate} ShippingRate
+ * @typedef {import('~/data/actions').ShippingRate} ShippingRate
  */
 
 /**

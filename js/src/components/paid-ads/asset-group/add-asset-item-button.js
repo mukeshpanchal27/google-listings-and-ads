@@ -6,7 +6,7 @@ import GridiconPlusSmall from 'gridicons/dist/plus-small';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
+import AppButton from '~/components/app-button';
 import './add-asset-item-button.scss';
 
 export default function AddAssetItemButton( props ) {

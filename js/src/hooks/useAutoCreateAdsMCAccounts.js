@@ -10,12 +10,12 @@ import useGoogleAdsAccount from './useGoogleAdsAccount';
 import useExistingGoogleAdsAccounts from './useExistingGoogleAdsAccounts';
 import useGoogleMCAccount from './useGoogleMCAccount';
 import useExistingGoogleMCAccounts from './useExistingGoogleMCAccounts';
-import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
+import useUpsertAdsAccount from '~/hooks/useUpsertAdsAccount';
 import {
 	CREATING_ADS_ACCOUNT,
 	CREATING_BOTH_ACCOUNTS,
 	CREATING_MC_ACCOUNT,
-} from '.~/components/google-combo-account-card/constants';
+} from '~/components/google-combo-account-card/constants';
 
 const useShouldCreateAdsAccount = () => {
 	const {

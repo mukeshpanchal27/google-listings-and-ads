@@ -22,7 +22,7 @@ jest.mock( '@woocommerce/settings', () => ( {
 		} ),
 } ) );
 
-jest.mock( '.~/hooks/useGoogleAdsAccount', () =>
+jest.mock( '~/hooks/useGoogleAdsAccount', () =>
 	jest
 		.fn()
 		.mockName( 'useGoogleAdsAccount' )

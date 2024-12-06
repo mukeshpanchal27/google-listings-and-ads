@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { adaptAssetGroup } from './adapters';
-import { ASSET_KEY } from '.~/constants';
+import { ASSET_KEY } from '~/constants';
 
 describe( 'adaptAssetGroup', () => {
 	describe( 'Adapts the order of the multi-value text assets', () => {

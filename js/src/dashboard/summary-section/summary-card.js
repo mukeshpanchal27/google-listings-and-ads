@@ -6,7 +6,7 @@ import { Card, CardHeader } from '@wordpress/components';
  * Internal dependencies
  */
 import './summary-card.scss';
-import Text from '.~/components/app-text';
+import Text from '~/components/app-text';
 
 /**
  * Returns a Card with the given content.

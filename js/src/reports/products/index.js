@@ -12,19 +12,19 @@ import {
 	REPORT_SOURCE_FREE,
 	REPORT_SOURCE_PAID,
 	REPORT_SOURCE_DEFAULT,
-} from '.~/constants';
+} from '~/constants';
 import useProductsReport from './useProductsReport';
 import useMetricsWithFormatter from '../useMetricsWithFormatter';
-import useAdsCampaigns from '.~/hooks/useAdsCampaigns';
-import AppSpinner from '.~/components/app-spinner';
-import DifferentCurrencyNotice from '.~/components/different-currency-notice';
-import MainTabNav from '.~/components/main-tab-nav';
+import useAdsCampaigns from '~/hooks/useAdsCampaigns';
+import AppSpinner from '~/components/app-spinner';
+import DifferentCurrencyNotice from '~/components/different-currency-notice';
+import MainTabNav from '~/components/main-tab-nav';
 import ProductsReportFilters from './products-report-filters';
 import SummarySection from '../summary-section';
 import ChartSection from '../chart-section';
 import CompareProductsTableCard from './compare-products-table-card';
 import ReportsNavigation from '../reports-navigation';
-import RebrandingTour from '.~/components/tours/rebranding-tour';
+import RebrandingTour from '~/components/tours/rebranding-tour';
 
 /**
  * Available metrics and their human-readable labels.

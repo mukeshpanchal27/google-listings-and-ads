@@ -6,7 +6,7 @@ import { Link } from '@woocommerce/components';
 /**
  * Internal dependencies
  */
-import { recordGlaEvent } from '.~/utils/tracks';
+import { recordGlaEvent } from '~/utils/tracks';
 
 /**
  * A {@link module:@woocommerce/components~Link} component that will call `recordGlaEvent` with `eventName` and `eventProps` parameters upon click.

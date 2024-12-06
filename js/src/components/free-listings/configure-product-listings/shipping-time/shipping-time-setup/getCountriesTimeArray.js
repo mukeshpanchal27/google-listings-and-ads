@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getShippingTimeMapKey from '.~/utils/getShippingTimeMapKey';
+import getShippingTimeMapKey from '~/utils/getShippingTimeMapKey';
 
 /**
  * Groups shipping times based on time.
@@ -68,6 +68,6 @@ const getCountriesTimeArray = ( shippingTimes ) => {
 export default getCountriesTimeArray;
 
 /**
- * @typedef { import(".~/data/actions").ShippingTime } ShippingTime
- * @typedef { import(".~/data/actions").AggregatedShippingTime } AggregatedShippingTime
+ * @typedef { import("~/data/actions").ShippingTime } ShippingTime
+ * @typedef { import("~/data/actions").AggregatedShippingTime } AggregatedShippingTime
  */

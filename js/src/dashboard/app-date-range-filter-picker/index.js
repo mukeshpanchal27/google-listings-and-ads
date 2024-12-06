@@ -8,7 +8,7 @@ import { updateQueryString } from '@woocommerce/navigation';
  * Internal dependencies
  */
 import getDateQuery from './getDateQuery';
-import { recordGlaEvent } from '.~/utils/tracks';
+import { recordGlaEvent } from '~/utils/tracks';
 
 const isoDateFormat = 'YYYY-MM-DD';
 

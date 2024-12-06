@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import createErrorMessageForRejectedPromises from './createErrorMessageForRejectedPromises';
-import createMessageForMultipleErrors from '.~/utils/createMessageForMultipleErrors';
+import createMessageForMultipleErrors from '~/utils/createMessageForMultipleErrors';
 
 describe( 'createErrorMessageForRejectedPromises', () => {
 	const successPromise = () => new Promise( ( resolve ) => resolve( 'OK' ) );

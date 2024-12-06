@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import useEventPropertiesFilter from '.~/hooks/useEventPropertiesFilter';
-import { FILTER_ONBOARDING } from '.~/utils/tracks';
+import AppButton from '~/components/app-button';
+import useEventPropertiesFilter from '~/hooks/useEventPropertiesFilter';
+import { FILTER_ONBOARDING } from '~/utils/tracks';
 
 /**
  * Clicking on the button to connect an existing Google Ads account.

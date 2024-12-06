@@ -8,38 +8,38 @@ import { screen, within, render } from '@testing-library/react';
  * Internal dependencies
  */
 import AllProgramsTableCard from './';
-import CampaignAssetsTour from '.~/components/tours/campaign-assets-tour';
-import useAdsCampaigns from '.~/hooks/useAdsCampaigns';
-import useAdsCurrency from '.~/hooks/useAdsCurrency';
+import CampaignAssetsTour from '~/components/tours/campaign-assets-tour';
+import useAdsCampaigns from '~/hooks/useAdsCampaigns';
+import useAdsCurrency from '~/hooks/useAdsCurrency';
 
-jest.mock( '.~/components/tours/campaign-assets-tour', () =>
+jest.mock( '~/components/tours/campaign-assets-tour', () =>
 	jest
 		.fn()
 		.mockReturnValue( <div role="dialog" aria-label="tour" /> )
 		.mockName( 'CampaignAssetsTour' )
 );
 
-jest.mock( '.~/hooks/useCountryKeyNameMap', () =>
+jest.mock( '~/hooks/useCountryKeyNameMap', () =>
 	jest
 		.fn()
 		.mockReturnValue( { US: 'United States (US)', JP: 'Japan' } )
 		.mockName( 'useCountryKeyNameMap' )
 );
 
-jest.mock( '.~/hooks/useAdsCurrency', () =>
+jest.mock( '~/hooks/useAdsCurrency', () =>
 	jest.fn().mockReturnValue( {
 		formatAmount: jest.fn().mockName( 'formatAmount' ),
 	} )
 );
 
-jest.mock( '.~/hooks/useTargetAudienceFinalCountryCodes', () =>
+jest.mock( '~/hooks/useTargetAudienceFinalCountryCodes', () =>
 	jest
 		.fn()
 		.mockReturnValue( { data: [ 'US', 'JP' ] } )
 		.mockName( 'useTargetAudienceFinalCountryCodes' )
 );
 
-jest.mock( '.~/hooks/useAdsCampaigns', () =>
+jest.mock( '~/hooks/useAdsCampaigns', () =>
 	jest.fn().mockName( 'useAdsCampaigns' )
 );
 
