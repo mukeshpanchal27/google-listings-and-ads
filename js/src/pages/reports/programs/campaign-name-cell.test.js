@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 /**
  * Internal dependencies
  */
-import CampaignNameCell from '~/reports/programs/campaign-name-cell';
+import CampaignNameCell from './campaign-name-cell';
 
 describe( 'Notice Campaign Migration', () => {
 	it( 'Converted', async () => {
