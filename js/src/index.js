@@ -21,7 +21,7 @@ const Dashboard = lazy( () =>
 );
 
 const GetStartedPage = lazy( () =>
-	import( /* webpackChunkName: "get-started-page" */ './get-started-page' )
+	import( /* webpackChunkName: "get-started-page" */ './pages/get-started' )
 );
 
 const SetupMC = lazy( () =>
