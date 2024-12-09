@@ -8,13 +8,13 @@ import { getNewPath } from '@woocommerce/navigation';
  */
 import { API_RESPONSE_CODES } from '~/constants';
 
-// The path 'setup-mc' came from its original page name.
+// The paths 'setup-mc' and 'setup-ads' came from its original page name.
 // It's currently retained to ensure paths that might be
 // externally referenced won't be invalidated.
 export const pagePaths = {
 	getStarted: '/google/start',
 	onboarding: '/google/setup-mc',
-	setupAds: '/google/setup-ads',
+	adsOnboarding: '/google/setup-ads',
 	dashboard: '/google/dashboard',
 	reports: '/google/reports',
 	productFeed: '/google/product-feed',

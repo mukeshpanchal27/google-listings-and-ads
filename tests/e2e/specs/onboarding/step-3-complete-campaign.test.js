@@ -6,9 +6,9 @@ const { test, expect } = require( '@playwright/test' );
 /**
  * Internal dependencies
  */
-import SetupBudgetPage from '../../utils/pages/setup-ads/setup-budget';
+import SetupBudgetPage from '../../utils/pages/ads-onboarding/setup-budget';
 import CompleteCampaign from '../../utils/pages/onboarding/step-3-complete-campaign';
-import SetupAdsAccountPage from '../../utils/pages/setup-ads/setup-ads-accounts';
+import SetupAdsAccountPage from '../../utils/pages/ads-onboarding/setup-ads-accounts';
 import DashboardPage from '../../utils/pages/dashboard';
 import {
 	checkFAQExpandable,
@@ -22,7 +22,7 @@ test.use( { storageState: process.env.ADMINSTATE } );
 test.describe.configure( { mode: 'serial' } );
 
 /**
- * @type {import('../../utils/pages/setup-ads/setup-budget.js').default} setupBudgetPage
+ * @type {import('../../utils/pages/ads-onboarding/setup-budget.js').default} setupBudgetPage
  */
 let setupBudgetPage = null;
 
@@ -32,7 +32,7 @@ let setupBudgetPage = null;
 let completeCampaign = null;
 
 /**
- * @type {import('../../utils/pages/setup-ads/setup-ads-accounts.js').default} setupAdsAccountPage
+ * @type {import('../../utils/pages/ads-onboarding/setup-ads-accounts.js').default} setupAdsAccountPage
  */
 let setupAdsAccountPage = null;
 

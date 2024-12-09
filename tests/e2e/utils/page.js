@@ -6,7 +6,7 @@ const { expect } = require( '@playwright/test' );
 /**
  * Internal dependencies
  */
-import SetupBudgetPage from '../utils/pages/setup-ads/setup-budget';
+import SetupBudgetPage from '../utils/pages/ads-onboarding/setup-budget';
 
 /**
  * Get FAQ panel.
