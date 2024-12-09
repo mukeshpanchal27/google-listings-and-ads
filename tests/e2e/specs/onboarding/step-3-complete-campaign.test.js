@@ -7,7 +7,7 @@ const { test, expect } = require( '@playwright/test' );
  * Internal dependencies
  */
 import SetupBudgetPage from '../../utils/pages/setup-ads/setup-budget';
-import CompleteCampaign from '../../utils/pages/setup-mc/step-3-complete-campaign';
+import CompleteCampaign from '../../utils/pages/onboarding/step-3-complete-campaign';
 import SetupAdsAccountPage from '../../utils/pages/setup-ads/setup-ads-accounts';
 import DashboardPage from '../../utils/pages/dashboard';
 import {
@@ -27,7 +27,7 @@ test.describe.configure( { mode: 'serial' } );
 let setupBudgetPage = null;
 
 /**
- * @type {import('../../utils/pages/setup-mc/step-4-complete-campaign.js').default} completeCampaign
+ * @type {import('../../utils/pages/onboarding/step-3-complete-campaign.js').default} completeCampaign
  */
 let completeCampaign = null;
 

@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import ProductListingsPage from '../../utils/pages/setup-mc/step-2-product-listings';
+import ProductListingsPage from '../../utils/pages/onboarding/step-2-product-listings';
 import {
 	getCountryInputSearchBoxContainer,
 	getCountryInputSearchBox,
@@ -18,7 +18,7 @@ test.use( { storageState: process.env.ADMINSTATE } );
 test.describe.configure( { mode: 'serial' } );
 
 /**
- * @type {import('../../utils/pages/setup-mc/step-2-product-listings.js').default} productListingsPage
+ * @type {import('../../utils/pages/onboarding/step-2-product-listings.js').default} productListingsPage
  */
 let productListingsPage = null;
 

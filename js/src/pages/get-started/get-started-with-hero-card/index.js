@@ -12,7 +12,7 @@ import { glaData } from '~/constants';
 import AppButton from '~/components/app-button';
 import Text from '~/components/app-text';
 import AppDocumentationLink from '~/components/app-documentation-link';
-import { getSetupMCUrl } from '~/utils/urls';
+import { getOnboardingUrl } from '~/utils/urls';
 import './index.scss';
 import heroUrl from '~/images/get-started/hero.png';
 
@@ -70,7 +70,7 @@ const GetStartedWithHeroCard = () => {
 					className="gla-get-started-with-hero-card__button"
 					isPrimary
 					disabled={ disableNextStep }
-					href={ getSetupMCUrl() }
+					href={ getOnboardingUrl() }
 					eventName="gla_setup_mc"
 					eventProps={ {
 						triggered_by: 'start-onboarding-button',

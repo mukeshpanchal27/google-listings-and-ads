@@ -14,7 +14,7 @@ import motivationImageURL from '~/images/get-started/motivation.svg';
 import './index.scss';
 import Text from '~/components/app-text';
 import AppButton from '~/components/app-button';
-import { getSetupMCUrl } from '~/utils/urls';
+import { getOnboardingUrl } from '~/utils/urls';
 
 /**
  * @fires gla_setup_mc with `{ triggered_by: 'start-onboarding-button', action: 'go-to-onboarding', context: 'get-started' }`.
@@ -49,7 +49,7 @@ const GetStartedCard = () => {
 				<AppButton
 					isPrimary
 					disabled={ disableNextStep }
-					href={ getSetupMCUrl() }
+					href={ getOnboardingUrl() }
 					eventName="gla_setup_mc"
 					eventProps={ {
 						triggered_by: 'start-onboarding-button',

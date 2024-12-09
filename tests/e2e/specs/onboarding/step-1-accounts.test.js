@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import SetUpAccountsPage from '../../utils/pages/setup-mc/step-1-set-up-accounts';
+import SetUpAccountsPage from '../../utils/pages/onboarding/step-1-set-up-accounts';
 import { LOAD_STATE } from '../../utils/constants';
 import {
 	getFAQPanelTitle,
@@ -19,7 +19,7 @@ test.use( { storageState: process.env.ADMINSTATE } );
 test.describe.configure( { mode: 'serial' } );
 
 /**
- * @type {import('../../utils/pages/setup-mc/step-1-set-up-accounts.js').default} setUpAccountsPage
+ * @type {import('../../utils/pages/onboarding/step-1-set-up-accounts.js').default} setUpAccountsPage
  */
 let setUpAccountsPage = null;
 
