@@ -7,7 +7,8 @@ import GridiconHelpOutline from 'gridicons/dist/help-outline';
 /**
  * Internal dependencies
  */
-import AppIconButton from '~/components/app-icon-button';
+import AppButton from '~/components/app-button';
+import styles from './index.module.scss';
 
 /**
  * "Help" button is clicked.
@@ -17,7 +18,7 @@ import AppIconButton from '~/components/app-icon-button';
  */
 
 /**
- * An AppIconButton that renders GridiconHelpOutline icon and "Help" text.
+ * Renders a button with a help icon and "Help" text.
  * Upon click, it will open documentation page in a new tab,
  * and call `gla_help_click` track event.
  *
@@ -25,23 +26,22 @@ import AppIconButton from '~/components/app-icon-button';
  *
  * @param {Object} props Props
  * @param {string} props.eventContext Context to be used in `gla_help_click` track event.
- * @return {import("~/components/app-icon-button").default} The button.
+ * @return {JSX.Element} The button.
  */
-const HelpIconButton = ( props ) => {
-	const { eventContext, ...rest } = props;
-
+const HelpIconButton = ( { eventContext } ) => {
 	return (
-		<AppIconButton
-			icon={ <GridiconHelpOutline /> }
-			text={ __( 'Help', 'google-listings-and-ads' ) }
+		<AppButton
+			className={ styles.helpIconButton }
 			href="https://woocommerce.com/document/google-for-woocommerce/"
 			target="_blank"
 			eventName="gla_help_click"
 			eventProps={ {
 				context: eventContext,
 			} }
-			{ ...rest }
-		/>
+		>
+			<GridiconHelpOutline />
+			{ __( 'Help', 'google-listings-and-ads' ) }
+		</AppButton>
 	);
 };
 
