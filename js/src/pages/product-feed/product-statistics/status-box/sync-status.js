@@ -8,7 +8,7 @@ import { format as formatDate } from '@wordpress/date';
  * Internal dependencies
  */
 import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
-import Status from '~/product-feed/product-statistics/status-box/status';
+import Status from './status';
 import SyncIcon from '~/components/sync-icon';
 import SuccessIcon from '~/components/success-icon';
 import getNumberOfSyncProducts from '~/utils/getNumberOfSyncProducts';

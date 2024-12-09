@@ -7,7 +7,7 @@ import { __, _n, sprintf } from '@wordpress/i18n';
  * Internal dependencies
  */
 import useMCIssuesTotals from '~/hooks/useMCIssuesTotals';
-import Status from '~/product-feed/product-statistics/status-box/status';
+import Status from './status';
 import SuccessIcon from '~/components/success-icon';
 
 /**

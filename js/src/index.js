@@ -37,7 +37,7 @@ const Reports = lazy( () =>
 );
 
 const ProductFeed = lazy( () =>
-	import( /* webpackChunkName: "product-feed" */ './product-feed' )
+	import( /* webpackChunkName: "product-feed" */ './pages/product-feed' )
 );
 
 const AttributeMapping = lazy( () =>

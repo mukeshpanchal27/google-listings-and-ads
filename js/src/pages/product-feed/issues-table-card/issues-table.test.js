@@ -13,7 +13,7 @@ import { render } from '@testing-library/react';
  * Internal dependencies
  */
 import { ISSUE_TYPE_ACCOUNT, ISSUE_TYPE_PRODUCT } from '~/constants';
-import IssuesTable from '~/product-feed/issues-table-card/issues-table';
+import IssuesTable from './issues-table';
 import useMCIssuesTypeFilter from '~/hooks/useMCIssuesTypeFilter';
 import useActiveIssueType from '~/hooks/useActiveIssueType';
 import mockIssue from '~/tests/mock-issue';

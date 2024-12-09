@@ -16,7 +16,7 @@ import '@testing-library/jest-dom';
 /**
  * Internal dependencies
  */
-import IssuesTypeNavigation from '~/product-feed/issues-table-card/issues-type-navigation';
+import IssuesTypeNavigation from './issues-type-navigation';
 import useMCIssuesTotals from '~/hooks/useMCIssuesTotals';
 
 describe( 'Issues Type Navigation', () => {

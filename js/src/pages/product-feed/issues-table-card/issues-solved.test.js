@@ -11,7 +11,7 @@ import { render } from '@testing-library/react';
  */
 import useMCIssuesTypeFilter from '~/hooks/useMCIssuesTypeFilter';
 import useActiveIssueType from '~/hooks/useActiveIssueType';
-import IssuesSolved from '~/product-feed/issues-table-card/issues-solved';
+import IssuesSolved from './issues-solved';
 
 describe( 'Issues Solved Message', () => {
 	beforeEach( () => {

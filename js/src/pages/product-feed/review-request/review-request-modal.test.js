@@ -21,7 +21,7 @@ import { act, fireEvent, render } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import ReviewRequestModal from '~/product-feed/review-request/review-request-modal';
+import ReviewRequestModal from './review-request-modal';
 import { recordGlaEvent } from '~/utils/tracks';
 
 const issues = [
