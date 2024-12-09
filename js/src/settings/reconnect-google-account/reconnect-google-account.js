@@ -8,13 +8,13 @@ import { getHistory } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import { glaData } from '.~/constants';
-import { getDashboardUrl } from '.~/utils/urls';
-import toScopeState from '.~/utils/toScopeState';
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
-import Section from '.~/wcdl/section';
-import AppSpinner from '.~/components/app-spinner';
-import GoogleAccountCard from '.~/components/google-account-card';
+import { glaData } from '~/constants';
+import { getDashboardUrl } from '~/utils/urls';
+import toScopeState from '~/utils/toScopeState';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
+import Section from '~/wcdl/section';
+import AppSpinner from '~/components/app-spinner';
+import GoogleAccountCard from '~/components/google-account-card';
 import DisconnectGoogleAccountCard from './disconnect-google-account-card';
 
 export default function ReconnectGoogleAccount() {

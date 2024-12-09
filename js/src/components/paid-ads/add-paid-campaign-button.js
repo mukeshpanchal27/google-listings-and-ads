@@ -7,10 +7,10 @@ import { getHistory, getNewPath } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import { glaData } from '.~/constants';
-import { getCreateCampaignUrl } from '.~/utils/urls';
-import { recordGlaEvent } from '.~/utils/tracks';
+import AppButton from '~/components/app-button';
+import { glaData } from '~/constants';
+import { getCreateCampaignUrl } from '~/utils/urls';
+import { recordGlaEvent } from '~/utils/tracks';
 
 /**
  * "Add campaign" button is clicked.

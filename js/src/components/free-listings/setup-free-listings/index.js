@@ -8,21 +8,21 @@ import { pick, noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import useStoreCountry from '.~/hooks/useStoreCountry';
-import AppSpinner from '.~/components/app-spinner';
-import Hero from '.~/components/free-listings/configure-product-listings/hero';
-import AdaptiveForm from '.~/components/adaptive-form';
-import ValidationErrors from '.~/components/validation-errors';
-import checkErrors from '.~/components/free-listings/configure-product-listings/checkErrors';
-import getOfferFreeShippingInitialValue from '.~/utils/getOfferFreeShippingInitialValue';
-import isNonFreeShippingRate from '.~/utils/isNonFreeShippingRate';
+import useStoreCountry from '~/hooks/useStoreCountry';
+import AppSpinner from '~/components/app-spinner';
+import Hero from '~/components/free-listings/configure-product-listings/hero';
+import AdaptiveForm from '~/components/adaptive-form';
+import ValidationErrors from '~/components/validation-errors';
+import checkErrors from '~/components/free-listings/configure-product-listings/checkErrors';
+import getOfferFreeShippingInitialValue from '~/utils/getOfferFreeShippingInitialValue';
+import isNonFreeShippingRate from '~/utils/isNonFreeShippingRate';
 import FormContent from './form-content';
 
 /**
- * @typedef {import('.~/data/actions').TargetAudienceData } TargetAudienceData
- * @typedef {import('.~/data/actions').ShippingRate} ShippingRateFromServerSide
- * @typedef {import('.~/data/actions').ShippingTime} ShippingTime
- * @typedef {import('.~/data/actions').CountryCode} CountryCode
+ * @typedef {import('~/data/actions').TargetAudienceData } TargetAudienceData
+ * @typedef {import('~/data/actions').ShippingRate} ShippingRateFromServerSide
+ * @typedef {import('~/data/actions').ShippingTime} ShippingTime
+ * @typedef {import('~/data/actions').CountryCode} CountryCode
  */
 
 const targetAudienceFields = [ 'locale', 'language', 'location', 'countries' ];

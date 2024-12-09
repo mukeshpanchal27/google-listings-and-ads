@@ -7,12 +7,12 @@ import { createInterpolateElement } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { useAdaptiveFormContext } from '.~/components/adaptive-form';
-import Section from '.~/wcdl/section';
-import RadioHelperText from '.~/wcdl/radio-helper-text';
-import AppRadioContentControl from '.~/components/app-radio-content-control';
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
+import { useAdaptiveFormContext } from '~/components/adaptive-form';
+import Section from '~/wcdl/section';
+import RadioHelperText from '~/wcdl/radio-helper-text';
+import AppRadioContentControl from '~/components/app-radio-content-control';
+import AppDocumentationLink from '~/components/app-documentation-link';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
 
 /**
  * @fires gla_documentation_link_click with `{ context: 'setup-mc-tax-rate', link_id: 'tax-rate-read-more', href: 'https://support.google.com/merchants/answer/160162' }`

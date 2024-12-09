@@ -7,8 +7,8 @@ import { dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import useNotices from '.~/hooks/useNotices';
-import { NOTICES_STORE_KEY } from '.~/data/constants';
+import useNotices from '~/hooks/useNotices';
+import { NOTICES_STORE_KEY } from '~/data/constants';
 
 /**
  * Search for a notice with specific label and remove it if the component is unmounted.

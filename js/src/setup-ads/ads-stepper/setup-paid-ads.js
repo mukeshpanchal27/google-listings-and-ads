@@ -9,18 +9,18 @@ import { getNewPath } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import AdsCampaign from '.~/components/paid-ads/ads-campaign';
-import useGoogleAdsAccountBillingStatus from '.~/hooks/useGoogleAdsAccountBillingStatus';
-import useAdminUrl from '.~/hooks/useAdminUrl';
-import useNavigateAwayPromptEffect from '.~/hooks/useNavigateAwayPromptEffect';
-import useTargetAudienceFinalCountryCodes from '.~/hooks/useTargetAudienceFinalCountryCodes';
-import useAdsSetupCompleteCallback from '.~/hooks/useAdsSetupCompleteCallback';
-import CampaignAssetsForm from '.~/components/paid-ads/campaign-assets-form';
-import { recordGlaEvent } from '.~/utils/tracks';
-import useBudgetRecommendation from '.~/hooks/useBudgetRecommendation';
-import AppSpinner from '.~/components/app-spinner';
-import { GOOGLE_ADS_BILLING_STATUS } from '.~/constants';
+import AppButton from '~/components/app-button';
+import AdsCampaign from '~/components/paid-ads/ads-campaign';
+import useGoogleAdsAccountBillingStatus from '~/hooks/useGoogleAdsAccountBillingStatus';
+import useAdminUrl from '~/hooks/useAdminUrl';
+import useNavigateAwayPromptEffect from '~/hooks/useNavigateAwayPromptEffect';
+import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
+import useAdsSetupCompleteCallback from '~/hooks/useAdsSetupCompleteCallback';
+import CampaignAssetsForm from '~/components/paid-ads/campaign-assets-form';
+import { recordGlaEvent } from '~/utils/tracks';
+import useBudgetRecommendation from '~/hooks/useBudgetRecommendation';
+import AppSpinner from '~/components/app-spinner';
+import { GOOGLE_ADS_BILLING_STATUS } from '~/constants';
 
 const { APPROVED } = GOOGLE_ADS_BILLING_STATUS;
 

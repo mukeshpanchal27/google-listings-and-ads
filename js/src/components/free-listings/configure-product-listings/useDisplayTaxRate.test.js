@@ -8,8 +8,8 @@ import { renderHook } from '@testing-library/react';
  */
 import useDisplayTaxRate from './useDisplayTaxRate';
 
-jest.mock( '.~/hooks/useStoreCountry', () => jest.fn() );
-const useStoreCountry = require( '.~/hooks/useStoreCountry' );
+jest.mock( '~/hooks/useStoreCountry', () => jest.fn() );
+const useStoreCountry = require( '~/hooks/useStoreCountry' );
 
 describe( 'useDisplayTaxRate', () => {
 	describe( 'when store country is a non-US country', () => {

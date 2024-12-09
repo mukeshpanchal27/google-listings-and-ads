@@ -7,8 +7,8 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
-import { API_NAMESPACE } from '.~/data/constants';
+import { useAppDispatch } from '~/data';
+import { API_NAMESPACE } from '~/data/constants';
 
 jest.mock( '@wordpress/api-fetch', () => {
 	const impl = jest.fn().mockName( '@wordpress/api-fetch' );
@@ -16,8 +16,8 @@ jest.mock( '@wordpress/api-fetch', () => {
 	return impl;
 } );
 
-jest.mock( '.~/utils/handleError', () => {
-	const impl = jest.fn().mockName( '.~/utils/handleError' );
+jest.mock( '~/utils/handleError', () => {
+	const impl = jest.fn().mockName( '~/utils/handleError' );
 	return {
 		handleApiError: impl,
 	};

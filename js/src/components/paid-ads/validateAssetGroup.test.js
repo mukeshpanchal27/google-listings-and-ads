@@ -7,7 +7,7 @@ import {
 	ASSET_TEXT_SPECS,
 	ASSET_DISPLAY_URL_PATH_SPECS,
 } from './assetSpecs';
-import { ASSET_FORM_KEY } from '.~/constants';
+import { ASSET_FORM_KEY } from '~/constants';
 
 /**
  * `validateAssetGroup` function returns an object, and if any checks are not passed,

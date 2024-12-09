@@ -8,11 +8,11 @@ import { noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useGoogleAdsAccountBillingStatus from '.~/hooks/useGoogleAdsAccountBillingStatus';
-import AppButton from '.~/components/app-button';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import useGoogleAdsAccountBillingStatus from '~/hooks/useGoogleAdsAccountBillingStatus';
+import AppButton from '~/components/app-button';
 import SkipPaidAdsConfirmationModal from './skip-paid-ads-confirmation-modal';
-import { recordGlaEvent } from '.~/utils/tracks';
+import { recordGlaEvent } from '~/utils/tracks';
 
 /**
  * Clicking on the skip paid ads button to complete the onboarding flow.

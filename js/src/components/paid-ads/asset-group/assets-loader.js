@@ -10,14 +10,14 @@ import { Spinner } from '@woocommerce/components';
 /**
  * Internal dependencies
  */
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import AppButton from '.~/components/app-button';
-import SelectControl from '.~/wcdl/select-control';
-import { API_NAMESPACE } from '.~/data/constants';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import AppButton from '~/components/app-button';
+import SelectControl from '~/wcdl/select-control';
+import { API_NAMESPACE } from '~/data/constants';
 import './assets-loader.scss';
 
 /**
- * @typedef {import('.~/data/types.js').SuggestedAssets} SuggestedAssets
+ * @typedef {import('~/data/types.js').SuggestedAssets} SuggestedAssets
  */
 
 function allowAllResults() {

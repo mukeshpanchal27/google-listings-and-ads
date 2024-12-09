@@ -9,8 +9,8 @@ import { getChartTypeForQuery } from '@woocommerce/date';
 /**
  * Internal dependencies
  */
-import useUrlQuery from '.~/hooks/useUrlQuery';
-import useStoreCurrency from '.~/hooks/useStoreCurrency';
+import useUrlQuery from '~/hooks/useUrlQuery';
+import useStoreCurrency from '~/hooks/useStoreCurrency';
 
 const emptyMessage = __(
 	'No data for the selected date range',

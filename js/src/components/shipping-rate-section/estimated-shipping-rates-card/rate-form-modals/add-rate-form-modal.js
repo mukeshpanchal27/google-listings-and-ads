@@ -7,11 +7,11 @@ import { noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
+import AppButton from '~/components/app-button';
 import RateFormModal from './rate-form-modal';
 
 /**
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
  * @typedef { import("../typedefs.js").ShippingRateGroup } ShippingRateGroup
  */
 

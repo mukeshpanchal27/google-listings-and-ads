@@ -6,10 +6,10 @@ import { useReducer } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AppInputControl from '.~/components/app-input-control';
+import AppInputControl from '~/components/app-input-control';
 import parseStringToNumber from './parseStringToNumber';
-import useStoreNumberSettings from '.~/hooks/useStoreNumberSettings';
-import useNumberFormat from '.~/hooks/useNumberFormat';
+import useStoreNumberSettings from '~/hooks/useStoreNumberSettings';
+import useNumberFormat from '~/hooks/useNumberFormat';
 
 /**
  * Renders an AppInputControl that formats number value

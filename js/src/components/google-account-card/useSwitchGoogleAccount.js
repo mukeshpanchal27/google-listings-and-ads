@@ -6,10 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { API_NAMESPACE } from '.~/data/constants';
-import useGoogleAuthorization from '.~/hooks/useGoogleAuthorization';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
+import { API_NAMESPACE } from '~/data/constants';
+import useGoogleAuthorization from '~/hooks/useGoogleAuthorization';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 
 /**
  * A hook that returns a handler that initiates Google account disconnect and connect, to support switching to a different Google account.

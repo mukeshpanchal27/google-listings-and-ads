@@ -9,31 +9,31 @@ import { useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import useLayout from '.~/hooks/useLayout';
-import useAdsCampaigns from '.~/hooks/useAdsCampaigns';
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
-import { useAppDispatch } from '.~/data';
-import { getDashboardUrl } from '.~/utils/urls';
-import convertToAssetGroupUpdateBody from '.~/components/paid-ads/convertToAssetGroupUpdateBody';
-import TopBar from '.~/components/stepper/top-bar';
-import HelpIconButton from '.~/components/help-icon-button';
-import CampaignAssetsForm from '.~/components/paid-ads/campaign-assets-form';
-import AdsCampaign from '.~/components/paid-ads/ads-campaign';
-import ContinueButton from '.~/components/paid-ads/continue-button';
-import AppSpinner from '.~/components/app-spinner';
+import useLayout from '~/hooks/useLayout';
+import useAdsCampaigns from '~/hooks/useAdsCampaigns';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
+import { useAppDispatch } from '~/data';
+import { getDashboardUrl } from '~/utils/urls';
+import convertToAssetGroupUpdateBody from '~/components/paid-ads/convertToAssetGroupUpdateBody';
+import TopBar from '~/components/stepper/top-bar';
+import HelpIconButton from '~/components/help-icon-button';
+import CampaignAssetsForm from '~/components/paid-ads/campaign-assets-form';
+import AdsCampaign from '~/components/paid-ads/ads-campaign';
+import ContinueButton from '~/components/paid-ads/continue-button';
+import AppSpinner from '~/components/app-spinner';
 import AssetGroup, {
 	ACTION_SUBMIT_CAMPAIGN_AND_ASSETS,
-} from '.~/components/paid-ads/asset-group';
+} from '~/components/paid-ads/asset-group';
 import {
 	CAMPAIGN_STEP as STEP,
 	CAMPAIGN_STEP_NUMBER_MAP as STEP_NUMBER_MAP,
 	CAMPAIGN_TYPE_PMAX,
-} from '.~/constants';
+} from '~/constants';
 import {
 	recordStepperChangeEvent,
 	recordStepContinueEvent,
-} from '.~/utils/tracks';
-import useBudgetRecommendation from '.~/hooks/useBudgetRecommendation';
+} from '~/utils/tracks';
+import useBudgetRecommendation from '~/hooks/useBudgetRecommendation';
 
 const eventName = 'gla_paid_campaign_step';
 const eventContext = 'edit-ads';

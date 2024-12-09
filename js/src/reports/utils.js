@@ -5,7 +5,7 @@ import {
 	paidFields,
 	fieldsToPerformance,
 	MISSING_FREE_LISTINGS_DATA,
-} from '.~/data/utils';
+} from '~/data/utils';
 
 /**
  * Get an array of unique IDs from a comma-separated query parameter.

@@ -16,7 +16,7 @@ const dashboardPage = {
 /**
  * Effect that highlights the GLA Dashboard menu entry in the WC menu.
  *
- * Should be called for every "root page" (`.~/pages/*`) that wants to open the GLA menu.
+ * Should be called for every "root page" (`~/pages/*`) that wants to open the GLA menu.
  *
  * The hook could be removed once make the plugin fully use the routing feature of WC,
  * and let this be done by proper matching of URL matchers from {@link /js/src/index.js}

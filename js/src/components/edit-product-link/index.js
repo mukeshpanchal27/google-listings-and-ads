@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { queueRecordGlaEvent } from '.~/utils/tracks';
+import { queueRecordGlaEvent } from '~/utils/tracks';
 
 const noop = () => {};
 

@@ -7,9 +7,9 @@ import { Flex, FlexItem } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import AddPaidCampaignButton from '.~/components/paid-ads/add-paid-campaign-button';
-import useMCProductStatistics from '.~/hooks/useMCProductStatistics';
-import useAdsCampaigns from '.~/hooks/useAdsCampaigns';
+import AddPaidCampaignButton from '~/components/paid-ads/add-paid-campaign-button';
+import useMCProductStatistics from '~/hooks/useMCProductStatistics';
+import useAdsCampaigns from '~/hooks/useAdsCampaigns';
 import './index.scss';
 
 const CreateCampaignNotice = () => {

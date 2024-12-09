@@ -7,10 +7,10 @@ import { CustomerEffortScore } from '@woocommerce/customer-effort-score';
 /**
  * Internal dependencies
  */
-import { LOCAL_STORAGE_KEYS } from '.~/constants';
-import localStorage from '.~/utils/localStorage';
-import useEffectRemoveNotice from '.~/hooks/useEffectRemoveNotice';
-import { recordGlaEvent } from '.~/utils/tracks';
+import { LOCAL_STORAGE_KEYS } from '~/constants';
+import localStorage from '~/utils/localStorage';
+import useEffectRemoveNotice from '~/hooks/useEffectRemoveNotice';
+import { recordGlaEvent } from '~/utils/tracks';
 
 /**
  * CES prompt snackbar open

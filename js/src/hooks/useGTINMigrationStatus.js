@@ -6,8 +6,8 @@ import { useCallback } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 
 const selectorName = 'getGtinMigrationStatus';
 

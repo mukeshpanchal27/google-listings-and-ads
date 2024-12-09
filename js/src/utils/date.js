@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { glaData } from '.~/constants';
+import { glaData } from '~/constants';
 
 const glaDateTimeFormat =
 	glaData.dateFormat +

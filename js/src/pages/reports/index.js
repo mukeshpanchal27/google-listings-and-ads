@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import { ProgramsReport, ProductsReport } from '.~/reports';
-import getSelectedReportKey from '.~/utils/getSelectedReportKey';
+import { ProgramsReport, ProductsReport } from '~/reports';
+import getSelectedReportKey from '~/utils/getSelectedReportKey';
 
 const Reports = () => {
 	const reportKey = getSelectedReportKey();

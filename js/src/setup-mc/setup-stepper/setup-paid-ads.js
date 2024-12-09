@@ -9,22 +9,22 @@ import { noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import useAdminUrl from '.~/hooks/useAdminUrl';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import useAdsSetupCompleteCallback from '.~/hooks/useAdsSetupCompleteCallback';
-import useTargetAudienceFinalCountryCodes from '.~/hooks/useTargetAudienceFinalCountryCodes';
-import AdsCampaign from '.~/components/paid-ads/ads-campaign';
-import CampaignAssetsForm from '.~/components/paid-ads/campaign-assets-form';
-import AppButton from '.~/components/app-button';
-import useGoogleAdsAccountBillingStatus from '.~/hooks/useGoogleAdsAccountBillingStatus';
-import { getProductFeedUrl } from '.~/utils/urls';
-import { API_NAMESPACE } from '.~/data/constants';
-import { GUIDE_NAMES, GOOGLE_ADS_BILLING_STATUS } from '.~/constants';
+import useAdminUrl from '~/hooks/useAdminUrl';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import useAdsSetupCompleteCallback from '~/hooks/useAdsSetupCompleteCallback';
+import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
+import AdsCampaign from '~/components/paid-ads/ads-campaign';
+import CampaignAssetsForm from '~/components/paid-ads/campaign-assets-form';
+import AppButton from '~/components/app-button';
+import useGoogleAdsAccountBillingStatus from '~/hooks/useGoogleAdsAccountBillingStatus';
+import { getProductFeedUrl } from '~/utils/urls';
+import { API_NAMESPACE } from '~/data/constants';
+import { GUIDE_NAMES, GOOGLE_ADS_BILLING_STATUS } from '~/constants';
 import { ACTION_COMPLETE, ACTION_SKIP } from './constants';
 import SkipButton from './skip-button';
 import clientSession from './clientSession';
-import useBudgetRecommendation from '.~/hooks/useBudgetRecommendation';
-import AppSpinner from '.~/components/app-spinner';
+import useBudgetRecommendation from '~/hooks/useBudgetRecommendation';
+import AppSpinner from '~/components/app-spinner';
 
 /**
  * Clicking on the "Complete setup" button to complete the onboarding flow with paid ads.

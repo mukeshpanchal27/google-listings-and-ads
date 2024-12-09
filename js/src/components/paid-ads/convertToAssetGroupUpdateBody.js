@@ -1,13 +1,13 @@
 /**
  * Internal dependencies
  */
-import { ASSET_KEY, ASSET_FORM_KEY } from '.~/constants';
+import { ASSET_KEY, ASSET_FORM_KEY } from '~/constants';
 
 /**
- * @typedef {import('.~/components/types.js').AssetGroupFormValues} AssetGroupFormValues
- * @typedef {import('.~/data/types.js').AssetEntityGroup} AssetEntityGroup
- * @typedef {import('.~/data/types.js').AssetOperations} AssetOperations
- * @typedef {import('.~/data/types.js').AssetEntityGroupUpdateBody} AssetEntityGroupUpdateBody
+ * @typedef {import('~/components/types.js').AssetGroupFormValues} AssetGroupFormValues
+ * @typedef {import('~/data/types.js').AssetEntityGroup} AssetEntityGroup
+ * @typedef {import('~/data/types.js').AssetOperations} AssetOperations
+ * @typedef {import('~/data/types.js').AssetEntityGroupUpdateBody} AssetEntityGroupUpdateBody
  */
 
 /**

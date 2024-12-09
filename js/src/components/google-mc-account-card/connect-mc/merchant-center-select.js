@@ -7,10 +7,10 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
 /**
  * Internal dependencies
  */
-import MerchantCenterSelectControl from '.~/components/merchant-center-select-control';
-import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
-import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
-import AppSelectControl from '.~/components/app-select-control';
+import MerchantCenterSelectControl from '~/components/merchant-center-select-control';
+import useExistingGoogleMCAccounts from '~/hooks/useExistingGoogleMCAccounts';
+import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
+import AppSelectControl from '~/components/app-select-control';
 
 /**
  * Renders the connected Merchant Center details, leveraging existing functionality

@@ -1,10 +1,10 @@
 /**
  * Internal dependencies
  */
-import useStoreCountry from '.~/hooks/useStoreCountry';
+import useStoreCountry from '~/hooks/useStoreCountry';
 
 /**
- * @typedef {import('.~/data/actions').CountryCode} CountryCode
+ * @typedef {import('~/data/actions').CountryCode} CountryCode
  */
 
 /**

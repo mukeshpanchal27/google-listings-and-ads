@@ -8,7 +8,7 @@ import GridiconLocation from 'gridicons/dist/location';
  */
 import SearchBar from './components/search-bar';
 import ProductBanner from './components/product-banner';
-import mapBackgroundURL from '.~/images/campaign-preview/map-background.png';
+import mapBackgroundURL from '~/images/campaign-preview/map-background.png';
 
 /**
  * @typedef { import("./index.js").AdPreviewData } AdPreviewData

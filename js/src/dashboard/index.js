@@ -9,23 +9,23 @@ import { getNewPath, getQuery, getHistory } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import DifferentCurrencyNotice from '.~/components/different-currency-notice';
-import MainTabNav from '.~/components/main-tab-nav';
-import CustomerEffortScorePrompt from '.~/components/customer-effort-score-prompt';
+import AppButton from '~/components/app-button';
+import DifferentCurrencyNotice from '~/components/different-currency-notice';
+import MainTabNav from '~/components/main-tab-nav';
+import CustomerEffortScorePrompt from '~/components/customer-effort-score-prompt';
 import AppDateRangeFilterPicker from './app-date-range-filter-picker';
 import SummarySection from './summary-section';
 import CampaignCreationSuccessGuide from './campaign-creation-success-guide';
 import AllProgramsTableCard from './all-programs-table-card';
-import { glaData, GUIDE_NAMES } from '.~/constants';
-import { subpaths, getCreateCampaignUrl } from '.~/utils/urls';
-import isWCTracksEnabled from '.~/utils/isWCTracksEnabled';
-import EditFreeCampaign from '.~/edit-free-campaign';
-import EditPaidAdsCampaign from '.~/pages/edit-paid-ads-campaign';
-import CreatePaidAdsCampaign from '.~/pages/create-paid-ads-campaign';
+import { glaData, GUIDE_NAMES } from '~/constants';
+import { subpaths, getCreateCampaignUrl } from '~/utils/urls';
+import isWCTracksEnabled from '~/utils/isWCTracksEnabled';
+import EditFreeCampaign from '~/edit-free-campaign';
+import EditPaidAdsCampaign from '~/pages/edit-paid-ads-campaign';
+import CreatePaidAdsCampaign from '~/pages/create-paid-ads-campaign';
 import { CTA_CREATE_ANOTHER_CAMPAIGN, CTA_CONFIRM } from './constants';
-import { recordGlaEvent } from '.~/utils/tracks';
-import RebrandingTour from '.~/components/tours/rebranding-tour';
+import { recordGlaEvent } from '~/utils/tracks';
+import RebrandingTour from '~/components/tours/rebranding-tour';
 import './index.scss';
 
 /**

@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { useAdaptiveFormContext } from '.~/components/adaptive-form';
-import Section from '.~/wcdl/section';
-import AppSpinner from '.~/components/app-spinner';
+import { useAdaptiveFormContext } from '~/components/adaptive-form';
+import Section from '~/wcdl/section';
+import AppSpinner from '~/components/app-spinner';
 import ShippingCountriesForm from './shipping-countries-form';
 
 /**

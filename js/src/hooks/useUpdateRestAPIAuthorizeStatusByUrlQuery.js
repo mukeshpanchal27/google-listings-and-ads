@@ -7,10 +7,10 @@ import { getQuery } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import { GOOGLE_WPCOM_APP_CONNECTED_STATUS } from '.~/constants';
-import { useAppDispatch } from '.~/data';
-import { API_NAMESPACE } from '.~/data/constants';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
+import { GOOGLE_WPCOM_APP_CONNECTED_STATUS } from '~/constants';
+import { useAppDispatch } from '~/data';
+import { API_NAMESPACE } from '~/data/constants';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 
 /**
  * A hook that calls an API to update Google WPCOM app connected status.

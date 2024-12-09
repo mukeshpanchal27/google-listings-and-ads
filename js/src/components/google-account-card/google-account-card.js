@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import useGoogleAccount from '.~/hooks/useGoogleAccount';
-import AppSpinner from '.~/components/app-spinner';
-import AccountCard from '.~/components/account-card';
+import useGoogleAccount from '~/hooks/useGoogleAccount';
+import AppSpinner from '~/components/app-spinner';
+import AccountCard from '~/components/account-card';
 import RequestFullAccessGoogleAccountCard from './request-full-access-google-account-card';
 import ConnectedGoogleAccountCard from './connected-google-account-card';
 import ConnectGoogleAccountCard from './connect-google-account-card';

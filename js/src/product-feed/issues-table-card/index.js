@@ -9,15 +9,15 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import AppTableCardDiv from '.~/components/app-table-card-div';
-import HelpPopover from '.~/components/help-popover';
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import IssuesTable from '.~/product-feed/issues-table-card/issues-table';
-import IssuesTypeNavigation from '.~/product-feed/issues-table-card/issues-type-navigation';
-import ReviewRequest from '.~/product-feed/review-request';
-import useMCIssuesTotals from '.~/hooks/useMCIssuesTotals';
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
-import Text from '.~/components/app-text';
+import AppTableCardDiv from '~/components/app-table-card-div';
+import HelpPopover from '~/components/help-popover';
+import AppDocumentationLink from '~/components/app-documentation-link';
+import IssuesTable from '~/product-feed/issues-table-card/issues-table';
+import IssuesTypeNavigation from '~/product-feed/issues-table-card/issues-type-navigation';
+import ReviewRequest from '~/product-feed/review-request';
+import useMCIssuesTotals from '~/hooks/useMCIssuesTotals';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
+import Text from '~/components/app-text';
 import './index.scss';
 
 const actions = (

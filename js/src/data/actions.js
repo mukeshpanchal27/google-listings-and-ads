@@ -13,12 +13,12 @@ import {
 	REQUEST_ACTIONS,
 	EMPTY_ASSET_ENTITY_GROUP,
 } from './constants';
-import { handleApiError } from '.~/utils/handleError';
+import { handleApiError } from '~/utils/handleError';
 import { adaptAdsCampaign } from './adapters';
-import { isWCIos, isWCAndroid } from '.~/utils/isMobileApp';
+import { isWCIos, isWCAndroid } from '~/utils/isMobileApp';
 
 /**
- * @typedef {import('.~/data/types.js').AssetEntityGroupUpdateBody} AssetEntityGroupUpdateBody
+ * @typedef {import('~/data/types.js').AssetEntityGroupUpdateBody} AssetEntityGroupUpdateBody
  * @typedef {import('./selectors').Tour} Tour
  */
 

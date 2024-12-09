@@ -4,7 +4,7 @@ jest.mock( '@woocommerce/tracks', () => {
 	};
 } );
 jest.mock( './setup-accounts', () => jest.fn().mockName( 'SetupAccounts' ) );
-jest.mock( '.~/components/paid-ads/ads-campaign', () =>
+jest.mock( '~/components/paid-ads/ads-campaign', () =>
 	jest.fn().mockName( 'AdsCampaign' )
 );
 

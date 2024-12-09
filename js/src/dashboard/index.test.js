@@ -1,4 +1,4 @@
-jest.mock( '.~/components/tours/rebranding-tour', () =>
+jest.mock( '~/components/tours/rebranding-tour', () =>
 	jest.fn().mockReturnValue( null ).mockName( 'RebrandingTour' )
 );
 
@@ -14,18 +14,18 @@ import { getQuery } from '@woocommerce/navigation';
  * Internal dependencies
  */
 import Dashboard from './';
-import isWCTracksEnabled from '.~/utils/isWCTracksEnabled';
-import RebrandingTour from '.~/components/tours/rebranding-tour';
-import { GUIDE_NAMES } from '.~/constants';
+import isWCTracksEnabled from '~/utils/isWCTracksEnabled';
+import RebrandingTour from '~/components/tours/rebranding-tour';
+import { GUIDE_NAMES } from '~/constants';
 
-jest.mock( '.~/hooks/useGTINMigrationStatus', () =>
+jest.mock( '~/hooks/useGTINMigrationStatus', () =>
 	jest
 		.fn()
 		.mockReturnValue( [ 'completed', false, jest.fn() ] )
 		.mockName( 'useGTINMigrationStatus' )
 );
 
-jest.mock( '.~/components/different-currency-notice', () =>
+jest.mock( '~/components/different-currency-notice', () =>
 	jest.fn().mockName( 'DifferentCurrencyNotice' )
 );
 
@@ -50,13 +50,13 @@ jest.mock( '@woocommerce/navigation', () => {
 	};
 } );
 
-jest.mock( '.~/utils/isWCTracksEnabled', () => jest.fn() );
+jest.mock( '~/utils/isWCTracksEnabled', () => jest.fn() );
 
 const CAMPAIGN_CREATION_SUCCESS_GUIDE_TEXT =
 	"You've set up a Performance Max Campaign!";
 const CES_PROMPT_TEXT = 'How easy was it to create a Google Ad campaign?';
 
-jest.mock( '.~/components/customer-effort-score-prompt', () => () => (
+jest.mock( '~/components/customer-effort-score-prompt', () => () => (
 	<div>{ CES_PROMPT_TEXT }</div>
 ) );
 

@@ -9,10 +9,10 @@ import { noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
-import useWindowFocusCallbackIntervalEffect from '.~/hooks/useWindowFocusCallbackIntervalEffect';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import { GOOGLE_ADS_BILLING_STATUS } from '.~/constants';
+import { useAppDispatch } from '~/data';
+import useWindowFocusCallbackIntervalEffect from '~/hooks/useWindowFocusCallbackIntervalEffect';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import { GOOGLE_ADS_BILLING_STATUS } from '~/constants';
 
 /**
  * Make API call to complete Google Ads account setup.

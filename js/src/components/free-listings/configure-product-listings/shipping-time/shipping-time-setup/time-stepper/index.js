@@ -9,7 +9,7 @@ import { plus, reset } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import AppInputNumberControl from '.~/components/app-input-number-control';
+import AppInputNumberControl from '~/components/app-input-number-control';
 import './index.scss';
 
 const TimeStepper = ( {

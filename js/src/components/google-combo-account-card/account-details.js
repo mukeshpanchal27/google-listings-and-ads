@@ -6,9 +6,9 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import useGoogleAccount from '.~/hooks/useGoogleAccount';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
+import useGoogleAccount from '~/hooks/useGoogleAccount';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
 
 /**
  * Account details.

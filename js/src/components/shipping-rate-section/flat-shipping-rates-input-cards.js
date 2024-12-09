@@ -4,7 +4,7 @@
 import {
 	useAdaptiveFormContext,
 	useAdaptiveFormInputProps,
-} from '.~/components/adaptive-form';
+} from '~/components/adaptive-form';
 import EstimatedShippingRatesCard from './estimated-shipping-rates-card';
 
 const FlatShippingRatesInputCards = () => {

@@ -8,10 +8,10 @@ import { createInterpolateElement } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useStoreCurrency from '.~/hooks/useStoreCurrency';
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import { GOOGLE_ADS_ACCOUNT_STATUS } from '.~/constants';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import useStoreCurrency from '~/hooks/useStoreCurrency';
+import AppDocumentationLink from '~/components/app-documentation-link';
+import { GOOGLE_ADS_ACCOUNT_STATUS } from '~/constants';
 
 /**
  * Shows warning {@link Notice}

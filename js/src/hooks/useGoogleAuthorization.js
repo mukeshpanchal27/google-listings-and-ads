@@ -7,7 +7,7 @@ import { addQueryArgs } from '@wordpress/url';
 /**
  * Internal dependencies
  */
-import { API_NAMESPACE } from '.~/data/constants';
+import { API_NAMESPACE } from '~/data/constants';
 import useApiFetchCallback from './useApiFetchCallback';
 
 /**

@@ -7,19 +7,19 @@ import GridiconPlusSmall from 'gridicons/dist/plus-small';
 /**
  * Internal dependencies
  */
-import Section from '.~/wcdl/section';
-import AppButton from '.~/components/app-button';
-import AppButtonModalTrigger from '.~/components/app-button-modal-trigger';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
-import useStoreCurrency from '.~/hooks/useStoreCurrency';
+import Section from '~/wcdl/section';
+import AppButton from '~/components/app-button';
+import AppButtonModalTrigger from '~/components/app-button-modal-trigger';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
+import useStoreCurrency from '~/hooks/useStoreCurrency';
 import groupShippingRatesByCurrencyRate from './groupShippingRatesByCurrencyRate';
 import ShippingRateInputControl from './shipping-rate-input-control';
 import { AddRateFormModal } from './rate-form-modals';
 import getHandlers from './getHandlers';
 
 /**
- * @typedef { import(".~/data/actions").ShippingRate } ShippingRate
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/data/actions").ShippingRate } ShippingRate
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
  */
 
 /**

@@ -7,26 +7,26 @@ import { createInterpolateElement, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
-import useJetpackAccount from '.~/hooks/useJetpackAccount';
-import useGoogleAccount from '.~/hooks/useGoogleAccount';
-import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
-import AppButton from '.~/components/app-button';
-import AppSpinner from '.~/components/app-spinner';
-import StepContent from '.~/components/stepper/step-content';
-import StepContentHeader from '.~/components/stepper/step-content-header';
-import StepContentFooter from '.~/components/stepper/step-content-footer';
-import StepContentActions from '.~/components/stepper/step-content-actions';
-import Section from '.~/wcdl/section';
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
-import WPComAccountCard from '.~/components/wpcom-account-card';
-import GoogleComboAccountCard from '.~/components/google-combo-account-card';
+import { useAppDispatch } from '~/data';
+import useJetpackAccount from '~/hooks/useJetpackAccount';
+import useGoogleAccount from '~/hooks/useGoogleAccount';
+import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
+import AppButton from '~/components/app-button';
+import AppSpinner from '~/components/app-spinner';
+import StepContent from '~/components/stepper/step-content';
+import StepContentHeader from '~/components/stepper/step-content-header';
+import StepContentFooter from '~/components/stepper/step-content-footer';
+import StepContentActions from '~/components/stepper/step-content-actions';
+import Section from '~/wcdl/section';
+import AppDocumentationLink from '~/components/app-documentation-link';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
+import WPComAccountCard from '~/components/wpcom-account-card';
+import GoogleComboAccountCard from '~/components/google-combo-account-card';
 import Faqs from './faqs';
 import './index.scss';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
-import useStoreAddressReady from '.~/hooks/useStoreAddressReady';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import useGoogleAdsAccountReady from '~/hooks/useGoogleAdsAccountReady';
+import useStoreAddressReady from '~/hooks/useStoreAddressReady';
 
 /**
  * Renders the disclaimer of Comparison Shopping Service (CSS).

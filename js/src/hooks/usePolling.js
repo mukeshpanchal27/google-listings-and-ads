@@ -7,7 +7,7 @@ import { useEffect, useCallback } from '@wordpress/element';
  * Internal dependencies
  */
 import useApiFetchCallback from './useApiFetchCallback';
-import useCountdown from '.~/hooks/useCountdown';
+import useCountdown from '~/hooks/useCountdown';
 
 /**
  * A hook for polling to an API Endpoint on intervals

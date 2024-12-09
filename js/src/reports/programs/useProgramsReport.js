@@ -7,19 +7,19 @@ import { useMemo } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { STORE_KEY } from '.~/data/constants';
+import { STORE_KEY } from '~/data/constants';
 import {
 	getIdsFromQuery,
 	aggregateIntervals,
 	sumToPerformance,
 	addBaseToPerformance,
 } from '../utils';
-import useUrlQuery from '.~/hooks/useUrlQuery';
+import useUrlQuery from '~/hooks/useUrlQuery';
 import {
 	FREE_LISTINGS_PROGRAM_ID,
 	REPORT_PROGRAM_PARAM,
 	glaData,
-} from '.~/constants';
+} from '~/constants';
 
 const category = 'programs';
 const emptyData = {
@@ -29,7 +29,7 @@ const emptyData = {
 	totals: {},
 };
 /**
- * @type {import('.~/data/selectors').ReportSchema}
+ * @type {import('~/data/selectors').ReportSchema}
  */
 const emptyReport = {
 	loaded: true,
@@ -78,8 +78,8 @@ function getReports( getReport, query, dateReference ) {
 }
 
 /**
- * @typedef { import(".~/data/utils").ReportFieldsSchema } ReportFieldsSchema
- * @typedef { import(".~/data/utils").PerformanceData } PerformanceData
+ * @typedef { import("~/data/utils").ReportFieldsSchema } ReportFieldsSchema
+ * @typedef { import("~/data/utils").PerformanceData } PerformanceData
  * @typedef { import("../index.js").ProgramsReportData } ProgramsReportData
  * @typedef { import("../index.js").ProgramsReportSchema } ProgramsReportSchema
  */

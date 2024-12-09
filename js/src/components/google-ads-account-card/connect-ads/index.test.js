@@ -10,27 +10,27 @@ import { recordEvent } from '@woocommerce/tracks';
  * Internal dependencies
  */
 import ConnectAds from './';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import { useAppDispatch } from '.~/data';
-import { FILTER_ONBOARDING } from '.~/utils/tracks';
-import expectComponentToRecordEventWithFilteredProperties from '.~/tests/expectComponentToRecordEventWithFilteredProperties';
-import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import { useAppDispatch } from '~/data';
+import { FILTER_ONBOARDING } from '~/utils/tracks';
+import expectComponentToRecordEventWithFilteredProperties from '~/tests/expectComponentToRecordEventWithFilteredProperties';
+import useExistingGoogleAdsAccounts from '~/hooks/useExistingGoogleAdsAccounts';
 
-jest.mock( '.~/hooks/useApiFetchCallback', () =>
+jest.mock( '~/hooks/useApiFetchCallback', () =>
 	jest.fn().mockName( 'useApiFetchCallback' )
 );
 
-jest.mock( '.~/hooks/useGoogleAdsAccount', () =>
+jest.mock( '~/hooks/useGoogleAdsAccount', () =>
 	jest.fn().mockName( 'useGoogleAdsAccount' )
 );
 
-jest.mock( '.~/hooks/useExistingGoogleAdsAccounts', () =>
+jest.mock( '~/hooks/useExistingGoogleAdsAccounts', () =>
 	jest.fn().mockName( 'useExistingGoogleAdsAccounts' )
 );
 
-jest.mock( '.~/data', () => ( {
-	...jest.requireActual( '.~/data' ),
+jest.mock( '~/data', () => ( {
+	...jest.requireActual( '~/data' ),
 	useAppDispatch: jest.fn(),
 } ) );
 

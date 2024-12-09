@@ -9,10 +9,10 @@ import { format as formatDate } from '@wordpress/date';
 /**
  * Internal dependencies
  */
-import usePolling from '.~/hooks/usePolling';
-import { API_NAMESPACE } from '.~/data/constants';
-import { glaDateTimeFormat } from '.~/utils/date';
-import HelpPopover from '.~/components/help-popover';
+import usePolling from '~/hooks/usePolling';
+import { API_NAMESPACE } from '~/data/constants';
+import { glaDateTimeFormat } from '~/utils/date';
+import HelpPopover from '~/components/help-popover';
 
 const AttributeMappingSync = () => {
 	const { data, start } = usePolling( {

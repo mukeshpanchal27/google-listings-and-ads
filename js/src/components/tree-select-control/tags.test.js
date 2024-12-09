@@ -6,7 +6,7 @@ import { fireEvent, render } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import Tags from '.~/components/tree-select-control/tags';
+import Tags from '~/components/tree-select-control/tags';
 
 const tags = [
 	{ id: 'ES', label: 'Spain' },

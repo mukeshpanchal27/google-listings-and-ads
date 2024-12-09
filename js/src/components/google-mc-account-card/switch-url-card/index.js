@@ -10,16 +10,16 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import Section from '.~/wcdl/section';
-import Subsection from '.~/wcdl/subsection';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import { useAppDispatch } from '.~/data';
-import ContentButtonLayout from '.~/components/content-button-layout';
+import AppButton from '~/components/app-button';
+import Section from '~/wcdl/section';
+import Subsection from '~/wcdl/subsection';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import { useAppDispatch } from '~/data';
+import ContentButtonLayout from '~/components/content-button-layout';
 import ReclaimUrlCard from '../reclaim-url-card';
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
-import AppInputLinkControl from '.~/components/app-input-link-control';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
+import AppInputLinkControl from '~/components/app-input-link-control';
 import './index.scss';
 
 /**

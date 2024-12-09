@@ -8,19 +8,19 @@ import { CardDivider } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
-import AppButton from '.~/components/app-button';
-import AppDocumentationLink from '.~/components/app-documentation-link';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
+import AppButton from '~/components/app-button';
+import AppDocumentationLink from '~/components/app-documentation-link';
 import ConnectButton from './connect-button';
-import ContentButtonLayout from '.~/components/content-button-layout';
-import LoadingLabel from '.~/components/loading-label';
-import Section from '.~/wcdl/section';
-import Subsection from '.~/wcdl/subsection';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import AdsAccountSelectControl from '.~/components/ads-account-select-control';
-import { useAppDispatch } from '.~/data';
+import ContentButtonLayout from '~/components/content-button-layout';
+import LoadingLabel from '~/components/loading-label';
+import Section from '~/wcdl/section';
+import Subsection from '~/wcdl/subsection';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import AdsAccountSelectControl from '~/components/ads-account-select-control';
+import { useAppDispatch } from '~/data';
 import './index.scss';
 
 /**

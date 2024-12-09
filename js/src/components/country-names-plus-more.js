@@ -7,7 +7,7 @@ import { createInterpolateElement } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import useCountryKeyNameMap from '.~/hooks/useCountryKeyNameMap';
+import useCountryKeyNameMap from '~/hooks/useCountryKeyNameMap';
 
 const defaultFirstN = 5;
 

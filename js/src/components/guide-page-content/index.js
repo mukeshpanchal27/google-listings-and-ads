@@ -6,7 +6,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import TrackableLink from '.~/components/trackable-link';
+import TrackableLink from '~/components/trackable-link';
 import './index.scss';
 
 /**

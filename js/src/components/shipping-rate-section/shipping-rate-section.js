@@ -7,15 +7,15 @@ import { createInterpolateElement } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { useAdaptiveFormContext } from '.~/components/adaptive-form';
-import Section from '.~/wcdl/section';
-import AppRadioContentControl from '.~/components/app-radio-content-control';
-import RadioHelperText from '.~/wcdl/radio-helper-text';
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
+import { useAdaptiveFormContext } from '~/components/adaptive-form';
+import Section from '~/wcdl/section';
+import AppRadioContentControl from '~/components/app-radio-content-control';
+import RadioHelperText from '~/wcdl/radio-helper-text';
+import AppDocumentationLink from '~/components/app-documentation-link';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
 import FlatShippingRatesInputCards from './flat-shipping-rates-input-cards';
-import useSettings from '.~/components/free-listings/configure-product-listings/useSettings';
-import useMCSetup from '.~/hooks/useMCSetup';
+import useSettings from '~/components/free-listings/configure-product-listings/useSettings';
+import useMCSetup from '~/hooks/useMCSetup';
 
 /**
  * @fires gla_documentation_link_click with `{ context: 'setup-mc-shipping', link_id: 'shipping-read-more', href: 'https://support.google.com/merchants/answer/7050921' }`

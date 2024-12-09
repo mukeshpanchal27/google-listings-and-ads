@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import useStoreCurrency from '.~/hooks/useStoreCurrency';
+import useStoreCurrency from '~/hooks/useStoreCurrency';
 
 /**
  * Get the store's number settings, which is based on the store's currency settings.

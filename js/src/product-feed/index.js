@@ -8,17 +8,17 @@ import { getQuery } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import MainTabNav from '.~/components/main-tab-nav';
+import MainTabNav from '~/components/main-tab-nav';
 import IssuesTableCard from './issues-table-card';
 import ProductFeedTableCard from './product-feed-table-card';
 import SubmissionSuccessGuide from './submission-success-guide';
-import CustomerEffortScorePrompt from '.~/components/customer-effort-score-prompt';
+import CustomerEffortScorePrompt from '~/components/customer-effort-score-prompt';
 import ProductStatistics from './product-statistics';
 import './index.scss';
-import { GUIDE_NAMES, LOCAL_STORAGE_KEYS } from '.~/constants';
-import localStorage from '.~/utils/localStorage';
-import isWCTracksEnabled from '.~/utils/isWCTracksEnabled';
-import RebrandingTour from '.~/components/tours/rebranding-tour';
+import { GUIDE_NAMES, LOCAL_STORAGE_KEYS } from '~/constants';
+import localStorage from '~/utils/localStorage';
+import isWCTracksEnabled from '~/utils/isWCTracksEnabled';
+import RebrandingTour from '~/components/tours/rebranding-tour';
 
 const ProductFeed = () => {
 	const [ canCESPromptOpen, setCESPromptOpen ] = useState( false );

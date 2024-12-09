@@ -12,7 +12,7 @@ import {
 	REPORT_SOURCE_PAID,
 	REPORT_SOURCE_FREE,
 	REPORT_SOURCE_DEFAULT,
-} from '.~/constants';
+} from '~/constants';
 import { getProductLabels, getVariationLabels } from './asyncRequests';
 
 // XXX: Should we register those filters somewhere?

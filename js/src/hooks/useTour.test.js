@@ -7,11 +7,11 @@ import { renderHook } from '@testing-library/react';
  * Internal dependencies
  */
 import useTour from './useTour';
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
-import { useAppDispatch } from '.~/data';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
+import { useAppDispatch } from '~/data';
 
-jest.mock( '.~/hooks/useAppSelectDispatch' );
-jest.mock( '.~/data', () => ( {
+jest.mock( '~/hooks/useAppSelectDispatch' );
+jest.mock( '~/data', () => ( {
 	useAppDispatch: jest.fn().mockName( 'useAppDispatch' ),
 } ) );
 

@@ -8,15 +8,15 @@ import { Form } from '@woocommerce/components';
 /**
  * Internal dependencies
  */
-import AppModal from '.~/components/app-modal';
-import AppInputPriceControl from '.~/components/app-input-price-control';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
-import SupportedCountrySelect from '.~/components/supported-country-select';
+import AppModal from '~/components/app-modal';
+import AppInputPriceControl from '~/components/app-input-price-control';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
+import SupportedCountrySelect from '~/components/supported-country-select';
 import validateMinimumOrder from './validateMinimumOrder';
 
 /**
- * @typedef { import(".~/components/app-button").default } AppButton
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/components/app-button").default } AppButton
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
  * @typedef { import("../typedefs.js").MinimumOrderGroup } MinimumOrderGroup
  */
 

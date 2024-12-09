@@ -9,12 +9,12 @@ import { Icon, plugins as pluginsIcon } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import useJetpackAccount from '.~/hooks/useJetpackAccount';
-import { getSettingsUrl } from '.~/utils/urls';
-import AppSpinner from '.~/components/app-spinner';
-import AccountCard from '.~/components/account-card';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
-import { ConnectWPComAccountCard } from '.~/components/wpcom-account-card';
+import useJetpackAccount from '~/hooks/useJetpackAccount';
+import { getSettingsUrl } from '~/utils/urls';
+import AppSpinner from '~/components/app-spinner';
+import AccountCard from '~/components/account-card';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
+import { ConnectWPComAccountCard } from '~/components/wpcom-account-card';
 import LinkedAccountsSectionWrapper from '../linked-accounts-section-wrapper';
 import './reconnect-wpcom-account.scss';
 

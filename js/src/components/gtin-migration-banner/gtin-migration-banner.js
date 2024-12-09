@@ -8,12 +8,12 @@ import { createInterpolateElement, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import TrackableLink from '.~/components/trackable-link';
-import AppButton from '.~/components/app-button';
-import AppModal from '.~/components/app-modal';
-import { recordGlaEvent } from '.~/utils/tracks';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import useGTINMigrationStatus from '.~/hooks/useGTINMigrationStatus';
+import TrackableLink from '~/components/trackable-link';
+import AppButton from '~/components/app-button';
+import AppModal from '~/components/app-modal';
+import { recordGlaEvent } from '~/utils/tracks';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import useGTINMigrationStatus from '~/hooks/useGTINMigrationStatus';
 import './gtin-migration-banner.scss';
 
 const GTIN_MIGRATION_BANNER_CONTEXT = 'gtin_migration_banner';

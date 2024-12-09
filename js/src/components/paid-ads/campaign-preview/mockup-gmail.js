@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SearchBar from './components/search-bar';
 import ProductBanner from './components/product-banner';
 import Placeholder from './components/placeholder';
-import gmailLogoURL from '.~/images/campaign-preview/gmail-logo.svg';
+import gmailLogoURL from '~/images/campaign-preview/gmail-logo.svg';
 
 function MailItem() {
 	return (

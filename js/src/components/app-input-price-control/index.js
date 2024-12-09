@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import useStoreCurrency from '.~/hooks/useStoreCurrency';
-import AppInputNumberControl from '.~/components/app-input-number-control';
+import useStoreCurrency from '~/hooks/useStoreCurrency';
+import AppInputNumberControl from '~/components/app-input-number-control';
 
 /**
  * Renders an AppInputNumberControl that formats number value

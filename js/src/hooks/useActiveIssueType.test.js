@@ -1,5 +1,5 @@
 jest.mock( '@woocommerce/navigation' );
-jest.mock( '.~/hooks/useMCIssuesTotals' );
+jest.mock( '~/hooks/useMCIssuesTotals' );
 
 /**
  * External dependencies
@@ -10,8 +10,8 @@ import { renderHook } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import useMCIssuesTotals from '.~/hooks/useMCIssuesTotals';
-import useActiveIssueType from '.~/hooks/useActiveIssueType';
+import useMCIssuesTotals from '~/hooks/useMCIssuesTotals';
+import useActiveIssueType from '~/hooks/useActiveIssueType';
 
 describe( 'useActiveIssueType', () => {
 	it( 'Returns "account" Issue type by default if it has issues', () => {

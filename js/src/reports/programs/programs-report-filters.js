@@ -19,10 +19,10 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
  * Internal dependencies
  */
 import { createProgramsFilterConfig } from './filterConfig';
-import useAdsCampaigns from '.~/hooks/useAdsCampaigns';
-import useStoreCurrency from '.~/hooks/useStoreCurrency';
-import ReportFilters from '.~/external-components/woocommerce/filters';
-import { recordGlaEvent } from '.~/utils/tracks';
+import useAdsCampaigns from '~/hooks/useAdsCampaigns';
+import useStoreCurrency from '~/hooks/useStoreCurrency';
+import ReportFilters from '~/external-components/woocommerce/filters';
+import { recordGlaEvent } from '~/utils/tracks';
 
 const siteLocale = getSetting( 'locale' ).siteLocale;
 const getProgramsFilter = createProgramsFilterConfig();

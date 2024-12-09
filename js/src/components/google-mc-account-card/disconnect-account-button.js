@@ -7,11 +7,11 @@ import { noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import { API_NAMESPACE } from '.~/data/constants';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import { useAppDispatch } from '.~/data';
+import AppButton from '~/components/app-button';
+import { API_NAMESPACE } from '~/data/constants';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
+import { useAppDispatch } from '~/data';
 
 /**
  * Clicking on the "connect to a different Google Merchant Center account" button.

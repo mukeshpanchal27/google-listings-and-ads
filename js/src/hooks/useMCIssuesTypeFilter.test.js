@@ -1,4 +1,4 @@
-jest.mock( '.~/hooks/useAppSelectDispatch', () => ( {
+jest.mock( '~/hooks/useAppSelectDispatch', () => ( {
 	__esModule: true,
 	default: jest
 		.fn()
@@ -19,8 +19,8 @@ import { renderHook } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
-import useMCIssuesTypeFilter from '.~/hooks/useMCIssuesTypeFilter';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
+import useMCIssuesTypeFilter from '~/hooks/useMCIssuesTypeFilter';
 
 describe( 'useMCIssuesTypeFilter', () => {
 	test( 'Calls useAppSelectDispatch with `getMCIssues` and the right parameters', async () => {

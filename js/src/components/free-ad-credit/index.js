@@ -8,9 +8,9 @@ import GridiconGift from 'gridicons/dist/gift';
 /**
  * Internal dependencies
  */
-import AppDocumentationLink from '.~/components/app-documentation-link';
+import AppDocumentationLink from '~/components/app-documentation-link';
 import './index.scss';
-import TrackableLink from '.~/components/trackable-link';
+import TrackableLink from '~/components/trackable-link';
 import CountryModal from './country-modal';
 
 /**

@@ -7,19 +7,19 @@ import { getQuery, getHistory } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import { API_RESPONSE_CODES } from '.~/constants';
-import useMenuEffect from '.~/hooks/useMenuEffect';
-import useGoogleAccount from '.~/hooks/useGoogleAccount';
-import useUpdateRestAPIAuthorizeStatusByUrlQuery from '.~/hooks/useUpdateRestAPIAuthorizeStatusByUrlQuery';
-import { subpaths, getReconnectAccountUrl } from '.~/utils/urls';
-import { ContactInformationPreview } from '.~/components/contact-information';
+import { API_RESPONSE_CODES } from '~/constants';
+import useMenuEffect from '~/hooks/useMenuEffect';
+import useGoogleAccount from '~/hooks/useGoogleAccount';
+import useUpdateRestAPIAuthorizeStatusByUrlQuery from '~/hooks/useUpdateRestAPIAuthorizeStatusByUrlQuery';
+import { subpaths, getReconnectAccountUrl } from '~/utils/urls';
+import { ContactInformationPreview } from '~/components/contact-information';
 import LinkedAccounts from './linked-accounts';
 import ReconnectWPComAccount from './reconnect-wpcom-account';
 import ReconnectGoogleAccount from './reconnect-google-account';
 import EditStoreAddress from './edit-store-address';
-import EnableNewProductSyncNotice from '.~/components/enable-new-product-sync-notice';
-import MainTabNav from '.~/components/main-tab-nav';
-import RebrandingTour from '.~/components/tours/rebranding-tour';
+import EnableNewProductSyncNotice from '~/components/enable-new-product-sync-notice';
+import MainTabNav from '~/components/main-tab-nav';
+import RebrandingTour from '~/components/tours/rebranding-tour';
 import './index.scss';
 
 const pageClassName = 'gla-settings';

@@ -15,7 +15,7 @@ import { get } from 'lodash';
 /**
  * Internal dependencies
  */
-import useIsMounted from '.~/hooks/useIsMounted';
+import useIsMounted from '~/hooks/useIsMounted';
 import { AdaptiveFormContext } from './adaptive-form-context';
 
 function isEvent( value ) {

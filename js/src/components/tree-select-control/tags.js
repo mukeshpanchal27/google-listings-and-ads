@@ -8,7 +8,7 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
+import AppButton from '~/components/app-button';
 
 /**
  * A list of tags to display selected items.

@@ -9,18 +9,18 @@ import { useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Card from '.~/wcdl/section/card';
-import AppButton from '.~/components/app-button';
-import AppTableCardDiv from '.~/components/app-table-card-div';
-import AppButtonModalTrigger from '.~/components/app-button-modal-trigger';
+import Card from '~/wcdl/section/card';
+import AppButton from '~/components/app-button';
+import AppTableCardDiv from '~/components/app-table-card-div';
+import AppButtonModalTrigger from '~/components/app-button-modal-trigger';
 import AttributeMappingTableCategories from './attribute-mapping-table-categories';
 import AttributeMappingRuleModal from './attribute-mapping-rule-modal';
 import AttributeMappingDeleteRuleModal from './attribute-mapping-delete-rule-modal';
 import AttributeMappingSync from './attribute-mapping-sync';
-import useMappingAttributes from '.~/hooks/useMappingAttributes';
-import useMappingRules from '.~/hooks/useMappingRules';
-import usePagination from '.~/hooks/usePagination';
-import { recordGlaEvent, recordTablePageEvent } from '.~/utils/tracks';
+import useMappingAttributes from '~/hooks/useMappingAttributes';
+import useMappingRules from '~/hooks/useMappingRules';
+import usePagination from '~/hooks/usePagination';
+import { recordGlaEvent, recordTablePageEvent } from '~/utils/tracks';
 
 const PER_PAGE = 10;
 const ATTRIBUTE_MAPPING_TABLE_HEADERS = [

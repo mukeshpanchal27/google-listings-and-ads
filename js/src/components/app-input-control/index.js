@@ -9,7 +9,7 @@ import { __experimentalInputControl as InputControl } from '@wordpress/component
 /**
  * Internal dependencies
  */
-import getCharacterCounter from '.~/utils/getCharacterCounter';
+import getCharacterCounter from '~/utils/getCharacterCounter';
 import './index.scss';
 
 const baseClassName = 'app-input-control';

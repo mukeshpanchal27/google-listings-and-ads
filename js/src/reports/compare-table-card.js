@@ -10,9 +10,9 @@ import { onQueryChange } from '@woocommerce/navigation';
  * Internal dependencies
  */
 import { getIdsFromQuery } from './utils';
-import useUrlQuery from '.~/hooks/useUrlQuery';
-import AppButton from '.~/components/app-button';
-import AppTableCard from '.~/components/app-table-card';
+import useUrlQuery from '~/hooks/useUrlQuery';
+import AppButton from '~/components/app-button';
+import AppTableCard from '~/components/app-table-card';
 
 /**
  * All data table, with compare feature.
@@ -118,7 +118,7 @@ const CompareTableCard = ( {
 	 *
 	 * @param {Array<ReportData>} reportData Report data.
 	 *
-	 * @return {import('.~/components/app-table-card').Props.headers} All headers.
+	 * @return {import('~/components/app-table-card').Props.headers} All headers.
 	 */
 	const getHeaders = ( reportData ) => [
 		{

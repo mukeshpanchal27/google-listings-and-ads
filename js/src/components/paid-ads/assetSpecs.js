@@ -8,10 +8,10 @@ import { Fragment, createInterpolateElement } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { ASSET_FORM_KEY } from '.~/constants';
+import { ASSET_FORM_KEY } from '~/constants';
 
 /**
- * @typedef {import('.~/components/types.js').AssetGroupFormValues} AssetGroupFormValues
+ * @typedef {import('~/components/types.js').AssetGroupFormValues} AssetGroupFormValues
  */
 
 const sharedMaxSymbol = Symbol( 'sharedMax' );

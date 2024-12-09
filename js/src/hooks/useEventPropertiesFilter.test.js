@@ -7,7 +7,7 @@ import { renderHook } from '@testing-library/react';
  * Internal dependencies
  */
 import useEventPropertiesFilter from './useEventPropertiesFilter';
-import { filterPropertiesMap } from '.~/utils/tracks';
+import { filterPropertiesMap } from '~/utils/tracks';
 
 describe( 'useEventPropertiesFilter', () => {
 	const SETUP = 'test_filter_setup';

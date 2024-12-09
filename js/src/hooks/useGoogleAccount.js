@@ -6,9 +6,9 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { glaData } from '.~/constants';
-import { STORE_KEY } from '.~/data/constants';
-import toScopeState from '.~/utils/toScopeState';
+import { glaData } from '~/constants';
+import { STORE_KEY } from '~/data/constants';
+import toScopeState from '~/utils/toScopeState';
 import useJetpackAccount from './useJetpackAccount';
 
 const useGoogleAccount = () => {

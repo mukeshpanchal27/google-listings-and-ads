@@ -7,9 +7,9 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import Text from '.~/components/app-text';
-import { recordGlaEvent } from '.~/utils/tracks';
+import AppButton from '~/components/app-button';
+import Text from '~/components/app-text';
+import { recordGlaEvent } from '~/utils/tracks';
 
 const COLLAPSED_ISSUES_SIZE = 5;
 

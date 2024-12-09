@@ -14,9 +14,9 @@ import GridiconInfoOutline from 'gridicons/dist/info-outline';
  * Internal dependencies
  */
 import './metric-number.scss';
-import AppTooltip from '.~/components/app-tooltip';
-import TrackableLink from '.~/components/trackable-link';
-import { MISSING_FREE_LISTINGS_DATA } from '.~/data/utils';
+import AppTooltip from '~/components/app-tooltip';
+import TrackableLink from '~/components/trackable-link';
+import { MISSING_FREE_LISTINGS_DATA } from '~/data/utils';
 
 const googleMCReportingDashboardURL =
 	'https://merchants.google.com/mc/reporting/dashboard';
@@ -33,7 +33,7 @@ const googleMCReportingDashboardURL =
  * @param {string} [props.href] An internal link to the report focused on this metric.
  * @param {boolean} [props.selected] Whether show a highlight style on this metric.
  * @param {Function} [props.onLinkClickCallback] A function to be called after a SummaryNumber, rendered as a link, is clicked.
- * @param {import('.~/data/utils').PerformanceMetrics} props.data Data as get from API.
+ * @param {import('~/data/utils').PerformanceMetrics} props.data Data as get from API.
  *
  * @return {SummaryNumber} Filled SummaryNumber.
  *

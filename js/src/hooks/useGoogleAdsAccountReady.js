@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
 
 /**
  * Hook to check if the Google Ads account is ready.

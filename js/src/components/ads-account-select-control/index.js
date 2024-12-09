@@ -7,9 +7,9 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
 /**
  * Internal dependencies
  */
-import AppSelectControl from '.~/components/app-select-control';
-import useExistingGoogleAdsAccounts from '.~/hooks/useExistingGoogleAdsAccounts';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
+import AppSelectControl from '~/components/app-select-control';
+import useExistingGoogleAdsAccounts from '~/hooks/useExistingGoogleAdsAccounts';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
 
 /**
  * @param {Object} props The component props

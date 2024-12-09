@@ -7,8 +7,8 @@ import { getNewPath } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import AppSubNav from '.~/components/app-sub-nav';
-import getSelectedReportKey from '.~/utils/getSelectedReportKey';
+import AppSubNav from '~/components/app-sub-nav';
+import getSelectedReportKey from '~/utils/getSelectedReportKey';
 
 const tabs = [
 	{

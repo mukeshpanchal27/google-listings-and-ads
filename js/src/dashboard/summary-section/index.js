@@ -7,10 +7,10 @@ import { SummaryNumber } from '@woocommerce/components';
 /**
  * Internal dependencies
  */
-import { REPORT_SOURCE_PAID, REPORT_SOURCE_FREE } from '.~/constants';
-import useAdsCampaigns from '.~/hooks/useAdsCampaigns';
-import useAdsCurrency from '.~/hooks/useAdsCurrency';
-import useCurrencyFormat from '.~/hooks/useCurrencyFormat';
+import { REPORT_SOURCE_PAID, REPORT_SOURCE_FREE } from '~/constants';
+import useAdsCampaigns from '~/hooks/useAdsCampaigns';
+import useAdsCurrency from '~/hooks/useAdsCurrency';
+import useCurrencyFormat from '~/hooks/useCurrencyFormat';
 import usePerformance from './usePerformance';
 import PerformanceCard from './performance-card';
 import SummaryCard from './summary-card';

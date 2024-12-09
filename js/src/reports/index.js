@@ -19,8 +19,8 @@ export { default as ProductsReport } from './products';
  */
 
 /**
- * @typedef {import('.~/data/selectors').ReportSchema<ProductsReportData>} ProductsReportSchema
- * @typedef {import('.~/data/selectors').ReportSchema<ProgramsReportData>} ProgramsReportSchema
+ * @typedef {import('~/data/selectors').ReportSchema<ProductsReportData>} ProductsReportSchema
+ * @typedef {import('~/data/selectors').ReportSchema<ProgramsReportData>} ProgramsReportSchema
  */
 
 /**
@@ -63,6 +63,6 @@ export { default as ProductsReport } from './products';
  */
 
 /**
- * @typedef { import(".~/data/utils").ReportFieldsSchema } TotalsData
- * @typedef { import(".~/data/utils").PerformanceData } PerformanceData
+ * @typedef { import("~/data/utils").ReportFieldsSchema } TotalsData
+ * @typedef { import("~/data/utils").PerformanceData } PerformanceData
  */

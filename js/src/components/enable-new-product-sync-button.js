@@ -8,11 +8,11 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import { glaData } from '.~/constants';
-import { API_NAMESPACE } from '.~/data/constants';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
+import AppButton from '~/components/app-button';
+import { glaData } from '~/constants';
+import { API_NAMESPACE } from '~/data/constants';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
 
 /**
  * Button to initiate auth process for WP Rest API

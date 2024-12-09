@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import FaqsPanel from '.~/components/faqs-panel';
+import FaqsPanel from '~/components/faqs-panel';
 
 const faqItems = [
 	{

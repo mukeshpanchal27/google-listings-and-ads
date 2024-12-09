@@ -8,9 +8,9 @@ import { Dashicon } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import useActiveIssueType from '.~/hooks/useActiveIssueType';
-import { ISSUE_TYPE_PRODUCT, ISSUE_TYPE_ACCOUNT } from '.~/constants';
-import Text from '.~/components/app-text';
+import useActiveIssueType from '~/hooks/useActiveIssueType';
+import { ISSUE_TYPE_PRODUCT, ISSUE_TYPE_ACCOUNT } from '~/constants';
+import Text from '~/components/app-text';
 
 /**
  * This component renders a message when no issues of the

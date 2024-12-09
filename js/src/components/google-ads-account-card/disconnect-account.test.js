@@ -10,12 +10,12 @@ import { recordEvent } from '@woocommerce/tracks';
  * Internal dependencies
  */
 import DisconnectAccount from './disconnect-account';
-import { useAppDispatch } from '.~/data';
-import { FILTER_ONBOARDING } from '.~/utils/tracks';
-import expectComponentToRecordEventWithFilteredProperties from '.~/tests/expectComponentToRecordEventWithFilteredProperties';
+import { useAppDispatch } from '~/data';
+import { FILTER_ONBOARDING } from '~/utils/tracks';
+import expectComponentToRecordEventWithFilteredProperties from '~/tests/expectComponentToRecordEventWithFilteredProperties';
 
-jest.mock( '.~/data', () => ( {
-	...jest.requireActual( '.~/data' ),
+jest.mock( '~/data', () => ( {
+	...jest.requireActual( '~/data' ),
 	useAppDispatch: jest.fn(),
 } ) );
 

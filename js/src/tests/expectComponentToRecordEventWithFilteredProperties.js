@@ -7,7 +7,7 @@ import { recordEvent } from '@woocommerce/tracks';
 /**
  * Internal dependencies
  */
-import useEventPropertiesFilter from '.~/hooks/useEventPropertiesFilter';
+import useEventPropertiesFilter from '~/hooks/useEventPropertiesFilter';
 
 /**
  * Expects a component to record an event with filtered event properties after performing the incoming action.

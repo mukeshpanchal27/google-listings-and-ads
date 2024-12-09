@@ -7,8 +7,8 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import './index.scss';
-import AppStandaloneToggleControl from '.~/components/app-standalone-toggle-control';
-import AppTooltip from '.~/components/app-tooltip';
+import AppStandaloneToggleControl from '~/components/app-standalone-toggle-control';
+import AppTooltip from '~/components/app-tooltip';
 
 const FreeListingsDisabledToggle = () => {
 	return (

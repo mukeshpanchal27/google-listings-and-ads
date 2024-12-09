@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import useLayout from '.~/hooks/useLayout';
+import useLayout from '~/hooks/useLayout';
 import SetupTopBar from './setup-top-bar';
 import AdsStepper from './ads-stepper';
 

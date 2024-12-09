@@ -6,7 +6,7 @@ import { getQuery } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import useIsEqualRefValue from '.~/hooks/useIsEqualRefValue';
+import useIsEqualRefValue from '~/hooks/useIsEqualRefValue';
 
 /**
  * Get a memoized URL query object.

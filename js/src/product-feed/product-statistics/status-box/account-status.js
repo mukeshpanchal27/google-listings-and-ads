@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Status from '.~/product-feed/product-statistics/status-box/status';
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
+import Status from '~/product-feed/product-statistics/status-box/status';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
 import { REVIEW_STATUSES } from '../../constants';
 
 /**

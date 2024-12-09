@@ -6,8 +6,8 @@ import { TableCard } from '@woocommerce/components';
 /**
  * Internal dependencies
  */
-import AppTableCardDiv from '.~/components/app-table-card-div';
-import { recordGlaEvent } from '.~/utils/tracks';
+import AppTableCardDiv from '~/components/app-table-card-div';
+import { recordGlaEvent } from '~/utils/tracks';
 
 /**
  * Toggling display of table columns

@@ -8,8 +8,8 @@ import { getPath, getQuery } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import AccountCard from '.~/components/account-card';
-import AppButton from '.~/components/app-button';
+import AccountCard from '~/components/account-card';
+import AppButton from '~/components/app-button';
 import './contact-information-preview-card.scss';
 
 /**
@@ -17,7 +17,7 @@ import './contact-information-preview-card.scss';
  * It adds loading & warning state to the regular `AccountCard`, and an edit button link.
  *
  * @param {Object} props React props
- * @param {import('.~/components/account-card').APPEARANCE}  props.appearance
+ * @param {import('~/components/account-card').APPEARANCE}  props.appearance
  * @param {string} props.editHref URL where Edit button should point to.
  * @param {string} props.editEventName Tracing event name used when the "Edit" button is clicked.
  * @param {boolean} props.loading Set to `true` if the card should be rendered in the loading state.

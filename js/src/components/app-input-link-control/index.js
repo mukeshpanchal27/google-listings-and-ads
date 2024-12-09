@@ -7,7 +7,7 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import AppInputControl from '.~/components/app-input-control';
+import AppInputControl from '~/components/app-input-control';
 import './index.scss';
 
 /**

@@ -9,15 +9,15 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import MerchantCenterSelect from './merchant-center-select';
-import AppButton from '.~/components/app-button';
-import useConnectMCAccount from '.~/hooks/useConnectMCAccount';
+import AppButton from '~/components/app-button';
+import useConnectMCAccount from '~/hooks/useConnectMCAccount';
 import SwitchUrlCard from '../switch-url-card';
 import ReclaimUrlCard from '../reclaim-url-card';
-import LoadingLabel from '.~/components/loading-label';
-import ConnectedIconLabel from '.~/components/connected-icon-label';
-import AccountCard from '.~/components/account-card';
+import LoadingLabel from '~/components/loading-label';
+import ConnectedIconLabel from '~/components/connected-icon-label';
+import AccountCard from '~/components/account-card';
 import Actions from './actions';
-import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
+import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
 import CreatingCard from '../creating-card';
 
 /**
