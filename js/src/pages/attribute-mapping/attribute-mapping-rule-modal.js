@@ -16,7 +16,7 @@ import useMappingAttributes from '~/hooks/useMappingAttributes';
 import useMappingAttributesSources from '~/hooks/useMappingAttributesSources';
 import AttributeMappingFieldSourcesControl from './attribute-mapping-field-sources-control';
 import AttributeMappingSourceTypeSelector from './attribute-mapping-source-type-selector';
-import AttributeMappingCategoryControl from '~/attribute-mapping/attribute-mapping-category-control';
+import AttributeMappingCategoryControl from './attribute-mapping-category-control';
 import AppSpinner from '~/components/app-spinner';
 import { useAppDispatch } from '~/data';
 import { CATEGORY_CONDITION_SELECT_TYPES } from '~/constants';

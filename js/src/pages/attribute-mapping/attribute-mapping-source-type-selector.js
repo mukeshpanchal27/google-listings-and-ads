@@ -11,7 +11,7 @@ import { noop } from 'lodash';
 import Subsection from '~/wcdl/subsection';
 import AppRadioContentControl from '~/components/app-radio-content-control';
 import AppInputControl from '~/components/app-input-control';
-import AttributeMappingFieldSourcesControl from '~/attribute-mapping/attribute-mapping-field-sources-control';
+import AttributeMappingFieldSourcesControl from './attribute-mapping-field-sources-control';
 import AppDocumentationLink from '~/components/app-documentation-link';
 import HelpPopover from '~/components/help-popover';
 

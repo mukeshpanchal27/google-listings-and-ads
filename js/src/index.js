@@ -41,7 +41,9 @@ const ProductFeed = lazy( () =>
 );
 
 const AttributeMapping = lazy( () =>
-	import( /* webpackChunkName: "attribute-mapping" */ './attribute-mapping' )
+	import(
+		/* webpackChunkName: "attribute-mapping" */ './pages/attribute-mapping'
+	)
 );
 
 const Settings = lazy( () =>

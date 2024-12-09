@@ -147,15 +147,15 @@ import userEvent from '@testing-library/user-event';
  * Internal dependencies
  */
 import AttributeMapping from './';
-import AttributeMappingTable from '~/attribute-mapping/attribute-mapping-table';
-import AttributeMappingTableCategories from '~/attribute-mapping/attribute-mapping-table-categories';
+import AttributeMappingTable from './attribute-mapping-table';
+import AttributeMappingTableCategories from './attribute-mapping-table-categories';
 import useMappingAttributes from '~/hooks/useMappingAttributes';
 import {
 	createMappingRule,
 	deleteMappingRule,
 	updateMappingRule,
 } from '~/data/actions';
-import AttributeMappingSync from '~/attribute-mapping/attribute-mapping-sync';
+import AttributeMappingSync from './attribute-mapping-sync';
 import usePolling from '~/hooks/usePolling';
 import RebrandingTour from '~/components/tours/rebranding-tour';
 
