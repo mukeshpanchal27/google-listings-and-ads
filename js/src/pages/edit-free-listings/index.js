@@ -28,13 +28,13 @@ import createErrorMessageForRejectedPromises from '~/utils/createErrorMessageFor
 import { recordGlaEvent } from '~/utils/tracks';
 
 /**
- * Saving changes to the free campaign.
+ * Saving changes to the free listings.
  *
  * @event gla_free_campaign_edited
  */
 
 /**
- * Page Component to edit free campaigns.
+ * Page Component to edit free listings.
  * Provides two steps:
  *  - Choose your audience
  *  - Configure your free listings
@@ -43,7 +43,7 @@ import { recordGlaEvent } from '~/utils/tracks';
  *
  * @fires gla_free_campaign_edited
  */
-const EditFreeCampaign = () => {
+const EditFreeListings = () => {
 	useLayout( 'full-content' );
 
 	const { targetAudience: savedTargetAudience, getFinalCountries } =
@@ -216,4 +216,4 @@ const EditFreeCampaign = () => {
 	);
 };
 
-export default EditFreeCampaign;
+export default EditFreeListings;
