@@ -28,8 +28,8 @@ const Onboarding = lazy( () =>
 	import( /* webpackChunkName: "onboarding" */ './pages/onboarding' )
 );
 
-const SetupAds = lazy( () =>
-	import( /* webpackChunkName: "setup-ads" */ './setup-ads' )
+const AdsOnboarding = lazy( () =>
+	import( /* webpackChunkName: "ads-onboarding" */ './pages/ads-onboarding' )
 );
 
 const Reports = lazy( () =>
@@ -87,7 +87,7 @@ addFilter(
 					...initialBreadcrumbs,
 					__( 'Setup Google Ads', 'google-listings-and-ads' ),
 				],
-				container: SetupAds,
+				container: AdsOnboarding,
 				path: '/google/setup-ads',
 			},
 			{
