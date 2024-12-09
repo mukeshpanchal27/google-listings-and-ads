@@ -23,7 +23,7 @@ import EnableNewProductSyncButton from '~/components/enable-new-product-sync-but
 import AppNotice from '~/components/app-notice';
 import DisconnectModal, {
 	API_DATA_FETCH_FEATURE,
-} from '~/settings/disconnect-modal';
+} from '~/pages/settings/disconnect-modal';
 import { getSettingsUrl } from '~/utils/urls';
 
 /**

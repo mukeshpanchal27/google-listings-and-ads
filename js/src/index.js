@@ -47,7 +47,7 @@ const AttributeMapping = lazy( () =>
 );
 
 const Settings = lazy( () =>
-	import( /* webpackChunkName: "settings" */ './settings' )
+	import( /* webpackChunkName: "settings" */ './pages/settings' )
 );
 
 export const pagePaths = new Set();
