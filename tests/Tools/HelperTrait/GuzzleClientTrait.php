@@ -27,8 +27,8 @@ trait GuzzleClientTrait {
 	 */
 	protected function guzzle_client_setup() {
 		$this->client = $this->createMock( Client::class );
-		$this->container->share( Client::class, $this->client );
-		$this->container->share( 'connect_server_root', 'https://connect-server.test/' );
+		$this->container->addShared( Client::class, $this->client );
+		$this->container->addShared( 'connect_server_root', 'https://connect-server.test/' );
 	}
 
 	/**

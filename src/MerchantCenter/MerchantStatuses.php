@@ -191,7 +191,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface, OptionsAware
 	 * @return array With two indices, results (may be paged), count (considers type) and loading (indicating whether the data is loading).
 	 * @throws Exception If the account state can't be retrieved from Google.
 	 */
-	public function get_issues( string $type = null, int $per_page = 0, int $page = 1, bool $force_refresh = false ): array {
+	public function get_issues( ?string $type = null, int $per_page = 0, int $page = 1, bool $force_refresh = false ): array {
 		$job = $this->maybe_refresh_status_data( $force_refresh );
 
 		// Get only error issues
@@ -328,7 +328,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface, OptionsAware
 	 * @return array The requested issues and the total count of issues.
 	 * @throws InvalidValue If the type filter is invalid.
 	 */
-	protected function fetch_issues( string $type = null, int $per_page = 0, int $page = 1, bool $only_errors = false ): array {
+	protected function fetch_issues( ?string $type = null, int $per_page = 0, int $page = 1, bool $only_errors = false ): array {
 		/** @var MerchantIssueQuery $issue_query */
 		$issue_query = $this->container->get( MerchantIssueQuery::class );
 

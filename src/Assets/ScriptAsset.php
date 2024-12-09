@@ -52,7 +52,7 @@ class ScriptAsset extends BaseAsset {
 		string $uri,
 		array $dependencies = [],
 		string $version = '',
-		callable $enqueue_condition_callback = null,
+		?callable $enqueue_condition_callback = null,
 		bool $in_footer = false
 	) {
 		$this->in_footer = $in_footer;

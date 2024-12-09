@@ -67,12 +67,12 @@ final class Container implements ContainerInterface {
 	 */
 	public function __construct( ?LeagueContainer $container = null ) {
 		$this->container = $container ?? new LeagueContainer();
-		$this->container->share( ContainerInterface::class, $this );
+		$this->container->addShared( ContainerInterface::class, $this );
 		$this->container->inflector( ContainerAwareInterface::class )
 			->invokeMethod( 'set_container', [ ContainerInterface::class ] );
 
 		foreach ( $this->service_providers as $service_provider_class ) {
-			$this->container->addServiceProvider( $service_provider_class );
+			$this->container->addServiceProvider( new $service_provider_class() );
 		}
 	}
 

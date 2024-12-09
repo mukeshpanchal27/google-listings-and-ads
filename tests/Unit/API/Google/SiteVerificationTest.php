@@ -56,7 +56,7 @@ class SiteVerificationTest extends UnitTest {
 		$this->verification_service->webResource = $this->createMock( WebResource::class );
 
 		$this->container = new Container();
-		$this->container->share( SiteVerificationService::class, $this->verification_service );
+		$this->container->addShared( SiteVerificationService::class, $this->verification_service );
 
 		$this->verification = new SiteVerification();
 		$this->verification->set_options_object( $this->options );

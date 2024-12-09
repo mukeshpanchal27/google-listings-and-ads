@@ -52,7 +52,7 @@ class AdsReportTest extends UnitTest {
 		$this->options->method( 'get_ads_id' )->willReturn( self::TEST_ADS_ID );
 
 		$this->container = new Container();
-		$this->container->share( AdsCampaign::class, $this->ads_campaign );
+		$this->container->addShared( AdsCampaign::class, $this->ads_campaign );
 
 		$this->report = new AdsReport( $this->client );
 		$this->report->set_options_object( $this->options );

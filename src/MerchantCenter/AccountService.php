@@ -530,7 +530,7 @@ class AccountService implements OptionsAwareInterface, Service {
 	 *
 	 * @return ExceptionWithResponseData
 	 */
-	private function prepare_exception( string $message, array $data = [], int $code = null ): ExceptionWithResponseData {
+	private function prepare_exception( string $message, array $data = [], ?int $code = null ): ExceptionWithResponseData {
 		$merchant_id = $this->options->get_merchant_id();
 
 		if ( $merchant_id && ! isset( $data['id'] ) ) {
