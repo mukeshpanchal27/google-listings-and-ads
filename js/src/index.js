@@ -24,8 +24,8 @@ const GetStartedPage = lazy( () =>
 	import( /* webpackChunkName: "get-started-page" */ './pages/get-started' )
 );
 
-const SetupMC = lazy( () =>
-	import( /* webpackChunkName: "setup-mc" */ './setup-mc' )
+const Onboarding = lazy( () =>
+	import( /* webpackChunkName: "onboarding" */ './pages/onboarding' )
 );
 
 const SetupAds = lazy( () =>
@@ -79,7 +79,7 @@ addFilter(
 					...initialBreadcrumbs,
 					__( 'Setup Merchant Center', 'google-listings-and-ads' ),
 				],
-				container: SetupMC,
+				container: Onboarding,
 				path: '/google/setup-mc',
 			},
 			{

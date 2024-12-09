@@ -5,7 +5,12 @@ import useLayout from '~/hooks/useLayout';
 import SetupTopBar from './setup-top-bar';
 import SetupStepper from './setup-stepper';
 
-const SetupMC = () => {
+/**
+ * The entry page component of the Onboarding flow.
+ *
+ * It's also the former `SetupMC` page component.
+ */
+const Onboarding = () => {
 	useLayout( 'full-page' );
 
 	return (
@@ -16,4 +21,4 @@ const SetupMC = () => {
 	);
 };
 
-export default SetupMC;
+export default Onboarding;
