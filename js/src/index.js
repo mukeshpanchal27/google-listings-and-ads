@@ -17,7 +17,7 @@ import './data';
 import { addBaseEventProperties } from '~/utils/tracks';
 
 const Dashboard = lazy( () =>
-	import( /* webpackChunkName: "dashboard" */ './dashboard' )
+	import( /* webpackChunkName: "dashboard" */ './pages/dashboard' )
 );
 
 const GetStartedPage = lazy( () =>
