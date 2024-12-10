@@ -6,7 +6,7 @@ import { CardFooter } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import './index.scss';
+import './footer.scss';
 
 const Footer = ( props ) => {
 	const { children, ...restProps } = props;

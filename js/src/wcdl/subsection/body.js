@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import './index.scss';
+import './body.scss';
 
 const Body = ( props ) => {
 	const { children } = props;

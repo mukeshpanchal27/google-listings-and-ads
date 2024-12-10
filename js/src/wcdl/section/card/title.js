@@ -6,14 +6,15 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import './index.scss';
+import Subsection from '~/wcdl/subsection';
+import './title.scss';
 
 const Title = ( props ) => {
 	const { className, ...rest } = props;
 
 	return (
-		<div
-			className={ classnames( 'wcdl-subsection-title', className ) }
+		<Subsection.Title
+			className={ classnames( 'wcdl-section-card-title', className ) }
 			{ ...rest }
 		/>
 	);

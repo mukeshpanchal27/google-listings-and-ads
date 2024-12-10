@@ -6,7 +6,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import './index.scss';
+import './subtitle.scss';
 
 const Subtitle = ( props ) => {
 	const { className, ...rest } = props;

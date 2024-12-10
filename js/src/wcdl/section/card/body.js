@@ -7,7 +7,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import './index.scss';
+import './body.scss';
 
 const Body = ( props ) => {
 	const { className, ...rest } = props;
