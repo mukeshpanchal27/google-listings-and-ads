@@ -10,7 +10,7 @@ import { __ } from '@wordpress/i18n';
 import AppModal from '~/components/app-modal';
 import AppButton from '~/components/app-button';
 import { useAppDispatch } from '~/data';
-import './index.scss';
+import './remove-program-modal.scss';
 
 /**
  * Modal window to confirm removing a campaign.

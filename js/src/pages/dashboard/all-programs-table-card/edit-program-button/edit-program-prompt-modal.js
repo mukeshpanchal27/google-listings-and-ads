@@ -12,7 +12,7 @@ import AppButton from '~/components/app-button';
 import AppModal from '~/components/app-modal';
 import { getEditFreeListingsUrl, getEditCampaignUrl } from '~/utils/urls';
 import { recordGlaEvent } from '~/utils/tracks';
-import './index.scss';
+import './edit-program-prompt-modal.scss';
 
 /**
  * Triggered when "continue" to edit program button is clicked.

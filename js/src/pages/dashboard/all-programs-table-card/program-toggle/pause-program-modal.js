@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import AppButton from '~/components/app-button';
 import AppModal from '~/components/app-modal';
-import './index.scss';
+import './pause-program-modal.scss';
 
 /**
  * Modal window to confirm pausing a campaign.
