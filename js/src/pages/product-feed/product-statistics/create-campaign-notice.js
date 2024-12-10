@@ -10,7 +10,7 @@ import { Flex, FlexItem } from '@wordpress/components';
 import AddPaidCampaignButton from '~/components/paid-ads/add-paid-campaign-button';
 import useMCProductStatistics from '~/hooks/useMCProductStatistics';
 import useAdsCampaigns from '~/hooks/useAdsCampaigns';
-import './index.scss';
+import './create-campaign-notice.scss';
 
 const CreateCampaignNotice = () => {
 	const { data: products } = useMCProductStatistics();
