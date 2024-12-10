@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
  */
 import AppButton from '~/components/app-button';
 import EditTimeModal from './edit-time-modal';
-import './index.scss';
+import './edit-time-button.scss';
 
 /**
  * Triggering button and modal with the

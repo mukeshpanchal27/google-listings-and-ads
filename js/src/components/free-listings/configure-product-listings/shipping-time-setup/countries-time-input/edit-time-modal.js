@@ -14,30 +14,51 @@ import AppModal from '~/components/app-modal';
 import VerticalGapLayout from '~/components/vertical-gap-layout';
 import SupportedCountrySelect from '~/components/supported-country-select';
 import validateShippingTimeGroup from '~/utils/validateShippingTimeGroup';
-import MinMaxShippingTimes from '../../min-max-shipping-times';
+import MinMaxShippingTimes from '../min-max-shipping-times';
 
 /**
- * Form to add a new time for selected country(-ies).
+ *Form to edit time for selected country(-ies).
  *
  * @param {Object} props
- * @param {Array<CountryCode>} props.countries A list of country codes to choose from.
- * @param {Function} props.onRequestClose
- * @param {function(AggregatedShippingTime): void} props.onSubmit Called with submitted value.
+ * @param {Array<CountryCode>} props.audienceCountries List of all audience countries.
+ * @param {AggregatedShippingTime} props.time
+ * @param {(newTime: AggregatedShippingTime, deletedCountries: Array<CountryCode>) => void} props.onSubmit Called once the time is submitted.
+ * @param {(deletedCountries: Array<CountryCode>) => void} props.onDelete Called with list of countries once Delete was requested.
+ * @param {Function} props.onRequestClose Called when the form is requested ot be closed.
  */
-const AddTimeModal = ( { countries, onRequestClose, onSubmit } ) => {
+const EditTimeModal = ( {
+	audienceCountries,
+	time,
+	onDelete,
+	onSubmit,
+	onRequestClose,
+} ) => {
 	const [ dropdownVisible, setDropdownVisible ] = useState( false );
 
+	// We actually may have times for more countries than the audience ones.
+	const availableCountries = Array.from(
+		new Set( [ ...time.countries, ...audienceCountries ] )
+	);
+
+	const handleDeleteClick = () => {
+		onDelete( time.countries );
+	};
+
 	const handleSubmitCallback = ( values ) => {
-		onSubmit( values );
-		onRequestClose();
+		const remainingCountries = new Set( values.countries );
+		const removedCountries = time.countries.filter(
+			( el ) => ! remainingCountries.has( el )
+		);
+
+		onSubmit( values, removedCountries );
 	};
 
 	return (
 		<Form
 			initialValues={ {
-				countries,
-				time: 0,
-				maxTime: 0,
+				countries: time.countries,
+				time: time.time,
+				maxTime: time.maxTime,
 			} }
 			validate={ validateShippingTimeGroup }
 			onSubmit={ handleSubmitCallback }
@@ -61,13 +82,21 @@ const AddTimeModal = ( { countries, onRequestClose, onSubmit } ) => {
 						) }
 						buttons={ [
 							<AppButton
+								key="delete"
+								isTertiary
+								isDestructive
+								onClick={ handleDeleteClick }
+							>
+								{ __( 'Delete', 'google-listings-and-ads' ) }
+							</AppButton>,
+							<AppButton
 								key="save"
 								isPrimary
 								disabled={ ! isValidForm }
 								onClick={ handleSubmit }
 							>
 								{ __(
-									'Add shipping time',
+									'Update shipping time',
 									'google-listings-and-ads'
 								) }
 							</AppButton>,
@@ -80,18 +109,20 @@ const AddTimeModal = ( { countries, onRequestClose, onSubmit } ) => {
 									'If customer is in',
 									'google-listings-and-ads'
 								) }
-								countryCodes={ countries }
+								countryCodes={ availableCountries }
 								onDropdownVisibilityChange={
 									setDropdownVisible
 								}
 								{ ...getInputProps( 'countries' ) }
 							/>
+
 							<div className="label">
 								{ __(
-									'Then the estimated shipping times displayed in the product listing are:',
+									'Then the estimated shipping times displayed in the product listing are',
 									'google-listings-and-ads'
 								) }
 							</div>
+
 							<Flex
 								direction="column"
 								className="gla-countries-time-input-container"
@@ -105,7 +136,6 @@ const AddTimeModal = ( { countries, onRequestClose, onSubmit } ) => {
 										handleBlur={ handleIncrement }
 										handleIncrement={ handleIncrement }
 									/>
-
 									<ul className="gla-validation-errors">
 										<li>{ errors.time }</li>
 									</ul>
@@ -119,7 +149,7 @@ const AddTimeModal = ( { countries, onRequestClose, onSubmit } ) => {
 	);
 };
 
-export default AddTimeModal;
+export default EditTimeModal;
 
 /**
  * @typedef { import("~/data/actions").AggregatedShippingTime } AggregatedShippingTime

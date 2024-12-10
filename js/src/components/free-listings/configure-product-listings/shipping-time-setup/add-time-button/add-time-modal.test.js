@@ -7,7 +7,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import AddTimeModal from './';
+import AddTimeModal from './add-time-modal';
 import useMCCountryTreeOptions from '~/components/supported-country-select/useMCCountryTreeOptions';
 
 jest.mock( '~/components/supported-country-select/useMCCountryTreeOptions' );
