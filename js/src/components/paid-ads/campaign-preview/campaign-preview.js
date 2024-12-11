@@ -16,18 +16,18 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
 /**
  * Internal dependencies
  */
-import useCountdown from '.~/hooks/useCountdown';
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
-import AppSpinner from '.~/components/app-spinner';
+import useCountdown from '~/hooks/useCountdown';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
+import AppSpinner from '~/components/app-spinner';
 import MockupShopping from './mockup-shopping';
 import MockupYouTube from './mockup-youtube';
 import MockupSearch from './mockup-search';
 import MockupGmail from './mockup-gmail';
 import MockupDisplay from './mockup-display';
 import MockupMap from './mockup-map';
-import productSampleImageURL from './images/product-sample-image.jpg';
-import shopSampleLogoURL from './images/shop-sample-logo.png';
-import { glaData } from '.~/constants';
+import productSampleImageURL from '~/images/campaign-preview/product-sample-image.jpg';
+import shopSampleLogoURL from '~/images/campaign-preview/shop-sample-logo.png';
+import { glaData } from '~/constants';
 import './campaign-preview.scss';
 
 /**

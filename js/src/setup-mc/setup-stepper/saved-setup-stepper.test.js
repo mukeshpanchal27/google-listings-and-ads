@@ -10,25 +10,25 @@ jest.mock( './useTargetAudienceWithSuggestions', () =>
 		.mockName( 'useTargetAudienceWithSuggestions' )
 		.mockReturnValue( {} )
 );
-jest.mock( '.~/hooks/useTargetAudienceFinalCountryCodes', () =>
+jest.mock( '~/hooks/useTargetAudienceFinalCountryCodes', () =>
 	jest
 		.fn()
 		.mockName( 'useTargetAudienceFinalCountryCodes' )
 		.mockReturnValue( {} )
 );
 jest.mock(
-	'.~/components/free-listings/configure-product-listings/useSettings',
+	'~/components/free-listings/configure-product-listings/useSettings',
 	() => jest.fn().mockName( 'useSettings' ).mockReturnValue( {} )
 );
-jest.mock( '.~/hooks/useShippingRates', () =>
+jest.mock( '~/hooks/useShippingRates', () =>
 	jest.fn().mockName( 'useShippingRates' ).mockReturnValue( {} )
 );
-jest.mock( '.~/hooks/useShippingTimes', () =>
+jest.mock( '~/hooks/useShippingTimes', () =>
 	jest.fn().mockName( 'useShippingTimes' ).mockReturnValue( {} )
 );
 
 jest.mock( './setup-accounts', () => jest.fn().mockName( 'SetupAccounts' ) );
-jest.mock( '.~/components/free-listings/setup-free-listings', () =>
+jest.mock( '~/components/free-listings/setup-free-listings', () =>
 	jest.fn().mockName( 'SetupFreeListings' )
 );
 jest.mock( './setup-paid-ads', () => jest.fn().mockName( 'SetupPaidAds' ) );
@@ -45,7 +45,7 @@ import { recordEvent } from '@woocommerce/tracks';
  */
 import SavedSetupStepper from './saved-setup-stepper';
 import SetupAccounts from './setup-accounts';
-import SetupFreeListings from '.~/components/free-listings/setup-free-listings';
+import SetupFreeListings from '~/components/free-listings/setup-free-listings';
 import SetupPaidAds from './setup-paid-ads';
 
 describe( 'SavedSetupStepper', () => {

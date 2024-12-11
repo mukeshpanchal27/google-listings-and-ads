@@ -7,9 +7,9 @@ import { useCallback } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { STORE_KEY } from '.~/data/constants';
-import { useAppDispatch } from '.~/data';
-import useIsEqualRefValue from '.~/hooks/useIsEqualRefValue';
+import { STORE_KEY } from '~/data/constants';
+import { useAppDispatch } from '~/data';
+import useIsEqualRefValue from '~/hooks/useIsEqualRefValue';
 
 const useAppSelectDispatch = ( selector, ...args ) => {
 	const { invalidateResolution } = useAppDispatch();

@@ -8,13 +8,13 @@ import { createInterpolateElement, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AppModal from '.~/components/app-modal';
-import AppButton from '.~/components/app-button';
-import AppDocumentationLink from '.~/components/app-documentation-link';
+import AppModal from '~/components/app-modal';
+import AppButton from '~/components/app-button';
+import AppDocumentationLink from '~/components/app-documentation-link';
 import ReviewRequestIssues from './review-request-issues';
-import { useAppDispatch } from '.~/data';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import { recordGlaEvent } from '.~/utils/tracks';
+import { useAppDispatch } from '~/data';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import { recordGlaEvent } from '~/utils/tracks';
 
 /**
  * Triggered when request review button is clicked

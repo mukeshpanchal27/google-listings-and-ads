@@ -7,7 +7,7 @@ import { _x, __, sprintf } from '@wordpress/i18n';
  * Internal dependencies
  */
 import useAppSelectDispatch from './useAppSelectDispatch';
-import { CATEGORIES_TO_SHOW_IN_TOOLTIP } from '.~/constants';
+import { CATEGORIES_TO_SHOW_IN_TOOLTIP } from '~/constants';
 
 const SEPARATOR = _x(
 	', ',

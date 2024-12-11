@@ -52,6 +52,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Coupon;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\MerchantStatuses;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product;
 use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\WC;
+use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\WP;
 use Automattic\WooCommerce\GoogleListingsAndAds\Shipping;
 use Automattic\WooCommerce\GoogleListingsAndAds\Settings;
 
@@ -86,7 +87,7 @@ class JobServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * Use the register method to register items with the container via the
-	 * protected $this->leagueContainer property or the `getLeagueContainer` method
+	 * protected $this->container property or the `getContainer` method
 	 * from the ContainerAwareTrait.
 	 *
 	 * @return void
@@ -161,7 +162,8 @@ class JobServiceProvider extends AbstractServiceProvider {
 			JobRepository::class,
 			MerchantCenterService::class,
 			NotificationsService::class,
-			WC::class
+			WC::class,
+			WP::class
 		);
 
 		$this->share_with_tags( StartProductSync::class, JobRepository::class );

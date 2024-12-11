@@ -6,8 +6,8 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import getCharacterCounter from '.~/utils/getCharacterCounter';
-import { ASSET_FORM_KEY } from '.~/constants';
+import getCharacterCounter from '~/utils/getCharacterCounter';
+import { ASSET_FORM_KEY } from '~/constants';
 import {
 	ASSET_IMAGE_SPECS,
 	ASSET_TEXT_SPECS,
@@ -15,7 +15,7 @@ import {
 } from './assetSpecs';
 
 /**
- * @typedef {import('.~/components/types.js').AssetGroupFormValues} AssetGroupFormValues
+ * @typedef {import('~/components/types.js').AssetGroupFormValues} AssetGroupFormValues
  */
 
 /**

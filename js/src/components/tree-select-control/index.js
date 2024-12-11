@@ -14,7 +14,7 @@ import {
 /**
  * Internal dependencies
  */
-import useIsEqualRefValue from '.~/hooks/useIsEqualRefValue';
+import useIsEqualRefValue from '~/hooks/useIsEqualRefValue';
 import Control from './control';
 import Options from './options';
 import './index.scss';

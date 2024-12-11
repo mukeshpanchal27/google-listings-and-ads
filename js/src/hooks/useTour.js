@@ -6,8 +6,8 @@ import { useCallback } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
+import { useAppDispatch } from '~/data';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
 
 /**
  * @typedef {Object} TourHook

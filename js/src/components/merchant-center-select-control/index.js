@@ -6,8 +6,8 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
-import AppSelectControl from '.~/components/app-select-control';
+import useExistingGoogleMCAccounts from '~/hooks/useExistingGoogleMCAccounts';
+import AppSelectControl from '~/components/app-select-control';
 
 /**
  * @param {Object} props The component props

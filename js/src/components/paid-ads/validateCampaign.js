@@ -4,7 +4,7 @@
 import { __, sprintf } from '@wordpress/i18n';
 
 /**
- * @typedef {import('.~/components/types.js').CampaignFormValues} CampaignFormValues
+ * @typedef {import('~/components/types.js').CampaignFormValues} CampaignFormValues
  */
 
 /**

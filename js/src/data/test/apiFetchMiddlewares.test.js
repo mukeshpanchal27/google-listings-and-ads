@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { createErrorResponseCatcher } from '../api-fetch-middlewares';
+import { createErrorResponseCatcher } from '../apiFetchMiddlewares';
 import { API_NAMESPACE } from '../constants';
 
 describe( 'createErrorResponseCatcher', () => {

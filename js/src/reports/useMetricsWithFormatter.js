@@ -7,8 +7,8 @@ import { useMemo } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import useStoreCurrency from '.~/hooks/useStoreCurrency';
-import useAdsCurrency from '.~/hooks/useAdsCurrency';
+import useStoreCurrency from '~/hooks/useStoreCurrency';
+import useAdsCurrency from '~/hooks/useAdsCurrency';
 
 const unavailable = __( 'Unavailable', 'google-listings-and-ads' );
 

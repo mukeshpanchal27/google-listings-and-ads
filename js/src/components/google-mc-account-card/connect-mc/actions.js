@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import CreateAccountButton from '../create-account-button';
 import DisconnectAccountButton from '../disconnect-account-button';
-import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
+import useExistingGoogleMCAccounts from '~/hooks/useExistingGoogleMCAccounts';
 
 /**
  * Actions component.

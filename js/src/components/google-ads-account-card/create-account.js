@@ -7,16 +7,16 @@ import { useState, useEffect, Fragment } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
-import AppButton from '.~/components/app-button';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
+import AppButton from '~/components/app-button';
 import ClaimAccount from './claim-account';
 import ClaimAccountButton from './claim-account-button';
 import ClaimAccountModal from './claim-account-modal';
 import CreateAccountButton from './create-account-button';
-import Section from '.~/wcdl/section';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
-import useUpsertAdsAccount from '.~/hooks/useUpsertAdsAccount';
+import Section from '~/wcdl/section';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
+import useUpsertAdsAccount from '~/hooks/useUpsertAdsAccount';
 
 const CreateAccount = ( props ) => {
 	const { allowShowExisting, onShowExisting } = props;

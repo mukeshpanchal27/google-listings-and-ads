@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 
-import CountryNamesPlusMore from '.~/components/country-names-plus-more';
+import CountryNamesPlusMore from '~/components/country-names-plus-more';
 
 const ShippingTimeInputControlLabelText = ( props ) => {
 	const { countries } = props;

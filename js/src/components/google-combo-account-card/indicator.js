@@ -6,10 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ConnectedIconLabel from '.~/components/connected-icon-label';
-import LoadingLabel from '.~/components/loading-label';
-import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
-import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
+import ConnectedIconLabel from '~/components/connected-icon-label';
+import LoadingLabel from '~/components/loading-label';
+import useGoogleAdsAccountReady from '~/hooks/useGoogleAdsAccountReady';
+import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
 
 /**
  * Account creation indicator.

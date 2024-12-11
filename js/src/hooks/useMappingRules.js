@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
 
 /**
  * Returns the Attribute Mapping Rules

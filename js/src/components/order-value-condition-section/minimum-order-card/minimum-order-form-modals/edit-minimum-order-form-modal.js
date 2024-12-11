@@ -6,11 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
+import AppButton from '~/components/app-button';
 import MinimumOrderFormModal from './minimum-order-form-modal';
 
 /**
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
  * @typedef { import("../typedefs.js").MinimumOrderGroup } MinimumOrderGroup
  */
 

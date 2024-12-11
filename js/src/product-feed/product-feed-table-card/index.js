@@ -21,16 +21,16 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import { recordGlaEvent, recordTablePageEvent } from '.~/utils/tracks';
-import AppTableCardDiv from '.~/components/app-table-card-div';
-import EditProductLink from '.~/components/edit-product-link';
+import { recordGlaEvent, recordTablePageEvent } from '~/utils/tracks';
+import AppTableCardDiv from '~/components/app-table-card-div';
+import EditProductLink from '~/components/edit-product-link';
 import './index.scss';
-import { useAppDispatch } from '.~/data';
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
+import { useAppDispatch } from '~/data';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
 import EditVisibilityAction from './edit-visibility-action';
 import statusLabelMap from './statusLabelMap';
-import Text from '.~/components/app-text';
+import Text from '~/components/app-text';
 
 const PER_PAGE = 10;
 const EVENT_CONTEXT = 'product-feed';

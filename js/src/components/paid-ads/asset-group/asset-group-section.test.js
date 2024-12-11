@@ -1,4 +1,4 @@
-jest.mock( '.~/components/adaptive-form', () => ( {
+jest.mock( '~/components/adaptive-form', () => ( {
 	useAdaptiveFormContext: jest
 		.fn()
 		.mockName( 'useAdaptiveFormContext' )
@@ -23,10 +23,10 @@ import { render, screen } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import AssetGroupSection from '.~/components/paid-ads/asset-group/asset-group-section';
-import { useAdaptiveFormContext } from '.~/components/adaptive-form';
+import AssetGroupSection from '~/components/paid-ads/asset-group/asset-group-section';
+import { useAdaptiveFormContext } from '~/components/adaptive-form';
 
-jest.mock( '.~/components/paid-ads/asset-group/asset-group-card', () =>
+jest.mock( '~/components/paid-ads/asset-group/asset-group-card', () =>
 	jest.fn( ( props ) => <div { ...props } /> ).mockName( 'AssetGroupCard' )
 );
 

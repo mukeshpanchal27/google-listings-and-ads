@@ -7,10 +7,10 @@ import { noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
+import AppButton from '~/components/app-button';
 import WarningModal from './warning-modal';
 import TermsModal from './terms-modal';
-import useExistingGoogleMCAccounts from '.~/hooks/useExistingGoogleMCAccounts';
+import useExistingGoogleMCAccounts from '~/hooks/useExistingGoogleMCAccounts';
 import getMatchingDomainAccount from './getMatchingDomainAccount';
 
 const MODALS = Object.freeze( {

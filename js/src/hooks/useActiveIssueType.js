@@ -6,8 +6,8 @@ import { getQuery } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import { ISSUE_TYPE_ACCOUNT, ISSUE_TYPE_PRODUCT } from '.~/constants';
-import useMCIssuesTotals from '.~/hooks/useMCIssuesTotals';
+import { ISSUE_TYPE_ACCOUNT, ISSUE_TYPE_PRODUCT } from '~/constants';
+import useMCIssuesTotals from '~/hooks/useMCIssuesTotals';
 
 /**
  * Gets the active Issue Type Filter based on the `issueType` query property.

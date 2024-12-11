@@ -7,11 +7,11 @@ import { render } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import REVIEW_STATUSES from '.~/product-feed/review-request/review-request-statuses';
-import AccountStatus from '.~/product-feed/product-statistics/status-box/account-status';
+import { REVIEW_STATUSES } from '../../constants';
+import AccountStatus from '~/product-feed/product-statistics/status-box/account-status';
 
-jest.mock( '.~/hooks/useAppSelectDispatch' );
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
+jest.mock( '~/hooks/useAppSelectDispatch' );
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
 
 describe( 'Account Status', () => {
 	it.each( Object.keys( REVIEW_STATUSES ) )(

@@ -12,18 +12,16 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Guide from '.~/external-components/wordpress/guide';
-import GuidePageContent, {
-	ContentLink,
-} from '.~/components/guide-page-content';
-import AppButton from '.~/components/app-button';
-import AddPaidCampaignButton from '.~/components/paid-ads/add-paid-campaign-button';
-import { glaData, GUIDE_NAMES, LOCAL_STORAGE_KEYS } from '.~/constants';
-import localStorage from '.~/utils/localStorage';
-import { getProductFeedUrl } from '.~/utils/urls';
-import wooLogoURL from './woocommerce-logo.svg';
-import googleLogoURL from '.~/images/google-logo.svg';
-import { recordGlaEvent } from '.~/utils/tracks';
+import Guide from '~/external-components/wordpress/guide';
+import GuidePageContent, { ContentLink } from '~/components/guide-page-content';
+import AppButton from '~/components/app-button';
+import AddPaidCampaignButton from '~/components/paid-ads/add-paid-campaign-button';
+import { glaData, GUIDE_NAMES, LOCAL_STORAGE_KEYS } from '~/constants';
+import localStorage from '~/utils/localStorage';
+import { getProductFeedUrl } from '~/utils/urls';
+import wooLogoURL from '~/images/logo/woocommerce-logo.svg';
+import googleLogoURL from '~/images/logo/google-logo.svg';
+import { recordGlaEvent } from '~/utils/tracks';
 import './index.scss';
 
 const EVENT_NAME = 'gla_modal_closed';

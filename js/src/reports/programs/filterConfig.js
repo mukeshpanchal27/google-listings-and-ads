@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { getIdsFromQuery } from '../utils';
-import { FREE_LISTINGS_PROGRAM_ID, REPORT_PROGRAM_PARAM } from '.~/constants';
+import { FREE_LISTINGS_PROGRAM_ID, REPORT_PROGRAM_PARAM } from '~/constants';
 
 const freeListingsPrograms = [
 	{

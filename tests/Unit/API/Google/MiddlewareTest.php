@@ -83,13 +83,13 @@ class MiddlewareTest extends UnitTest {
 		$this->wc            = $this->createMock( WC::class );
 		$this->wp            = $this->createMock( WP::class );
 
-		$this->container->share( Ads::class, $this->ads );
-		$this->container->share( DateTimeUtility::class, $this->date_utility );
-		$this->container->share( GoogleHelper::class, $this->google_helper );
-		$this->container->share( Merchant::class, $this->merchant );
-		$this->container->share( TransientsInterface::class, $this->transients );
-		$this->container->share( WC::class, $this->wc );
-		$this->container->share( WP::class, $this->wp );
+		$this->container->addShared( Ads::class, $this->ads );
+		$this->container->addShared( DateTimeUtility::class, $this->date_utility );
+		$this->container->addShared( GoogleHelper::class, $this->google_helper );
+		$this->container->addShared( Merchant::class, $this->merchant );
+		$this->container->addShared( TransientsInterface::class, $this->transients );
+		$this->container->addShared( WC::class, $this->wc );
+		$this->container->addShared( WP::class, $this->wp );
 
 		$this->middleware = new Middleware( $this->container );
 		$this->middleware->set_options_object( $this->options );

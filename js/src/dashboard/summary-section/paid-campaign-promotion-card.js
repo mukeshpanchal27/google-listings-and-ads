@@ -6,7 +6,7 @@ import { Spinner } from '@woocommerce/components';
 /**
  * Internal dependencies
  */
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
 import PaidFeatures from './paid-features';
 
 function PaidCampaignPromotionCard() {

@@ -6,11 +6,11 @@ import { useMemo } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
 
 /**
- * @typedef {import('.~/data/actions').CountryCode} CountryCode
- * @typedef {import('.~/components/tree-select-control').Option} Option
+ * @typedef {import('~/data/actions').CountryCode} CountryCode
+ * @typedef {import('~/components/tree-select-control').Option} Option
  */
 
 const EMPTY_ARRAY = [];

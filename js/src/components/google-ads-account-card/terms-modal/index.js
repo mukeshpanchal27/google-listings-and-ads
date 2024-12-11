@@ -8,11 +8,11 @@ import { createInterpolateElement, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AppModal from '.~/components/app-modal';
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import AppButton from '.~/components/app-button';
-import useEventPropertiesFilter from '.~/hooks/useEventPropertiesFilter';
-import { FILTER_ONBOARDING } from '.~/utils/tracks';
+import AppModal from '~/components/app-modal';
+import AppDocumentationLink from '~/components/app-documentation-link';
+import AppButton from '~/components/app-button';
+import useEventPropertiesFilter from '~/hooks/useEventPropertiesFilter';
+import { FILTER_ONBOARDING } from '~/utils/tracks';
 import './index.scss';
 
 /**

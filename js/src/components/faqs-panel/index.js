@@ -8,7 +8,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import { recordGlaEvent } from '.~/utils/tracks';
+import { recordGlaEvent } from '~/utils/tracks';
 import './index.scss';
 
 const getPanelToggleHandler = ( trackName, id, context ) => ( isOpened ) => {

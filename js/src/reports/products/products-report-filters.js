@@ -18,8 +18,8 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
 /**
  * Internal dependencies
  */
-import { productsFilter, advancedFilters } from './filter-config';
-import { recordGlaEvent } from '.~/utils/tracks';
+import { productsFilter, advancedFilters } from './filterConfig';
+import { recordGlaEvent } from '~/utils/tracks';
 
 const currency = getSetting( 'currency' );
 const siteLocale = getSetting( 'locale' ).siteLocale;

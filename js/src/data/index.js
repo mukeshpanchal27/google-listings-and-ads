@@ -8,15 +8,15 @@ import { getHistory } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import { glaData } from '.~/constants';
+import { glaData } from '~/constants';
 import { STORE_KEY } from './constants';
 import * as actions from './actions';
 import * as selectors from './selectors';
 import * as resolvers from './resolvers';
 import { controls } from './controls';
 import reducer from './reducer';
-import { createErrorResponseCatcher } from './api-fetch-middlewares';
-import { getReconnectAccountUrl } from '.~/utils/urls';
+import { createErrorResponseCatcher } from './apiFetchMiddlewares';
+import { getReconnectAccountUrl } from '~/utils/urls';
 
 registerStore( STORE_KEY, {
 	actions,

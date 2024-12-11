@@ -9,15 +9,15 @@ import { ExternalLink } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { ASSET_GROUP_KEY } from '.~/constants';
-import Section from '.~/wcdl/section';
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
-import AppButton from '.~/components/app-button';
+import { ASSET_GROUP_KEY } from '~/constants';
+import Section from '~/wcdl/section';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
+import AppButton from '~/components/app-button';
 import AssetsLoader from './assets-loader';
 import './final-url-card.scss';
 
 /**
- * @typedef {import('.~/data/types.js').SuggestedAssets} SuggestedAssets
+ * @typedef {import('~/data/types.js').SuggestedAssets} SuggestedAssets
  */
 
 /**

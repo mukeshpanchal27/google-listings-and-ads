@@ -1,4 +1,4 @@
-jest.mock( '.~/components/tours/rebranding-tour', () =>
+jest.mock( '~/components/tours/rebranding-tour', () =>
 	jest.fn().mockReturnValue( null ).mockName( 'RebrandingTour' )
 );
 
@@ -12,11 +12,11 @@ import { getQuery } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import ProductFeed from './index';
-import localStorage from '.~/utils/localStorage';
-import isWCTracksEnabled from '.~/utils/isWCTracksEnabled';
-import { GUIDE_NAMES } from '.~/constants';
-import RebrandingTour from '.~/components/tours/rebranding-tour';
+import ProductFeed from './';
+import localStorage from '~/utils/localStorage';
+import isWCTracksEnabled from '~/utils/isWCTracksEnabled';
+import { GUIDE_NAMES } from '~/constants';
+import RebrandingTour from '~/components/tours/rebranding-tour';
 
 jest.mock( '@woocommerce/navigation', () => {
 	return {
@@ -25,20 +25,20 @@ jest.mock( '@woocommerce/navigation', () => {
 	};
 } );
 
-jest.mock( '.~/utils/localStorage', () => {
+jest.mock( '~/utils/localStorage', () => {
 	return {
 		get: jest.fn(),
 		set: jest.fn(),
 	};
 } );
 
-jest.mock( '.~/utils/isWCTracksEnabled', () => jest.fn() );
+jest.mock( '~/utils/isWCTracksEnabled', () => jest.fn() );
 
 const SUBMISSION_SUCCESS_GUIDE_TEXT =
 	'You’ve successfully set up Google for WooCommerce! 🎉';
 const CES_PROMPT_TEXT = 'How easy was it to set up Google for WooCommerce?';
 
-jest.mock( '.~/components/customer-effort-score-prompt', () => () => (
+jest.mock( '~/components/customer-effort-score-prompt', () => () => (
 	<div>{ CES_PROMPT_TEXT }</div>
 ) );
 

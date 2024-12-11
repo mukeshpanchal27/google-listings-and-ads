@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import { useAppDispatch } from '.~/data';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import { useAppDispatch } from '~/data';
 
 const useConnectMCAccount = ( value ) => {
 	const { createNotice } = useDispatchCoreNotices();

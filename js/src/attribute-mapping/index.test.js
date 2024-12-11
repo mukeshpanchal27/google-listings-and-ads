@@ -7,8 +7,8 @@ jest.mock( '@wordpress/date', () => {
 	};
 } );
 
-jest.mock( '.~/data/actions', () => ( {
-	...jest.requireActual( '.~/data/actions' ),
+jest.mock( '~/data/actions', () => ( {
+	...jest.requireActual( '~/data/actions' ),
 	createMappingRule: jest
 		.fn()
 		.mockName( 'createMappingRule' )
@@ -29,7 +29,7 @@ jest.mock( '.~/data/actions', () => ( {
 		} ),
 } ) );
 
-jest.mock( '.~/hooks/useAppSelectDispatch', () => ( {
+jest.mock( '~/hooks/useAppSelectDispatch', () => ( {
 	__esModule: true,
 	default: jest
 		.fn()
@@ -47,7 +47,7 @@ jest.mock( '.~/hooks/useAppSelectDispatch', () => ( {
 		} ),
 } ) );
 
-jest.mock( '.~/hooks/useMappingAttributes', () => ( {
+jest.mock( '~/hooks/useMappingAttributes', () => ( {
 	__esModule: true,
 	default: jest
 		.fn()
@@ -64,7 +64,7 @@ jest.mock( '.~/hooks/useMappingAttributes', () => ( {
 		} ),
 } ) );
 
-jest.mock( '.~/hooks/useMappingAttributesSources', () => ( {
+jest.mock( '~/hooks/useMappingAttributesSources', () => ( {
 	__esModule: true,
 	default: jest
 		.fn()
@@ -80,7 +80,7 @@ jest.mock( '.~/hooks/useMappingAttributesSources', () => ( {
 		} ),
 } ) );
 
-jest.mock( '.~/hooks/useMappingRules', () => ( {
+jest.mock( '~/hooks/useMappingRules', () => ( {
 	__esModule: true,
 	default: jest
 		.fn()
@@ -119,7 +119,7 @@ jest.mock( '.~/hooks/useMappingRules', () => ( {
 		} ),
 } ) );
 
-jest.mock( '.~/hooks/usePolling', () => ( {
+jest.mock( '~/hooks/usePolling', () => ( {
 	__esModule: true,
 	default: jest
 		.fn()
@@ -132,7 +132,7 @@ jest.mock( '.~/hooks/usePolling', () => ( {
 		} ),
 } ) );
 
-jest.mock( '.~/components/tours/rebranding-tour', () =>
+jest.mock( '~/components/tours/rebranding-tour', () =>
 	jest.fn().mockReturnValue( null ).mockName( 'RebrandingTour' )
 );
 
@@ -146,18 +146,18 @@ import userEvent from '@testing-library/user-event';
 /**
  * Internal dependencies
  */
-import AttributeMapping from './index';
-import AttributeMappingTable from '.~/attribute-mapping/attribute-mapping-table';
-import AttributeMappingTableCategories from '.~/attribute-mapping/attribute-mapping-table-categories';
-import useMappingAttributes from '.~/hooks/useMappingAttributes';
+import AttributeMapping from './';
+import AttributeMappingTable from '~/attribute-mapping/attribute-mapping-table';
+import AttributeMappingTableCategories from '~/attribute-mapping/attribute-mapping-table-categories';
+import useMappingAttributes from '~/hooks/useMappingAttributes';
 import {
 	createMappingRule,
 	deleteMappingRule,
 	updateMappingRule,
-} from '.~/data/actions';
-import AttributeMappingSync from '.~/attribute-mapping/attribute-mapping-sync';
-import usePolling from '.~/hooks/usePolling';
-import RebrandingTour from '.~/components/tours/rebranding-tour';
+} from '~/data/actions';
+import AttributeMappingSync from '~/attribute-mapping/attribute-mapping-sync';
+import usePolling from '~/hooks/usePolling';
+import RebrandingTour from '~/components/tours/rebranding-tour';
 
 describe( 'Attribute Mapping', () => {
 	test( 'Renders table', () => {

@@ -1,5 +1,5 @@
 /**
- * @typedef {import('.~/data/actions').ProductStatisticsDetails } ProductStatisticsDetails
+ * @typedef {import('~/data/actions').ProductStatisticsDetails } ProductStatisticsDetails
  */
 
 /**

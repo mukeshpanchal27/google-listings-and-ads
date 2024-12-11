@@ -4,7 +4,7 @@
 import { differenceWith } from 'lodash';
 
 /**
- * @typedef {import('.~/data/actions').ShippingRate} ShippingRate
+ * @typedef {import('~/data/actions').ShippingRate} ShippingRate
  */
 
 /**

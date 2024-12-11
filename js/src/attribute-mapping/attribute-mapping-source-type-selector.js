@@ -8,12 +8,12 @@ import { noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import Subsection from '.~/wcdl/subsection';
-import AppRadioContentControl from '.~/components/app-radio-content-control';
-import AppInputControl from '.~/components/app-input-control';
-import AttributeMappingFieldSourcesControl from '.~/attribute-mapping/attribute-mapping-field-sources-control';
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import HelpPopover from '.~/components/help-popover';
+import Subsection from '~/wcdl/subsection';
+import AppRadioContentControl from '~/components/app-radio-content-control';
+import AppInputControl from '~/components/app-input-control';
+import AttributeMappingFieldSourcesControl from '~/attribute-mapping/attribute-mapping-field-sources-control';
+import AppDocumentationLink from '~/components/app-documentation-link';
+import HelpPopover from '~/components/help-popover';
 
 const SOURCE_TYPES = {
 	FIXED: 'fixed',

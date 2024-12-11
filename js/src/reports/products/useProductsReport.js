@@ -6,9 +6,9 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { STORE_KEY } from '.~/data/constants';
-import { mapReportFieldsToPerformance } from '.~/data/utils';
-import useUrlQuery from '.~/hooks/useUrlQuery';
+import { STORE_KEY } from '~/data/constants';
+import { mapReportFieldsToPerformance } from '~/data/utils';
+import useUrlQuery from '~/hooks/useUrlQuery';
 
 const category = 'products';
 const emptyData = {

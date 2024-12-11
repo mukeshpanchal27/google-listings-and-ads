@@ -11,19 +11,17 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import AppModal from '.~/components/app-modal';
-import GuidePageContent, {
-	ContentLink,
-} from '.~/components/guide-page-content';
-import { GUIDE_NAMES } from '.~/constants';
-import headerImageURL from './header.svg';
+import AppButton from '~/components/app-button';
+import AppModal from '~/components/app-modal';
+import GuidePageContent, { ContentLink } from '~/components/guide-page-content';
+import { GUIDE_NAMES } from '~/constants';
+import headerImageURL from '~/images/success-guide-header.svg';
 import {
 	CTA_CREATE_ANOTHER_CAMPAIGN,
 	CTA_CONFIRM,
 	CTA_DISMISS,
 } from '../constants';
-import { recordGlaEvent } from '.~/utils/tracks';
+import { recordGlaEvent } from '~/utils/tracks';
 import './index.scss';
 
 /**

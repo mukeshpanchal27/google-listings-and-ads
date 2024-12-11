@@ -21,7 +21,7 @@ const SCOPE = {
  * Convert the authorization scopes to a state that whether the minimum required scopes for each function are met.
  *
  * @param {boolean} adsSetupComplete Whether Google Ads setup has been completed.
- *     It should be the `glaData.adsSetupComplete` value imported from {@link .~/constants.glaData}.
+ *     It should be the `glaData.adsSetupComplete` value imported from {@link ~/constants.glaData}.
  * @param {Array<string>} [scopes=[]] User authorized scopes returned from Google OAuth API.
  * @return {ScopeState} A state that whether the minimum required scopes for each function are met.
  */

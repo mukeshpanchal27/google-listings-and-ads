@@ -6,8 +6,8 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import PauseProgramModal from './pause-program-modal';
-import { useAppDispatch } from '.~/data';
-import AppStandaloneToggleControl from '.~/components/app-standalone-toggle-control';
+import { useAppDispatch } from '~/data';
+import AppStandaloneToggleControl from '~/components/app-standalone-toggle-control';
 
 const ProgramToggle = ( props ) => {
 	const { program } = props;

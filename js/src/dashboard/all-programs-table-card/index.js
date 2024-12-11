@@ -8,20 +8,20 @@ import { getQuery, onQueryChange } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import AppTableCard from '.~/components/app-table-card';
+import AppTableCard from '~/components/app-table-card';
 import RemoveProgramButton from './remove-program-button';
 import EditProgramButton from './edit-program-button';
 import './index.scss';
-import useAdsCampaigns from '.~/hooks/useAdsCampaigns';
-import useCountryKeyNameMap from '.~/hooks/useCountryKeyNameMap';
-import useAdsCurrency from '.~/hooks/useAdsCurrency';
-import useTargetAudienceFinalCountryCodes from '.~/hooks/useTargetAudienceFinalCountryCodes';
-import AppSpinner from '.~/components/app-spinner';
-import { FREE_LISTINGS_PROGRAM_ID, CAMPAIGN_TYPE_PMAX } from '.~/constants';
-import AddPaidCampaignButton from '.~/components/paid-ads/add-paid-campaign-button';
+import useAdsCampaigns from '~/hooks/useAdsCampaigns';
+import useCountryKeyNameMap from '~/hooks/useCountryKeyNameMap';
+import useAdsCurrency from '~/hooks/useAdsCurrency';
+import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
+import AppSpinner from '~/components/app-spinner';
+import { FREE_LISTINGS_PROGRAM_ID, CAMPAIGN_TYPE_PMAX } from '~/constants';
+import AddPaidCampaignButton from '~/components/paid-ads/add-paid-campaign-button';
 import ProgramToggle from './program-toggle';
 import FreeListingsDisabledToggle from './free-listings-disabled-toggle';
-import CampaignAssetsTour from '.~/components/tours/campaign-assets-tour';
+import CampaignAssetsTour from '~/components/tours/campaign-assets-tour';
 
 const PROGRAMS_TABLE_CARD_CLASS_NAME = 'gla-all-programs-table-card';
 const CAMPAIGN_EDIT_BUTTON_CLASS_NAME = 'gla-campaign-edit-button';

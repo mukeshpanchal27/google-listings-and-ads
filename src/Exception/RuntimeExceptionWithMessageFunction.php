@@ -29,9 +29,9 @@ class RuntimeExceptionWithMessageFunction extends RuntimeException implements Go
 	 * @param string         $message [optional] The Exception message to throw.
 	 * @param int            $code [optional] The Exception code.
 	 * @param Throwable|null $previous [optional] The previous throwable used for the exception chaining.
-	 * @param callable       $message_function [optional] Function to format/translate the message string.
+	 * @param callable|null  $message_function [optional] Function to format/translate the message string.
 	 */
-	public function __construct( string $message = '', int $code = 0, Throwable $previous = null, ?callable $message_function = null ) {
+	public function __construct( string $message = '', int $code = 0, ?Throwable $previous = null, ?callable $message_function = null ) {
 		parent::__construct( $message, $code, $previous );
 		$this->message_function = $message_function;
 	}

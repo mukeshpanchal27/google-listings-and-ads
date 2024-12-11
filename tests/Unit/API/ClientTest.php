@@ -61,12 +61,12 @@ class ClientTest extends UnitTest {
 		$this->options = $this->createMock( OptionsInterface::class );
 
 		$this->container = new Container();
-		$this->container->share( Manager::class, $this->manager );
-		$this->container->share( ReconnectWordPress::class, $this->note );
-		$this->container->share( OptionsInterface::class, $this->options );
+		$this->container->addShared( Manager::class, $this->manager );
+		$this->container->addShared( ReconnectWordPress::class, $this->note );
+		$this->container->addShared( OptionsInterface::class, $this->options );
 
 		$this->provider = new GoogleServiceProvider();
-		$this->provider->setLeagueContainer( $this->container );
+		$this->provider->setContainer( $this->container );
 	}
 
 	/**

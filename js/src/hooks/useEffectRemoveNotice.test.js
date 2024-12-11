@@ -7,12 +7,12 @@ import { renderHook } from '@testing-library/react';
  * Internal dependencies
  */
 import useEffectRemoveNotice from './useEffectRemoveNotice';
-import useNotices from '.~/hooks/useNotices';
-import { NOTICES_STORE_KEY } from '.~/data/constants';
+import useNotices from '~/hooks/useNotices';
+import { NOTICES_STORE_KEY } from '~/data/constants';
 
 const mockRemoveNotice = jest.fn();
 
-jest.mock( '.~/hooks/useNotices', () => {
+jest.mock( '~/hooks/useNotices', () => {
 	return jest.fn();
 } );
 

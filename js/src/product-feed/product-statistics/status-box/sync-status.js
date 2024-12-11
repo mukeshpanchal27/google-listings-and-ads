@@ -7,15 +7,15 @@ import { format as formatDate } from '@wordpress/date';
 /**
  * Internal dependencies
  */
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
-import Status from '.~/product-feed/product-statistics/status-box/status';
-import SyncIcon from '.~/components/sync-icon';
-import SuccessIcon from '.~/components/success-icon';
-import getNumberOfSyncProducts from '.~/utils/getNumberOfSyncProducts';
-import glaDateTimeFormat from '.~/utils/date';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
+import Status from '~/product-feed/product-statistics/status-box/status';
+import SyncIcon from '~/components/sync-icon';
+import SuccessIcon from '~/components/success-icon';
+import getNumberOfSyncProducts from '~/utils/getNumberOfSyncProducts';
+import { glaDateTimeFormat } from '~/utils/date';
 
 /**
- * @typedef {import('.~/data/actions').ProductStatistics } ProductStatistics
+ * @typedef {import('~/data/actions').ProductStatistics } ProductStatistics
  */
 
 /**

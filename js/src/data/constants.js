@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { ASSET_GROUP_KEY } from '.~/constants';
+import { ASSET_GROUP_KEY } from '~/constants';
 
 export const STORE_KEY = 'wc/gla';
 export const API_NAMESPACE = '/wc/gla';

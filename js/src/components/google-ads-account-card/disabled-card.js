@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
 
 const DisabledCard = () => {
 	return <AccountCard disabled appearance={ APPEARANCE.GOOGLE_ADS } />;

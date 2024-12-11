@@ -10,8 +10,8 @@ import { edit as editIcon } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import AppTooltip from '.~/components/app-tooltip';
+import AppButton from '~/components/app-button';
+import AppTooltip from '~/components/app-tooltip';
 
 const tipText = __( 'Select channel visibility', 'google-listings-and-ads' );
 

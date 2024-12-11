@@ -10,14 +10,14 @@ import { getQuery } from '@woocommerce/navigation';
  */
 import useProgramsReport, { usePerformanceReport } from './useProgramsReport';
 import useMetricsWithFormatter from '../useMetricsWithFormatter';
-import DifferentCurrencyNotice from '.~/components/different-currency-notice';
-import MainTabNav from '.~/components/main-tab-nav';
+import DifferentCurrencyNotice from '~/components/different-currency-notice';
+import MainTabNav from '~/components/main-tab-nav';
 import ProgramsReportFilters from './programs-report-filters';
 import SummarySection from '../summary-section';
 import ChartSection from '../chart-section';
 import CompareProgramsTableCard from './compare-programs-table-card';
 import ReportsNavigation from '../reports-navigation';
-import RebrandingTour from '.~/components/tours/rebranding-tour';
+import RebrandingTour from '~/components/tours/rebranding-tour';
 
 /**
  * Available metrics and their human-readable labels.

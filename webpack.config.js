@@ -39,7 +39,7 @@ const webpackConfig = {
 	resolve: {
 		...defaultConfig.resolve,
 		alias: {
-			'.~': path.resolve( process.cwd(), 'js/src/' ),
+			'~': path.join( __dirname, 'js/src' ),
 		},
 		fallback: {
 			/**

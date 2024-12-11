@@ -7,11 +7,11 @@ import { useCallback, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
-import { API_NAMESPACE } from '.~/data/constants';
+import { useAppDispatch } from '~/data';
+import { API_NAMESPACE } from '~/data/constants';
 import useGoogleAdsAccount from './useGoogleAdsAccount';
 import useApiFetchCallback from './useApiFetchCallback';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
 
 /**
  * Set up a Google Ads account.

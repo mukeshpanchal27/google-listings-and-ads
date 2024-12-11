@@ -8,8 +8,8 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * Internal dependencies
  */
-import { useAppDispatch } from '.~/data';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
+import { useAppDispatch } from '~/data';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
 
 export default function useAdsSetupCompleteCallback() {
 	const { createAdsCampaign } = useAppDispatch();

@@ -10,8 +10,8 @@ import GridiconChevronRight from 'gridicons/dist/chevron-right';
 /**
  * Internal dependencies
  */
-import Section from '.~/wcdl/section';
-import AppButton from '.~/components/app-button';
+import Section from '~/wcdl/section';
+import AppButton from '~/components/app-button';
 import CampaignPreview from './campaign-preview';
 import './campaign-preview-card.scss';
 

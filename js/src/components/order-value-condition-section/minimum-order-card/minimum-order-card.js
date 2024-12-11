@@ -5,19 +5,19 @@ import { __ } from '@wordpress/i18n';
 import GridiconPlusSmall from 'gridicons/dist/plus-small';
 
 /**
- * @typedef { import(".~/data/actions").ShippingRate } ShippingRate
+ * @typedef { import("~/data/actions").ShippingRate } ShippingRate
  */
 
 /**
  * Internal dependencies
  */
-import Section from '.~/wcdl/section';
-import AppButton from '.~/components/app-button';
-import AppButtonModalTrigger from '.~/components/app-button-modal-trigger';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
-import { useAdaptiveFormInputProps } from '.~/components/adaptive-form';
-import OfferFreeShippingCheckbox from '.~/components/order-value-condition-section/offer-free-shipping-checkbox';
-import isNonFreeShippingRate from '.~/utils/isNonFreeShippingRate';
+import Section from '~/wcdl/section';
+import AppButton from '~/components/app-button';
+import AppButtonModalTrigger from '~/components/app-button-modal-trigger';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
+import { useAdaptiveFormInputProps } from '~/components/adaptive-form';
+import OfferFreeShippingCheckbox from '~/components/order-value-condition-section/offer-free-shipping-checkbox';
+import isNonFreeShippingRate from '~/utils/isNonFreeShippingRate';
 import MinimumOrderInputControl from './minimum-order-input-control';
 import { AddMinimumOrderFormModal } from './minimum-order-form-modals';
 import groupShippingRatesByCurrencyFreeShippingThreshold from './groupShippingRatesByCurrencyFreeShippingThreshold';

@@ -8,9 +8,9 @@ import { external as externalIcon } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import { ClaimAccountButton } from '.~/components/google-ads-account-card';
-import { useAppDispatch } from '.~/data';
-import useWindowFocusCallbackIntervalEffect from '.~/hooks/useWindowFocusCallbackIntervalEffect';
+import { ClaimAccountButton } from '~/components/google-ads-account-card';
+import { useAppDispatch } from '~/data';
+import useWindowFocusCallbackIntervalEffect from '~/hooks/useWindowFocusCallbackIntervalEffect';
 import './claim-ads-account.scss';
 
 /**

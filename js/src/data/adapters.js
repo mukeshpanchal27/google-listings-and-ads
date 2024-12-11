@@ -1,12 +1,12 @@
 /**
  * Internal dependencies
  */
-import { ASSET_TEXT_SPECS } from '.~/components/paid-ads/assetSpecs';
-import getCharacterCounter from '.~/utils/getCharacterCounter';
+import { ASSET_TEXT_SPECS } from '~/components/paid-ads/assetSpecs';
+import getCharacterCounter from '~/utils/getCharacterCounter';
 
 /**
- * @typedef {import('.~/data/actions').Campaign} Campaign
- * @typedef {import('.~/data/types.js').AssetEntityGroup} AssetEntityGroup
+ * @typedef {import('~/data/actions').Campaign} Campaign
+ * @typedef {import('~/data/types.js').AssetEntityGroup} AssetEntityGroup
  */
 
 /**

@@ -7,12 +7,12 @@ import { render, screen } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import ProductStatistics from './index';
-import useMCProductStatistics from '.~/hooks/useMCProductStatistics';
-import useAppSelectDispatch from '.~/hooks/useAppSelectDispatch';
+import ProductStatistics from './';
+import useMCProductStatistics from '~/hooks/useMCProductStatistics';
+import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
 
-jest.mock( '.~/hooks/useMCProductStatistics' );
-jest.mock( '.~/hooks/useAppSelectDispatch' );
+jest.mock( '~/hooks/useMCProductStatistics' );
+jest.mock( '~/hooks/useAppSelectDispatch' );
 
 const stats = {
 	loading: false,

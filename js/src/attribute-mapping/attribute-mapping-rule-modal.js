@@ -8,19 +8,19 @@ import { isEqual, noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import Subsection from '.~/wcdl/subsection';
-import AppModal from '.~/components/app-modal';
-import AppButton from '.~/components/app-button';
-import AppSelectControl from '.~/components/app-select-control';
-import useMappingAttributes from '.~/hooks/useMappingAttributes';
-import useMappingAttributesSources from '.~/hooks/useMappingAttributesSources';
+import Subsection from '~/wcdl/subsection';
+import AppModal from '~/components/app-modal';
+import AppButton from '~/components/app-button';
+import AppSelectControl from '~/components/app-select-control';
+import useMappingAttributes from '~/hooks/useMappingAttributes';
+import useMappingAttributesSources from '~/hooks/useMappingAttributesSources';
 import AttributeMappingFieldSourcesControl from './attribute-mapping-field-sources-control';
 import AttributeMappingSourceTypeSelector from './attribute-mapping-source-type-selector';
-import AttributeMappingCategoryControl from '.~/attribute-mapping/attribute-mapping-category-control';
-import AppSpinner from '.~/components/app-spinner';
-import { useAppDispatch } from '.~/data';
-import { CATEGORY_CONDITION_SELECT_TYPES } from '.~/constants';
-import { recordGlaEvent } from '.~/utils/tracks';
+import AttributeMappingCategoryControl from '~/attribute-mapping/attribute-mapping-category-control';
+import AppSpinner from '~/components/app-spinner';
+import { useAppDispatch } from '~/data';
+import { CATEGORY_CONDITION_SELECT_TYPES } from '~/constants';
+import { recordGlaEvent } from '~/utils/tracks';
 
 /**
  * Updates the rule successfully

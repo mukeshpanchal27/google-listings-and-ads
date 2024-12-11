@@ -6,9 +6,9 @@ import { getHistory, getNewPath } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import AppSpinner from '.~/components/app-spinner';
+import AppSpinner from '~/components/app-spinner';
 import SavedSetupStepper from './saved-setup-stepper';
-import useMCSetup from '.~/hooks/useMCSetup';
+import useMCSetup from '~/hooks/useMCSetup';
 import stepNameKeyMap from './stepNameKeyMap';
 
 const SetupStepper = () => {

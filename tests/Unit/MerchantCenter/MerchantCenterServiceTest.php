@@ -111,20 +111,20 @@ class MerchantCenterServiceTest extends UnitTest {
 		$this->options                = $this->createMock( OptionsInterface::class );
 
 		$this->container = new Container();
-		$this->container->share( AddressUtility::class, $this->address_utility );
-		$this->container->share( AdsService::class, $this->ads_service );
-		$this->container->share( ContactInformation::class, $this->contact_information );
-		$this->container->share( GoogleHelper::class, $this->google_helper );
-		$this->container->share( Merchant::class, $this->merchant );
-		$this->container->share( MerchantAccountState::class, $this->merchant_account_state );
-		$this->container->share( MerchantStatuses::class, $this->merchant_statuses );
-		$this->container->share( Settings::class, $this->settings );
-		$this->container->share( ShippingRateQuery::class, $this->shipping_rate_query );
-		$this->container->share( ShippingTimeQuery::class, $this->shipping_time_query );
-		$this->container->share( TargetAudience::class, $this->target_audience );
-		$this->container->share( TransientsInterface::class, $this->transients );
-		$this->container->share( WC::class, $this->wc );
-		$this->container->share( WP::class, $this->wp );
+		$this->container->addShared( AddressUtility::class, $this->address_utility );
+		$this->container->addShared( AdsService::class, $this->ads_service );
+		$this->container->addShared( ContactInformation::class, $this->contact_information );
+		$this->container->addShared( GoogleHelper::class, $this->google_helper );
+		$this->container->addShared( Merchant::class, $this->merchant );
+		$this->container->addShared( MerchantAccountState::class, $this->merchant_account_state );
+		$this->container->addShared( MerchantStatuses::class, $this->merchant_statuses );
+		$this->container->addShared( Settings::class, $this->settings );
+		$this->container->addShared( ShippingRateQuery::class, $this->shipping_rate_query );
+		$this->container->addShared( ShippingTimeQuery::class, $this->shipping_time_query );
+		$this->container->addShared( TargetAudience::class, $this->target_audience );
+		$this->container->addShared( TransientsInterface::class, $this->transients );
+		$this->container->addShared( WC::class, $this->wc );
+		$this->container->addShared( WP::class, $this->wp );
 
 		$this->mc_service = new MerchantCenterService();
 		$this->mc_service->set_container( $this->container );

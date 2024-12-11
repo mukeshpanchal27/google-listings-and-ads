@@ -12,8 +12,8 @@ import {
 	REPORT_SOURCE_PAID,
 	REPORT_SOURCE_FREE,
 	REPORT_SOURCE_DEFAULT,
-} from '.~/constants';
-import { getProductLabels, getVariationLabels } from './async-requests';
+} from '~/constants';
+import { getProductLabels, getVariationLabels } from './asyncRequests';
 
 // XXX: Should we register those filters somewhere?
 // XXX: Or maybe YAGNI?

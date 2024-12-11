@@ -61,7 +61,7 @@ class GoogleAdsCleanupServices {
 	 * @param Event|null  $event Composer event.
 	 * @param string|null $path Path of the Ads library.
 	 */
-	public function __construct( Event $event = null, string $path = null ) {
+	public function __construct( ?Event $event = null, ?string $path = null ) {
 		$this->event     = $event;
 		$this->path      = $path ?: dirname( __DIR__ ) . '/vendor/googleads/google-ads-php';
 		$this->code_path = dirname( __DIR__ ) . '/src';
@@ -70,9 +70,9 @@ class GoogleAdsCleanupServices {
 	/**
 	 * Remove unused classes from the library.
 	 *
-	 * @param Event $event Event context provided by Composer
+	 * @param Event|null $event Event context provided by Composer
 	 */
-	public static function remove( Event $event = null ) {
+	public static function remove( ?Event $event = null ) {
 		$cleanup = new GoogleAdsCleanupServices( $event );
 		$cleanup->remove_services();
 		$cleanup->remove_enums();
@@ -263,7 +263,7 @@ class GoogleAdsCleanupServices {
 	 *
 	 * @return array List of matched names.
 	 */
-	protected function find_library_file_pattern( string $pattern, string $suffix = null ): array {
+	protected function find_library_file_pattern( string $pattern, ?string $suffix = null ): array {
 		$output = glob( "{$pattern}/*.php" );
 
 		if ( empty( $output ) ) {

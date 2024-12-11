@@ -8,8 +8,8 @@ import { createInterpolateElement } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
-import EnableNewProductSyncButton from '.~/components/enable-new-product-sync-button';
+import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
+import EnableNewProductSyncButton from '~/components/enable-new-product-sync-button';
 
 /**
  * Shows info {@link Notice}

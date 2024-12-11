@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AccountCard from '.~/components/account-card';
-import LoadingLabel from '.~/components/loading-label';
+import AccountCard from '~/components/account-card';
+import LoadingLabel from '~/components/loading-label';
 
 /**
  * Renders indication that the user is in the process of creating or connecting a Google Ads account.

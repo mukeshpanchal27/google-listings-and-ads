@@ -10,21 +10,21 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
 /**
  * Internal dependencies
  */
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
-import AppButton from '.~/components/app-button';
-import ConnectedIconLabel from '.~/components/connected-icon-label';
-import Section from '.~/wcdl/section';
-import { GOOGLE_WPCOM_APP_CONNECTED_STATUS } from '.~/constants';
-import { API_NAMESPACE } from '.~/data/constants';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import { useAppDispatch } from '.~/data';
-import EnableNewProductSyncButton from '.~/components/enable-new-product-sync-button';
-import AppNotice from '.~/components/app-notice';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
+import AppButton from '~/components/app-button';
+import ConnectedIconLabel from '~/components/connected-icon-label';
+import Section from '~/wcdl/section';
+import { GOOGLE_WPCOM_APP_CONNECTED_STATUS } from '~/constants';
+import { API_NAMESPACE } from '~/data/constants';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
+import { useAppDispatch } from '~/data';
+import EnableNewProductSyncButton from '~/components/enable-new-product-sync-button';
+import AppNotice from '~/components/app-notice';
 import DisconnectModal, {
 	API_DATA_FETCH_FEATURE,
-} from '.~/settings/disconnect-modal';
-import { getSettingsUrl } from '.~/utils/urls';
+} from '~/settings/disconnect-modal';
+import { getSettingsUrl } from '~/utils/urls';
 
 /**
  * Renders a Google Merchant Center account card UI with connected account information.

@@ -6,12 +6,12 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Status from '.~/product-feed/product-statistics/status-box/status';
-import ErrorIcon from '.~/components/error-icon';
-import AppButton from '.~/components/app-button';
+import Status from '~/product-feed/product-statistics/status-box/status';
+import ErrorIcon from '~/components/error-icon';
+import AppButton from '~/components/app-button';
 
 /**
- * @typedef {import('.~/data/actions').ProductStatistics } ProductStatistics
+ * @typedef {import('~/data/actions').ProductStatistics } ProductStatistics
  */
 
 /**

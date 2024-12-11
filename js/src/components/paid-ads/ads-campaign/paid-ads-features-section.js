@@ -9,11 +9,11 @@ import GridiconCheckmark from 'gridicons/dist/checkmark';
 /**
  * Internal dependencies
  */
-import Section from '.~/wcdl/section';
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import CampaignPreview from '.~/components/paid-ads/campaign-preview';
-import FreeAdCredit from '.~/components/free-ad-credit';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
+import Section from '~/wcdl/section';
+import AppDocumentationLink from '~/components/app-documentation-link';
+import CampaignPreview from '~/components/paid-ads/campaign-preview';
+import FreeAdCredit from '~/components/free-ad-credit';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
 import './paid-ads-features-section.scss';
 
 function FeatureList() {

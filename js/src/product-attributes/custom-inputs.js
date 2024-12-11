@@ -6,13 +6,13 @@ import $ from 'jquery';
 /**
  * Internal dependencies
  */
-import selectWithText from './select-with-text-input';
+import initSelectWithTextInput from './initSelectWithTextInput';
 
 $( function () {
 	'use strict';
 
 	const init = () => {
-		selectWithText( $ );
+		initSelectWithTextInput( $ );
 	};
 
 	$( '#woocommerce-product-data' ).on(

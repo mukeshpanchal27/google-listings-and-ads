@@ -9,7 +9,7 @@ const toggleCustomInput = ( selectInput ) => {
 	}
 };
 
-const init = ( jQuery ) => {
+const initSelectWithTextInput = ( jQuery ) => {
 	const selectWithTextInputBoxes = jQuery(
 		'div.select-with-text-input select'
 	);
@@ -21,4 +21,4 @@ const init = ( jQuery ) => {
 	} );
 };
 
-export default init;
+export default initSelectWithTextInput;

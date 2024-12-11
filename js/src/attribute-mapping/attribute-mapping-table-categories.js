@@ -6,12 +6,12 @@ import { _n, sprintf, __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AppTooltip from '.~/components/app-tooltip';
+import AppTooltip from '~/components/app-tooltip';
 import {
 	CATEGORIES_TO_SHOW_IN_TOOLTIP,
 	CATEGORY_CONDITION_SELECT_TYPES,
-} from '.~/constants';
-import useCategories from '.~/hooks/useCategories';
+} from '~/constants';
+import useCategories from '~/hooks/useCategories';
 
 /**
  * Show a text with the number of categories

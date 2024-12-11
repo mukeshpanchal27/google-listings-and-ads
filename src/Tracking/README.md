@@ -356,7 +356,7 @@ When a documentation link is clicked.
 - [`ProductStatusHelpPopover`](../../js/src/product-feed/product-statistics/product-status-help-popover/index.js#L16) with `{ context: 'product-feed', link_id: 'product-sync-statuses', href: 'https://support.google.com/merchants/answer/160491' }`
 - [`ReclaimUrlCard`](../../js/src/components/google-mc-account-card/reclaim-url-card/index.js#L42) with `{ context: 'setup-mc', link_id: 'claim-url', href: 'https://support.google.com/merchants/answer/176793' }`
 - [`RequestFullAccessGoogleAccountCard`](../../js/src/components/google-account-card/request-full-access-google-account-card.js#L26) with `{ context: 'setup-mc-accounts', link_id: 'required-google-permissions', href: 'https://woocommerce.com/document/google-for-woocommerce/get-started/setup-and-configuration/#required-google-permissions' }`
-- [`ShippingRateSection`](../../js/src/components/shipping-rate-section/shipping-rate-section.js#L23)
+- [`ShippingRateSection`](../../js/src/components/shipping-rate-section/shipping-rate-section.js#L25)
 	- with `{ context: 'setup-mc-shipping', link_id: 'shipping-read-more', href: 'https://support.google.com/merchants/answer/7050921' }`
 	- with `{ context: 'setup-mc-shipping', link_id: 'shipping-manual', href: 'https://www.google.com/retail/solutions/merchant-center/' }`
 - [`ShippingTimeSection`](../../js/src/components/free-listings/configure-product-listings/shipping-time-section.js#L17) with `{ context: 'setup-mc-shipping', link_id: 'shipping-read-more', href: 'https://support.google.com/merchants/answer/7050921' }`
@@ -511,14 +511,14 @@ Clicking on a Google Merchant Center link.
 - [`FreePerformanceCard`](../../js/src/dashboard/summary-section/index.js#L23) with `{ context: 'dashboard' }`
 - [`MetricNumber`](../../js/src/reports/metric-number.js#L42) with `{ context: 'reports' }`
 
-### [`gla_help_click`](../../js/src/components/help-icon-button.js#L12)
+### [`gla_help_click`](../../js/src/components/help-icon-button/index.js#L13)
 "Help" button is clicked.
 #### Properties
 | name | type | description |
 | ---- | ---- | ----------- |
 `context` | `string` | Indicates the place where the button is located, e.g. `setup-ads`.
 #### Emitters
-- [`HelpIconButton`](../../js/src/components/help-icon-button.js#L30)
+- [`HelpIconButton`](../../js/src/components/help-icon-button/index.js#L31)
 
 ### [`gla_import_assets_by_final_url_button_click`](../../js/src/components/paid-ads/asset-group/assets-loader.js#L80)
 Clicking on the "Scan for assets" button.
@@ -592,7 +592,7 @@ A modal is closed.
 - [`AttributeMappingTable`](../../js/src/attribute-mapping/attribute-mapping-table.js#L59) When any of the modals is closed
 - [`Dashboard`](../../js/src/dashboard/index.js#L34) when CES modal is closed.
 - [`ReviewRequest`](../../js/src/product-feed/review-request/index.js#L31) with `action: 'request-review-success' | 'maybe-later' | 'dismiss', context: REQUEST_REVIEW`
-- [`SubmissionSuccessGuide`](../../js/src/product-feed/submission-success-guide/index.js#L159) with `action: 'create-paid-campaign' | 'maybe-later' | 'view-product-feed' | 'dismiss'`
+- [`SubmissionSuccessGuide`](../../js/src/product-feed/submission-success-guide/index.js#L157) with `action: 'create-paid-campaign' | 'maybe-later' | 'view-product-feed' | 'dismiss'`
 
 ### [`gla_modal_content_link_click`](../../js/src/components/guide-page-content/index.js#L28)
 Clicking on a text link within the modal content
@@ -613,7 +613,7 @@ A modal is open
 #### Emitters
 - [`AttributeMappingTable`](../../js/src/attribute-mapping/attribute-mapping-table.js#L59) When any of the modals is open with `{ context: 'attribute-mapping-manage-rule-modal' | 'attribute-mapping-create-rule-modal' }`
 - [`ReviewRequest`](../../js/src/product-feed/review-request/index.js#L31) with `context: REQUEST_REVIEW`
-- [`SubmissionSuccessGuide`](../../js/src/product-feed/submission-success-guide/index.js#L159) with `context: GUIDE_NAMES.SUBMISSION_SUCCESS`
+- [`SubmissionSuccessGuide`](../../js/src/product-feed/submission-success-guide/index.js#L157) with `context: GUIDE_NAMES.SUBMISSION_SUCCESS`
 
 ### [`gla_onboarding_complete_button_click`](../../js/src/setup-mc/setup-stepper/skip-button.js#L17)
 Clicking on the skip paid ads button to complete the onboarding flow.
@@ -703,7 +703,7 @@ Triggered on events during ads onboarding
 - [`AdsStepper`](../../js/src/setup-ads/ads-stepper/index.js#L28)
 	- with `{ triggered_by: 'step1-continue-button', action: 'go-to-step2' }`.
 	- with `{ triggered_by: 'stepper-step1-button', action: 'go-to-step1'}`.
-- [`SetupAdsTopBar`](../../js/src/setup-ads/top-bar/index.js#L17) with given `{ triggered_by: 'back-button', action: 'leave' }` when back button is clicked.
+- [`SetupTopBar`](../../js/src/setup-ads/setup-top-bar.js#L17) with given `{ triggered_by: 'back-button', action: 'leave' }` when back button is clicked.
 
 ### [`gla_setup_ads_faq`](../../js/src/components/paid-ads/ads-campaign/faqs.js#L75)
 Clicking on faq items to collapse or expand it in the Onboarding Flow or creating/editing a campaign
@@ -729,7 +729,7 @@ Setup Merchant Center
 - [`SavedSetupStepper`](../../js/src/setup-mc/setup-stepper/saved-setup-stepper.js#L38)
 	- with `{ triggered_by: 'step1-continue-button' | 'step2-continue-button', action: 'go-to-step2' | 'go-to-step3' }`.
 	- with `{ triggered_by: 'stepper-step1-button' | 'stepper-step2-button', action: 'go-to-step1' | 'go-to-step2' }`.
-- [`SetupMCTopBar`](../../js/src/setup-mc/top-bar/index.js#L17) with `{ triggered_by: 'back-button', action: 'leave' }`.
+- [`SetupTopBar`](../../js/src/setup-mc/setup-top-bar.js#L17) with `{ triggered_by: 'back-button', action: 'leave' }`.
 
 ### [`gla_submit_campaign_button_click`](../../js/src/components/paid-ads/asset-group/asset-group.js#L28)
 Clicking on the submit button on the campaign creation or editing page.

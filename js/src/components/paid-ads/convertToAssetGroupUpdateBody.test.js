@@ -9,7 +9,7 @@ import { uniqueId } from 'lodash';
 import convertToAssetGroupUpdateBody, {
 	diffAssetOperations,
 } from './convertToAssetGroupUpdateBody';
-import { ASSET_KEY, ASSET_GROUP_KEY, ASSET_FORM_KEY } from '.~/constants';
+import { ASSET_KEY, ASSET_GROUP_KEY, ASSET_FORM_KEY } from '~/constants';
 
 function genId() {
 	return Number( uniqueId() );

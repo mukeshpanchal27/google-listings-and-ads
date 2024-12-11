@@ -1,10 +1,10 @@
 /**
  * Internal dependencies
  */
-import { API_NAMESPACE } from '.~/data/constants';
-import useTargetAudience from '.~/hooks/useTargetAudience';
-import useMCCountries from '.~/hooks/useMCCountries';
-import useApiFetchEffect from '.~/hooks/useApiFetchEffect';
+import { API_NAMESPACE } from '~/data/constants';
+import useTargetAudience from '~/hooks/useTargetAudience';
+import useMCCountries from '~/hooks/useMCCountries';
+import useApiFetchEffect from '~/hooks/useApiFetchEffect';
 
 /**
  * @typedef {Object} TargetAudienceWithSuggestionsResult

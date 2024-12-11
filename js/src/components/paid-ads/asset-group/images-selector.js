@@ -9,9 +9,9 @@ import GridiconCrossCircle from 'gridicons/dist/cross-circle';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import useCroppedImageSelector from '.~/hooks/useCroppedImageSelector';
-import AppTooltip from '.~/components/app-tooltip';
+import AppButton from '~/components/app-button';
+import useCroppedImageSelector from '~/hooks/useCroppedImageSelector';
+import AppTooltip from '~/components/app-tooltip';
 import AddAssetItemButton from './add-asset-item-button';
 import './images-selector.scss';
 

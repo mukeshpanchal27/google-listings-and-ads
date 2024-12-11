@@ -1,4 +1,4 @@
-jest.mock( '.~/hooks/useMCIssuesTypeFilter', () => ( {
+jest.mock( '~/hooks/useMCIssuesTypeFilter', () => ( {
 	__esModule: true,
 	default: jest
 		.fn()
@@ -23,8 +23,8 @@ import { render, screen } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import IssuesTableCard from '.~/product-feed/issues-table-card/index';
-import useMCIssuesTypeFilter from '.~/hooks/useMCIssuesTypeFilter';
+import IssuesTableCard from './';
+import useMCIssuesTypeFilter from '~/hooks/useMCIssuesTypeFilter';
 
 describe( 'Issues Table Card', () => {
 	it( 'Rendering when there are issues', () => {

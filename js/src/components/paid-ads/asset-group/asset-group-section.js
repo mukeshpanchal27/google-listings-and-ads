@@ -8,13 +8,13 @@ import { Tip } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { ASSET_FORM_KEY } from '.~/constants';
-import { useAdaptiveFormContext } from '.~/components/adaptive-form';
-import Section from '.~/wcdl/section';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
+import { ASSET_FORM_KEY } from '~/constants';
+import { useAdaptiveFormContext } from '~/components/adaptive-form';
+import Section from '~/wcdl/section';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
 import FinalUrlCard from './final-url-card';
 import AssetGroupCard from './asset-group-card';
-import AppDocumentationLink from '.~/components/app-documentation-link';
+import AppDocumentationLink from '~/components/app-documentation-link';
 import './asset-group-section.scss';
 
 /**

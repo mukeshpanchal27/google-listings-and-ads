@@ -6,7 +6,7 @@ import { fireEvent, render } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import TreeSelectControl from '.~/components/tree-select-control/index';
+import TreeSelectControl from './';
 
 /**
  * In jsdom, the width and height of all elements are zero,

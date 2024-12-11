@@ -6,14 +6,14 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { STORE_KEY } from '.~/data';
-import { glaData } from '.~/constants';
-import useIsEqualRefValue from '.~/hooks/useIsEqualRefValue';
+import { STORE_KEY } from '~/data';
+import { glaData } from '~/constants';
+import useIsEqualRefValue from '~/hooks/useIsEqualRefValue';
 
 const selectorName = 'getAdsCampaigns';
 
 /**
- * @typedef {import('.~/data/actions').Campaign} Campaign
+ * @typedef {import('~/data/actions').Campaign} Campaign
  *
  * @typedef {Object} AdsCampaignsPayload
  * @property {Array<Campaign>|null} data Current campaigns obtained from merchant's Google Ads account if connected. It will be `null` before load finished.

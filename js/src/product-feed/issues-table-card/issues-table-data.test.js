@@ -1,5 +1,5 @@
-jest.mock( '.~/hooks/useActiveIssueType' );
-jest.mock( '.~/utils/tracks', () => {
+jest.mock( '~/hooks/useActiveIssueType' );
+jest.mock( '~/utils/tracks', () => {
 	return {
 		recordGlaEvent: jest.fn(),
 	};
@@ -12,11 +12,11 @@ import '@testing-library/jest-dom';
 /**
  * Internal dependencies
  */
-import useActiveIssueType from '.~/hooks/useActiveIssueType';
-import mockIssue from '.~/tests/mock-issue';
+import useActiveIssueType from '~/hooks/useActiveIssueType';
+import mockIssue from '~/tests/mock-issue';
 import IssuesTableData from './issues-table-data';
-import { ISSUE_TYPE_ACCOUNT, ISSUE_TYPE_PRODUCT } from '.~/constants';
-import { recordGlaEvent } from '.~/utils/tracks';
+import { ISSUE_TYPE_ACCOUNT, ISSUE_TYPE_PRODUCT } from '~/constants';
+import { recordGlaEvent } from '~/utils/tracks';
 
 describe( 'Issues Table data', () => {
 	test( 'Render error if no data', () => {

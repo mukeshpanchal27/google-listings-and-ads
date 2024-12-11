@@ -24,7 +24,7 @@ import { CompareButton, Search } from '@woocommerce/components';
 /**
  * Internal dependencies
  */
-import Text from '.~/components/app-text';
+import Text from '~/components/app-text';
 
 export { CompareButton };
 

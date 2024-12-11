@@ -7,9 +7,9 @@ import { createInterpolateElement } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AppModal from '.~/components/app-modal';
-import AppButton from '.~/components/app-button';
-import WarningIcon from '.~/components/warning-icon';
+import AppModal from '~/components/app-modal';
+import AppButton from '~/components/app-button';
+import WarningIcon from '~/components/warning-icon';
 import './index.scss';
 
 /**

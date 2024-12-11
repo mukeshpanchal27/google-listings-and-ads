@@ -7,7 +7,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import CountriesTimeInput from './index';
+import CountriesTimeInput from './';
 
 describe( 'CountriesTimeInput', () => {
 	describe( 'Test Same delivery placeholder', () => {
@@ -54,7 +54,8 @@ describe( 'CountriesTimeInput', () => {
 			expect( getByDisplayValue( '' ) ).toBeInTheDocument();
 		} );
 	} );
-	describe( 'Test Stepper', () => {
+
+	describe( 'Test TimeStepper', () => {
 		it( 'Should call onChange when increasing an decreasing the days', async () => {
 			const onChange = jest.fn();
 			const { queryAllByRole } = render(

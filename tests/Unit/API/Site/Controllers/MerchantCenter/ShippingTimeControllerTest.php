@@ -41,8 +41,8 @@ class ShippingTimeControllerTest extends RESTControllerUnitTest {
 		$this->iso_provider       = $this->createMock( ISO3166DataProvider::class );
 
 		$this->container = new Container();
-		$this->container->share( RESTServer::class, $this->server );
-		$this->container->share( ShippingTimeQuery::class, $this->shiping_time_query );
+		$this->container->addShared( RESTServer::class, $this->server );
+		$this->container->addShared( ShippingTimeQuery::class, $this->shiping_time_query );
 
 		$this->controller = new ShippingTimeController( $this->container );
 		$this->controller->set_iso3166_provider( $this->iso_provider );

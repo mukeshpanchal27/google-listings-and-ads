@@ -7,8 +7,8 @@ import { createInterpolateElement } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import FaqsPanel from '.~/components/faqs-panel';
-import AppDocumentationLink from '.~/components/app-documentation-link';
+import FaqsPanel from '~/components/faqs-panel';
+import AppDocumentationLink from '~/components/app-documentation-link';
 
 const faqItems = [
 	{

@@ -9,8 +9,8 @@ import GridiconCrossSmall from 'gridicons/dist/cross-small';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import AppInputControl from '.~/components/app-input-control';
+import AppButton from '~/components/app-button';
+import AppInputControl from '~/components/app-input-control';
 import AddAssetItemButton from './add-asset-item-button';
 import './texts-editor.scss';
 

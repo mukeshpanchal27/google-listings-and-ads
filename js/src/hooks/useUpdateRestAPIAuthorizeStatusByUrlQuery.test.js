@@ -8,10 +8,10 @@ import { getQuery } from '@woocommerce/navigation';
  * Internal dependencies
  */
 import useUpdateRestAPIAuthorizeStatusByUrlQuery from './useUpdateRestAPIAuthorizeStatusByUrlQuery';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 
 jest.mock( '@woocommerce/navigation' );
-jest.mock( '.~/hooks/useApiFetchCallback' );
+jest.mock( '~/hooks/useApiFetchCallback' );
 
 describe( 'useUpdateRestAPIAuthorizeStatusByUrlQuery', () => {
 	let fetchUpdateRestAPIAuthorize;

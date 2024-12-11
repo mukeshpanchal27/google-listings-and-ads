@@ -7,16 +7,16 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { GOOGLE_ADS_ACCOUNT_STATUS } from '.~/constants';
-import SpinnerCard from '.~/components/spinner-card';
-import useGoogleAccount from '.~/hooks/useGoogleAccount';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
+import { GOOGLE_ADS_ACCOUNT_STATUS } from '~/constants';
+import SpinnerCard from '~/components/spinner-card';
+import useGoogleAccount from '~/hooks/useGoogleAccount';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
 import ConnectedGoogleAdsAccountCard from './connected-google-ads-account-card';
 import NonConnected from './non-connected';
 import AuthorizeAds from './authorize-ads';
 import DisabledCard from './disabled-card';
-import useGoogleAdsAccountStatus from '.~/hooks/useGoogleAdsAccountStatus';
-import showAdsConversionNotice from '.~/utils/showAdsConversionNotice';
+import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
+import showAdsConversionNotice from '~/utils/showAdsConversionNotice';
 
 export default function GoogleAdsAccountCard() {
 	const {

@@ -10,10 +10,10 @@ import { createInterpolateElement } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import useTargetAudience from '.~/hooks/useTargetAudience';
-import useStoreCountry from '.~/hooks/useStoreCountry';
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import { glaData } from '.~/constants';
+import useTargetAudience from '~/hooks/useTargetAudience';
+import useStoreCountry from '~/hooks/useStoreCountry';
+import AppDocumentationLink from '~/components/app-documentation-link';
+import { glaData } from '~/constants';
 import './index.scss';
 
 const ExternalIcon = () => (

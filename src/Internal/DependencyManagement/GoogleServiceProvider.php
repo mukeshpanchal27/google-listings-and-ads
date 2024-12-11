@@ -42,7 +42,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\GuzzleHttp\Client as Guzz
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\GuzzleHttp\ClientInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\GuzzleHttp\Exception\RequestException;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\GuzzleHttp\HandlerStack;
-use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\Container\Argument\RawArgument;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\Container\Definition\Definition;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Psr\Container\ContainerInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Psr\Http\Message\RequestInterface;
@@ -96,12 +95,12 @@ class GoogleServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * Use the register method to register items with the container via the
-	 * protected $this->leagueContainer property or the `getLeagueContainer` method
+	 * protected $this->container property or the `getContainer` method
 	 * from the ContainerAwareTrait.
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 		$this->register_guzzle();
 		$this->register_ads_client();
 		$this->register_google_classes();
@@ -126,7 +125,7 @@ class GoogleServiceProvider extends AbstractServiceProvider {
 
 		$this->share( SiteVerification::class );
 
-		$this->getLeagueContainer()->add( 'connect_server_root', $this->get_connect_server_url_root() );
+		$this->getContainer()->add( 'connect_server_root', $this->get_connect_server_url_root() );
 	}
 
 	/**
@@ -141,7 +140,7 @@ class GoogleServiceProvider extends AbstractServiceProvider {
 			$handler_stack->push( $this->add_plugin_version_header(), 'plugin_version_header' );
 
 			// Override endpoint URL if we are using http locally.
-			if ( 0 === strpos( $this->get_connect_server_url_root()->getValue(), 'http://' ) ) {
+			if ( 0 === strpos( $this->get_connect_server_url_root(), 'http://' ) ) {
 				$handler_stack->push( $this->override_http_url(), 'override_http_url' );
 			}
 
@@ -312,7 +311,7 @@ class GoogleServiceProvider extends AbstractServiceProvider {
 	 */
 	protected function generate_auth_header(): string {
 		/** @var Manager $manager */
-		$manager = $this->getLeagueContainer()->get( Manager::class );
+		$manager = $this->getContainer()->get( Manager::class );
 		$token   = $manager->get_tokens()->get_access_token( false, false, false );
 		$this->check_for_wp_error( $token );
 
@@ -349,13 +348,13 @@ class GoogleServiceProvider extends AbstractServiceProvider {
 	 *
 	 * @param string $path (Optional) A path relative to the root to include.
 	 *
-	 * @return RawArgument
+	 * @return string
 	 */
-	protected function get_connect_server_url_root( string $path = '' ): RawArgument {
+	protected function get_connect_server_url_root( string $path = '' ): string {
 		$url  = trailingslashit( $this->get_connect_server_url() );
 		$path = trim( $path, '/' );
 
-		return new RawArgument( "{$url}{$path}" );
+		return "{$url}{$path}";
 	}
 
 	/**
@@ -364,7 +363,7 @@ class GoogleServiceProvider extends AbstractServiceProvider {
 	 * @return string
 	 */
 	protected function get_connect_server_endpoint(): string {
-		$parts = wp_parse_url( $this->get_connect_server_url_root( 'google/google-ads' )->getValue() );
+		$parts = wp_parse_url( $this->get_connect_server_url_root( 'google/google-ads' ) );
 		$port  = empty( $parts['port'] ) ? 443 : $parts['port'];
 		return sprintf( '%s:%d%s', $parts['host'], $port, $parts['path'] );
 	}
@@ -374,7 +373,7 @@ class GoogleServiceProvider extends AbstractServiceProvider {
 	 */
 	protected function set_google_disconnected() {
 		/** @var Options $options */
-		$options = $this->getLeagueContainer()->get( OptionsInterface::class );
+		$options = $this->getContainer()->get( OptionsInterface::class );
 		$options->update( OptionsInterface::GOOGLE_CONNECTED, false );
 	}
 
@@ -387,7 +386,7 @@ class GoogleServiceProvider extends AbstractServiceProvider {
 	 */
 	protected function set_jetpack_connected( bool $connected ) {
 		/** @var Options $options */
-		$options = $this->getLeagueContainer()->get( OptionsInterface::class );
+		$options = $this->getContainer()->get( OptionsInterface::class );
 
 		// Save previous connected status before updating.
 		$previous_connected = boolval( $options->get( OptionsInterface::JETPACK_CONNECTED ) );
@@ -408,7 +407,7 @@ class GoogleServiceProvider extends AbstractServiceProvider {
 	 */
 	protected function jetpack_connected_change( bool $connected ) {
 		/** @var ReconnectWordPress $note */
-		$note = $this->getLeagueContainer()->get( ReconnectWordPress::class );
+		$note = $this->getContainer()->get( ReconnectWordPress::class );
 
 		if ( $connected ) {
 			$note->delete();

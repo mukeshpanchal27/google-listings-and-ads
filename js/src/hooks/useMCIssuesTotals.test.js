@@ -1,4 +1,4 @@
-jest.mock( '.~/hooks/useMCIssuesTypeFilter', () => ( {
+jest.mock( '~/hooks/useMCIssuesTypeFilter', () => ( {
 	__esModule: true,
 	default: jest
 		.fn()
@@ -21,9 +21,9 @@ import { renderHook } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import useMCIssuesTotals from '.~/hooks/useMCIssuesTotals';
-import useMCIssuesTypeFilter from '.~/hooks/useMCIssuesTypeFilter';
-import { ISSUE_TYPE_ACCOUNT, ISSUE_TYPE_PRODUCT } from '.~/constants';
+import useMCIssuesTotals from '~/hooks/useMCIssuesTotals';
+import useMCIssuesTypeFilter from '~/hooks/useMCIssuesTypeFilter';
+import { ISSUE_TYPE_ACCOUNT, ISSUE_TYPE_PRODUCT } from '~/constants';
 
 describe( 'useMCIssuesTotals', () => {
 	test.each( [ ISSUE_TYPE_ACCOUNT, ISSUE_TYPE_PRODUCT ] )(

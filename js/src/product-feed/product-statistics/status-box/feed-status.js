@@ -6,9 +6,9 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import useMCIssuesTotals from '.~/hooks/useMCIssuesTotals';
-import Status from '.~/product-feed/product-statistics/status-box/status';
-import SuccessIcon from '.~/components/success-icon';
+import useMCIssuesTotals from '~/hooks/useMCIssuesTotals';
+import Status from '~/product-feed/product-statistics/status-box/status';
+import SuccessIcon from '~/components/success-icon';
 
 /**
  * Returns the total number of issues to resolve

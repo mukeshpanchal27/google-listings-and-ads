@@ -78,12 +78,12 @@ class DBServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * Use the register method to register items with the container via the
-	 * protected $this->leagueContainer property or the `getLeagueContainer` method
+	 * protected $this->container property or the `getContainer` method
 	 * from the ContainerAwareTrait.
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 		$this->share_table_class( AttributeMappingRulesTable::class );
 		$this->add_query_class( AttributeMappingRulesQuery::class, AttributeMappingRulesTable::class );
 		$this->share_table_class( BudgetRecommendationTable::class );

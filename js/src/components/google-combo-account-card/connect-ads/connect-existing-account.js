@@ -7,17 +7,17 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AccountCard from '.~/components/account-card';
+import AccountCard from '~/components/account-card';
 import ConnectExistingAccountActions from './connect-existing-account-actions';
-import LoadingLabel from '.~/components/loading-label';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import useDispatchCoreNotices from '.~/hooks/useDispatchCoreNotices';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import { useAppDispatch } from '.~/data';
-import useGoogleAdsAccountReady from '.~/hooks/useGoogleAdsAccountReady';
-import AdsAccountSelectControl from '.~/components/ads-account-select-control';
-import ConnectedIconLabel from '.~/components/connected-icon-label';
-import { ConnectAccountButton } from '.~/components/google-ads-account-card';
+import LoadingLabel from '~/components/loading-label';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import { useAppDispatch } from '~/data';
+import useGoogleAdsAccountReady from '~/hooks/useGoogleAdsAccountReady';
+import AdsAccountSelectControl from '~/components/ads-account-select-control';
+import ConnectedIconLabel from '~/components/connected-icon-label';
+import { ConnectAccountButton } from '~/components/google-ads-account-card';
 
 /**
  * Renders an account card to connect to an existing Google Ads account.

@@ -11,7 +11,7 @@ import Placeholder from './components/placeholder';
 import ScaledText from './components/scaled-text';
 import SearchBar from './components/search-bar';
 import ShopLogo from './components/shop-logo';
-import googleLogoURL from '.~/images/google-logo.svg';
+import googleLogoURL from '~/images/logo/google-logo.svg';
 
 /**
  * @typedef { import("./index.js").AdPreviewData } AdPreviewData

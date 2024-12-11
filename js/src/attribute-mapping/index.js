@@ -6,11 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Section from '.~/wcdl/section';
+import Section from '~/wcdl/section';
 import AttributeMappingDescription from './attribute-mapping-description';
 import AttributeMappingTable from './attribute-mapping-table';
-import MainTabNav from '.~/components/main-tab-nav';
-import RebrandingTour from '.~/components/tours/rebranding-tour';
+import MainTabNav from '~/components/main-tab-nav';
+import RebrandingTour from '~/components/tours/rebranding-tour';
 import './index.scss';
 
 /**

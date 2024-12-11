@@ -6,23 +6,23 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { ASSET_FORM_KEY } from '.~/constants';
-import { useAdaptiveFormContext } from '.~/components/adaptive-form';
-import StepContent from '.~/components/stepper/step-content';
-import StepContentHeader from '.~/components/stepper/step-content-header';
-import StepContentFooter from '.~/components/stepper/step-content-footer';
-import StepContentActions from '.~/components/stepper/step-content-actions';
-import AppButton from '.~/components/app-button';
+import { ASSET_FORM_KEY } from '~/constants';
+import { useAdaptiveFormContext } from '~/components/adaptive-form';
+import StepContent from '~/components/stepper/step-content';
+import StepContentHeader from '~/components/stepper/step-content-header';
+import StepContentFooter from '~/components/stepper/step-content-footer';
+import StepContentActions from '~/components/stepper/step-content-actions';
+import AppButton from '~/components/app-button';
 import AssetGroupSection from './asset-group-section';
 import Faqs from './faqs';
-import { recordGlaEvent } from '.~/utils/tracks';
-import useTargetAudienceFinalCountryCodes from '.~/hooks/useTargetAudienceFinalCountryCodes';
+import { recordGlaEvent } from '~/utils/tracks';
+import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
 
 export const ACTION_SUBMIT_CAMPAIGN_AND_ASSETS = 'submit-campaign-and-assets';
 export const ACTION_SUBMIT_CAMPAIGN_ONLY = 'submit-campaign-only';
 
 /**
- * @typedef {import('.~/data/actions').Campaign} Campaign
+ * @typedef {import('~/data/actions').Campaign} Campaign
  */
 
 /**

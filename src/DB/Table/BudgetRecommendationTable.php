@@ -102,7 +102,12 @@ SQL;
 		$chunk_size = 500;
 
 		if ( file_exists( $path ) ) {
-			$csv = array_map( 'str_getcsv', file( $path ) );
+			$csv = array_map(
+				function ( $row ) {
+					str_getcsv( $row, ',', '"', '\\' );
+				},
+				file( $path )
+			);
 
 			// Remove the headers
 			array_shift( $csv );

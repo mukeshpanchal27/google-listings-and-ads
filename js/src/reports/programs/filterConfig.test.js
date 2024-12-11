@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import { createProgramsFilterConfig } from './filter-config';
-import { FREE_LISTINGS_PROGRAM_ID } from '.~/constants';
+import { createProgramsFilterConfig } from './filterConfig';
+import { FREE_LISTINGS_PROGRAM_ID } from '~/constants';
 
 function getAutocompleterOptions( config ) {
 	const filter = config.filters.find( ( el ) => el?.settings?.autocompleter );

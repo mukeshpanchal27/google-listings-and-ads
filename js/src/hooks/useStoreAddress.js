@@ -5,7 +5,7 @@ import useAppSelectDispatch from './useAppSelectDispatch';
 import useCountryKeyNameMap from './useCountryKeyNameMap';
 
 /**
- * @typedef {import('.~/hooks/types.js').StoreAddress} StoreAddress
+ * @typedef {import('~/hooks/types.js').StoreAddress} StoreAddress
  */
 
 const emptyData = {

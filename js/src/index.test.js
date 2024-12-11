@@ -8,7 +8,7 @@ import { dispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import { pagePaths } from './';
-import { STORE_KEY } from '.~/data';
+import { STORE_KEY } from '~/data';
 
 jest.mock( '@woocommerce/settings', () => ( {
 	getSetting: jest.fn().mockName( 'getSetting' ),
@@ -77,7 +77,7 @@ describe( 'index', () => {
 		it( "When the `path` of `wcadmin_page_view` tracking event is one of this plugin's route paths, it should add base properties", () => {
 			expect( pagePaths.size ).toBeGreaterThan( 0 );
 
-			// Simulate that the version has been hydrated via the initialization of .~/data/index.js
+			// Simulate that the version has been hydrated via the initialization of ~/data/index.js
 			dispatch( STORE_KEY ).hydratePrefetchedData( { version: '1.2.3' } );
 
 			pagePaths.forEach( ( path ) => {

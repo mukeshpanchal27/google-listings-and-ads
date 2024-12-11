@@ -3,7 +3,7 @@
  */
 import { useEffect } from '@wordpress/element';
 
-// gla-* styles are defined in .~/css/shared/_woocommerce-admin.scss
+// gla-* styles are defined in ~/css/shared/_woocommerce-admin.scss
 const classNameDict = {
 	'full-page': [
 		'woocommerce-admin-full-screen',

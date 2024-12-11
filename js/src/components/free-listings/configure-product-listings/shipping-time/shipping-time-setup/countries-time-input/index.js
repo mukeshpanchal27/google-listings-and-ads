@@ -6,10 +6,10 @@ import { Flex, FlexItem } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import AppSpinner from '.~/components/app-spinner';
-import ShippingTimeInputControlLabelText from '.~/components/shipping-time-input-control-label-text';
+import AppSpinner from '~/components/app-spinner';
+import ShippingTimeInputControlLabelText from '~/components/shipping-time-input-control-label-text';
 import EditTimeButton from './edit-time-button';
-import MinMaxShippingTimes from '../min-max-inputs';
+import MinMaxShippingTimes from '../min-max-shipping-times';
 import './index.scss';
 
 /**
@@ -93,6 +93,6 @@ const CountriesTimeInput = ( {
 export default CountriesTimeInput;
 
 /**
- * @typedef { import(".~/data/actions").AggregatedShippingTime } AggregatedShippingTime
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/data/actions").AggregatedShippingTime } AggregatedShippingTime
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
  */

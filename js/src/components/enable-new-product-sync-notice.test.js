@@ -7,10 +7,10 @@ import { render } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
+import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
 import EnableNewProductSyncNotice from './enable-new-product-sync-notice';
 
-jest.mock( '.~/hooks/useGoogleMCAccount' );
+jest.mock( '~/hooks/useGoogleMCAccount' );
 
 describe( 'Enable New Product Sync Notice', () => {
 	it( 'should render the notice if the account has not switched to new product sync', () => {

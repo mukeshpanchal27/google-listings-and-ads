@@ -9,14 +9,14 @@ import userEvent from '@testing-library/user-event';
  * Internal dependencies
  */
 import ImagesSelector from './images-selector';
-import useCroppedImageSelector from '.~/hooks/useCroppedImageSelector';
-import AppTooltip from '.~/components/app-tooltip';
+import useCroppedImageSelector from '~/hooks/useCroppedImageSelector';
+import AppTooltip from '~/components/app-tooltip';
 
-jest.mock( '.~/hooks/useCroppedImageSelector', () =>
+jest.mock( '~/hooks/useCroppedImageSelector', () =>
 	jest.fn().mockName( 'useCroppedImageSelector' )
 );
 
-jest.mock( '.~/components/app-tooltip', () =>
+jest.mock( '~/components/app-tooltip', () =>
 	jest.fn( ( props ) => <div { ...props } /> ).mockName( 'AppTooltip' )
 );
 

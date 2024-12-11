@@ -10,8 +10,8 @@ import { recordEvent } from '@woocommerce/tracks';
  * Internal dependencies
  */
 import TermsModal from './';
-import { FILTER_ONBOARDING } from '.~/utils/tracks';
-import expectComponentToRecordEventWithFilteredProperties from '.~/tests/expectComponentToRecordEventWithFilteredProperties';
+import { FILTER_ONBOARDING } from '~/utils/tracks';
+import expectComponentToRecordEventWithFilteredProperties from '~/tests/expectComponentToRecordEventWithFilteredProperties';
 
 jest.mock( '@woocommerce/tracks', () => {
 	return {

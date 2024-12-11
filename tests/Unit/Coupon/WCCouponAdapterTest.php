@@ -11,6 +11,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Tools\HelperTrait\DataTrai
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Tools\HelperTrait\CouponTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Service\ShoppingContent\TimePeriod as GoogleTimePeriod;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+use WC_Helper_Product;
 
 /**
  * Class WCProductAdapterTest
@@ -256,6 +257,62 @@ class WCCouponAdapterTest extends UnitTest {
 
 		$this->assertEquals( [ 'Zulu Category', 'Alpha Category' ], $adapted_coupon->getProductType() );
 		$this->assertEquals( [ 'Alpha Category > Beta Category' ], $adapted_coupon->getProductTypeExclusion() );
+	}
+
+	public function test_brand_restrictions() {
+		// compatibility-code "WC < 9.4" -- Brands in core was added in WooCommerce 9.4
+		if ( version_compare( WC_VERSION, '9.4', '<' ) ) {
+			self::markTestSkipped( 'WooCommerce 9.4 or newer is needed to test WooCommerce Brands in core.' );
+		}
+
+		require_once WC_ABSPATH . '/includes/class-wc-brands.php';
+		\WC_Brands::init_taxonomy();
+
+		$product_1    = WC_Helper_Product::create_simple_product();
+		$product_1_id = $product_1->get_id();
+		$product_2    = WC_Helper_Product::create_simple_product();
+		$product_2_id = $product_2->get_id();
+		$product_3    = WC_Helper_Product::create_simple_product();
+		$product_3_id = $product_3->get_id();
+
+		$brand_1 = wp_insert_term( 'Brand 1', 'product_brand' );
+		$brand_2 = wp_insert_term( 'Brand 2', 'product_brand' );
+
+		// Set the brand 1 for the product 1 and 2.
+		wp_set_post_terms( $product_1_id, $brand_1['term_id'], 'product_brand' );
+		wp_set_post_terms( $product_2_id, $brand_1['term_id'], 'product_brand' );
+
+		// Set the brand 2 for the product 3.
+		wp_set_post_terms( $product_3_id, $brand_2['term_id'], 'product_brand' );
+
+		$coupon = $this->create_ready_to_sync_coupon();
+
+		// Include product 3 for the coupon.
+		$coupon->set_product_ids( [ $product_3_id ] );
+
+		// Include brand 1 (product 1 and 2) for the coupon.
+		update_post_meta( $coupon->get_id(), 'product_brands', $brand_1['term_id'] );
+
+		// Exclude product 2 for the coupon.
+		$coupon->set_excluded_product_ids( [ $product_2_id ] );
+
+		// Exclude brand 2 (product 3) for the coupon.
+		update_post_meta( $coupon->get_id(), 'exclude_product_brands', $brand_2['term_id'] );
+
+		$coupon->save();
+
+		$adapted_coupon = new WCCouponAdapter(
+			[
+				'wc_coupon'     => $coupon,
+				'targetCountry' => 'US',
+			]
+		);
+
+		// The brand inclusion will override the product inclusion, so the product 3 won't appear in the inclusion list at the moment.
+		$this->assertEquals( [ "gla_{$product_1_id}", "gla_{$product_2_id}" ], $adapted_coupon->getItemId() );
+
+		// The brand exclusion will respect the product inclusion, so the product 2 appears in the exclusion list.
+		$this->assertEquals( [ "gla_{$product_2_id}", "gla_{$product_3_id}" ], $adapted_coupon->getItemIdExclusion() );
 	}
 
 	public function test_load_validator_metadata() {

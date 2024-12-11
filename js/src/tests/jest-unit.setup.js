@@ -26,7 +26,7 @@ global.wpNavMenuClassChange = jest.fn().mockName( 'wpNavMenuClassChange' );
 // mocked globally.
 //
 // Ref: https://github.com/WordPress/gutenberg/tree/trunk/packages/notices#usage
-jest.mock( '.~/hooks/useDispatchCoreNotices', () =>
+jest.mock( '~/hooks/useDispatchCoreNotices', () =>
 	jest
 		.fn()
 		.mockName( 'useDispatchCoreNotices' )

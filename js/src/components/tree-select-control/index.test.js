@@ -5,7 +5,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import TreeSelectControl from '.~/components/tree-select-control/index';
+import TreeSelectControl from './';
 
 const options = [
 	{

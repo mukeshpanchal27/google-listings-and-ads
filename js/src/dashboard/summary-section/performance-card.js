@@ -5,7 +5,7 @@ import { SummaryList, SummaryListPlaceholder } from '@woocommerce/components';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
+import AppButton from '~/components/app-button';
 
 /**
  * @typedef {import('@woocommerce/components').SummaryNumber} SummaryNumber

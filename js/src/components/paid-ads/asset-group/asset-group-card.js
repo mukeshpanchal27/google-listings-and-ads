@@ -8,13 +8,13 @@ import { SelectControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { useAdaptiveFormContext } from '.~/components/adaptive-form';
-import AppInputControl from '.~/components/app-input-control';
-import ValidationErrors from '.~/components/validation-errors';
+import { useAdaptiveFormContext } from '~/components/adaptive-form';
+import AppInputControl from '~/components/app-input-control';
+import ValidationErrors from '~/components/validation-errors';
 import ImagesSelector from './images-selector';
 import TextsEditor from './texts-editor';
 import AssetField from './asset-field';
-import { ASSET_FORM_KEY } from '.~/constants';
+import { ASSET_FORM_KEY } from '~/constants';
 import {
 	ASSET_IMAGE_SPECS,
 	ASSET_TEXT_SPECS,

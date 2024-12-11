@@ -6,9 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AppModal from '.~/components/app-modal';
-import AppButton from '.~/components/app-button';
-import AppDocumentationLink from '.~/components/app-documentation-link';
+import AppModal from '~/components/app-modal';
+import AppButton from '~/components/app-button';
+import AppDocumentationLink from '~/components/app-documentation-link';
 
 /**
  * @fires gla_documentation_link_click with `{ context: 'skip-paid-ads-modal', link_id: 'paid-ads-with-performance-max-campaigns-learn-more', href: 'https://support.google.com/google-ads/answer/10724817' }`

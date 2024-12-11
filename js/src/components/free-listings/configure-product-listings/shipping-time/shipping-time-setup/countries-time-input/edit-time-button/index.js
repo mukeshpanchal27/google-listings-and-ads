@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
+import AppButton from '~/components/app-button';
 import EditTimeModal from './edit-time-modal';
 import './index.scss';
 
@@ -66,6 +66,6 @@ const EditTimeButton = ( { audienceCountries, time, onChange, onDelete } ) => {
 export default EditTimeButton;
 
 /**
- * @typedef { import(".~/data/actions").AggregatedShippingTime } AggregatedShippingTime
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/data/actions").AggregatedShippingTime } AggregatedShippingTime
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
  */

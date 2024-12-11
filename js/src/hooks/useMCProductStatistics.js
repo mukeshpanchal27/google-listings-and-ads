@@ -8,8 +8,8 @@ import { useEffect, useCallback } from '@wordpress/element';
  */
 import useAppSelectDispatch from './useAppSelectDispatch';
 import useCountdown from './useCountdown';
-import useApiFetchCallback from '.~/hooks/useApiFetchCallback';
-import { useAppDispatch } from '.~/data';
+import useApiFetchCallback from '~/hooks/useApiFetchCallback';
+import { useAppDispatch } from '~/data';
 
 /**
  * Call `useAppSelectDispatch` with `"getMCProductStatistics"`.

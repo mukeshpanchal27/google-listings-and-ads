@@ -12,9 +12,9 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
  * Internal dependencies
  */
 import './css/index.scss';
-import withAdminPageShell from '.~/components/withAdminPageShell';
+import withAdminPageShell from '~/components/withAdminPageShell';
 import './data';
-import { addBaseEventProperties } from '.~/utils/tracks';
+import { addBaseEventProperties } from '~/utils/tracks';
 
 const Dashboard = lazy( () =>
 	import( /* webpackChunkName: "dashboard" */ './dashboard' )

@@ -7,15 +7,15 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import Stepper from './index';
+import TimeStepper from './';
 
-describe( 'Stepper', () => {
+describe( 'TimeStepper', () => {
 	it( 'Should increase value when clicking on the plus button', async () => {
 		const handleBlur = jest.fn();
 		const handleIncrement = jest.fn();
 
 		const { getByRole, getByDisplayValue } = render(
-			<Stepper
+			<TimeStepper
 				time={ 1 }
 				handleBlur={ handleBlur }
 				handleIncrement={ handleIncrement }
@@ -37,7 +37,7 @@ describe( 'Stepper', () => {
 		const handleIncrement = jest.fn();
 
 		const { getByRole, getByDisplayValue } = render(
-			<Stepper
+			<TimeStepper
 				time={ 4 }
 				handleBlur={ handleBlur }
 				handleIncrement={ handleIncrement }
@@ -59,7 +59,7 @@ describe( 'Stepper', () => {
 		const handleIncrement = jest.fn();
 
 		const { getByDisplayValue } = render(
-			<Stepper
+			<TimeStepper
 				time={ 0 }
 				handleBlur={ handleBlur }
 				handleIncrement={ handleIncrement }

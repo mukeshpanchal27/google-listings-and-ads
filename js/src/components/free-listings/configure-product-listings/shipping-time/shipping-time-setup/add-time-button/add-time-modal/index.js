@@ -9,12 +9,12 @@ import { Flex, FlexItem } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import AppButton from '.~/components/app-button';
-import AppModal from '.~/components/app-modal';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
-import SupportedCountrySelect from '.~/components/supported-country-select';
-import validateShippingTimeGroup from '.~/utils/validateShippingTimeGroup';
-import MinMaxShippingTimes from '../../min-max-inputs';
+import AppButton from '~/components/app-button';
+import AppModal from '~/components/app-modal';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
+import SupportedCountrySelect from '~/components/supported-country-select';
+import validateShippingTimeGroup from '~/utils/validateShippingTimeGroup';
+import MinMaxShippingTimes from '../../min-max-shipping-times';
 
 /**
  * Form to add a new time for selected country(-ies).
@@ -122,6 +122,6 @@ const AddTimeModal = ( { countries, onRequestClose, onSubmit } ) => {
 export default AddTimeModal;
 
 /**
- * @typedef { import(".~/data/actions").AggregatedShippingTime } AggregatedShippingTime
- * @typedef { import(".~/data/actions").CountryCode } CountryCode
+ * @typedef { import("~/data/actions").AggregatedShippingTime } AggregatedShippingTime
+ * @typedef { import("~/data/actions").CountryCode } CountryCode
  */

@@ -1,4 +1,4 @@
-jest.mock( '.~/hooks/useMCIssuesTypeFilter', () => ( {
+jest.mock( '~/hooks/useMCIssuesTypeFilter', () => ( {
 	__esModule: true,
 	default: jest
 		.fn()
@@ -9,8 +9,8 @@ jest.mock( '.~/hooks/useMCIssuesTypeFilter', () => ( {
 		} ),
 } ) );
 
-jest.mock( '.~/hooks/useActiveIssueType' );
-jest.mock( '.~/utils/tracks', () => {
+jest.mock( '~/hooks/useActiveIssueType' );
+jest.mock( '~/utils/tracks', () => {
 	return {
 		recordGlaEvent: jest.fn(),
 	};
@@ -24,9 +24,9 @@ import { fireEvent, screen, render } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import useActiveIssueType from '.~/hooks/useActiveIssueType';
-import ReviewRequest from '.~/product-feed/review-request/index';
-import { recordGlaEvent } from '.~/utils/tracks';
+import useActiveIssueType from '~/hooks/useActiveIssueType';
+import ReviewRequest from './';
+import { recordGlaEvent } from '~/utils/tracks';
 
 function isNotRendering( accountState ) {
 	const { queryByTestId, queryByRole } = render(

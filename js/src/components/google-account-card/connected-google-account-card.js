@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import AccountCard, { APPEARANCE } from '.~/components/account-card';
-import ConnectedIconLabel from '.~/components/connected-icon-label';
-import Section from '.~/wcdl/section';
+import AccountCard, { APPEARANCE } from '~/components/account-card';
+import ConnectedIconLabel from '~/components/connected-icon-label';
+import Section from '~/wcdl/section';
 import SwitchAccountButton from './switch-account-button';
 
 /**

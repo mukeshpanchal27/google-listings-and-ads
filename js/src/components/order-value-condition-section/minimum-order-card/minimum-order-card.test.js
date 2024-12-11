@@ -8,16 +8,16 @@ import userEvent from '@testing-library/user-event';
 /**
  * Internal dependencies
  */
-import MinimumOrderCard from './minimum-order-card.js';
-import * as adaptiveForm from '.~/components/adaptive-form';
+import MinimumOrderCard from './minimum-order-card';
+import * as adaptiveForm from '~/components/adaptive-form';
 
-jest.mock( '.~/hooks/useAppSelectDispatch' );
-jest.mock( '.~/hooks/useCountryKeyNameMap' );
-jest.mock( '.~/hooks/useStoreCurrency' );
-jest.mock( '.~/components/adaptive-form', () => {
+jest.mock( '~/hooks/useAppSelectDispatch' );
+jest.mock( '~/hooks/useCountryKeyNameMap' );
+jest.mock( '~/hooks/useStoreCurrency' );
+jest.mock( '~/components/adaptive-form', () => {
 	return {
 		__esModule: true,
-		...jest.requireActual( '.~/components/adaptive-form' ),
+		...jest.requireActual( '~/components/adaptive-form' ),
 	};
 } );
 

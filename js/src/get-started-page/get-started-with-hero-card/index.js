@@ -8,13 +8,13 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { glaData } from '.~/constants';
-import AppButton from '.~/components/app-button';
-import Text from '.~/components/app-text';
-import AppDocumentationLink from '.~/components/app-documentation-link';
-import { getSetupMCUrl } from '.~/utils/urls';
+import { glaData } from '~/constants';
+import AppButton from '~/components/app-button';
+import Text from '~/components/app-text';
+import AppDocumentationLink from '~/components/app-documentation-link';
+import { getSetupMCUrl } from '~/utils/urls';
 import './index.scss';
-import heroUrl from './hero.png';
+import heroUrl from '~/images/get-started/hero.png';
 
 /**
  * @fires gla_setup_mc with `{ triggered_by: 'start-onboarding-button', action: 'go-to-onboarding', context: 'get-started-with-hero' }`.

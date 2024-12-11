@@ -7,7 +7,7 @@ import { __, _x } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { NOTICES_STORE_KEY } from '.~/data/constants';
+import { NOTICES_STORE_KEY } from '~/data/constants';
 
 /**
  * @typedef {Object} ApiError

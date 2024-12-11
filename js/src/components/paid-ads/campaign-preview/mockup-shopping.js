@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import Placeholder from './components/placeholder';
 import ScaledText from './components/scaled-text';
 import ProductCover from './components/product-cover';
-import googleShoppingLogoURL from './images/google-shopping-logo.svg';
+import googleShoppingLogoURL from '~/images/campaign-preview/google-shopping-logo.svg';
 
 /**
  * @typedef { import("./index.js").AdPreviewData } AdPreviewData

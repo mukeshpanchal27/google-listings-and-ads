@@ -8,24 +8,24 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { getGetStartedUrl } from '.~/utils/urls';
-import useAdminUrl from '.~/hooks/useAdminUrl';
-import useJetpackAccount from '.~/hooks/useJetpackAccount';
-import useGoogleAccount from '.~/hooks/useGoogleAccount';
-import useGoogleMCAccount from '.~/hooks/useGoogleMCAccount';
-import useGoogleAdsAccount from '.~/hooks/useGoogleAdsAccount';
-import AppButton from '.~/components/app-button';
-import SpinnerCard from '.~/components/spinner-card';
-import VerticalGapLayout from '.~/components/vertical-gap-layout';
-import { ConnectedWPComAccountCard } from '.~/components/wpcom-account-card';
-import { ConnectedGoogleAccountCard } from '.~/components/google-account-card';
-import { ConnectedGoogleAdsAccountCard } from '.~/components/google-ads-account-card';
-import { MerchantCenterAccountInfoCard } from '.~/components/google-mc-account-card';
-import Section from '.~/wcdl/section';
+import { getGetStartedUrl } from '~/utils/urls';
+import useAdminUrl from '~/hooks/useAdminUrl';
+import useJetpackAccount from '~/hooks/useJetpackAccount';
+import useGoogleAccount from '~/hooks/useGoogleAccount';
+import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
+import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
+import AppButton from '~/components/app-button';
+import SpinnerCard from '~/components/spinner-card';
+import VerticalGapLayout from '~/components/vertical-gap-layout';
+import { ConnectedWPComAccountCard } from '~/components/wpcom-account-card';
+import { ConnectedGoogleAccountCard } from '~/components/google-account-card';
+import { ConnectedGoogleAdsAccountCard } from '~/components/google-ads-account-card';
+import { MerchantCenterAccountInfoCard } from '~/components/google-mc-account-card';
+import Section from '~/wcdl/section';
 import LinkedAccountsSectionWrapper from './linked-accounts-section-wrapper';
 import DisconnectModal, { ALL_ACCOUNTS, ADS_ACCOUNT } from './disconnect-modal';
-import { GOOGLE_ADS_ACCOUNT_STATUS } from '.~/constants';
-import { queueRecordGlaEvent } from '.~/utils/tracks';
+import { GOOGLE_ADS_ACCOUNT_STATUS } from '~/constants';
+import { queueRecordGlaEvent } from '~/utils/tracks';
 
 const { CONNECTED, INCOMPLETE } = GOOGLE_ADS_ACCOUNT_STATUS;
 

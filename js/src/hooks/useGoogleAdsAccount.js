@@ -7,9 +7,9 @@ import { useCallback } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { STORE_KEY } from '.~/data/constants';
-import { useAppDispatch } from '.~/data';
-import { GOOGLE_ADS_ACCOUNT_STATUS } from '.~/constants';
+import { STORE_KEY } from '~/data/constants';
+import { useAppDispatch } from '~/data';
+import { GOOGLE_ADS_ACCOUNT_STATUS } from '~/constants';
 import useGoogleAccount from './useGoogleAccount';
 
 const googleAdsAccountSelector = 'getGoogleAdsAccount';

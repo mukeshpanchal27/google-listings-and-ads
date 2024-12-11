@@ -6,10 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ErrorIcon from '.~/components/error-icon';
-import WarningIcon from '.~/components/warning-icon';
-import SuccessIcon from '.~/components/success-icon';
-import SyncIcon from '.~/components/sync-icon';
+import ErrorIcon from '~/components/error-icon';
+import WarningIcon from '~/components/warning-icon';
+import SuccessIcon from '~/components/success-icon';
+import SyncIcon from '~/components/sync-icon';
 
 const DISAPPROVED = {
 	status: (
@@ -92,4 +92,4 @@ const REVIEW_STATUSES = {
 	ONBOARDING,
 };
 
-export default REVIEW_STATUSES;
+export { REVIEW_STATUSES };

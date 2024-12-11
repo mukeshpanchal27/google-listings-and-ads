@@ -6,7 +6,7 @@ import { getNewPath } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import { API_RESPONSE_CODES } from '.~/constants';
+import { API_RESPONSE_CODES } from '~/constants';
 
 export const pagePaths = {
 	getStarted: '/google/start',

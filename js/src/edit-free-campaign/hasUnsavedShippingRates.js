@@ -1,10 +1,10 @@
 /**
  * Internal dependencies
  */
-import getDifferentShippingRates from '.~/utils/getDifferentShippingRates';
+import getDifferentShippingRates from '~/utils/getDifferentShippingRates';
 
 /**
- * @typedef {import('.~/data/actions').ShippingRate} ShippingRate
+ * @typedef {import('~/data/actions').ShippingRate} ShippingRate
  */
 
 /**
