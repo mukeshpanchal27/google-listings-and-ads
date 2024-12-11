@@ -5,7 +5,7 @@ Requires at least: 5.9
 Tested up to: 6.7
 Requires PHP: 7.4
 Requires PHP Architecture: 64 Bits
-Stable tag: 2.9.1
+Stable tag: 2.9.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -140,6 +140,13 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
+= 2.9.2 - 2024-12-11 =
+* Dev - Centralize frontend end images to the dedicated directory.
+* Fix - Ensure coupon brand restrictions are uploaded to Google Merchant Center.
+* Fix - Initial php 8.4 compatibility.
+* Fix - Prevent Warning when Saving a Variation if YOAST is activated.
+* Fix - The country selector in setup/edit free listing flow from being hidden.
+
 = 2.9.1 - 2024-12-03 =
 * Fix - Make the tab navigation tabs wrap when the screen narrows.
 * Fix - Prevent translations from being called early.
@@ -189,14 +196,5 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Update - Remove the language setting from onboarding.
 * Update - Restrict the GTIN field based on the version of WooCommerce installed and the initial version of G4W installed.
 * Update - When the accounts have been connected before, skip accounts setup step during the Ads-onboarding.
-
-= 2.8.7 - 2024-11-14 =
-* Dev - WordPress 6.7 Compatibility: Fix the issue that E2E test can't log in to wp-admin.
-* Fix - Remove a Google Ads API vendor file that prints php information.
-* Fix - WordPress 6.7 Compatibility: Avoid the block toolbar appearing when interacting blockified product editor.
-* Tweak - WC 9.4 compatibility.
-* Tweak - WP 6.7 compatibility.
-* Tweak - WordPress 6.7 Compatibility: Adjust the layout of the radio control to align well with the extended content.
-* Tweak - WordPress 6.7 Compatibility: Avoid errors in the database where a TEXT type can't have a default value.
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
