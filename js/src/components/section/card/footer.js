@@ -12,7 +12,7 @@ const Footer = ( props ) => {
 	const { children, ...restProps } = props;
 
 	return (
-		<CardFooter className="wcdl-section-card-footer" { ...restProps }>
+		<CardFooter className="gla-section-card-footer" { ...restProps }>
 			{ children }
 		</CardFooter>
 	);

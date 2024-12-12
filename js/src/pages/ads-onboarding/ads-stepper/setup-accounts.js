@@ -18,7 +18,7 @@ import FreeAdCredit from '~/components/free-ad-credit';
 import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
 import useGoogleAccount from '~/hooks/useGoogleAccount';
 import AppSpinner from '~/components/app-spinner';
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import useGoogleAdsAccountReady from '~/hooks/useGoogleAdsAccountReady';
 
 const SetupAccounts = ( props ) => {

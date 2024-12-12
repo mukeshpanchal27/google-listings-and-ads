@@ -11,7 +11,7 @@ import { external as externalIcon } from '@wordpress/icons';
  */
 import AppSpinner from '~/components/app-spinner';
 import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import AppButton from '~/components/app-button';
 import useEventPropertiesFilter from '~/hooks/useEventPropertiesFilter';
 import useAutoCheckBillingStatusEffect from './useAutoCheckBillingStatusEffect';

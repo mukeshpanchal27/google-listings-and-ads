@@ -11,7 +11,7 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
  * Internal dependencies
  */
 import AppButton from '~/components/app-button';
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import Subsection from '~/wcdl/subsection';
 import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';

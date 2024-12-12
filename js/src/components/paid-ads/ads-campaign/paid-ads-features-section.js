@@ -9,7 +9,7 @@ import GridiconCheckmark from 'gridicons/dist/checkmark';
 /**
  * Internal dependencies
  */
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import AppDocumentationLink from '~/components/app-documentation-link';
 import CampaignPreview from '~/components/paid-ads/campaign-preview';
 import FreeAdCredit from '~/components/free-ad-credit';

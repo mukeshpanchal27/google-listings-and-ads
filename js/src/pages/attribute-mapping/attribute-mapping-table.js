@@ -9,7 +9,7 @@ import { useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Card from '~/wcdl/section/card';
+import Section from '~/components/section';
 import AppButton from '~/components/app-button';
 import AppTableCardDiv from '~/components/app-table-card-div';
 import AppButtonModalTrigger from '~/components/app-button-modal-trigger';
@@ -93,7 +93,7 @@ const AttributeMappingTable = () => {
 
 	return (
 		<AppTableCardDiv>
-			<Card>
+			<Section.Card>
 				<CardBody size={ null }>
 					{ isLoading ? (
 						<TablePlaceholder
@@ -262,7 +262,7 @@ const AttributeMappingTable = () => {
 					/>
 					<AttributeMappingSync />
 				</CardFooter>
-			</Card>
+			</Section.Card>
 		</AppTableCardDiv>
 	);
 };

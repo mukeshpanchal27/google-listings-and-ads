@@ -31,20 +31,20 @@ const Section = ( {
 	disabledLeft,
 } ) => {
 	const sectionClassName = classnames(
-		'wcdl-section',
-		disabled ? 'wcdl-section--is-disabled' : false,
-		disabledLeft ? 'wcdl-section--is-disabled-left' : false,
+		'gla-section',
+		disabled ? 'gla-section--is-disabled' : false,
+		disabledLeft ? 'gla-section--is-disabled-left' : false,
 		className
 	);
 
 	return (
 		<section className={ sectionClassName }>
-			<header className="wcdl-section__header">
+			<header className="gla-section__header">
 				{ topContent && <p>{ topContent }</p> }
 				{ title && <h1>{ title }</h1> }
 				{ description }
 			</header>
-			<div className="wcdl-section__body">{ children }</div>
+			<div className="gla-section__body">{ children }</div>
 		</section>
 	);
 };

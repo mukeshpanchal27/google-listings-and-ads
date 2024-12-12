@@ -8,7 +8,7 @@ import { Icon, store as storeIcon } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import Subsection from '~/wcdl/subsection';
 import googleLogoURL from '~/images/logo/gogole-g-logo.svg';
 import googleMCLogoURL from '~/images/logo/google-merchant-center-logo.svg';

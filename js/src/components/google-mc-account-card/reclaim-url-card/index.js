@@ -14,7 +14,7 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
  */
 import AppDocumentationLink from '~/components/app-documentation-link';
 import AppButton from '~/components/app-button';
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import Subsection from '~/wcdl/subsection';
 import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 import useExistingGoogleMCAccounts from '~/hooks/useExistingGoogleMCAccounts';

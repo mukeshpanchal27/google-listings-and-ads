@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { getEditStoreAddressUrl } from '~/utils/urls';
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import AppDocumentationLink from '~/components/app-documentation-link';
 import { StoreAddressCardPreview } from './store-address-card';
 

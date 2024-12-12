@@ -13,7 +13,7 @@ import ClaimAccount from './claim-account';
 import ClaimAccountButton from './claim-account-button';
 import ClaimAccountModal from './claim-account-modal';
 import CreateAccountButton from './create-account-button';
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
 import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
 import useUpsertAdsAccount from '~/hooks/useUpsertAdsAccount';

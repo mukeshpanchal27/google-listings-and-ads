@@ -15,7 +15,7 @@ import useLayout from '~/hooks/useLayout';
 import useStoreAddress from '~/hooks/useStoreAddress';
 import TopBar from '~/components/stepper/top-bar';
 import HelpIconButton from '~/components/help-icon-button';
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import AppButton from '~/components/app-button';
 
 import AppDocumentationLink from '~/components/app-documentation-link';

@@ -10,7 +10,7 @@ import { Tip } from '@wordpress/components';
  */
 import { ASSET_FORM_KEY } from '~/constants';
 import { useAdaptiveFormContext } from '~/components/adaptive-form';
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import VerticalGapLayout from '~/components/vertical-gap-layout';
 import FinalUrlCard from './final-url-card';
 import AssetGroupCard from './asset-group-card';

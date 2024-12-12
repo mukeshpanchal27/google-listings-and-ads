@@ -8,7 +8,7 @@ import { createInterpolateElement } from '@wordpress/element';
  * Internal dependencies
  */
 import { useAdaptiveFormContext } from '~/components/adaptive-form';
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import RadioHelperText from '~/components/radio-helper-text';
 import AppRadioContentControl from '~/components/app-radio-content-control';
 import AppDocumentationLink from '~/components/app-documentation-link';

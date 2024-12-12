@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import AppDocumentationLink from '~/components/app-documentation-link';
 import ShippingTimeSetup from './shipping-time-setup';
 

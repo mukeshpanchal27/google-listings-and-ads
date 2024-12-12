@@ -14,7 +14,7 @@ const Body = ( props ) => {
 
 	return (
 		<CardBody
-			className={ classnames( 'wcdl-section-card-body', className ) }
+			className={ classnames( 'gla-section-card-body', className ) }
 			{ ...rest }
 		></CardBody>
 	);
