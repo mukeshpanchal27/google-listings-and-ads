@@ -9,7 +9,7 @@ import { noop } from 'lodash';
  */
 import useCategories from '~/hooks/useCategories';
 import { CATEGORY_CONDITION_SELECT_TYPES } from '~/constants';
-import SelectControl from '~/wcdl/select-control';
+import SearchableSelectControl from '~/components/searchable-select-control';
 import AppSelectControl from '~/components/app-select-control';
 
 /**
@@ -61,7 +61,7 @@ const AttributeMappingCategoryControl = ( {
 				CATEGORY_CONDITION_SELECT_TYPES.ONLY ||
 				selectedConditionalType ===
 					CATEGORY_CONDITION_SELECT_TYPES.EXCEPT ) && (
-				<SelectControl
+				<SearchableSelectControl
 					options={ categories }
 					isSearchable
 					placeholder={ __(

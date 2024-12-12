@@ -12,7 +12,7 @@ import { Spinner } from '@woocommerce/components';
  */
 import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
 import AppButton from '~/components/app-button';
-import SelectControl from '~/wcdl/select-control';
+import SearchableSelectControl from '~/components/searchable-select-control';
 import { API_NAMESPACE } from '~/data/constants';
 import './assets-loader.scss';
 
@@ -175,7 +175,7 @@ export default function AssetsLoader( { onAssetsLoaded } ) {
 
 	return (
 		<>
-			<SelectControl
+			<SearchableSelectControl
 				className="gla-assets-loader"
 				label={
 					<>

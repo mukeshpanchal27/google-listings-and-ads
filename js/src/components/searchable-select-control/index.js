@@ -9,20 +9,27 @@ import classnames from 'classnames';
  */
 import './index.scss';
 
-const SelectControl = ( props ) => {
+const SearchableSelectControl = ( props ) => {
 	const { label, helperText, className, ...rest } = props;
 
 	return (
-		<div className={ classnames( 'wcdl-select-control', className ) }>
-			{ label && (
-				<div className="wcdl-select-control__label">{ label }</div>
+		<div
+			className={ classnames(
+				'gla-searchable-select-control',
+				className
 			) }
-			<div className="wcdl-select-control__input">
+		>
+			{ label && (
+				<div className="gla-searchable-select-control__label">
+					{ label }
+				</div>
+			) }
+			<div className="gla-searchable-select-control__input">
 				{ /* Don't display the help text because it doesn't look good on the UI. */ }
 				<WCSelectControl { ...rest } help="" />
 			</div>
 			{ helperText && (
-				<div className="wcdl-select-control__helper-text">
+				<div className="gla-searchable-select-control__helper-text">
 					{ helperText }
 				</div>
 			) }
@@ -30,4 +37,4 @@ const SelectControl = ( props ) => {
 	);
 };
 
-export default SelectControl;
+export default SearchableSelectControl;
