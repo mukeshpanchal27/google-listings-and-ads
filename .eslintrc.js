@@ -107,7 +107,7 @@ module.exports = {
 			},
 		},
 		{
-			files: [ 'js/src/external-components/wordpress/**' ],
+			files: [ 'js/src/components/external/wordpress/**' ],
 			rules: {
 				'@wordpress/i18n-text-domain': [
 					'error',
