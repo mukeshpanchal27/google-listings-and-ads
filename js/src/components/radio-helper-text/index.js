@@ -8,7 +8,7 @@ const RadioHelperText = ( props ) => {
 
 	return (
 		<span
-			className={ `wcdl-radio-helper-text ${ className }` }
+			className={ `gla-radio-helper-text ${ className }` }
 			{ ...rest }
 		/>
 	);

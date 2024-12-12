@@ -9,7 +9,7 @@ import { createInterpolateElement } from '@wordpress/element';
  */
 import { useAdaptiveFormContext } from '~/components/adaptive-form';
 import Section from '~/wcdl/section';
-import RadioHelperText from '~/wcdl/radio-helper-text';
+import RadioHelperText from '~/components/radio-helper-text';
 import AppRadioContentControl from '~/components/app-radio-content-control';
 import AppDocumentationLink from '~/components/app-documentation-link';
 import VerticalGapLayout from '~/components/vertical-gap-layout';
