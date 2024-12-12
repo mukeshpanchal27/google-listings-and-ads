@@ -98,7 +98,7 @@ module.exports = {
 	},
 	overrides: [
 		{
-			files: [ 'js/src/external-components/woocommerce/**' ],
+			files: [ 'js/src/components/external/woocommerce/**' ],
 			rules: {
 				'@wordpress/i18n-text-domain': [
 					'error',
