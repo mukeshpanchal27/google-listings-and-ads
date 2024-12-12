@@ -13,7 +13,7 @@ const Subtitle = ( props ) => {
 
 	return (
 		<div
-			className={ classnames( 'wcdl-subsection-subtitle', className ) }
+			className={ classnames( 'gla-subsection-subtitle', className ) }
 			{ ...rest }
 		/>
 	);

@@ -8,7 +8,7 @@ import { noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import Subsection from '~/wcdl/subsection';
+import Subsection from '~/components/subsection';
 import AppRadioContentControl from '~/components/app-radio-content-control';
 import AppInputControl from '~/components/app-input-control';
 import AttributeMappingFieldSourcesControl from './attribute-mapping-field-sources-control';

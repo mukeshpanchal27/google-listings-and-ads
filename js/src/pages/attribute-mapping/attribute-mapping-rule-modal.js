@@ -8,7 +8,7 @@ import { isEqual, noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import Subsection from '~/wcdl/subsection';
+import Subsection from '~/components/subsection';
 import AppModal from '~/components/app-modal';
 import AppButton from '~/components/app-button';
 import AppSelectControl from '~/components/app-select-control';

@@ -15,7 +15,7 @@ import ConnectButton from './connect-button';
 import ContentButtonLayout from '~/components/content-button-layout';
 import LoadingLabel from '~/components/loading-label';
 import Section from '~/components/section';
-import Subsection from '~/wcdl/subsection';
+import Subsection from '~/components/subsection';
 import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
 import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
