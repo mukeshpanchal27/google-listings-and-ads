@@ -8,8 +8,8 @@ import { expect, test } from '@playwright/test';
  */
 import { clearOnboardedMerchant, setOnboardedMerchant } from '../../utils/api';
 import DashboardPage from '../../utils/pages/dashboard';
-import SetupAdsAccountsPage from '../../utils/pages/setup-ads/setup-ads-accounts';
-import SetupBudgetPage from '../../utils/pages/setup-ads/setup-budget';
+import SetupAdsAccountsPage from '../../utils/pages/ads-onboarding/setup-ads-accounts';
+import SetupBudgetPage from '../../utils/pages/ads-onboarding/setup-budget';
 import { LOAD_STATE } from '../../utils/constants';
 import {
 	getFAQPanelTitle,
@@ -38,12 +38,12 @@ test.describe.configure( { mode: 'serial' } );
 let dashboardPage = null;
 
 /**
- * @type {import('../../utils/pages/setup-ads/setup-ads-accounts').default} setupAdsAccounts
+ * @type {import('../../utils/pages/ads-onboarding/setup-ads-accounts').default} setupAdsAccounts
  */
 let setupAdsAccounts = null;
 
 /**
- * @type {import('../../utils/pages/setup-ads/setup-budget.js').default} setupBudgetPage
+ * @type {import('../../utils/pages/ads-onboarding/setup-budget.js').default} setupBudgetPage
  */
 let setupBudgetPage = null;
 
