@@ -52,7 +52,7 @@ Once you’re running Google Ads campaigns, the Google tag feature in the extens
 = Minimum Requirements =
 
 * WordPress 5.9 or greater
-* WooCommerce 6.9 or greater
+* WooCommerce 7.9 or greater
 * PHP version 7.4 or greater
 * PHP Architecture 64 bits
 * MySQL version 5.6 or greater
