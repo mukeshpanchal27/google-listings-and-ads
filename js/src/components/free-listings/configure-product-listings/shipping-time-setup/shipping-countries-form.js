@@ -4,7 +4,7 @@
 import VerticalGapLayout from '~/components/vertical-gap-layout';
 import AddTimeButton from './add-time-button';
 import CountriesTimeInput from './countries-time-input';
-import getCountriesTimeArray from './getCountriesTimeArray';
+import getShippingTimesGroups from '~/utils/getShippingTimesGroups';
 
 /**
  * @typedef { import("~/data/actions").CountryCode } CountryCode
@@ -36,7 +36,7 @@ export default function ShippingCountriesForm( {
 	const remainingCount = remainingCountryCodes.length;
 
 	// Group countries with the same time.
-	const countriesTimeArray = getCountriesTimeArray( shippingTimes );
+	const countriesTimeArray = getShippingTimesGroups( shippingTimes );
 
 	// Prefill to-be-added time.
 	if ( countriesTimeArray.length === 0 ) {

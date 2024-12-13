@@ -27,7 +27,7 @@ import getShippingTimeMapKey from '~/utils/getShippingTimeMapKey';
  *     },
  * ]
  *
- * const result = getCountriesTimeArray( shippingTimes );
+ * const result = getShippingTimesGroups( shippingTimes );
  *
  * // result:
  * // [
@@ -47,7 +47,7 @@ import getShippingTimeMapKey from '~/utils/getShippingTimeMapKey';
  * @param {Array<ShippingTime>} shippingTimes Array of individual shipping times in the format of `{ countryCode, time }`.
  * @return {Array<AggregatedShippingTime>} Array of shipping times grouped by time.
  */
-const getCountriesTimeArray = ( shippingTimes ) => {
+const getShippingTimesGroups = ( shippingTimes ) => {
 	const timeGroupMap = new Map();
 
 	shippingTimes.forEach( ( shippingTime ) => {
@@ -65,7 +65,7 @@ const getCountriesTimeArray = ( shippingTimes ) => {
 	return Array.from( timeGroupMap.values() );
 };
 
-export default getCountriesTimeArray;
+export default getShippingTimesGroups;
 
 /**
  * @typedef { import("~/data/actions").ShippingTime } ShippingTime
