@@ -1,9 +1,4 @@
 /**
- * Internal dependencies
- */
-import getShippingTimeMapKey from '~/utils/getShippingTimeMapKey';
-
-/**
  * Groups shipping times based on time.
  *
  * Usage example:
@@ -52,7 +47,7 @@ const getShippingTimesGroups = ( shippingTimes ) => {
 
 	shippingTimes.forEach( ( shippingTime ) => {
 		const { countryCode, time, maxTime } = shippingTime;
-		const mapKey = getShippingTimeMapKey( time, maxTime );
+		const mapKey = `${ time }-${ maxTime }`;
 		const group = timeGroupMap.get( mapKey ) || {
 			countries: [],
 			time,
