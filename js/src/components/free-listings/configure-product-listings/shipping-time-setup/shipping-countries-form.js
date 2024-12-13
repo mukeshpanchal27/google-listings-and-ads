@@ -9,7 +9,6 @@ import getShippingTimesGroups from '~/utils/getShippingTimesGroups';
 /**
  * @typedef { import("~/data/actions").CountryCode } CountryCode
  * @typedef { import("~/data/actions").ShippingTime } ShippingTime
- * @typedef { import("~/data/actions").AggregatedShippingTime } AggregatedShippingTime
  */
 
 /**
