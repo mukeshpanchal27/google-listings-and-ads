@@ -291,7 +291,7 @@ describe( 'reducer', () => {
 			const action = {
 				type: TYPES.UPSERT_SHIPPING_TIMES,
 				shippingTime: {
-					countryCodes: [ 'JP', 'CA' ],
+					countries: [ 'JP', 'CA' ],
 					time: 15,
 					maxTime: 30,
 				},
