@@ -13,7 +13,7 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
 import AccountCard, { APPEARANCE } from '~/components/account-card';
 import AppButton from '~/components/app-button';
 import ConnectedIconLabel from '~/components/connected-icon-label';
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import { GOOGLE_WPCOM_APP_CONNECTED_STATUS } from '~/constants';
 import { API_NAMESPACE } from '~/data/constants';
 import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';

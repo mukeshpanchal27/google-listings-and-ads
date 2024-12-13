@@ -6,7 +6,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import Subsection from '~/wcdl/subsection';
+import Subsection from '~/components/subsection';
 import './title.scss';
 
 const Title = ( props ) => {
@@ -14,7 +14,7 @@ const Title = ( props ) => {
 
 	return (
 		<Subsection.Title
-			className={ classnames( 'wcdl-section-card-title', className ) }
+			className={ classnames( 'gla-section-card-title', className ) }
 			{ ...rest }
 		/>
 	);

@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import { useAdaptiveFormInputProps } from '~/components/adaptive-form';
 import MinimumOrderCard from './minimum-order-card';
 

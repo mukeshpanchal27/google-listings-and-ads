@@ -21,7 +21,7 @@ import { ConnectedWPComAccountCard } from '~/components/wpcom-account-card';
 import { ConnectedGoogleAccountCard } from '~/components/google-account-card';
 import { ConnectedGoogleAdsAccountCard } from '~/components/google-ads-account-card';
 import { MerchantCenterAccountInfoCard } from '~/components/google-mc-account-card';
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import LinkedAccountsSectionWrapper from './linked-accounts-section-wrapper';
 import DisconnectModal, { ALL_ACCOUNTS, ADS_ACCOUNT } from './disconnect-modal';
 import { GOOGLE_ADS_ACCOUNT_STATUS } from '~/constants';

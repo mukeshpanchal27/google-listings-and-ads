@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import AttributeMappingDescription from './attribute-mapping-description';
 import AttributeMappingTable from './attribute-mapping-table';
 import MainTabNav from '~/components/main-tab-nav';

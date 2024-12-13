@@ -7,7 +7,7 @@ import GridiconPlusSmall from 'gridicons/dist/plus-small';
 /**
  * Internal dependencies
  */
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import AppButton from '~/components/app-button';
 import AppButtonModalTrigger from '~/components/app-button-modal-trigger';
 import VerticalGapLayout from '~/components/vertical-gap-layout';

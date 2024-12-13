@@ -21,7 +21,7 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
 import { createProgramsFilterConfig } from './filterConfig';
 import useAdsCampaigns from '~/hooks/useAdsCampaigns';
 import useStoreCurrency from '~/hooks/useStoreCurrency';
-import ReportFilters from '~/external-components/woocommerce/filters';
+import ReportFilters from '~/components/external/woocommerce/filters';
 import { recordGlaEvent } from '~/utils/tracks';
 
 const siteLocale = getSetting( 'locale' ).siteLocale;

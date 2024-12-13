@@ -115,7 +115,7 @@ const webpackConfig = {
 				commons: {
 					name: 'commons',
 					test( { resource } ) {
-						return /([\\/])js\1src\1(components|data|hooks|images|utils|wcdl)\1/.test(
+						return /([\\/])js\1src\1(components|data|hooks|images|utils)\1/.test(
 							resource
 						);
 					},

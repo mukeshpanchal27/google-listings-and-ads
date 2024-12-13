@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 
 export default function LinkedAccountsSectionWrapper( props ) {
 	return (

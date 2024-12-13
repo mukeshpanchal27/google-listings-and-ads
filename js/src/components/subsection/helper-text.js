@@ -13,7 +13,7 @@ const HelperText = ( props ) => {
 
 	return (
 		<div
-			className={ classnames( 'wcdl-subsection-helper-text', className ) }
+			className={ classnames( 'gla-subsection-helper-text', className ) }
 		>
 			{ children }
 		</div>

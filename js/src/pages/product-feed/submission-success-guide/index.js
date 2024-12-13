@@ -12,7 +12,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Guide from '~/external-components/wordpress/guide';
+import Guide from '~/components/external/wordpress/guide';
 import GuidePageContent, { ContentLink } from '~/components/guide-page-content';
 import AppButton from '~/components/app-button';
 import AddPaidCampaignButton from '~/components/paid-ads/add-paid-campaign-button';

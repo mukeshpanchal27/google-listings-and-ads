@@ -10,7 +10,7 @@ import { ExternalLink } from '@wordpress/components';
  * Internal dependencies
  */
 import { ASSET_GROUP_KEY } from '~/constants';
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import AccountCard, { APPEARANCE } from '~/components/account-card';
 import AppButton from '~/components/app-button';
 import AssetsLoader from './assets-loader';

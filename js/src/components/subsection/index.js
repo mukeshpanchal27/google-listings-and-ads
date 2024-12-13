@@ -10,7 +10,7 @@ import './index.scss';
 const Subsection = ( props ) => {
 	const { className = '', ...rest } = props;
 
-	return <div className={ `wcdl-subsection ${ className }` } { ...rest } />;
+	return <div className={ `gla-subsection ${ className }` } { ...rest } />;
 };
 
 Subsection.Title = Title;

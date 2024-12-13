@@ -38,12 +38,12 @@ export default class CompleteCampaign extends MockRequests {
 	}
 
 	/**
-	 * Get sections by .wcdl-section class.
+	 * Get sections by .gla-section class.
 	 *
-	 * @return {import('@playwright/test').Locator} Get sections by .wcdl-section class.
+	 * @return {import('@playwright/test').Locator} Get sections by .gla-section class.
 	 */
 	getSections() {
-		return this.page.locator( '.wcdl-section' );
+		return this.page.locator( '.gla-section' );
 	}
 
 	/**
