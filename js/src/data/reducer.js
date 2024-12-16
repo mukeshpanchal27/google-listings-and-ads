@@ -195,10 +195,10 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 		}
 
 		case TYPES.UPSERT_SHIPPING_TIMES: {
-			const { countryCodes, time, maxTime } = action.shippingTime;
+			const { countries, time, maxTime } = action.shippingTime;
 			const times = [ ...state.mc.shipping.times ];
 
-			countryCodes.forEach( ( countryCode ) => {
+			countries.forEach( ( countryCode ) => {
 				const shippingTime = { countryCode, time, maxTime };
 				const idx = times.findIndex(
 					( el ) => el.countryCode === countryCode
