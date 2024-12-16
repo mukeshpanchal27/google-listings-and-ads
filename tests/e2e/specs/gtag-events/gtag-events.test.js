@@ -111,9 +111,22 @@ test.describe( 'GTag events', () => {
 		page,
 	} ) => {
 		await createSimpleProduct(); // Create an additional product for related to show up.
+		await page.goto( `?p=${ simpleProductID }` );
+
+		// Check if it has the related products section.
+		const hasRelatedProducts = await page
+			.getByRole( 'heading', {
+				name: 'Related products',
+			} )
+			.isVisible();
+
+		test.skip(
+			! hasRelatedProducts,
+			'This WC setup does not have "Related products" section on the single product page.'
+		);
+
 		const event = trackGtagEvent( page, 'add_to_cart' );
 
-		await page.goto( `?p=${ simpleProductID }` );
 		const relatedProductID = await relatedProductAddToCart( page );
 
 		await event.then( ( request ) => {
