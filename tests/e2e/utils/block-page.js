@@ -42,7 +42,7 @@ export async function createPage( title, content ) {
 
 /**
  * Creates a shop page using blocks.
- * @return {string} Slug of the created page.
+ * @return {Promise<string>} Slug of the created page.
  */
 export async function createBlockShopPage() {
 	const {
@@ -61,7 +61,7 @@ export async function createBlockShopPage() {
  * Creates a page with related products block.
  *
  * @param {number} productId Product ID.
- * @return {string} Slug of the created page.
+ * @return {Promise<string>} Slug of the created page.
  */
 export async function createRelatedProductsPage( productId ) {
 	const { title, slug, pageContent } = relatedProductPage;
