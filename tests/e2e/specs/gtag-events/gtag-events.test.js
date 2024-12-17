@@ -17,7 +17,10 @@ import {
 	relatedProductAddToCart,
 	singleProductAddToCart,
 } from '../../utils/customer';
-import { createBlockShopPage } from '../../utils/block-page';
+import {
+	createBlockShopPage,
+	createRelatedProductsPage,
+} from '../../utils/block-page';
 import { getEventData, trackGtagEvent } from '../../utils/track-event';
 
 const config = require( '../../config/default' );
@@ -74,12 +77,12 @@ test.describe( 'GTag events', () => {
 	test( 'Add to cart event is sent from a block shop page', async ( {
 		page,
 	} ) => {
-		await createBlockShopPage();
+		const pageSlug = await createBlockShopPage();
 
 		const event = trackGtagEvent( page, 'add_to_cart' );
 
 		// Go to block shop page
-		await page.goto( 'all-products-block' );
+		await page.goto( pageSlug );
 		await blockProductAddToCart( page );
 
 		await event.then( ( request ) => {
@@ -111,9 +114,45 @@ test.describe( 'GTag events', () => {
 		page,
 	} ) => {
 		await createSimpleProduct(); // Create an additional product for related to show up.
+		await page.goto( `?p=${ simpleProductID }` );
+
+		// Check if it has the related products section.
+		const hasRelatedProducts = await page
+			.getByRole( 'heading', {
+				name: 'Related products',
+			} )
+			.isVisible();
+
+		test.skip(
+			! hasRelatedProducts,
+			'This WC setup does not have "Related products" section on the single product page.'
+		);
+
 		const event = trackGtagEvent( page, 'add_to_cart' );
 
-		await page.goto( `?p=${ simpleProductID }` );
+		const relatedProductID = await relatedProductAddToCart( page );
+
+		await event.then( ( request ) => {
+			const data = getEventData( request );
+			expect( data.id ).toEqual( 'gla_' + relatedProductID );
+			expect( data.ecomm_pagetype ).toEqual( 'cart' );
+			expect( data.event_category ).toEqual( 'ecommerce' );
+			expect( data.google_business_vertical ).toEqual( 'retail' );
+		} );
+	} );
+
+	test( 'Add to cart event is sent from related products block', async ( {
+		page,
+	} ) => {
+		await createSimpleProduct(); // Create an additional product for related to show up.
+
+		const pageSlug = await createRelatedProductsPage( simpleProductID );
+
+		const event = trackGtagEvent( page, 'add_to_cart' );
+
+		// Go to block page
+		await page.goto( pageSlug );
+
 		const relatedProductID = await relatedProductAddToCart( page );
 
 		await event.then( ( request ) => {

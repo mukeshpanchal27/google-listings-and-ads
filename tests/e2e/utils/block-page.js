@@ -7,6 +7,7 @@ import { cleanForSlug } from '@wordpress/url';
  * Internal dependencies
  */
 import { apiWP } from './api';
+import relatedProductPage from './__fixtures__/related-products.fixture.mjs';
 
 /**
  * Check if a page exists from a title.
@@ -41,14 +42,32 @@ export async function createPage( title, content ) {
 
 /**
  * Creates a shop page using blocks.
+ * @return {Promise<string>} Slug of the created page.
  */
 export async function createBlockShopPage() {
 	const {
 		title,
+		slug,
 		pageContent: content,
 	} = require( './__fixtures__/all-products.fixture.json' );
 
 	if ( ! ( await pageExistsByTitle( title ) ) ) {
 		await createPage( title, content );
 	}
+	return slug;
+}
+
+/**
+ * Creates a page with related products block.
+ *
+ * @param {number} productId Product ID.
+ * @return {Promise<string>} Slug of the created page.
+ */
+export async function createRelatedProductsPage( productId ) {
+	const { title, slug, pageContent } = relatedProductPage;
+
+	if ( ! ( await pageExistsByTitle( title ) ) ) {
+		await createPage( title, pageContent( productId ) );
+	}
+	return slug;
 }
