@@ -53,11 +53,14 @@ class BudgetRecommendationQueryTest extends UnitTest {
 	public function test_query_multiple_values() {
 		$this->budget_recommendation_query->where( 'currency', 'USD' );
 		$this->budget_recommendation_query->where( 'country', [ 'US', 'CA' ], 'IN' );
+		$this->budget_recommendation_query->set_order( 'country' );
 
 		$results = $this->budget_recommendation_query->get_results();
 
 		$this->assertCount( 2, $results );
-		$this->assertEquals( 15, $results[0]['daily_budget'] );
-		$this->assertEquals( 14, $results[1]['daily_budget'] );
+		$this->assertEquals( 14, $results[0]['daily_budget'] );
+		$this->assertEquals( 'CA', $results[0]['country'] );
+		$this->assertEquals( 15, $results[1]['daily_budget'] );
+		$this->assertEquals( 'US', $results[1]['country'] );
 	}
 }
