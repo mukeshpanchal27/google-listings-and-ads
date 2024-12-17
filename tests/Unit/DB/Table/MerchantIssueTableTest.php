@@ -65,4 +65,16 @@ class MerchantIssueTableTest extends UnitTest {
 
 		$this->mock_merchant_issue->delete_specific_product_issues( [ 1 ] );
 	}
+
+	/**
+	 * Test installing the DB table to ensure there are no errors during install.
+	 */
+	public function test_db_install() {
+		global $wpdb;
+
+		$table = new MerchantIssueTable( new WP(), $wpdb );
+		$table->install();
+
+		$this->assertEmpty( $wpdb->last_error );
+	}
 }
