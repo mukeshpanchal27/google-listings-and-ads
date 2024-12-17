@@ -355,7 +355,7 @@ class GlobalSiteTag implements Service, Registerable, Conditional, OptionsAwareI
 
 		$order = wc_get_order( $order_id );
 		// Make sure there is a valid order object and it is not already marked as tracked
-		if ( ! $order || 1 === $order->get_meta( self::ORDER_CONVERSION_META_KEY, true ) ) {
+		if ( ! $order || 1 === (int) $order->get_meta( self::ORDER_CONVERSION_META_KEY, true ) ) {
 			return;
 		}
 
