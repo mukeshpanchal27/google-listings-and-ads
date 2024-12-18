@@ -16,7 +16,7 @@ use WC_Helper_Order;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class GlobalSiteTag
+ * Class GlobalSiteTagTest
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\Google
  */
