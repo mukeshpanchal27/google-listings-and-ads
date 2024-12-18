@@ -1,0 +1,22 @@
+.gla-settings {
+	.gla-section {
+		max-width: 780px;
+		margin-left: auto;
+		margin-right: auto;
+
+		&:first-child {
+			margin-top: var(--large-gap);
+		}
+
+		header {
+			@include break-small {
+				max-width: 244px;
+			}
+		}
+	}
+
+	.gla-subsection-helper-text {
+		margin-top: $grid-unit-10;
+		color: $gray-600;
+	}
+}

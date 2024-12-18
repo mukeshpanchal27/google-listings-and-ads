@@ -264,13 +264,13 @@ export function* fetchShippingTimes() {
  * @throws Will throw an error if the request failed.
  */
 export function* upsertShippingTimes( shippingTime ) {
-	const { countryCodes, time, maxTime } = shippingTime;
+	const { countries, time, maxTime } = shippingTime;
 
 	yield apiFetch( {
 		path: `${ API_NAMESPACE }/mc/shipping/times/batch`,
 		method: 'POST',
 		data: {
-			country_codes: countryCodes,
+			country_codes: countries,
 			time,
 			max_time: maxTime,
 		},

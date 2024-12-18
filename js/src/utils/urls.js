@@ -8,10 +8,13 @@ import { getNewPath } from '@woocommerce/navigation';
  */
 import { API_RESPONSE_CODES } from '~/constants';
 
+// The paths 'setup-mc' and 'setup-ads' came from its original page name.
+// It's currently retained to ensure paths that might be
+// externally referenced won't be invalidated.
 export const pagePaths = {
 	getStarted: '/google/start',
-	setupMC: '/google/setup-mc',
-	setupAds: '/google/setup-ads',
+	onboarding: '/google/setup-mc',
+	adsOnboarding: '/google/setup-ads',
 	dashboard: '/google/dashboard',
 	reports: '/google/reports',
 	productFeed: '/google/product-feed',
@@ -28,7 +31,7 @@ export const subpaths = {
 };
 
 const getStartedPath = pagePaths.getStarted;
-const setupMCPath = pagePaths.setupMC;
+const onboardingPath = pagePaths.onboarding;
 const dashboardPath = pagePaths.dashboard;
 const settingsPath = pagePaths.settings;
 const reportsPath = pagePaths.reports;
@@ -59,8 +62,8 @@ export const getGetStartedUrl = () => {
 	return getNewPath( null, getStartedPath, null );
 };
 
-export const getSetupMCUrl = () => {
-	return getNewPath( null, setupMCPath, null );
+export const getOnboardingUrl = () => {
+	return getNewPath( null, onboardingPath, null );
 };
 
 export const getDashboardUrl = ( query = null ) => {

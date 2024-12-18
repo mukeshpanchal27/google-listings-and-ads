@@ -1,5 +1,5 @@
 .gla-assets-loader {
-	&.wcdl-select-control {
+	&.gla-searchable-select-control {
 		flex-grow: 1;
 
 		.components-base-control {
@@ -27,7 +27,7 @@
 		}
 	}
 
-	.wcdl-select-control__label {
+	.gla-searchable-select-control__label {
 		display: flex;
 		align-items: center;
 		gap: $grid-unit-10;

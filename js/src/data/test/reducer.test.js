@@ -261,10 +261,12 @@ describe( 'reducer', () => {
 					{
 						countryCode: 'US',
 						time: 7,
+						maxTime: 14,
 					},
 					{
 						countryCode: 'CA',
 						time: 12,
+						maxTime: 18,
 					},
 				],
 			};
@@ -278,17 +280,20 @@ describe( 'reducer', () => {
 				{
 					countryCode: 'US',
 					time: 7,
+					maxTime: 14,
 				},
 				{
 					countryCode: 'CA',
 					time: 12,
+					maxTime: 18,
 				},
 			] );
 			const action = {
 				type: TYPES.UPSERT_SHIPPING_TIMES,
 				shippingTime: {
-					countryCodes: [ 'JP', 'CA' ],
+					countries: [ 'JP', 'CA' ],
 					time: 15,
+					maxTime: 30,
 				},
 			};
 			const state = reducer( originalState, action );
@@ -297,14 +302,17 @@ describe( 'reducer', () => {
 				{
 					countryCode: 'US',
 					time: 7,
+					maxTime: 14,
 				},
 				{
 					countryCode: 'CA',
 					time: 15,
+					maxTime: 30,
 				},
 				{
 					countryCode: 'JP',
 					time: 15,
+					maxTime: 30,
 				},
 			] );
 		} );
@@ -314,14 +322,17 @@ describe( 'reducer', () => {
 				{
 					countryCode: 'US',
 					time: 7,
+					maxTime: 14,
 				},
 				{
 					countryCode: 'CA',
 					time: 12,
+					maxTime: 18,
 				},
 				{
 					countryCode: 'JP',
 					time: 15,
+					maxTime: 30,
 				},
 			] );
 			const action = {
@@ -334,6 +345,7 @@ describe( 'reducer', () => {
 				{
 					countryCode: 'CA',
 					time: 12,
+					maxTime: 18,
 				},
 			] );
 		} );

@@ -17,19 +17,19 @@ import './data';
 import { addBaseEventProperties } from '~/utils/tracks';
 
 const Dashboard = lazy( () =>
-	import( /* webpackChunkName: "dashboard" */ './dashboard' )
+	import( /* webpackChunkName: "dashboard" */ './pages/dashboard' )
 );
 
 const GetStartedPage = lazy( () =>
-	import( /* webpackChunkName: "get-started-page" */ './get-started-page' )
+	import( /* webpackChunkName: "get-started-page" */ './pages/get-started' )
 );
 
-const SetupMC = lazy( () =>
-	import( /* webpackChunkName: "setup-mc" */ './setup-mc' )
+const Onboarding = lazy( () =>
+	import( /* webpackChunkName: "onboarding" */ './pages/onboarding' )
 );
 
-const SetupAds = lazy( () =>
-	import( /* webpackChunkName: "setup-ads" */ './setup-ads' )
+const AdsOnboarding = lazy( () =>
+	import( /* webpackChunkName: "ads-onboarding" */ './pages/ads-onboarding' )
 );
 
 const Reports = lazy( () =>
@@ -37,15 +37,17 @@ const Reports = lazy( () =>
 );
 
 const ProductFeed = lazy( () =>
-	import( /* webpackChunkName: "product-feed" */ './product-feed' )
+	import( /* webpackChunkName: "product-feed" */ './pages/product-feed' )
 );
 
 const AttributeMapping = lazy( () =>
-	import( /* webpackChunkName: "attribute-mapping" */ './attribute-mapping' )
+	import(
+		/* webpackChunkName: "attribute-mapping" */ './pages/attribute-mapping'
+	)
 );
 
 const Settings = lazy( () =>
-	import( /* webpackChunkName: "settings" */ './settings' )
+	import( /* webpackChunkName: "settings" */ './pages/settings' )
 );
 
 export const pagePaths = new Set();
@@ -79,7 +81,7 @@ addFilter(
 					...initialBreadcrumbs,
 					__( 'Setup Merchant Center', 'google-listings-and-ads' ),
 				],
-				container: SetupMC,
+				container: Onboarding,
 				path: '/google/setup-mc',
 			},
 			{
@@ -87,7 +89,7 @@ addFilter(
 					...initialBreadcrumbs,
 					__( 'Setup Google Ads', 'google-listings-and-ads' ),
 				],
-				container: SetupAds,
+				container: AdsOnboarding,
 				path: '/google/setup-ads',
 			},
 			{

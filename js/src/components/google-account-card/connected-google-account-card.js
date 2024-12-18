@@ -3,7 +3,7 @@
  */
 import AccountCard, { APPEARANCE } from '~/components/account-card';
 import ConnectedIconLabel from '~/components/connected-icon-label';
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import SwitchAccountButton from './switch-account-button';
 
 /**

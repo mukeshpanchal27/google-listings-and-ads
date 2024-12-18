@@ -100,4 +100,16 @@ class BudgetRecommendationTableTest extends UnitTest {
 
 		$this->mock_budget_recommendation->reload_data();
 	}
+
+	/**
+	 * Test installing the DB table to ensure there are no errors during install.
+	 */
+	public function test_db_install() {
+		global $wpdb;
+
+		$table = new BudgetRecommendationTable( new WP(), $wpdb );
+		$table->install();
+
+		$this->assertEmpty( $wpdb->last_error );
+	}
 }

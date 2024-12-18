@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import Section from '~/wcdl/section';
+import Section from '~/components/section';
 import AppSpinner from '~/components/app-spinner';
 
 /**
