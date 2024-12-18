@@ -69,6 +69,7 @@ require_once $wc_tests_dir . '/framework/helpers/class-wc-helper-coupon.php';
 require_once $wc_tests_dir . '/framework/helpers/class-wc-helper-product.php';
 require_once $wc_tests_dir . '/framework/helpers/class-wc-helper-shipping.php';
 require_once $wc_tests_dir . '/framework/helpers/class-wc-helper-customer.php';
+require_once $wc_tests_dir . '/framework/helpers/class-wc-helper-order.php';
 require_once $wc_tests_dir . '/framework/vendor/class-wp-test-spy-rest-server.php';
 
 /**
