@@ -100,7 +100,7 @@ class ProductHelperTest extends ContainerAwareUnitTest {
 	 *
 	 * @dataProvider return_test_products
 	 */
-	public function test_mark_as_synced_doesnt_delete_errors_unless_all_target_countries_synced( WC_Product $product ) {
+	public function test_mark_as_synced_deletes_errors_when_main_target_countries_synced( WC_Product $product ) {
 		$google_product = $this->generate_google_product_mock();
 
 		$this->target_audience->expects( $this->any() )
@@ -114,17 +114,33 @@ class ProductHelperTest extends ContainerAwareUnitTest {
 
 		$this->product_helper->mark_as_synced( $product, $google_product );
 
-		$this->assertEquals( [ 'Error 1', 'Error 2' ], $this->product_meta->get_errors( $product ) );
-		$this->assertEquals( 1, $this->product_meta->get_failed_sync_attempts( $product ) );
-		$this->assertEquals( 12345, $this->product_meta->get_sync_failed_at( $product ) );
-
-		$google_product_2 = $this->generate_google_product_mock( null, 'AU' );
-
-		$this->product_helper->mark_as_synced( $product, $google_product_2 );
-
 		$this->assertEmpty( $this->product_meta->get_errors( $product ) );
 		$this->assertEmpty( $this->product_meta->get_failed_sync_attempts( $product ) );
 		$this->assertEmpty( $this->product_meta->get_sync_failed_at( $product ) );
+	}
+
+	/**
+	 * @param WC_Product $product
+	 *
+	 * @dataProvider return_test_products
+	 */
+	public function test_mark_as_synced_doesnt_delete_errors_unless_main_target_countries_synced( WC_Product $product ) {
+		$google_product = $this->generate_google_product_mock();
+
+		$this->target_audience->expects( $this->any() )
+			->method( 'get_target_countries' )
+			->willReturn( [ 'AU', 'CA' ] );
+
+		// add some random errors residue from previous sync attempts
+		$this->product_meta->update_errors( $product, [ 'Error 1', 'Error 2' ] );
+		$this->product_meta->update_failed_sync_attempts( $product, 1 );
+		$this->product_meta->update_sync_failed_at( $product, 12345 );
+
+		$this->product_helper->mark_as_synced( $product, $google_product );
+
+		$this->assertEquals( [ 'Error 1', 'Error 2' ], $this->product_meta->get_errors( $product ) );
+		$this->assertEquals( 1, $this->product_meta->get_failed_sync_attempts( $product ) );
+		$this->assertEquals( 12345, $this->product_meta->get_sync_failed_at( $product ) );
 	}
 
 	public function test_mark_as_synced_updates_both_variation_and_parent() {
