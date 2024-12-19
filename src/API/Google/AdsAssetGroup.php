@@ -50,11 +50,6 @@ class AdsAssetGroup implements OptionsAwareInterface {
 	protected const TEMPORARY_ID = -3;
 
 	/**
-	 *  The page size for the AdsAssetGroupQuery.
-	 */
-	protected const PAGE_SIZE = 1;
-
-	/**
 	 * The Google Ads Client.
 	 *
 	 * @var GoogleAdsClient
@@ -226,7 +221,7 @@ class AdsAssetGroup implements OptionsAwareInterface {
 	}
 
 	/**
-	 * Get Asset Groups for a specific campaign.
+	 * Get Asset Groups for a specific campaign. Limit to first AdsAssetGroup.
 	 *
 	 * @since 2.4.0
 	 *
@@ -240,7 +235,7 @@ class AdsAssetGroup implements OptionsAwareInterface {
 		try {
 			$asset_groups_converted = [];
 
-			$asset_group_results = ( new AdsAssetGroupQuery( [ 'pageSize' => self::PAGE_SIZE ] ) )
+			$asset_group_results = ( new AdsAssetGroupQuery() )
 				->set_client( $this->client, $this->options->get_ads_id() )
 				->add_columns( [ 'asset_group.path1', 'asset_group.path2', 'asset_group.id', 'asset_group.final_urls' ] )
 				->where( 'campaign.id', $campaign_id )
@@ -250,6 +245,7 @@ class AdsAssetGroup implements OptionsAwareInterface {
 			/** @var GoogleAdsRow $row */
 			foreach ( $asset_group_results->getPage()->getIterator() as $row ) {
 				$asset_groups_converted[ $row->getAssetGroup()->getId() ] = $this->convert_asset_group( $row );
+				break; // Limit to only first asset group.
 			}
 
 			if ( $include_assets ) {
