@@ -188,31 +188,16 @@ trait GoogleAdsClientTrait {
 	 *
 	 * @param array $campaigns_responses Set of campaign data to convert.
 	 * @param array $campaign_criterion_responses Set of campaign criterion data to convert.
-	 * @param bool  $assert_pagination Whether to assert pagination.
 	 */
-	protected function generate_ads_campaign_query_mock( array $campaigns_responses, $campaign_criterion_responses, $assert_pagination = false ) {
+	protected function generate_ads_campaign_query_mock( array $campaigns_responses, $campaign_criterion_responses ) {
 		$campaigns_row_mock          = array_map( [ $this, 'generate_campaign_row_mock' ], $campaigns_responses );
 		$campaign_criterion_row_mock = array_map( [ $this, 'generate_campaign_criterion_row_mock' ], $campaign_criterion_responses );
 
 		$list_response = $this->createMock( PagedListResponse::class );
-		$page          = $this->createMock( Page::class );
-
-		if ( $assert_pagination ) {
-			$response_object = $this->createMock( SearchGoogleAdsResponse::class );
-			$response_object->expects( $this->exactly( 1 ) )->method( 'getTotalResultsCount' )->willReturn( count( $campaigns_responses ) );
-			$page->expects( $this->exactly( 1 ) )->method( 'getNextPageToken' )->willReturn( '' );
-			$page->method( 'getResponseObject' )->willReturn( $response_object );
-		}
-
-		$page->method( 'getIterator' )->willReturn(
+		$list_response->method( 'iterateAllElements' )->willReturnOnConsecutiveCalls(
 			$campaigns_row_mock,
-		);
-
-		$list_response->method( 'iterateAllElements' )->willReturn(
 			$campaign_criterion_row_mock
 		);
-
-		$list_response->method( 'getPage' )->willReturn( $page );
 
 		$this->service_client
 			->method( 'search' )->willReturn( $list_response );
@@ -327,11 +312,9 @@ trait GoogleAdsClientTrait {
 	 */
 	protected function generate_ads_campaign_query_mock_with_no_campaigns() {
 		$list_response = $this->createMock( PagedListResponse::class );
-		$page          = $this->createMock( Page::class );
-		$page->method( 'getIterator' )->willReturn( [] );
-		$list_response->method( 'getPage' )->willReturn( $page );
+		$list_response->method( 'iterateAllElements' )->willReturn( [] );
 
-		// Method search() will only being called once by AdsCampaignQuery
+		// Method search() will only be called once by AdsCampaignQuery
 		// since there were no campaigns returned by AdsCampaignQuery, it
 		// won't be calling AdsCampaignCriterionQuery then.
 		$this->service_client->expects( $this->once() )
