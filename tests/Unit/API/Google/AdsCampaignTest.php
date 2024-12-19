@@ -141,6 +141,39 @@ class AdsCampaignTest extends UnitTest {
 		$this->assertEquals( $campaigns_data, $this->campaign->get_campaigns() );
 	}
 
+	public function test_get_campaigns_with_limited_results() {
+		$campaigns_data = [
+			[
+				'id'                 => self::TEST_CAMPAIGN_ID,
+				'name'               => 'Campaign One',
+				'status'             => 'paused',
+				'type'               => 'shopping',
+				'amount'             => 10,
+				'country'            => 'US',
+				'targeted_locations' => [],
+			],
+			[
+				'id'                 => 5678901234,
+				'name'               => 'Campaign Two',
+				'status'             => 'enabled',
+				'type'               => 'performance_max',
+				'amount'             => 20,
+				'country'            => 'UK',
+				'targeted_locations' => [],
+			],
+		];
+
+		$this->generate_ads_campaign_query_mock( $campaigns_data, [] );
+		$this->assertEquals(
+			array_slice( $campaigns_data, 0, 1 ), // Only expect one result.
+			$this->campaign->get_campaigns(
+				true,
+				true,
+				[ 'per_page' => 1 ],
+			)
+		);
+	}
+
 	public function test_get_campaigns_with_nonexist_location_id() {
 		$campaign_criterion_data = [
 			[
