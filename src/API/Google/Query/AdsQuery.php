@@ -35,6 +35,9 @@ abstract class AdsQuery extends Query {
 	/**
 	 * Arguments to add to the search query.
 	 *
+	 * Note: While we allow pageSize to be set, we do not pass it to the API.
+	 * pageSize has been deprecated in the API since V17 and is fixed to 10000 rows.
+	 *
 	 * @var array
 	 */
 	protected $search_args = [];
@@ -89,6 +92,11 @@ abstract class AdsQuery extends Query {
 		}
 
 		$request = new SearchGoogleAdsRequest();
+
+		if ( ! empty( $this->search_args['pageToken'] ) ) {
+			$request->setPageToken( $this->search_args['pageToken'] );
+		}
+
 		$request->setQuery( $this->build_query() );
 		$request->setCustomerId( $this->id );
 
