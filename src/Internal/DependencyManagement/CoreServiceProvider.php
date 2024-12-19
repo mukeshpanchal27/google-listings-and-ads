@@ -3,6 +3,7 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Internal\DependencyManagement;
 
+use Automattic\WooCommerce\Admin\Marketing\MarketingChannels;
 use Automattic\WooCommerce\GoogleListingsAndAds\ActionScheduler\ActionScheduler;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Redirect;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Admin;
@@ -429,7 +430,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		// Share Attribute Mapping related classes
 		$this->share_with_tags( AttributeMappingHelper::class );
 
-		if ( defined( 'WC_MCM_EXISTS' ) ) {
+		if ( class_exists( MarketingChannels::class ) ) {
 			$this->share_with_tags( GLAChannel::class, MerchantCenterService::class, AdsCampaign::class, Ads::class, MerchantStatuses::class, ProductSyncStats::class );
 			$this->share_with_tags( MarketingChannelRegistrar::class, GLAChannel::class, WC::class );
 		}
