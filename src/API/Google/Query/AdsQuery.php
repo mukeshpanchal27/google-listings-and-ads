@@ -7,7 +7,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Exception\InvalidProperty;
 use Automattic\WooCommerce\GoogleListingsAndAds\Google\Ads\GoogleAdsClient;
 use Google\Ads\GoogleAds\V18\Services\GoogleAdsRow;
 use Google\Ads\GoogleAds\V18\Services\SearchGoogleAdsRequest;
-use Google\Ads\GoogleAds\V18\Services\SearchSettings;
 use Google\ApiCore\ApiException;
 
 defined( 'ABSPATH' ) || exit;
@@ -90,16 +89,6 @@ abstract class AdsQuery extends Query {
 		}
 
 		$request = new SearchGoogleAdsRequest();
-
-		// Allow us to get the total number of results for pagination.
-		$request->setSearchSettings(
-			new SearchSettings(
-				[
-					'return_total_results_count' => true,
-				]
-			)
-		);
-
 		$request->setQuery( $this->build_query() );
 		$request->setCustomerId( $this->id );
 
