@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import apiFetch from '@wordpress/api-fetch';
 import { useState } from '@wordpress/element';
 import { noop } from 'lodash';
 
@@ -18,7 +17,7 @@ import CampaignAssetsForm from '~/components/paid-ads/campaign-assets-form';
 import AppButton from '~/components/app-button';
 import useGoogleAdsAccountBillingStatus from '~/hooks/useGoogleAdsAccountBillingStatus';
 import { getProductFeedUrl } from '~/utils/urls';
-import { API_NAMESPACE } from '~/data/constants';
+import { useAppDispatch } from '~/data';
 import { GUIDE_NAMES, GOOGLE_ADS_BILLING_STATUS } from '~/constants';
 import { ACTION_COMPLETE, ACTION_SKIP } from './constants';
 import SkipButton from './skip-button';
@@ -48,6 +47,7 @@ export default function SetupPaidAds() {
 		useBudgetRecommendation( countryCodes );
 	const [ handleSetupComplete ] = useAdsSetupCompleteCallback();
 	const { billingStatus } = useGoogleAdsAccountBillingStatus();
+	const { syncSettings } = useAppDispatch();
 
 	const isBillingCompleted =
 		billingStatus?.status === GOOGLE_ADS_BILLING_STATUS.APPROVED;
@@ -55,10 +55,7 @@ export default function SetupPaidAds() {
 	const finishOnboardingSetup = async ( onBeforeFinish = noop ) => {
 		try {
 			await onBeforeFinish();
-			await apiFetch( {
-				path: `${ API_NAMESPACE }/mc/settings/sync`,
-				method: 'POST',
-			} );
+			await syncSettings();
 		} catch ( e ) {
 			setCompleting( null );
 
