@@ -325,10 +325,10 @@ export function* fetchSettings() {
 }
 
 /**
- * Save the the MC settings.
+ * Save the plugin settings.
  *
- * @param {SettingsData} settings settings
- * @return {Object} Action object to save target audience.
+ * @param {SettingsData} settings Plugin settings
+ * @return {Object} Action object to save the plugin settings.
  */
 export function* saveSettings( settings ) {
 	yield apiFetch( {
