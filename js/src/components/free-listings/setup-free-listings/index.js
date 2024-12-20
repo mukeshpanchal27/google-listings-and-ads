@@ -69,7 +69,6 @@ const getSettings = ( values ) => {
  * @param {() => void} [props.onContinue] Callback called once continue button is clicked. Could be async. While it's being resolved the form would turn into a saving state.
  * @param {string} [props.submitLabel] Submit button label, to be forwarded to `FormContent`.
  * @param {JSX.Element} props.headerTitle Title in the header block of this setup.
- * @param {boolean} [props.hideTaxRates=false] Whether to hide tax rate section, to be forwarded to `FormContent`.
  */
 const SetupFreeListings = ( {
 	targetAudience,
@@ -84,7 +83,6 @@ const SetupFreeListings = ( {
 	onContinue = noop,
 	submitLabel,
 	headerTitle,
-	hideTaxRates = false,
 } ) => {
 	const formRef = useRef();
 	const { code: storeCountryCode } = useStoreCountry();
@@ -101,8 +99,7 @@ const SetupFreeListings = ( {
 			values,
 			shippingTimesData,
 			countries,
-			storeCountryCode,
-			hideTaxRates
+			storeCountryCode
 		);
 	};
 
@@ -233,10 +230,7 @@ const SetupFreeListings = ( {
 				validate={ handleValidate }
 				onSubmit={ onContinue }
 			>
-				<FormContent
-					submitLabel={ submitLabel }
-					hideTaxRates={ hideTaxRates }
-				/>
+				<FormContent submitLabel={ submitLabel } />
 			</AdaptiveForm>
 		</div>
 	);

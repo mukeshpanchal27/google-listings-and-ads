@@ -25,16 +25,13 @@ import isNonFreeShippingRate from '~/utils/isNonFreeShippingRate';
  *
  * @param {Object} props React props.
  * @param {string} [props.submitLabel="Complete setup"] Submit button label.
- * @param {boolean} [props.hideTaxRates] Whether to hide tax rate section.
  */
 const FormContent = ( {
 	submitLabel = __( 'Complete setup', 'google-listings-and-ads' ),
-	hideTaxRates,
 } ) => {
 	const { values, isValidForm, handleSubmit, adapter } =
 		useAdaptiveFormContext();
-	const displayTaxRate = useDisplayTaxRate( adapter.audienceCountries );
-	const shouldDisplayTaxRate = ! hideTaxRates && displayTaxRate;
+	const shouldDisplayTaxRate = useDisplayTaxRate( adapter.audienceCountries );
 	const shouldDisplayShippingTime = values.shipping_time === 'flat';
 	const shouldDisplayOrderValueCondition =
 		values.shipping_rate === 'flat' &&

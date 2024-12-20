@@ -12,8 +12,7 @@ const checkErrors = (
 	values,
 	shippingTimes,
 	finalCountryCodes,
-	storeCountryCode,
-	hideTaxRates = false
+	storeCountryCode
 ) => {
 	const errors = {};
 
@@ -106,7 +105,6 @@ const checkErrors = (
 	 * Check tax rate (required for U.S. only).
 	 */
 	if (
-		! hideTaxRates &&
 		( storeCountryCode === 'US' || finalCountryCodes.includes( 'US' ) ) &&
 		! validTaxRateSet.has( values.tax_rate )
 	) {
