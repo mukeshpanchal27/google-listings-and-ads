@@ -10,13 +10,10 @@ import { useAdaptiveFormContext } from '~/components/adaptive-form';
 import StepContent from '~/components/stepper/step-content';
 import StepContentActions from '~/components/stepper/step-content-actions';
 import StepContentFooter from '~/components/stepper/step-content-footer';
-import TaxRate from '~/pages/settings/setup-tax-rate/tax-rate';
-import useDisplayTaxRate from '~/pages/settings/setup-tax-rate/useDisplayTaxRate';
 import ChooseAudienceSection from '~/components/free-listings/choose-audience-section';
 import ShippingRateSection from '~/components/shipping-rate-section';
 import ShippingTimeSection from '~/components/free-listings/configure-product-listings/shipping-time-section';
 import AppButton from '~/components/app-button';
-import ConditionalSection from '~/components/conditional-section';
 import OrderValueConditionSection from '~/components/order-value-condition-section';
 import isNonFreeShippingRate from '~/utils/isNonFreeShippingRate';
 
@@ -31,14 +28,14 @@ const FormContent = ( {
 } ) => {
 	const { values, isValidForm, handleSubmit, adapter } =
 		useAdaptiveFormContext();
-	const shouldDisplayTaxRate = useDisplayTaxRate( adapter.audienceCountries );
+
 	const shouldDisplayShippingTime = values.shipping_time === 'flat';
 	const shouldDisplayOrderValueCondition =
 		values.shipping_rate === 'flat' &&
 		values.shipping_country_rates.some( isNonFreeShippingRate );
 
 	const handleSubmitClick = ( event ) => {
-		if ( shouldDisplayTaxRate !== null && isValidForm ) {
+		if ( isValidForm ) {
 			return handleSubmit( event );
 		}
 
@@ -53,9 +50,6 @@ const FormContent = ( {
 				<OrderValueConditionSection />
 			) }
 			{ shouldDisplayShippingTime && <ShippingTimeSection /> }
-			<ConditionalSection show={ shouldDisplayTaxRate }>
-				<TaxRate />
-			</ConditionalSection>
 			<StepContentFooter>
 				<StepContentActions>
 					<AppButton

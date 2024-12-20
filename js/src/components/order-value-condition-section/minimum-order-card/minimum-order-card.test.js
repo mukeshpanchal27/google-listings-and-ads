@@ -43,7 +43,6 @@ const adaptiveFormContextDefaultValues = {
 	shipping_country_times: [],
 	shipping_rate: true,
 	shipping_time: true,
-	tax_rate: null,
 };
 
 const adaptiveFormInputPropsDefaultValues = {

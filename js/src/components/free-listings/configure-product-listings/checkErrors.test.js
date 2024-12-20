@@ -41,7 +41,6 @@ describe( 'checkErrors', () => {
 			countries: [ 'US', 'JP' ],
 			shipping_rate: 'flat',
 			shipping_time: 'flat',
-			tax_rate: 'manual',
 			shipping_country_rates: toRates( [ 'US', 10 ], [ 'JP', 30, 88 ] ),
 			offer_free_shipping: true,
 		};
@@ -434,74 +433,6 @@ describe( 'checkErrors', () => {
 				expect( errors ).toHaveProperty( 'shipping_country_times' );
 				expect( errors.shipping_country_times ).toMatchSnapshot();
 			} );
-		} );
-	} );
-
-	describe( `For tax rate, if store country code or selected country codes include 'US'`, () => {
-		let codes;
-
-		beforeEach( () => {
-			codes = [ 'US' ];
-		} );
-
-		it( `When the tax rate option is an invalid value or missing, should not pass`, () => {
-			// Not set yet
-			let errors = checkErrors( defaultFormValues, [], codes );
-
-			expect( errors ).toHaveProperty( 'tax_rate' );
-			expect( errors.tax_rate ).toMatchSnapshot();
-
-			errors = checkErrors( defaultFormValues, [], [], 'US' );
-
-			expect( errors ).toHaveProperty( 'tax_rate' );
-			expect( errors.tax_rate ).toMatchSnapshot();
-
-			// Invalid value
-			errors = checkErrors(
-				{ ...defaultFormValues, tax_rate: true },
-				[],
-				codes
-			);
-
-			expect( errors ).toHaveProperty( 'tax_rate' );
-			expect( errors.tax_rate ).toMatchSnapshot();
-
-			// Invalid value
-			errors = checkErrors(
-				{ ...defaultFormValues, tax_rate: 'invalid' },
-				[],
-				codes
-			);
-
-			expect( errors ).toHaveProperty( 'tax_rate' );
-			expect( errors.tax_rate ).toMatchSnapshot();
-		} );
-
-		it( 'When the tax rate option is a valid value, should pass', () => {
-			// Selected destination
-			const destinationTaxRate = {
-				...defaultFormValues,
-				tax_rate: 'destination',
-			};
-
-			let errors = checkErrors( destinationTaxRate, [], codes );
-
-			expect( errors ).not.toHaveProperty( 'tax_rate' );
-
-			errors = checkErrors( destinationTaxRate, [], [], 'US' );
-
-			expect( errors ).not.toHaveProperty( 'tax_rate' );
-
-			// Selected manual
-			const manualTaxRate = { ...defaultFormValues, tax_rate: 'manual' };
-
-			errors = checkErrors( manualTaxRate, [], codes );
-
-			expect( errors ).not.toHaveProperty( 'tax_rate' );
-
-			errors = checkErrors( destinationTaxRate, [], [], 'US' );
-
-			expect( errors ).not.toHaveProperty( 'tax_rate' );
 		} );
 	} );
 } );

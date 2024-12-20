@@ -8,7 +8,6 @@ import { pick, noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import useStoreCountry from '~/hooks/useStoreCountry';
 import AppSpinner from '~/components/app-spinner';
 import Hero from '~/components/free-listings/configure-product-listings/hero';
 import AdaptiveForm from '~/components/adaptive-form';
@@ -32,7 +31,7 @@ const targetAudienceFields = [ 'locale', 'language', 'location', 'countries' ];
  *
  * If we are adding a new settings field, it should be added into this array.
  */
-const settingsFieldNames = [ 'shipping_rate', 'shipping_time', 'tax_rate' ];
+const settingsFieldNames = [ 'shipping_rate', 'shipping_time' ];
 
 /**
  * Get settings object from Form values.
@@ -85,7 +84,6 @@ const SetupFreeListings = ( {
 	headerTitle,
 } ) => {
 	const formRef = useRef();
-	const { code: storeCountryCode } = useStoreCountry();
 
 	if ( ! ( targetAudience && settings && shippingRates && shippingTimes ) ) {
 		return <AppSpinner />;
@@ -95,12 +93,7 @@ const SetupFreeListings = ( {
 		const countries = resolveFinalCountries( values );
 		const { shipping_country_times: shippingTimesData } = values;
 
-		return checkErrors(
-			values,
-			shippingTimesData,
-			countries,
-			storeCountryCode
-		);
+		return checkErrors( values, shippingTimesData, countries );
 	};
 
 	const handleChange = ( change, values ) => {
@@ -217,7 +210,6 @@ const SetupFreeListings = ( {
 					// These are the fields for settings.
 					shipping_rate: settings.shipping_rate,
 					shipping_time: settings.shipping_time,
-					tax_rate: settings.tax_rate,
 					// This is used in UI only, not used in API.
 					offer_free_shipping:
 						getOfferFreeShippingInitialValue( shippingRates ),
