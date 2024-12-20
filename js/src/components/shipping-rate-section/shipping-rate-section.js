@@ -14,7 +14,7 @@ import RadioHelperText from '~/components/radio-helper-text';
 import AppDocumentationLink from '~/components/app-documentation-link';
 import VerticalGapLayout from '~/components/vertical-gap-layout';
 import FlatShippingRatesInputCards from './flat-shipping-rates-input-cards';
-import useSettings from '~/components/free-listings/configure-product-listings/useSettings';
+import useSettings from '~/hooks/useSettings';
 import useMCSetup from '~/hooks/useMCSetup';
 
 /**

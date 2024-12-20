@@ -7,10 +7,9 @@ import { render } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import useSettings from '~/components/free-listings/configure-product-listings/useSettings';
+import useSettings from '~/hooks/useSettings';
 import useMCSetup from '~/hooks/useMCSetup';
 import ShippingRateSection from './shipping-rate-section';
-//import FlatShippingRatesInputCards from './flat-shipping-rates-input-cards';
 
 jest.mock( './flat-shipping-rates-input-cards', () => () => <></> );
 
@@ -47,9 +46,7 @@ jest.mock( '~/components/adaptive-form', () => ( {
 		} ),
 } ) );
 
-jest.mock(
-	'~/components/free-listings/configure-product-listings/useSettings'
-);
+jest.mock( '~/hooks/useSettings' );
 jest.mock( '~/hooks/useMCSetup' );
 
 describe( 'ShippingRateSection', () => {
