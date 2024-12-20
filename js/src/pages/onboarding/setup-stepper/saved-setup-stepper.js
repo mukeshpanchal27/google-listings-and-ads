@@ -12,7 +12,7 @@ import { useAppDispatch } from '~/data';
 import useEventPropertiesFilter from '~/hooks/useEventPropertiesFilter';
 import useTargetAudienceWithSuggestions from './useTargetAudienceWithSuggestions';
 import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
-import useSettings from '~/components/free-listings/configure-product-listings/useSettings';
+import useSettings from '~/hooks/useSettings';
 import useShippingRates from '~/hooks/useShippingRates';
 import useShippingTimes from '~/hooks/useShippingTimes';
 import useSaveShippingRates from '~/hooks/useSaveShippingRates';
