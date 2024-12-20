@@ -49,8 +49,8 @@ const EditFreeListings = () => {
 	const { targetAudience: savedTargetAudience, getFinalCountries } =
 		useTargetAudienceFinalCountryCodes();
 
-	const { settings: savedSettings } = useSettings();
-	const { saveTargetAudience, saveSettings } = useAppDispatch();
+	const { settings: savedSettings, saveSettings } = useSettings();
+	const { saveTargetAudience } = useAppDispatch();
 	const { saveShippingRates } = useSaveShippingRates();
 	const { saveShippingTimes } = useSaveShippingTimes();
 
