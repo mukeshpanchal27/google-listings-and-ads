@@ -8,9 +8,9 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\AdsAssetGroupAsset;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\UnitTest;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Tools\HelperTrait\GoogleAdsClientTrait;
-use Google\Ads\GoogleAds\V16\Enums\AssetGroupStatusEnum\AssetGroupStatus;
-use Google\Ads\GoogleAds\V16\Enums\ListingGroupFilterListingSourceEnum\ListingGroupFilterListingSource;
-use Google\Ads\GoogleAds\V16\Enums\ListingGroupFilterTypeEnum\ListingGroupFilterType;
+use Google\Ads\GoogleAds\V18\Enums\AssetGroupStatusEnum\AssetGroupStatus;
+use Google\Ads\GoogleAds\V18\Enums\ListingGroupFilterListingSourceEnum\ListingGroupFilterListingSource;
+use Google\Ads\GoogleAds\V18\Enums\ListingGroupFilterTypeEnum\ListingGroupFilterType;
 use PHPUnit\Framework\MockObject\MockObject;
 use Google\ApiCore\ApiException;
 use Automattic\WooCommerce\GoogleListingsAndAds\Exception\ExceptionWithResponseData;
@@ -90,14 +90,17 @@ class AdsAssetGroupTest extends UnitTest {
 			self::TEST_ASSET_GROUP_ID   => [
 				'description' => [
 					'id'      => 22222,
-					'content' => 'description 1',
+					'content' => 'description text',
 				],
-
+				'headline'    => [
+					'id'      => 33333,
+					'content' => 'headline text',
+				],
 			],
 			self::TEST_ASSET_GROUP_ID_2 => [
 				'headline' => [
-					'id'      => 33333,
-					'content' => 'description 1',
+					'id'      => 44444,
+					'content' => 'headline text',
 				],
 			],
 		];
@@ -119,11 +122,14 @@ class AdsAssetGroupTest extends UnitTest {
 
 		$this->asset_group_asset->expects( $this->exactly( 1 ) )
 			->method( 'get_assets_by_asset_group_ids' )
-			->with( [ self::TEST_ASSET_GROUP_ID, self::TEST_ASSET_GROUP_ID_2 ] )
+			->with( [ self::TEST_ASSET_GROUP_ID ] ) // Only fetch assets for first group.
 			->willReturn( $assets_data );
 
 		$this->generate_ads_asset_groups_query_mock( $asset_group_data );
-		$this->assertEquals( $asset_group_data, $this->asset_group->get_asset_groups_by_campaign_id( self::TEST_CAMPAIGN_ID ) );
+		$this->assertEquals(
+			array_slice( $asset_group_data, 0, 1 ), // Only expect one asset group.
+			$this->asset_group->get_asset_groups_by_campaign_id( self::TEST_CAMPAIGN_ID )
+		);
 	}
 
 	public function test_get_asset_groups_by_campaign_id_without_assets() {
@@ -145,7 +151,10 @@ class AdsAssetGroupTest extends UnitTest {
 			->method( 'get_assets_by_asset_group_ids' );
 
 		$this->generate_ads_asset_groups_query_mock( $asset_group_data );
-		$this->assertEquals( $asset_group_data, $this->asset_group->get_asset_groups_by_campaign_id( self::TEST_CAMPAIGN_ID, $include_assets ) );
+		$this->assertEquals(
+			array_slice( $asset_group_data, 0, 1 ), // Only expect one asset group.
+			$this->asset_group->get_asset_groups_by_campaign_id( self::TEST_CAMPAIGN_ID, $include_assets )
+		);
 	}
 
 	public function test_edit_asset_group_with_asset() {

@@ -10,10 +10,10 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\UnitTest;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Tools\HelperTrait\GoogleAdsClientTrait;
 use Exception;
-use Google\Ads\GoogleAds\V16\Enums\BillingSetupStatusEnum\BillingSetupStatus as AdsBillingSetupStatus;
-use Google\Ads\GoogleAds\V16\Enums\ProductLinkInvitationStatusEnum\ProductLinkInvitationStatus;
-use Google\Ads\GoogleAds\V16\Resources\MerchantCenterLinkInvitationIdentifier;
-use Google\Ads\GoogleAds\V16\Resources\ProductLinkInvitation;
+use Google\Ads\GoogleAds\V18\Enums\BillingSetupStatusEnum\BillingSetupStatus as AdsBillingSetupStatus;
+use Google\Ads\GoogleAds\V18\Enums\ProductLinkInvitationStatusEnum\ProductLinkInvitationStatus;
+use Google\Ads\GoogleAds\V18\Resources\MerchantCenterLinkInvitationIdentifier;
+use Google\Ads\GoogleAds\V18\Resources\ProductLinkInvitation;
 use Google\ApiCore\ApiException;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -137,6 +137,19 @@ class AdsTest extends UnitTest {
 		}
 	}
 
+	public function test_get_ads_accounts_details_exception() {
+		$this->generate_customer_list_mock(
+			[
+				'customers/' . self::TEST_ADS_ID,
+			]
+		);
+
+		$this->generate_ads_query_mock_exception( new ApiException( 'no customer details available', 14, 'UNAVAILABLE' ) );
+
+		// Get an empty list when not able to query customer details.
+		$this->assertEquals( [], $this->ads->get_ads_accounts() );
+	}
+
 	public function test_get_billing_status_no_ads_id() {
 		$this->options->expects( $this->once() )
 			->method( 'get_ads_id' )
@@ -248,6 +261,40 @@ class AdsTest extends UnitTest {
 		$this->assertEquals( self::TEST_CURRENCY, $this->ads->get_ads_currency() );
 	}
 
+	public function test_get_ads_currency_and_request_ads_currency() {
+		$this->options->method( 'get_ads_id' )->willReturn( self::TEST_ADS_ID );
+
+		$invoked_count = $this->exactly( 2 );
+		$this->options->expects( $invoked_count )
+			->method( 'get' )
+			->willReturnCallback(
+				function ( string $option ) use ( $invoked_count ) {
+					if ( $option === OptionsInterface::ADS_ACCOUNT_CURRENCY ) {
+						if ( 1 === $invoked_count->getInvocationCount() ) {
+							return false;
+						}
+
+						if ( 2 === $invoked_count->getInvocationCount() ) {
+							return self::TEST_CURRENCY;
+						}
+					}
+				}
+			);
+
+		$this->generate_customers_mock(
+			[
+				[ 'currency' => self::TEST_CURRENCY ],
+			]
+		);
+
+		$this->options->expects( $this->once() )
+			->method( 'update' )
+			->with( OptionsInterface::ADS_ACCOUNT_CURRENCY, self::TEST_CURRENCY )
+			->willReturn( true );
+
+		$this->assertEquals( self::TEST_CURRENCY, $this->ads->get_ads_currency() );
+	}
+
 	public function test_request_ads_currency() {
 		$this->options->method( 'get_ads_id' )->willReturn( self::TEST_ADS_ID );
 		$this->generate_customers_mock(
@@ -305,11 +352,49 @@ class AdsTest extends UnitTest {
 		$this->assertTrue( $this->ads->update_ads_id( self::TEST_ADS_ID ) );
 	}
 
+	public function test_ads_id_exists() {
+		$this->options->expects( $this->once() )
+			->method( 'get' )
+			->with( OptionsInterface::ADS_ID )
+			->willReturn( self::TEST_ADS_ID );
+		$this->assertTrue( $this->ads->ads_id_exists() );
+	}
+
+	public function test_ads_id_does_not_exist() {
+		$this->options->expects( $this->once() )
+			->method( 'get' )
+			->with( OptionsInterface::ADS_ID )
+			->willReturn( false );
+		$this->assertFalse( $this->ads->ads_id_exists() );
+	}
+
 	public function test_update_billing_url() {
 		$this->options->expects( $this->once() )
 			->method( 'update' )
 			->with( OptionsInterface::ADS_BILLING_URL, self::TEST_BILLING_URL )
 			->willReturn( true );
 		$this->assertTrue( $this->ads->update_billing_url( self::TEST_BILLING_URL ) );
+	}
+
+	public function test_update_ocid_from_billing_url_no_query_string() {
+		$this->assertFalse(
+			$this->ads->update_ocid_from_billing_url( self::TEST_BILLING_URL )
+		);
+	}
+
+	public function test_update_ocid_from_billing_url_no_ocid() {
+		$this->assertFalse(
+			$this->ads->update_ocid_from_billing_url( self::TEST_BILLING_URL . '?foo=bar' )
+		);
+	}
+
+	public function test_update_ocid_from_billing_url() {
+		$this->options->expects( $this->once() )
+			->method( 'update' )
+			->with( OptionsInterface::ADS_ACCOUNT_OCID, 12345 )
+			->willReturn( true );
+		$this->assertTrue(
+			$this->ads->update_ocid_from_billing_url( self::TEST_BILLING_URL . '?ocid=12345' )
+		);
 	}
 }

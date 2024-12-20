@@ -10,53 +10,53 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\CampaignType;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\MicroTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Google\Ads\GoogleAdsClient;
 use Exception;
-use Google\Ads\GoogleAds\Util\V16\ResourceNames;
-use Google\Ads\GoogleAds\V16\Common\LocationInfo;
-use Google\Ads\GoogleAds\V16\Common\Metrics;
-use Google\Ads\GoogleAds\V16\Common\Segments;
-use Google\Ads\GoogleAds\V16\Common\TagSnippet;
-use Google\Ads\GoogleAds\V16\Common\ImageAsset;
-use Google\Ads\GoogleAds\V16\Common\TextAsset;
-use Google\Ads\GoogleAds\V16\Common\CallToActionAsset;
-use Google\Ads\GoogleAds\V16\Common\ImageDimension;
-use Google\Ads\GoogleAds\V16\Enums\AccessRoleEnum\AccessRole;
-use Google\Ads\GoogleAds\V16\Enums\CampaignStatusEnum\CampaignStatus as AdsCampaignStatus;
-use Google\Ads\GoogleAds\V16\Enums\AdvertisingChannelTypeEnum\AdvertisingChannelType as AdsCampaignType;
-use Google\Ads\GoogleAds\V16\Enums\AssetTypeEnum\AssetType;
-use Google\Ads\GoogleAds\V16\Enums\TrackingCodePageFormatEnum\TrackingCodePageFormat;
-use Google\Ads\GoogleAds\V16\Enums\TrackingCodeTypeEnum\TrackingCodeType;
-use Google\Ads\GoogleAds\V16\Resources\BillingSetup;
-use Google\Ads\GoogleAds\V16\Resources\Campaign;
-use Google\Ads\GoogleAds\V16\Resources\Label;
-use Google\Ads\GoogleAds\V16\Resources\Asset;
-use Google\Ads\GoogleAds\V16\Resources\AssetGroup;
-use Google\Ads\GoogleAds\V16\Resources\AssetGroupAsset;
-use Google\Ads\GoogleAds\V16\Services\AssetGroupAssetOperation;
-use Google\Ads\GoogleAds\V16\Resources\CampaignBudget;
-use Google\Ads\GoogleAds\V16\Resources\CampaignCriterion;
-use Google\Ads\GoogleAds\V16\Resources\Campaign\ShoppingSetting;
-use Google\Ads\GoogleAds\V16\Resources\ConversionAction;
-use Google\Ads\GoogleAds\V16\Resources\Customer;
-use Google\Ads\GoogleAds\V16\Resources\CustomerUserAccess;
-use Google\Ads\GoogleAds\V16\Resources\ShoppingPerformanceView;
-use Google\Ads\GoogleAds\V16\Services\Client\ConversionActionServiceClient;
-use Google\Ads\GoogleAds\V16\Services\Client\CustomerServiceClient;
-use Google\Ads\GoogleAds\V16\Services\Client\ProductLinkInvitationServiceClient;
-use Google\Ads\GoogleAds\V16\Services\GoogleAdsRow;
-use Google\Ads\GoogleAds\V16\Services\Client\GoogleAdsServiceClient;
-use Google\Ads\GoogleAds\V16\Services\ListAccessibleCustomersResponse;
-use Google\Ads\GoogleAds\V16\Services\MutateCampaignResult;
-use Google\Ads\GoogleAds\V16\Services\MutateLabelResult;
-use Google\Ads\GoogleAds\V16\Services\MutateConversionActionResult;
-use Google\Ads\GoogleAds\V16\Services\MutateConversionActionsRequest;
-use Google\Ads\GoogleAds\V16\Services\MutateConversionActionsResponse;
-use Google\Ads\GoogleAds\V16\Services\MutateGoogleAdsRequest;
-use Google\Ads\GoogleAds\V16\Services\MutateGoogleAdsResponse;
-use Google\Ads\GoogleAds\V16\Services\MutateOperationResponse;
-use Google\Ads\GoogleAds\V16\Services\MutateOperation;
-use Google\Ads\GoogleAds\V16\Services\MutateAssetGroupResult;
-use Google\Ads\GoogleAds\V16\Services\MutateAssetResult;
-use Google\Ads\GoogleAds\V16\Services\SearchGoogleAdsResponse;
+use Google\Ads\GoogleAds\Util\V18\ResourceNames;
+use Google\Ads\GoogleAds\V18\Common\LocationInfo;
+use Google\Ads\GoogleAds\V18\Common\Metrics;
+use Google\Ads\GoogleAds\V18\Common\Segments;
+use Google\Ads\GoogleAds\V18\Common\TagSnippet;
+use Google\Ads\GoogleAds\V18\Common\ImageAsset;
+use Google\Ads\GoogleAds\V18\Common\TextAsset;
+use Google\Ads\GoogleAds\V18\Common\CallToActionAsset;
+use Google\Ads\GoogleAds\V18\Common\ImageDimension;
+use Google\Ads\GoogleAds\V18\Enums\AccessRoleEnum\AccessRole;
+use Google\Ads\GoogleAds\V18\Enums\CampaignStatusEnum\CampaignStatus as AdsCampaignStatus;
+use Google\Ads\GoogleAds\V18\Enums\AdvertisingChannelTypeEnum\AdvertisingChannelType as AdsCampaignType;
+use Google\Ads\GoogleAds\V18\Enums\AssetTypeEnum\AssetType;
+use Google\Ads\GoogleAds\V18\Enums\TrackingCodePageFormatEnum\TrackingCodePageFormat;
+use Google\Ads\GoogleAds\V18\Enums\TrackingCodeTypeEnum\TrackingCodeType;
+use Google\Ads\GoogleAds\V18\Resources\BillingSetup;
+use Google\Ads\GoogleAds\V18\Resources\Campaign;
+use Google\Ads\GoogleAds\V18\Resources\Label;
+use Google\Ads\GoogleAds\V18\Resources\Asset;
+use Google\Ads\GoogleAds\V18\Resources\AssetGroup;
+use Google\Ads\GoogleAds\V18\Resources\AssetGroupAsset;
+use Google\Ads\GoogleAds\V18\Services\AssetGroupAssetOperation;
+use Google\Ads\GoogleAds\V18\Resources\CampaignBudget;
+use Google\Ads\GoogleAds\V18\Resources\CampaignCriterion;
+use Google\Ads\GoogleAds\V18\Resources\Campaign\ShoppingSetting;
+use Google\Ads\GoogleAds\V18\Resources\ConversionAction;
+use Google\Ads\GoogleAds\V18\Resources\Customer;
+use Google\Ads\GoogleAds\V18\Resources\CustomerUserAccess;
+use Google\Ads\GoogleAds\V18\Resources\ShoppingPerformanceView;
+use Google\Ads\GoogleAds\V18\Services\Client\ConversionActionServiceClient;
+use Google\Ads\GoogleAds\V18\Services\Client\CustomerServiceClient;
+use Google\Ads\GoogleAds\V18\Services\Client\ProductLinkInvitationServiceClient;
+use Google\Ads\GoogleAds\V18\Services\GoogleAdsRow;
+use Google\Ads\GoogleAds\V18\Services\Client\GoogleAdsServiceClient;
+use Google\Ads\GoogleAds\V18\Services\ListAccessibleCustomersResponse;
+use Google\Ads\GoogleAds\V18\Services\MutateCampaignResult;
+use Google\Ads\GoogleAds\V18\Services\MutateLabelResult;
+use Google\Ads\GoogleAds\V18\Services\MutateConversionActionResult;
+use Google\Ads\GoogleAds\V18\Services\MutateConversionActionsRequest;
+use Google\Ads\GoogleAds\V18\Services\MutateConversionActionsResponse;
+use Google\Ads\GoogleAds\V18\Services\MutateGoogleAdsRequest;
+use Google\Ads\GoogleAds\V18\Services\MutateGoogleAdsResponse;
+use Google\Ads\GoogleAds\V18\Services\MutateOperationResponse;
+use Google\Ads\GoogleAds\V18\Services\MutateOperation;
+use Google\Ads\GoogleAds\V18\Services\MutateAssetGroupResult;
+use Google\Ads\GoogleAds\V18\Services\MutateAssetResult;
+use Google\Ads\GoogleAds\V18\Services\SearchGoogleAdsResponse;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\Page;
 use Google\ApiCore\PagedListResponse;
@@ -188,29 +188,22 @@ trait GoogleAdsClientTrait {
 	 *
 	 * @param array $campaigns_responses Set of campaign data to convert.
 	 * @param array $campaign_criterion_responses Set of campaign criterion data to convert.
-	 * @param bool  $assert_pagination Whether to assert pagination.
 	 */
-	protected function generate_ads_campaign_query_mock( array $campaigns_responses, $campaign_criterion_responses, $assert_pagination = false ) {
+	protected function generate_ads_campaign_query_mock( array $campaigns_responses, $campaign_criterion_responses ) {
 		$campaigns_row_mock          = array_map( [ $this, 'generate_campaign_row_mock' ], $campaigns_responses );
 		$campaign_criterion_row_mock = array_map( [ $this, 'generate_campaign_criterion_row_mock' ], $campaign_criterion_responses );
 
 		$list_response = $this->createMock( PagedListResponse::class );
-		$page          = $this->createMock( Page::class );
-
-		if ( $assert_pagination ) {
-			$response_object = $this->createMock( SearchGoogleAdsResponse::class );
-			$response_object->expects( $this->exactly( 1 ) )->method( 'getTotalResultsCount' )->willReturn( count( $campaigns_responses ) );
-			$page->expects( $this->exactly( 1 ) )->method( 'getNextPageToken' )->willReturn( '' );
-			$page->method( 'getResponseObject' )->willReturn( $response_object );
-		}
-
-		$page->method( 'getIterator' )->willReturn(
+		$list_response->method( 'iterateAllElements' )->willReturnOnConsecutiveCalls(
 			$campaigns_row_mock,
-		);
-
-		$list_response->method( 'iterateAllElements' )->willReturn(
 			$campaign_criterion_row_mock
 		);
+
+		$response_object = $this->createMock( SearchGoogleAdsResponse::class );
+		$response_object->method( 'getTotalResultsCount' )->willReturn( count( $campaigns_responses ) );
+
+		$page = $this->createMock( Page::class );
+		$page->method( 'getResponseObject' )->willReturn( $response_object );
 
 		$list_response->method( 'getPage' )->willReturn( $page );
 
@@ -327,11 +320,17 @@ trait GoogleAdsClientTrait {
 	 */
 	protected function generate_ads_campaign_query_mock_with_no_campaigns() {
 		$list_response = $this->createMock( PagedListResponse::class );
-		$page          = $this->createMock( Page::class );
-		$page->method( 'getIterator' )->willReturn( [] );
+		$list_response->method( 'iterateAllElements' )->willReturn( [] );
+
+		$response_object = $this->createMock( SearchGoogleAdsResponse::class );
+		$response_object->method( 'getTotalResultsCount' )->willReturn( 0 );
+
+		$page = $this->createMock( Page::class );
+		$page->method( 'getResponseObject' )->willReturn( $response_object );
+
 		$list_response->method( 'getPage' )->willReturn( $page );
 
-		// Method search() will only being called once by AdsCampaignQuery
+		// Method search() will only be called once by AdsCampaignQuery
 		// since there were no campaigns returned by AdsCampaignQuery, it
 		// won't be calling AdsCampaignCriterionQuery then.
 		$this->service_client->expects( $this->once() )
