@@ -10,7 +10,7 @@ import { useAdaptiveFormContext } from '~/components/adaptive-form';
 import StepContent from '~/components/stepper/step-content';
 import StepContentActions from '~/components/stepper/step-content-actions';
 import StepContentFooter from '~/components/stepper/step-content-footer';
-import TaxRate from '~/components/free-listings/configure-product-listings/tax-rate';
+import TaxRate from '~/pages/settings/setup-tax-rate/tax-rate';
 import useDisplayTaxRate from '~/pages/settings/setup-tax-rate/useDisplayTaxRate';
 import ChooseAudienceSection from '~/components/free-listings/choose-audience-section';
 import ShippingRateSection from '~/components/shipping-rate-section';
