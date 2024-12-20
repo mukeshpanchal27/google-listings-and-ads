@@ -343,6 +343,18 @@ export function* saveSettings( settings ) {
 	};
 }
 
+/**
+ * Sync the shipping and tax rate settings to Google Merchant Center.
+ *
+ * @throws Will throw an error if the request failed.
+ */
+export function* syncSettings() {
+	yield apiFetch( {
+		path: `${ API_NAMESPACE }/mc/settings/sync`,
+		method: 'POST',
+	} );
+}
+
 export function* fetchJetpackAccount() {
 	try {
 		const response = yield apiFetch( {
