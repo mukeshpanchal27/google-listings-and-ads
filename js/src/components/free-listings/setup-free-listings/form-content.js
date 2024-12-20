@@ -11,7 +11,7 @@ import StepContent from '~/components/stepper/step-content';
 import StepContentActions from '~/components/stepper/step-content-actions';
 import StepContentFooter from '~/components/stepper/step-content-footer';
 import TaxRate from '~/components/free-listings/configure-product-listings/tax-rate';
-import useDisplayTaxRate from '~/components/free-listings/configure-product-listings/useDisplayTaxRate';
+import useDisplayTaxRate from '~/pages/settings/setup-tax-rate/useDisplayTaxRate';
 import ChooseAudienceSection from '~/components/free-listings/choose-audience-section';
 import ShippingRateSection from '~/components/shipping-rate-section';
 import ShippingTimeSection from '~/components/free-listings/configure-product-listings/shipping-time-section';
