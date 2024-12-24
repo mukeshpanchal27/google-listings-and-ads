@@ -140,7 +140,7 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
-= 2.9.4 - 2024-12-24 =
+= 2.9.4 - 2024-12-25 =
 * Fix - Clear previous errors after completing sync.
 * Tweak - Adjust conditions for MCM.
 * Update - Google Ads API to v18.
