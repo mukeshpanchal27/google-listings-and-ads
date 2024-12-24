@@ -158,10 +158,4 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Fix - Prevent Warning when Saving a Variation if YOAST is activated.
 * Fix - The country selector in setup/edit free listing flow from being hidden.
 
-= 2.9.1 - 2024-12-03 =
-* Fix - Make the tab navigation tabs wrap when the screen narrows.
-* Fix - Prevent translations from being called early.
-* Fix - The initial values of the form on free listings editing page may be empty.
-* Update - New shipping settings.
-
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
