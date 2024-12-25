@@ -5,7 +5,7 @@ Requires at least: 5.9
 Tested up to: 6.7
 Requires PHP: 7.4
 Requires PHP Architecture: 64 Bits
-Stable tag: 2.9.3
+Stable tag: 2.9.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -140,6 +140,11 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
+= 2.9.4 - 2024-12-25 =
+* Fix - Clear previous errors after completing sync.
+* Tweak - Adjust conditions for MCM.
+* Update - Google Ads API to v18.
+
 = 2.9.3 - 2024-12-18 =
 * Dev - Eliminate the duplicate functions used to group shipping time data.
 * Dev - Improve E2E tests for related products.
@@ -157,11 +162,5 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Fix - Initial php 8.4 compatibility.
 * Fix - Prevent Warning when Saving a Variation if YOAST is activated.
 * Fix - The country selector in setup/edit free listing flow from being hidden.
-
-= 2.9.1 - 2024-12-03 =
-* Fix - Make the tab navigation tabs wrap when the screen narrows.
-* Fix - Prevent translations from being called early.
-* Fix - The initial values of the form on free listings editing page may be empty.
-* Update - New shipping settings.
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).

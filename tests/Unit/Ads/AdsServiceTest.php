@@ -66,6 +66,33 @@ class AdsServiceTest extends UnitTest {
 		$this->assertFalse( $this->ads_service->is_setup_started() );
 	}
 
+	public function test_is_not_connected() {
+		$this->options->method( 'get' )
+			->with( OptionsInterface::GOOGLE_CONNECTED )
+			->willReturn( false );
+
+		$this->assertFalse( $this->ads_service->is_connected() );
+	}
+
+	public function test_is_connected() {
+		$invoked_count = $this->exactly( 2 );
+		$this->options->expects( $invoked_count )
+			->method( 'get' )
+			->willReturnCallback(
+				function ( string $option ) use ( $invoked_count ) {
+					if ( $option === OptionsInterface::GOOGLE_CONNECTED && 1 === $invoked_count->getInvocationCount() ) {
+						return true;
+					}
+
+					if ( $option === OptionsInterface::ADS_SETUP_COMPLETED_AT && 2 === $invoked_count->getInvocationCount() ) {
+						return true;
+					}
+				}
+			);
+
+		$this->assertTrue( $this->ads_service->is_connected() );
+	}
+
 	public function test_connected_account_without_ads_id() {
 		$this->options->method( 'get_ads_id' )->willReturn( 0 );
 

@@ -141,22 +141,7 @@ class AdsCampaignTest extends UnitTest {
 		$this->assertEquals( $campaigns_data, $this->campaign->get_campaigns() );
 	}
 
-	public function test_get_campaigns_with_search_args() {
-		$campaign_criterion_data = [
-			[
-				'campaign_id'         => self::TEST_CAMPAIGN_ID,
-				'geo_target_constant' => 'geoTargetConstants/2158',
-			],
-			[
-				'campaign_id'         => 5678901234,
-				'geo_target_constant' => 'geoTargetConstants/2344',
-			],
-			[
-				'campaign_id'         => 5678901234,
-				'geo_target_constant' => 'geoTargetConstants/2826',
-			],
-		];
-
+	public function test_get_campaigns_with_limited_results() {
 		$campaigns_data = [
 			[
 				'id'                 => self::TEST_CAMPAIGN_ID,
@@ -165,7 +150,7 @@ class AdsCampaignTest extends UnitTest {
 				'type'               => 'shopping',
 				'amount'             => 10,
 				'country'            => 'US',
-				'targeted_locations' => [ 'TW' ],
+				'targeted_locations' => [],
 			],
 			[
 				'id'                 => 5678901234,
@@ -174,37 +159,18 @@ class AdsCampaignTest extends UnitTest {
 				'type'               => 'performance_max',
 				'amount'             => 20,
 				'country'            => 'UK',
-				'targeted_locations' => [ 'HK', 'GB' ],
+				'targeted_locations' => [],
 			],
 		];
 
-		$this->generate_ads_campaign_query_mock( $campaigns_data, $campaign_criterion_data, true );
-
-		$matcher = $this->exactly( 2 );
-		$this->service_client
-		->expects( $matcher )
-		->method( 'search' )
-		->willReturnCallback(
-			function ( $request ) use ( $matcher ) {
-				if ( $matcher->getInvocationCount() === 1 ) {
-					$this->assertEquals( 2, $request->getPageSize() ); // Campaigns
-				}
-
-				if ( $matcher->getInvocationCount() === 2 ) {
-					$this->assertEquals( 0, $request->getPageSize() ); // Criterions
-				}
-
-				return true;
-			}
-		);
-
+		$this->generate_ads_campaign_query_mock( $campaigns_data, [] );
 		$this->assertEquals(
-			[
-				'campaigns'       => $campaigns_data,
-				'total_results'   => count( $campaigns_data ),
-				'next_page_token' => '',
-			],
-			$this->campaign->get_campaigns( true, true, [ 'per_page' => 2 ], true )
+			array_slice( $campaigns_data, 0, 1 ), // Only expect one result.
+			$this->campaign->get_campaigns(
+				true,
+				true,
+				[ 'per_page' => 1 ],
+			)
 		);
 	}
 

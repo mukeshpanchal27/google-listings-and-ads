@@ -5,6 +5,12 @@
 		}
 	}
 
+	.components-card-footer {
+		.woocommerce-pagination {
+			display: none;
+		}
+	}
+
 	.program-actions {
 		display: flex;
 		justify-content: space-between;

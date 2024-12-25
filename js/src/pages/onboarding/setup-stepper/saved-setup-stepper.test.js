@@ -16,9 +16,8 @@ jest.mock( '~/hooks/useTargetAudienceFinalCountryCodes', () =>
 		.mockName( 'useTargetAudienceFinalCountryCodes' )
 		.mockReturnValue( {} )
 );
-jest.mock(
-	'~/components/free-listings/configure-product-listings/useSettings',
-	() => jest.fn().mockName( 'useSettings' ).mockReturnValue( {} )
+jest.mock( '~/hooks/useSettings', () =>
+	jest.fn().mockName( 'useSettings' ).mockReturnValue( {} )
 );
 jest.mock( '~/hooks/useShippingRates', () =>
 	jest.fn().mockName( 'useShippingRates' ).mockReturnValue( {} )

@@ -13,7 +13,7 @@ import { useAppDispatch } from '~/data';
 import TopBar from '~/components/stepper/top-bar';
 import SetupFreeListings from '~/components/free-listings/setup-free-listings';
 import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
-import useSettings from '~/components/free-listings/configure-product-listings/useSettings';
+import useSettings from '~/hooks/useSettings';
 import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 import useLayout from '~/hooks/useLayout';
 import useNavigateAwayPromptEffect from '~/hooks/useNavigateAwayPromptEffect';
