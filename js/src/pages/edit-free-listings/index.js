@@ -14,7 +14,6 @@ import TopBar from '~/components/stepper/top-bar';
 import SetupFreeListings from '~/components/free-listings/setup-free-listings';
 import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
 import useSettings from '~/hooks/useSettings';
-import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 import useLayout from '~/hooks/useLayout';
 import useNavigateAwayPromptEffect from '~/hooks/useNavigateAwayPromptEffect';
 import useShippingRates from '~/hooks/useShippingRates';
@@ -49,8 +48,13 @@ const EditFreeListings = () => {
 	const { targetAudience: savedTargetAudience, getFinalCountries } =
 		useTargetAudienceFinalCountryCodes();
 
-	const { settings: savedSettings } = useSettings();
-	const { saveTargetAudience, saveSettings } = useAppDispatch();
+	const {
+		settings: savedSettings,
+		saveSettings,
+		syncSettings,
+	} = useSettings();
+
+	const { saveTargetAudience } = useAppDispatch();
 	const { saveShippingRates } = useSaveShippingRates();
 	const { saveShippingTimes } = useSaveShippingTimes();
 
@@ -87,10 +91,6 @@ const EditFreeListings = () => {
 		[ savedShippingTimes ]
 	);
 
-	const [ fetchSettingsSync ] = useApiFetchCallback( {
-		path: `/wc/gla/mc/settings/sync`,
-		method: 'POST',
-	} );
 	const { createNotice } = useDispatchCoreNotices();
 
 	// Check what've changed to show prompt, and send requests only to save changed things.
@@ -155,7 +155,7 @@ const EditFreeListings = () => {
 			);
 
 			// Sync data once our changes are saved, even partially succesfully.
-			await fetchSettingsSync();
+			await syncSettings();
 
 			if ( errorMessage ) {
 				createNotice( 'error', errorMessage );

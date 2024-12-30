@@ -38,7 +38,7 @@ import {
 const SavedSetupStepper = ( { savedStep } ) => {
 	const [ step, setStep ] = useState( savedStep );
 
-	const { settings } = useSettings();
+	const { settings, saveSettings } = useSettings();
 	const { data: suggestedAudience } = useTargetAudienceWithSuggestions();
 	const { targetAudience, getFinalCountries } =
 		useTargetAudienceFinalCountryCodes();
@@ -51,7 +51,7 @@ const SavedSetupStepper = ( { savedStep } ) => {
 		data: shippingTimes,
 	} = useShippingTimes();
 
-	const { saveTargetAudience, saveSettings } = useAppDispatch();
+	const { saveTargetAudience } = useAppDispatch();
 	const { saveShippingRates } = useSaveShippingRates();
 	const { saveShippingTimes } = useSaveShippingTimes();
 	const { createNotice } = useDispatchCoreNotices();
