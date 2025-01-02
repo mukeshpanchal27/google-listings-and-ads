@@ -22,7 +22,7 @@ import VerticalGapLayout from '~/components/vertical-gap-layout';
 const TaxRate = () => {
 	const {
 		getInputProps,
-		adapter: { renderRequestedValidation },
+		adapter: { isSubmitting },
 	} = useAdaptiveFormContext();
 
 	return (
@@ -62,6 +62,7 @@ const TaxRate = () => {
 							) }
 							value="destination"
 							collapsible
+							disabled={ isSubmitting }
 						>
 							<RadioHelperText>
 								{ __(
@@ -78,6 +79,7 @@ const TaxRate = () => {
 							) }
 							value="manual"
 							collapsible
+							disabled={ isSubmitting }
 						>
 							<RadioHelperText>
 								{ createInterpolateElement(
@@ -98,7 +100,6 @@ const TaxRate = () => {
 							</RadioHelperText>
 						</AppRadioContentControl>
 					</VerticalGapLayout>
-					{ renderRequestedValidation( 'tax_rate' ) }
 				</Section.Card.Body>
 			</Section.Card>
 		</Section>
