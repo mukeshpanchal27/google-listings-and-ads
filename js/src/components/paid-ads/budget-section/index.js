@@ -48,6 +48,7 @@ const BudgetSection = ( {
 	return (
 		<div className="gla-budget-section">
 			<Section
+				verticalGap={ 4 }
 				disabled={ disabled }
 				title={ __( 'Set your budget', 'google-listings-and-ads' ) }
 				description={
