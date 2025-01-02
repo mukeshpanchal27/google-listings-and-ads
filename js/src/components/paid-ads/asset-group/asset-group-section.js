@@ -11,7 +11,6 @@ import { Tip } from '@wordpress/components';
 import { ASSET_FORM_KEY } from '~/constants';
 import { useAdaptiveFormContext } from '~/components/adaptive-form';
 import Section from '~/components/section';
-import VerticalGapLayout from '~/components/vertical-gap-layout';
 import FinalUrlCard from './final-url-card';
 import AssetGroupCard from './asset-group-card';
 import AppDocumentationLink from '~/components/app-documentation-link';
@@ -30,6 +29,7 @@ export default function AssetGroupSection() {
 	return (
 		<Section
 			className="gla-asset-group-section"
+			verticalGap={ 4 }
 			title={ createInterpolateElement(
 				__(
 					'Add additional assets <optional>(Optional)</optional>',
@@ -61,27 +61,25 @@ export default function AssetGroupSection() {
 				</>
 			}
 		>
-			<VerticalGapLayout size="medium">
-				<FinalUrlCard
-					initialFinalUrl={
-						adapter.baseAssetGroup[ ASSET_FORM_KEY.FINAL_URL ]
-					}
-					onAssetsChange={ adapter.resetAssetGroup }
-					// Currently, the PMax Assets feature in this extension doesn't offer the function
-					// to change the Final URL of the non-empty asset entity group, so it hides the
-					// reselect button in the card footer.
-					hideFooter={ ! adapter.isEmptyAssetEntityGroup }
-				/>
-				{ showTip && (
-					<Tip>
-						{ __(
-							'We auto-populated assets directly from your Final URL. We encourage you to edit or add more in order to best showcase your business.',
-							'google-listings-and-ads'
-						) }
-					</Tip>
-				) }
-				<AssetGroupCard />
-			</VerticalGapLayout>
+			<FinalUrlCard
+				initialFinalUrl={
+					adapter.baseAssetGroup[ ASSET_FORM_KEY.FINAL_URL ]
+				}
+				onAssetsChange={ adapter.resetAssetGroup }
+				// Currently, the PMax Assets feature in this extension doesn't offer the function
+				// to change the Final URL of the non-empty asset entity group, so it hides the
+				// reselect button in the card footer.
+				hideFooter={ ! adapter.isEmptyAssetEntityGroup }
+			/>
+			{ showTip && (
+				<Tip>
+					{ __(
+						'We auto-populated assets directly from your Final URL. We encourage you to edit or add more in order to best showcase your business.',
+						'google-listings-and-ads'
+					) }
+				</Tip>
+			) }
+			<AssetGroupCard />
 		</Section>
 	);
 }

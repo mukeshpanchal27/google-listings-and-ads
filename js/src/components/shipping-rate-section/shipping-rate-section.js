@@ -57,71 +57,69 @@ const ShippingRateSection = () => {
 				</div>
 			}
 		>
-			<VerticalGapLayout size="large">
-				<Section.Card>
-					<Section.Card.Body>
-						<VerticalGapLayout size="large">
-							{ ! hideAutomatticShippingRate && (
-								<AppRadioContentControl
-									{ ...inputProps }
-									label={ __(
-										'Automatically sync my store’s shipping settings to Google.',
-										'google-listings-and-ads'
-									) }
-									value="automatic"
-									collapsible
-								>
-									<RadioHelperText>
-										{ __(
-											'My current settings and any future changes to my store’s shipping rates and classes will be automatically synced to Google Merchant Center.',
-											'google-listings-and-ads'
-										) }
-									</RadioHelperText>
-								</AppRadioContentControl>
-							) }
+			<Section.Card>
+				<Section.Card.Body>
+					<VerticalGapLayout size="large">
+						{ ! hideAutomatticShippingRate && (
 							<AppRadioContentControl
 								{ ...inputProps }
 								label={ __(
-									'My shipping settings are simple. I can manually estimate flat shipping rates.',
+									'Automatically sync my store’s shipping settings to Google.',
 									'google-listings-and-ads'
 								) }
-								value="flat"
-								collapsible
-							/>
-							<AppRadioContentControl
-								{ ...inputProps }
-								label={ __(
-									'My shipping settings are complex. I will enter my shipping rates and times manually in Google Merchant Center.',
-									'google-listings-and-ads'
-								) }
-								value="manual"
+								value="automatic"
 								collapsible
 							>
 								<RadioHelperText>
-									{ createInterpolateElement(
-										__(
-											'I understand that if I don’t set this up manually in <link>Google Merchant Center</link>, my products will be disapproved by Google.',
-											'google-listings-and-ads'
-										),
-										{
-											link: (
-												<AppDocumentationLink
-													context="setup-mc-shipping"
-													linkId="shipping-manual"
-													href="https://www.google.com/retail/solutions/merchant-center/"
-												/>
-											),
-										}
+									{ __(
+										'My current settings and any future changes to my store’s shipping rates and classes will be automatically synced to Google Merchant Center.',
+										'google-listings-and-ads'
 									) }
 								</RadioHelperText>
 							</AppRadioContentControl>
-						</VerticalGapLayout>
-					</Section.Card.Body>
-				</Section.Card>
-				{ values.shipping_rate === 'flat' && (
-					<FlatShippingRatesInputCards />
-				) }
-			</VerticalGapLayout>
+						) }
+						<AppRadioContentControl
+							{ ...inputProps }
+							label={ __(
+								'My shipping settings are simple. I can manually estimate flat shipping rates.',
+								'google-listings-and-ads'
+							) }
+							value="flat"
+							collapsible
+						/>
+						<AppRadioContentControl
+							{ ...inputProps }
+							label={ __(
+								'My shipping settings are complex. I will enter my shipping rates and times manually in Google Merchant Center.',
+								'google-listings-and-ads'
+							) }
+							value="manual"
+							collapsible
+						>
+							<RadioHelperText>
+								{ createInterpolateElement(
+									__(
+										'I understand that if I don’t set this up manually in <link>Google Merchant Center</link>, my products will be disapproved by Google.',
+										'google-listings-and-ads'
+									),
+									{
+										link: (
+											<AppDocumentationLink
+												context="setup-mc-shipping"
+												linkId="shipping-manual"
+												href="https://www.google.com/retail/solutions/merchant-center/"
+											/>
+										),
+									}
+								) }
+							</RadioHelperText>
+						</AppRadioContentControl>
+					</VerticalGapLayout>
+				</Section.Card.Body>
+			</Section.Card>
+			{ values.shipping_rate === 'flat' && (
+				<FlatShippingRatesInputCards />
+			) }
 		</Section>
 	);
 };

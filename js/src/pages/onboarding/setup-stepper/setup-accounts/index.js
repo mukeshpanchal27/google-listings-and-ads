@@ -19,7 +19,6 @@ import StepContentFooter from '~/components/stepper/step-content-footer';
 import StepContentActions from '~/components/stepper/step-content-actions';
 import Section from '~/components/section';
 import AppDocumentationLink from '~/components/app-documentation-link';
-import VerticalGapLayout from '~/components/vertical-gap-layout';
 import WPComAccountCard from '~/components/wpcom-account-card';
 import GoogleComboAccountCard from '~/components/google-combo-account-card';
 import Faqs from './faqs';
@@ -151,12 +150,10 @@ const SetupAccounts = ( props ) => {
 					'google-listings-and-ads'
 				) }
 			>
-				<VerticalGapLayout size="large">
-					{ ! isJetpackActive && (
-						<WPComAccountCard jetpack={ jetpack } />
-					) }
-					<GoogleComboAccountCard disabled={ ! isJetpackActive } />
-				</VerticalGapLayout>
+				{ ! isJetpackActive && (
+					<WPComAccountCard jetpack={ jetpack } />
+				) }
+				<GoogleComboAccountCard disabled={ ! isJetpackActive } />
 			</Section>
 
 			<StepContentFooter>
