@@ -13,6 +13,7 @@ import useGoogleAccount from '~/hooks/useGoogleAccount';
 import useUpdateRestAPIAuthorizeStatusByUrlQuery from '~/hooks/useUpdateRestAPIAuthorizeStatusByUrlQuery';
 import { subpaths, getReconnectAccountUrl } from '~/utils/urls';
 import { ContactInformationPreview } from '~/components/contact-information';
+import SetupTaxRate from './setup-tax-rate';
 import LinkedAccounts from './linked-accounts';
 import ReconnectWPComAccount from './reconnect-wpcom-account';
 import ReconnectGoogleAccount from './reconnect-google-account';
@@ -65,6 +66,7 @@ const Settings = () => {
 			<MainTabNav />
 			<RebrandingTour />
 			<ContactInformationPreview />
+			<SetupTaxRate />
 			<LinkedAccounts />
 		</div>
 	);
