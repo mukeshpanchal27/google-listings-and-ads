@@ -11,7 +11,6 @@ import StepContent from '~/components/stepper/step-content';
 import StepContentHeader from '~/components/stepper/step-content-header';
 import StepContentActions from '~/components/stepper/step-content-actions';
 import StepContentFooter from '~/components/stepper/step-content-footer';
-import VerticalGapLayout from '~/components/vertical-gap-layout';
 import { ConnectedGoogleAccountCard } from '~/components/google-account-card';
 import GoogleAdsAccountCard from '~/components/google-ads-account-card';
 import FreeAdCredit from '~/components/free-ad-credit';
@@ -52,18 +51,16 @@ const SetupAccounts = ( props ) => {
 					'google-listings-and-ads'
 				) }
 			>
-				<VerticalGapLayout size="large">
-					<ConnectedGoogleAccountCard
-						googleAccount={ google }
-						hideAccountSwitch
-						helper={ __(
-							'This Google account is connected to your store’s product feed.',
-							'google-listings-and-ads'
-						) }
-					/>
-					<GoogleAdsAccountCard />
-					<FreeAdCredit />
-				</VerticalGapLayout>
+				<ConnectedGoogleAccountCard
+					googleAccount={ google }
+					hideAccountSwitch
+					helper={ __(
+						'This Google account is connected to your store’s product feed.',
+						'google-listings-and-ads'
+					) }
+				/>
+				<GoogleAdsAccountCard />
+				<FreeAdCredit />
 			</Section>
 			<StepContentFooter>
 				<StepContentActions>

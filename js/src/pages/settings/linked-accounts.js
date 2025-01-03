@@ -16,7 +16,6 @@ import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
 import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
 import AppButton from '~/components/app-button';
 import SpinnerCard from '~/components/spinner-card';
-import VerticalGapLayout from '~/components/vertical-gap-layout';
 import { ConnectedWPComAccountCard } from '~/components/wpcom-account-card';
 import { ConnectedGoogleAccountCard } from '~/components/google-account-card';
 import { ConnectedGoogleAdsAccountCard } from '~/components/google-ads-account-card';
@@ -87,7 +86,7 @@ export default function LinkedAccounts() {
 			{ isLoading ? (
 				<SpinnerCard />
 			) : (
-				<VerticalGapLayout size="large">
+				<>
 					<ConnectedWPComAccountCard jetpack={ jetpack } />
 					<ConnectedGoogleAccountCard
 						googleAccount={ google }
@@ -127,7 +126,7 @@ export default function LinkedAccounts() {
 							) }
 						</AppButton>
 					</Flex>
-				</VerticalGapLayout>
+				</>
 			) }
 		</LinkedAccountsSectionWrapper>
 	);

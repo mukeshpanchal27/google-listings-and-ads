@@ -2,6 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import { Flex } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -20,6 +21,7 @@ import './index.scss';
  * @param {JSX.Element} [props.children] Section content at the right side.
  * @param {boolean} [props.disabled] Whether display the whole section in disabled style.
  * @param {boolean} [props.disabledLeft] Whether display the left side of section in disabled style.
+ * @param {number} [props.verticalGap=6] Vertical gap between the children.
  */
 const Section = ( {
 	className,
@@ -29,6 +31,7 @@ const Section = ( {
 	children,
 	disabled,
 	disabledLeft,
+	verticalGap = 6,
 } ) => {
 	const sectionClassName = classnames(
 		'gla-section',
@@ -44,7 +47,13 @@ const Section = ( {
 				{ title && <h1>{ title }</h1> }
 				{ description }
 			</header>
-			<div className="gla-section__body">{ children }</div>
+			<Flex
+				className="gla-section__body"
+				direction="column"
+				gap={ verticalGap }
+			>
+				{ children }
+			</Flex>
 		</section>
 	);
 };
