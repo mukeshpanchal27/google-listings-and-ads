@@ -35,6 +35,35 @@ export default class SettingsPage extends MockRequests {
 	}
 
 	/**
+	 * Mock all requests related to external accounts such as Merchant Center, Google, etc.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async mockRequests() {
+		await this.mockJetpackConnected();
+		await this.mockGoogleConnected();
+		await this.mockMCConnected();
+		await this.mockAdsAccountConnected();
+		await this.mockContactInformation();
+		await this.mockSuccessfulSettingsSyncRequest();
+	}
+
+	/**
+	 * Mock the target audience request with the given countries.
+	 *
+	 * @param {Array<string>} [countries=['US']] country codes to be mocked.
+	 * @return {Promise<void>}
+	 */
+	async mockTargetAudienceCountries( ...countries ) {
+		await this.fulfillTargetAudience( {
+			location: 'selected',
+			countries: countries.length ? countries : [ 'US' ],
+			locale: 'en_US',
+			language: 'English',
+		} );
+	}
+
+	/**
 	 * Get the Grant Access Button.
 	 *
 	 * @return {Promise<import('@playwright/test').Locator>}  The Grant Access Button

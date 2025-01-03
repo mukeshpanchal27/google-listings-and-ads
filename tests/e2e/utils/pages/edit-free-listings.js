@@ -60,17 +60,6 @@ export default class EditFreeListingsPage extends MockRequests {
 	}
 
 	/**
-	 * Check the destination based tax rates.
-	 *
-	 * @return {Promise<void>}
-	 */
-	async checkDestinationBasedTaxRates() {
-		await this.page
-			.locator( 'text=My store uses destination-based tax rates.' )
-			.check();
-	}
-
-	/**
 	 * Mock the successful saving settings response.
 	 *
 	 * @return {Promise<void>}

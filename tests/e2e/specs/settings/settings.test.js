@@ -1,0 +1,99 @@
+/**
+ * External dependencies
+ */
+import { expect, test } from '@playwright/test';
+
+/**
+ * Internal dependencies
+ */
+import { clearOnboardedMerchant, setOnboardedMerchant } from '../../utils/api';
+import SettingsPage from '../../utils/pages/settings';
+
+test.use( { storageState: process.env.ADMINSTATE } );
+
+test.describe.configure( { mode: 'serial' } );
+
+/**
+ * @type {import('../../utils/pages/settings.js').default} settingsPage
+ */
+let settingsPage = null;
+
+/**
+ * @type {import('@playwright/test').Page} page
+ */
+let page = null;
+
+test.describe( 'Settings', () => {
+	test.beforeAll( async ( { browser } ) => {
+		page = await browser.newPage();
+		settingsPage = new SettingsPage( page );
+
+		await setOnboardedMerchant();
+		await settingsPage.mockRequests();
+	} );
+
+	test.afterAll( async () => {
+		await clearOnboardedMerchant();
+		await page.close();
+	} );
+
+	test.describe( 'Tax rate setup', () => {
+		test( 'Should not show the setup when selling in regions unrelated to the US', async () => {
+			// Mock the country where the store is located as outside of the US.
+			const once = settingsPage.fulfillTimes( 1 );
+			await once.fulfillRequest(
+				/\/wc-admin\/options\?options=woocommerce_default_country\b/,
+				{ woocommerce_default_country: 'JP' }
+			);
+			await settingsPage.mockTargetAudienceCountries( 'JP' );
+			await settingsPage.goto();
+
+			await expect(
+				page.getByRole( 'heading', { name: 'Settings' } )
+			).toBeVisible();
+
+			await expect(
+				page.locator( '.woocommerce-spinner' ).first()
+			).not.toBeVisible();
+
+			await expect(
+				page.getByText( 'Tax rate (required for U.S. only)' )
+			).not.toBeVisible();
+		} );
+
+		test( 'Update the setting', async () => {
+			await settingsPage.mockTargetAudienceCountries();
+			await settingsPage.goto();
+
+			await expect(
+				page.getByText( 'Tax rate (required for U.S. only)' )
+			).toBeVisible();
+
+			const saveButton = page.getByRole( 'button', {
+				name: 'Save tax rate',
+			} );
+			const saveSpinner = saveButton.locator( '.woocommerce-spinner' );
+			const option = page.getByRole( 'radio', { checked: false } );
+			const optionValue = option.getAttribute( 'value' );
+
+			// Save button will become clickable after selecting another option.
+			await expect( saveButton ).toBeDisabled();
+			await option.check();
+			await expect( saveButton ).toBeEnabled();
+
+			// Submit the change, and then the save button will go through loading state
+			// and stay disabled both during and after submission.
+			await saveButton.click();
+			await expect( saveSpinner ).toBeVisible();
+			await expect( saveButton ).toBeDisabled();
+			await expect( saveSpinner ).not.toBeVisible();
+			await expect( saveButton ).toBeDisabled();
+
+			// Reload to assert the setting has been actually saved.
+			await page.reload();
+			await expect(
+				page.getByRole( 'radio', { checked: true } )
+			).toHaveAttribute( 'value', optionValue );
+		} );
+	} );
+} );
