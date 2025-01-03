@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { useEffect, useState } from '@wordpress/element';
+import { Flex } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { isEqual } from 'lodash';
 
@@ -191,6 +192,9 @@ export default function Shipping() {
 				onContinue={ handleSetupFreeListingsContinue }
 				submitLabel={ __( 'Save changes', 'google-listings-and-ads' ) }
 			/>
+			<Flex justify="flex-end">
+				<SetupFreeListings.SubmitButton />
+			</Flex>
 		</>
 	);
 }

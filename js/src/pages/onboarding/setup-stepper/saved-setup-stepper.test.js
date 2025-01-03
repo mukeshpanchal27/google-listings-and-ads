@@ -62,6 +62,9 @@ describe( 'SavedSetupStepper', () => {
 			return null;
 		} );
 
+		SetupFreeListings.SubmitButton = () =>
+			jest.fn().mockName( 'SetupFreeListings.SubmitButton' );
+
 		SetupPaidAds.mockReturnValue( null );
 	} );
 
