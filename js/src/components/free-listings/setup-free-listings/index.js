@@ -9,7 +9,6 @@ import { pick, noop } from 'lodash';
  * Internal dependencies
  */
 import AppSpinner from '~/components/app-spinner';
-import Hero from '~/components/free-listings/configure-product-listings/hero';
 import AdaptiveForm from '~/components/adaptive-form';
 import ValidationErrors from '~/components/validation-errors';
 import checkErrors from '~/components/free-listings/configure-product-listings/checkErrors';
@@ -67,7 +66,6 @@ const getSettings = ( values ) => {
  * @param {(newValue: Object) => void} [props.onShippingTimesChange] Callback called with new data once shipping times are changed. Forwarded from {@link Form.Props.onChange}.
  * @param {() => void} [props.onContinue] Callback called once continue button is clicked. Could be async. While it's being resolved the form would turn into a saving state.
  * @param {string} [props.submitLabel] Submit button label, to be forwarded to `FormContent`.
- * @param {JSX.Element} props.headerTitle Title in the header block of this setup.
  */
 const SetupFreeListings = ( {
 	targetAudience,
@@ -81,7 +79,6 @@ const SetupFreeListings = ( {
 	onShippingTimesChange = noop,
 	onContinue = noop,
 	submitLabel,
-	headerTitle,
 } ) => {
 	const formRef = useRef();
 
@@ -198,7 +195,6 @@ const SetupFreeListings = ( {
 
 	return (
 		<div className="gla-setup-free-listings">
-			<Hero headerTitle={ headerTitle } />
 			<AdaptiveForm
 				ref={ formRef }
 				initialValues={ {

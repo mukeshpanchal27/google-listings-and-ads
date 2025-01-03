@@ -158,10 +158,6 @@ const SavedSetupStepper = ( { savedStep } ) => {
 					),
 					content: (
 						<SetupFreeListings
-							headerTitle={ __(
-								'Configure your product listings',
-								'google-listings-and-ads'
-							) }
 							targetAudience={ initTargetAudience }
 							settings={ initSettings }
 							shippingRates={ initShippingRates }

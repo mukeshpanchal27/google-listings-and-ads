@@ -179,10 +179,6 @@ export default function Shipping() {
 		<>
 			<MainTabNav />
 			<SetupFreeListings
-				headerTitle={ __(
-					'Edit your listings',
-					'google-listings-and-ads'
-				) }
 				targetAudience={ initialAudience }
 				resolveFinalCountries={ getFinalCountries }
 				onTargetAudienceChange={ updateTargetAudience }
