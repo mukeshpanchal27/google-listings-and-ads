@@ -4,8 +4,8 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { Stepper } from '@woocommerce/components';
 import { getQuery, getHistory, getNewPath } from '@woocommerce/navigation';
-import { useEffect } from '@wordpress/element';
-
+import { useEffect, useState } from '@wordpress/element';
+import { isEqual } from 'lodash';
 /**
  * Internal dependencies
  */
@@ -14,7 +14,9 @@ import useAdsCampaigns from '~/hooks/useAdsCampaigns';
 import useAppSelectDispatch from '~/hooks/useAppSelectDispatch';
 import { useAppDispatch } from '~/data';
 import { getDashboardUrl } from '~/utils/urls';
-import convertToAssetGroupUpdateBody from '~/components/paid-ads/convertToAssetGroupUpdateBody';
+import convertToAssetGroupUpdateBody, {
+	diffAssetOperations,
+} from '~/components/paid-ads/convertToAssetGroupUpdateBody';
 import TopBar from '~/components/stepper/top-bar';
 import HelpIconButton from '~/components/help-icon-button';
 import CampaignAssetsForm from '~/components/paid-ads/campaign-assets-form';
@@ -34,6 +36,7 @@ import {
 	recordStepContinueEvent,
 } from '~/utils/tracks';
 import useBudgetRecommendation from '~/hooks/useBudgetRecommendation';
+import useNavigateAwayPromptEffect from '~/hooks/useNavigateAwayPromptEffect';
 
 const eventName = 'gla_paid_campaign_step';
 const eventContext = 'edit-ads';
@@ -48,6 +51,15 @@ function getCurrentStep() {
 	return STEP.CAMPAIGN;
 }
 
+function isNotOurStep( location ) {
+	const allowList = new Set( [
+		getNewPath( { step: STEP.CAMPAIGN } ),
+		getNewPath( { step: STEP.ASSET_GROUP } ),
+	] );
+	const destination = location.pathname + location.search;
+	return ! allowList.has( destination );
+}
+
 /**
  * Renders the campaign editing page.
  *
@@ -56,6 +68,8 @@ function getCurrentStep() {
  */
 const EditPaidAdsCampaign = () => {
 	useLayout( 'full-content' );
+	const [ didChange, setDidChange ] = useState( false );
+	const [ isSubmit, setIsSubmit ] = useState( false );
 
 	const {
 		updateAdsCampaign,
@@ -81,6 +95,16 @@ const EditPaidAdsCampaign = () => {
 	}, [ campaign ] );
 
 	const step = getCurrentStep();
+
+	useNavigateAwayPromptEffect(
+		__(
+			'You have unsaved campaign data. Are you sure you want to leave?',
+			'google-listings-and-ads'
+		),
+		didChange && ! isSubmit,
+		isNotOurStep
+	);
+
 	const setStep = ( nextStep ) => {
 		const url = getNewPath( { ...getQuery(), step: nextStep } );
 		getHistory().push( url );
@@ -140,10 +164,22 @@ const EditPaidAdsCampaign = () => {
 		setStep( nextStep );
 	};
 
+	const handleOnChange = ( value, allValues ) => {
+		const hasChange =
+			allValues.amount !== campaign.amount ||
+			! isEqual(
+				assetEntityGroup.display_url_path,
+				allValues.display_url_path
+			) ||
+			diffAssetOperations( assetEntityGroup, allValues ).length > 0;
+
+		setDidChange( hasChange );
+	};
+
 	const handleSubmit = async ( values, enhancer ) => {
 		const { action } = enhancer.submitter.dataset;
 		const { amount } = values;
-
+		setIsSubmit( true );
 		try {
 			await updateAdsCampaign( campaign.id, { amount } );
 
@@ -165,6 +201,7 @@ const EditPaidAdsCampaign = () => {
 				invalidateResolvedAssetEntityGroups();
 			}
 		} catch ( e ) {
+			setIsSubmit( false );
 			enhancer.signalFailedSubmission();
 			return;
 		}
@@ -190,6 +227,7 @@ const EditPaidAdsCampaign = () => {
 				recommendedDailyBudget={ highestDailyBudget }
 				assetEntityGroup={ assetEntityGroup }
 				onSubmit={ handleSubmit }
+				onChange={ handleOnChange }
 			>
 				<Stepper
 					currentStep={ getCurrentStep() }
