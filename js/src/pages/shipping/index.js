@@ -42,7 +42,7 @@ import { recordGlaEvent } from '~/utils/tracks';
  *
  * @fires gla_free_campaign_edited
  */
-const EditFreeListings = () => {
+export default function Shipping() {
 	useLayout( 'full-content' );
 
 	const { targetAudience: savedTargetAudience, getFinalCountries } =
@@ -214,6 +214,4 @@ const EditFreeListings = () => {
 			/>
 		</>
 	);
-};
-
-export default EditFreeListings;
+}
