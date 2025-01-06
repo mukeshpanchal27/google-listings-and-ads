@@ -42,7 +42,8 @@ test.describe( 'Settings', () => {
 			// Mock the country where the store is located as outside of the US.
 			const once = settingsPage.fulfillTimes( 1 );
 			await once.fulfillRequest(
-				/\/wc-admin\/options\?options=woocommerce_default_country\b/,
+				// Having`(\w+%2C)*` is because multiple option queries may be consolidated into a single request.
+				/\/wc-admin\/options\?options=(\w+%2C)*woocommerce_default_country\b/,
 				{ woocommerce_default_country: 'JP' }
 			);
 			await settingsPage.mockTargetAudienceCountries( 'JP' );
