@@ -8,7 +8,6 @@ import { pick, noop } from 'lodash';
 /**
  * Internal dependencies
  */
-import useStoreCountry from '~/hooks/useStoreCountry';
 import AppSpinner from '~/components/app-spinner';
 import Hero from '~/components/free-listings/configure-product-listings/hero';
 import AdaptiveForm from '~/components/adaptive-form';
@@ -32,7 +31,7 @@ const targetAudienceFields = [ 'locale', 'language', 'location', 'countries' ];
  *
  * If we are adding a new settings field, it should be added into this array.
  */
-const settingsFieldNames = [ 'shipping_rate', 'shipping_time', 'tax_rate' ];
+const settingsFieldNames = [ 'shipping_rate', 'shipping_time' ];
 
 /**
  * Get settings object from Form values.
@@ -69,7 +68,6 @@ const getSettings = ( values ) => {
  * @param {() => void} [props.onContinue] Callback called once continue button is clicked. Could be async. While it's being resolved the form would turn into a saving state.
  * @param {string} [props.submitLabel] Submit button label, to be forwarded to `FormContent`.
  * @param {JSX.Element} props.headerTitle Title in the header block of this setup.
- * @param {boolean} [props.hideTaxRates=false] Whether to hide tax rate section, to be forwarded to `FormContent`.
  */
 const SetupFreeListings = ( {
 	targetAudience,
@@ -84,10 +82,8 @@ const SetupFreeListings = ( {
 	onContinue = noop,
 	submitLabel,
 	headerTitle,
-	hideTaxRates = false,
 } ) => {
 	const formRef = useRef();
-	const { code: storeCountryCode } = useStoreCountry();
 
 	if ( ! ( targetAudience && settings && shippingRates && shippingTimes ) ) {
 		return <AppSpinner />;
@@ -97,13 +93,7 @@ const SetupFreeListings = ( {
 		const countries = resolveFinalCountries( values );
 		const { shipping_country_times: shippingTimesData } = values;
 
-		return checkErrors(
-			values,
-			shippingTimesData,
-			countries,
-			storeCountryCode,
-			hideTaxRates
-		);
+		return checkErrors( values, shippingTimesData, countries );
 	};
 
 	const handleChange = ( change, values ) => {
@@ -220,7 +210,6 @@ const SetupFreeListings = ( {
 					// These are the fields for settings.
 					shipping_rate: settings.shipping_rate,
 					shipping_time: settings.shipping_time,
-					tax_rate: settings.tax_rate,
 					// This is used in UI only, not used in API.
 					offer_free_shipping:
 						getOfferFreeShippingInitialValue( shippingRates ),
@@ -233,10 +222,7 @@ const SetupFreeListings = ( {
 				validate={ handleValidate }
 				onSubmit={ onContinue }
 			>
-				<FormContent
-					submitLabel={ submitLabel }
-					hideTaxRates={ hideTaxRates }
-				/>
+				<FormContent submitLabel={ submitLabel } />
 			</AdaptiveForm>
 		</div>
 	);

@@ -165,7 +165,6 @@ const SavedSetupStepper = ( { savedStep } ) => {
 							targetAudience={ initTargetAudience }
 							settings={ initSettings }
 							shippingRates={ initShippingRates }
-							hideTaxRates={ true }
 							shippingTimes={ initShippingTimes }
 							resolveFinalCountries={ getFinalCountries }
 							onTargetAudienceChange={ handleFormChange.bind(
