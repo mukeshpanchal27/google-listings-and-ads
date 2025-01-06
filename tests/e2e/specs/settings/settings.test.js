@@ -61,7 +61,7 @@ test.describe( 'Settings', () => {
 			).not.toBeVisible();
 		} );
 
-		test( 'Update the setting', async () => {
+		test( 'Should show the setup when selling to the US and can update the setting', async () => {
 			await settingsPage.mockTargetAudienceCountries();
 			await settingsPage.goto();
 
