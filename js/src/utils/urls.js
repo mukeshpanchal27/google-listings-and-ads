@@ -22,7 +22,6 @@ export const pagePaths = {
 };
 
 export const subpaths = {
-	editFreeListings: '/free-listings/edit',
 	editCampaign: '/campaigns/edit',
 	createCampaign: '/campaigns/create',
 	editStoreAddress: '/edit-store-address',
@@ -35,10 +34,6 @@ const onboardingPath = pagePaths.onboarding;
 const dashboardPath = pagePaths.dashboard;
 const settingsPath = pagePaths.settings;
 const reportsPath = pagePaths.reports;
-
-export const getEditFreeListingsUrl = () => {
-	return getNewPath( { subpath: subpaths.editFreeListings }, dashboardPath );
-};
 
 /**
  * Gets the path to the campaign editing page with given query parameters.
