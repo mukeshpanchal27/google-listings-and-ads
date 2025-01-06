@@ -15,6 +15,7 @@ import TaxRate from './tax-rate';
 import useSettings from '~/hooks/useSettings';
 import useDisplayTaxRate from './useDisplayTaxRate';
 import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
+import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
 import { handleApiError } from '~/utils/handleError';
 
 const validTaxRateSet = new Set( [ 'destination', 'manual' ] );
@@ -30,6 +31,7 @@ export default function SetupTaxRate() {
 	const { settings, saveSettings, syncSettings } = useSettings();
 	const { data: audienceCountries } = useTargetAudienceFinalCountryCodes();
 	const shouldDisplayTaxRate = useDisplayTaxRate( audienceCountries );
+	const { createNotice } = useDispatchCoreNotices();
 
 	if ( ! shouldDisplayTaxRate || ! settings?.hasOwnProperty( 'tax_rate' ) ) {
 		if ( shouldDisplayTaxRate === false ) {
@@ -77,6 +79,15 @@ export default function SetupTaxRate() {
 					error,
 					__(
 						'There was an error synchronizing tax rate to Google Merchant Center.',
+						'google-listings-and-ads'
+					)
+				);
+			} )
+			.then( () => {
+				createNotice(
+					'success',
+					__(
+						'Your change to tax rate has been saved and will be synced to your Google Merchant Center.',
 						'google-listings-and-ads'
 					)
 				);
