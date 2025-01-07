@@ -76,9 +76,6 @@ addFilter(
 				container: GetStartedPage,
 				path: '/google/start',
 				wpOpenMenu: 'toplevel_page_woocommerce-marketing',
-				navArgs: {
-					id: 'google-start',
-				},
 			},
 			{
 				breadcrumbs: [
@@ -104,9 +101,6 @@ addFilter(
 				container: Dashboard,
 				path: '/google/dashboard',
 				wpOpenMenu: 'toplevel_page_woocommerce-marketing',
-				navArgs: {
-					id: 'google-dashboard',
-				},
 			},
 			{
 				breadcrumbs: [
@@ -116,9 +110,6 @@ addFilter(
 				container: Reports,
 				path: '/google/reports',
 				wpOpenMenu: 'toplevel_page_woocommerce-marketing',
-				navArgs: {
-					id: 'google-reports',
-				},
 			},
 			{
 				breadcrumbs: [
@@ -128,9 +119,6 @@ addFilter(
 				container: ProductFeed,
 				path: '/google/product-feed',
 				wpOpenMenu: 'toplevel_page_woocommerce-marketing',
-				navArgs: {
-					id: 'google-product-feed',
-				},
 			},
 			{
 				breadcrumbs: [
@@ -140,9 +128,6 @@ addFilter(
 				container: AttributeMapping,
 				path: '/google/attribute-mapping',
 				wpOpenMenu: 'toplevel_page_woocommerce-marketing',
-				navArgs: {
-					id: 'google-attribute-mapping',
-				},
 			},
 			{
 				breadcrumbs: [
@@ -152,9 +137,6 @@ addFilter(
 				container: Settings,
 				path: '/google/settings',
 				wpOpenMenu: 'toplevel_page_woocommerce-marketing',
-				navArgs: {
-					id: 'google-settings',
-				},
 			},
 			{
 				breadcrumbs: [
@@ -164,9 +146,6 @@ addFilter(
 				container: Shipping,
 				path: '/google/shipping',
 				wpOpenMenu: 'toplevel_page_woocommerce-marketing',
-				navArgs: {
-					id: 'google-shipping',
-				},
 			},
 		];
 
