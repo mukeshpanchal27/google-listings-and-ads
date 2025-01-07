@@ -159,16 +159,14 @@ const AllProgramsTableCard = ( props ) => {
 						),
 					},
 					{
-						display: (
+						display: el.id !== FREE_LISTINGS_PROGRAM_ID && (
 							<div className="program-actions">
 								<EditProgramButton
 									className={ editButtonClassName }
 									programId={ el.id }
 									disabled={ el.disabledEdit }
 								/>
-								{ el.id !== FREE_LISTINGS_PROGRAM_ID && (
-									<RemoveProgramButton programId={ el.id } />
-								) }
+								<RemoveProgramButton programId={ el.id } />
 							</div>
 						),
 					},

@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { useRef } from '@wordpress/element';
+import { createSlotFill } from '@wordpress/components';
 import { Form } from '@woocommerce/components';
 import { pick, noop } from 'lodash';
 
@@ -9,7 +10,7 @@ import { pick, noop } from 'lodash';
  * Internal dependencies
  */
 import AppSpinner from '~/components/app-spinner';
-import Hero from '~/components/free-listings/configure-product-listings/hero';
+import AppButton from '~/components/app-button';
 import AdaptiveForm from '~/components/adaptive-form';
 import ValidationErrors from '~/components/validation-errors';
 import checkErrors from '~/components/free-listings/configure-product-listings/checkErrors';
@@ -52,8 +53,13 @@ const getSettings = ( values ) => {
 	return pick( values, settingsFieldNames );
 };
 
+const { Fill, Slot } = createSlotFill( 'gla/SetupFreeListings/SubmitButton' );
+
 /**
  * Setup step to configure free listings.
+ *
+ * Note that this component requires to specify the location where it wants to
+ * render its submit button via `<SetupFreeListings.SubmitButton />`.
  *
  * @param {Object} props
  * @param {TargetAudienceData} props.targetAudience Target audience value data to be initialed the form, if not given AppSpinner will be rendered.
@@ -66,8 +72,7 @@ const getSettings = ( values ) => {
  * @param {Array<ShippingTime>} props.shippingTimes Shipping times data, if not given AppSpinner will be rendered.
  * @param {(newValue: Object) => void} [props.onShippingTimesChange] Callback called with new data once shipping times are changed. Forwarded from {@link Form.Props.onChange}.
  * @param {() => void} [props.onContinue] Callback called once continue button is clicked. Could be async. While it's being resolved the form would turn into a saving state.
- * @param {string} [props.submitLabel] Submit button label, to be forwarded to `FormContent`.
- * @param {JSX.Element} props.headerTitle Title in the header block of this setup.
+ * @param {string} props.submitLabel Submit button label.
  */
 const SetupFreeListings = ( {
 	targetAudience,
@@ -81,7 +86,6 @@ const SetupFreeListings = ( {
 	onShippingTimesChange = noop,
 	onContinue = noop,
 	submitLabel,
-	headerTitle,
 } ) => {
 	const formRef = useRef();
 
@@ -198,7 +202,6 @@ const SetupFreeListings = ( {
 
 	return (
 		<div className="gla-setup-free-listings">
-			<Hero headerTitle={ headerTitle } />
 			<AdaptiveForm
 				ref={ formRef }
 				initialValues={ {
@@ -222,10 +225,36 @@ const SetupFreeListings = ( {
 				validate={ handleValidate }
 				onSubmit={ onContinue }
 			>
-				<FormContent submitLabel={ submitLabel } />
+				{ ( formContext ) => {
+					const { isValidForm, handleSubmit, adapter } = formContext;
+					const handleSubmitClick = ( event ) => {
+						if ( isValidForm ) {
+							return handleSubmit( event );
+						}
+
+						adapter.showValidation();
+					};
+
+					return (
+						<>
+							<FormContent />
+							<Fill>
+								<AppButton
+									isPrimary
+									loading={ adapter.isSubmitting }
+									onClick={ handleSubmitClick }
+								>
+									{ submitLabel }
+								</AppButton>
+							</Fill>
+						</>
+					);
+				} }
 			</AdaptiveForm>
 		</div>
 	);
 };
+
+SetupFreeListings.SubmitButton = Slot;
 
 export default SetupFreeListings;

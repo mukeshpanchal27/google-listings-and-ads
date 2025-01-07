@@ -2,14 +2,48 @@
  * Internal dependencies
  */
 import MockRequests from '../mock-requests';
+import { LOAD_STATE } from '../constants';
 
-export default class EditFreeListingsPage extends MockRequests {
+export default class ShippingPage extends MockRequests {
 	/**
 	 * @param {import('@playwright/test').Page} page
 	 */
 	constructor( page ) {
 		super( page );
 		this.page = page;
+	}
+
+	/**
+	 * Mock all requests related to external resources.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async mockRequests() {
+		await this.mockSuccessfulSettingsSyncRequest();
+
+		await this.fulfillSettings( {
+			shipping_rate: 'flat',
+			tax_rate: 'destination',
+		} );
+
+		await this.fulfillTargetAudience( {
+			location: 'selected',
+			countries: [ 'US' ],
+			locale: 'en_US',
+			language: 'English',
+		} );
+	}
+
+	/**
+	 * Go to the Shipping page.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async goto() {
+		await this.page.goto(
+			'/wp-admin/admin.php?page=wc-admin&path=%2Fgoogle%2Fshipping',
+			{ waitUntil: LOAD_STATE.DOM_CONTENT_LOADED }
+		);
 	}
 
 	/**
@@ -57,18 +91,6 @@ export default class EditFreeListingsPage extends MockRequests {
 		const timesLocator = this.page.locator( '.countries-time input' );
 		await timesLocator.first().fill( min );
 		await timesLocator.last().fill( max );
-	}
-
-	/**
-	 * Mock the successful saving settings response.
-	 *
-	 * @return {Promise<void>}
-	 */
-	async mockSuccessfulSavingSettingsResponse() {
-		await this.fulfillSettingsSync( {
-			status: 'success',
-			message: 'Successfully synchronized settings with Google.',
-		} );
 	}
 
 	/**

@@ -50,6 +50,10 @@ const Settings = lazy( () =>
 	import( /* webpackChunkName: "settings" */ './pages/settings' )
 );
 
+const Shipping = lazy( () =>
+	import( /* webpackChunkName: "shipping" */ './pages/shipping' )
+);
+
 export const pagePaths = new Set();
 
 const woocommerceTranslation =
@@ -150,6 +154,18 @@ addFilter(
 				wpOpenMenu: 'toplevel_page_woocommerce-marketing',
 				navArgs: {
 					id: 'google-settings',
+				},
+			},
+			{
+				breadcrumbs: [
+					...initialBreadcrumbs,
+					__( 'Shipping', 'google-listings-and-ads' ),
+				],
+				container: Shipping,
+				path: '/google/shipping',
+				wpOpenMenu: 'toplevel_page_woocommerce-marketing',
+				navArgs: {
+					id: 'google-shipping',
 				},
 			},
 		];
