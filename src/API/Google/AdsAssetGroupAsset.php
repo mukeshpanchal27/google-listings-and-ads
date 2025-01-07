@@ -56,7 +56,7 @@ class AdsAssetGroupAsset implements OptionsAwareInterface {
 	protected static $temporary_id = -4;
 
 	/**
-	 * AdsAssetGroup constructor.
+	 * AdsAssetGroupAsset constructor.
 	 *
 	 * @param GoogleAdsClient $client
 	 * @param AdsAsset        $asset

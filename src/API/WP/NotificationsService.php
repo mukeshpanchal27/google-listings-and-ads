@@ -69,7 +69,7 @@ class NotificationsService implements Service, OptionsAwareInterface {
 
 
 	/**
-	 * Class constructor
+	 * NotificationsService constructor
 	 *
 	 * @param MerchantCenterService $merchant_center
 	 * @param AccountService        $account_service

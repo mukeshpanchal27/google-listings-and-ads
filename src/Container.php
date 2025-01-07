@@ -61,7 +61,7 @@ final class Container implements ContainerInterface {
 	private $container;
 
 	/**
-	 * Class constructor.
+	 * Container constructor.
 	 *
 	 * @param LeagueContainer|null $container
 	 */

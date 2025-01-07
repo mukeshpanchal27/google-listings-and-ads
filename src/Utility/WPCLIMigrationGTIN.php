@@ -15,7 +15,7 @@ use WP_CLI;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class WP_CLI_GTIN_Migration
+ * Class WPCLIMigrationGTIN
  * Creates a set of utility commands in WP CLI for GTIN Migration
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Utility

@@ -24,7 +24,7 @@ class GoogleAdsClient {
 	private $httpClient = null;
 
 	/**
-	 * Default constructor
+	 * GoogleAdsClient constructor
 	 *
 	 * @param string $endpoint Endpoint URL to send requests to.
 	 */
