@@ -39,7 +39,7 @@ class Redirect implements Activateable, Service, Registerable, OptionsAwareInter
 	protected $wp;
 
 	/**
-	 * Installer constructor.
+	 * Redirect constructor.
 	 *
 	 * @param WP $wp
 	 */

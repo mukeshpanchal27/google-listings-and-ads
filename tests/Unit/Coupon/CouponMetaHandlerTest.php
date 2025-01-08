@@ -11,7 +11,7 @@ use WC_Coupon;
 use WP_UnitTestCase;
 
 /**
- * Class ProductMetaHandlerTest
+ * Class CouponMetaHandlerTest
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\Coupon
  */

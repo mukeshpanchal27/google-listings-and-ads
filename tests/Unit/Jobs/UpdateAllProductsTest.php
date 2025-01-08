@@ -21,7 +21,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Tools\HelperTrait\ProductT
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * Class UpdateProductsTest
+ * Class UpdateAllProductsTest
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\Jobs
  */

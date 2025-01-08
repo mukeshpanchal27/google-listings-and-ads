@@ -37,7 +37,7 @@ class ShippingTimeController extends BaseController implements ISO3166AwareInter
 	protected $route_base = 'mc/shipping/times';
 
 	/**
-	 * BaseController constructor.
+	 * ShippingTimeController constructor.
 	 *
 	 * @param ContainerInterface $container
 	 */

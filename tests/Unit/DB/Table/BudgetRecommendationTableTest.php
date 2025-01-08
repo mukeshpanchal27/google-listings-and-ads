@@ -10,7 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use wpdb;
 
 /**
- * Class MigratorTest
+ * Class BudgetRecommendationTableTest
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\DB\Table
  */

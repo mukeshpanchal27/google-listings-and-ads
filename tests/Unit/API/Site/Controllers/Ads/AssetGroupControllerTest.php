@@ -9,7 +9,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Exception;
 
 /**
- * Class AssetSuggestionsControllerTest
+ * Class AssetGroupControllerTest
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\API\Site\Controllers\Ads
  */

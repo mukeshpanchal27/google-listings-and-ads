@@ -7,7 +7,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 
 /**
- * Class ProductFeed
+ * Class AttributeMapping
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Menu
  */

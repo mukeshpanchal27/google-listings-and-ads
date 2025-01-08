@@ -30,7 +30,7 @@ class ActionSchedulerJobMonitor implements Service {
 	protected $monitored_hooks = [];
 
 	/**
-	 * ActionSchedulerInterface constructor.
+	 * ActionSchedulerJobMonitor constructor.
 	 *
 	 * @param ActionSchedulerInterface $action_scheduler
 	 */

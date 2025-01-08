@@ -17,7 +17,7 @@ abstract class AdsReportQuery extends AdsQuery {
 	use ReportQueryTrait;
 
 	/**
-	 * Query constructor.
+	 * AdsReportQuery constructor.
 	 * Uses the resource ShoppingPerformanceView.
 	 *
 	 * @param array $args Query arguments.
