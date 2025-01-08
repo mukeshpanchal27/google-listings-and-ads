@@ -12,7 +12,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class ContactInformationTest
+ * Class ValidateAddressTest
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\MerchantCenter
  */

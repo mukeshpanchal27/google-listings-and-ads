@@ -44,7 +44,7 @@ class MigrateGTIN extends AbstractBatchedActionSchedulerJob implements OptionsAw
 
 
 	/**
-	 * Job constructor.
+	 * MigrateGTIN constructor.
 	 *
 	 * @param ActionSchedulerInterface  $action_scheduler
 	 * @param ActionSchedulerJobMonitor $monitor

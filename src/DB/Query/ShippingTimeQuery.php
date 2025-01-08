@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 class ShippingTimeQuery extends Query {
 
 	/**
-	 * Query constructor.
+	 * ShippingTimeQuery constructor.
 	 *
 	 * @param wpdb              $wpdb
 	 * @param ShippingTimeTable $table
