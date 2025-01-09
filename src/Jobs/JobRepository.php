@@ -3,24 +3,30 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Jobs;
 
-use Automattic\WooCommerce\GoogleListingsAndAds\Exception\ValidateInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
+use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
+use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
+use Automattic\WooCommerce\GoogleListingsAndAds\Exception\ValidateInterface;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Class JobRepository
  *
+ * ContainerAware used for:
+ * - JobInterface
+ *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Jobs
  */
-class JobRepository implements Service {
+class JobRepository implements ContainerAwareInterface, Service {
 
+	use ContainerAwareTrait;
 	use ValidateInterface;
 
 	/**
 	 * @var JobInterface[]
 	 */
-	protected $jobs = [];
+	protected $jobs;
 
 	/**
 	 * @var string[]
@@ -28,12 +34,14 @@ class JobRepository implements Service {
 	protected $jobs_class_name_map = [];
 
 	/**
-	 * JobRepository constructor.
-	 *
-	 * @param JobInterface[] $jobs
+	 * Fetch all jobs from the Container, and store name and class.
 	 */
-	public function __construct( array $jobs ) {
-		foreach ( $jobs as $job ) {
+	private function get_all_jobs() {
+		if ( null !== $this->jobs ) {
+			return;
+		}
+
+		foreach ( $this->container->get( JobInterface::class ) as $job ) {
 			$this->validate_instanceof( $job, JobInterface::class );
 
 			$job_name                                = $job->get_name();
@@ -47,6 +55,7 @@ class JobRepository implements Service {
 	 * @return JobInterface[]
 	 */
 	public function list(): array {
+		$this->get_all_jobs();
 		return $this->jobs;
 	}
 
@@ -58,6 +67,8 @@ class JobRepository implements Service {
 	 * @throws JobException If the job is not found.
 	 */
 	public function get( string $name ): JobInterface {
+		$this->get_all_jobs();
+
 		if ( ! isset( $this->jobs[ $name ] ) && ! empty( $this->jobs_class_name_map[ $name ] ) ) {
 			$name = $this->jobs_class_name_map[ $name ];
 		}
