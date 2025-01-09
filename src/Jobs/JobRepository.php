@@ -25,7 +25,7 @@ class JobRepository implements ContainerAwareInterface, Service {
 	/**
 	 * @var JobInterface[] indexed by class name.
 	 */
-	protected $jobs;
+	protected $jobs = [];
 
 	/**
 	 * Fetch all jobs from Container.
