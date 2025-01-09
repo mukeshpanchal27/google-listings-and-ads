@@ -22,6 +22,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\CleanupProductsJob;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\DeleteAllProducts;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\JobRepository;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\MigrateGTIN;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\UpdateAllProducts;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\UpdateProducts;
@@ -1237,7 +1238,7 @@ class ConnectionTest implements Service, Registerable {
 				} else {
 					// schedule a job
 					/** @var UpdateProducts $update_job */
-					$update_job = $this->container->get( UpdateProducts::class );
+					$update_job = $this->container->get( JobRepository::class )->get( UpdateProducts::class );
 					$update_job->schedule( [ [ $product->get_id() ] ] );
 					$this->response = 'Successfully scheduled a job to sync the product ' . $product->get_id();
 				}
@@ -1271,7 +1272,7 @@ class ConnectionTest implements Service, Registerable {
 			} else {
 				// schedule a job
 				/** @var UpdateAllProducts $update_job */
-				$update_job = $this->container->get( UpdateAllProducts::class );
+				$update_job = $this->container->get( JobRepository::class )->get( UpdateAllProducts::class );
 				$update_job->schedule();
 				$this->response = 'Successfully scheduled a job to sync all products!';
 			}
@@ -1302,7 +1303,7 @@ class ConnectionTest implements Service, Registerable {
 			} else {
 				// schedule a job
 				/** @var DeleteAllProducts $delete_job */
-				$delete_job = $this->container->get( DeleteAllProducts::class );
+				$delete_job = $this->container->get( JobRepository::class )->get( DeleteAllProducts::class );
 				$delete_job->schedule();
 				$this->response = 'Successfully scheduled a job to delete all synced products!';
 			}
@@ -1336,7 +1337,7 @@ class ConnectionTest implements Service, Registerable {
 			} else {
 				// schedule a job
 				/** @var CleanupProductsJob $delete_job */
-				$delete_job = $this->container->get( CleanupProductsJob::class );
+				$delete_job = $this->container->get( JobRepository::class )->get( CleanupProductsJob::class );
 				$delete_job->schedule();
 				$this->response = 'Successfully scheduled a job to cleanup all products!';
 			}
@@ -1344,7 +1345,7 @@ class ConnectionTest implements Service, Registerable {
 
 		if ( 'migrate-gtin' === $_GET['action'] && check_admin_referer( 'migrate-gtin' ) ) {
 			/** @var MigrateGTIN $job */
-			$job = $this->container->get( MigrateGTIN::class );
+			$job = $this->container->get( JobRepository::class )->get( MigrateGTIN::class );
 			$job->schedule();
 			$this->response = 'Successfully scheduled a job to migrate GTIN';
 		}
