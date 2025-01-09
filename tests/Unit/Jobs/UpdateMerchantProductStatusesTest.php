@@ -267,4 +267,13 @@ class UpdateMerchantProductStatusesTest extends UnitTest {
 
 		$this->assertNull( $this->job->get_failure_rate_message() );
 	}
+
+	public function test_is_running() {
+		$this->action_scheduler->expects( $this->once() )
+			->method( 'has_scheduled_action' )
+			->with( self::PROCESS_ITEM_HOOK, null )
+			->willReturn( true );
+
+		$this->assertTrue( $this->job->is_scheduled() );
+	}
 }
