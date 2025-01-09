@@ -15,7 +15,7 @@ test.use( { storageState: process.env.ADMINSTATE } );
 test.describe.configure( { mode: 'serial' } );
 
 /**
- * @type {import('../../utils/pages/shipping.js').default} shippingPage
+ * @type {import('../utils/pages/shipping.js').default} shippingPage
  */
 let shippingPage = null;
 
@@ -39,21 +39,27 @@ test.describe( 'Shipping', () => {
 		await page.close();
 	} );
 
-	test.skip( 'Should show confirmation modal before saving', async () => {
-		// TODO: This test case will be completed in a subsequent PR
+	test( 'Should show confirmation modal before saving', async () => {
+		const modal = shippingPage.getConfirmationModal();
+
 		await shippingPage.clickSaveChanges();
+		await expect( modal ).toBeVisible();
+
+		await shippingPage.getDontSaveButton().click();
+		await expect( modal ).not.toBeVisible();
 	} );
 
 	test( 'Check recommended shipping settings', async () => {
 		await shippingPage.checkRecommendShippingSettings();
 		await shippingPage.fillCountriesShippingTimeInput( '5', '10' );
-		const saveChangesButton = await shippingPage.getSaveChangesButton();
+		const saveChangesButton = shippingPage.getSaveChangesButton();
 		await expect( saveChangesButton ).toBeEnabled();
 	} );
 
 	test( 'Save changes', async () => {
 		const awaitForRequests = shippingPage.registerSavingRequests();
 		await shippingPage.clickSaveChanges();
+		await shippingPage.getContinueSaveButton().click();
 		const requests = await awaitForRequests;
 		const settingsResponse = await (
 			await requests[ 0 ].response()
