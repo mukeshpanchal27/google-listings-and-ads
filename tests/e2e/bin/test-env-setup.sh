@@ -34,3 +34,6 @@ wp-env run tests-cli wp option update woocommerce_block_product_tour_shown 'yes'
 
 echo -e 'Set the variable product tour of classic product editor to not display \n'
 wp-env run tests-cli wp user meta update admin woocommerce_admin_variable_product_tour_shown '"yes"'
+
+echo -e 'Set the store as live \n'
+wp-env run tests-cli wp option update woocommerce_coming_soon 'no'
