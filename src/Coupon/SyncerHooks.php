@@ -56,21 +56,9 @@ class SyncerHooks implements Service, Registerable {
 	protected $coupon_helper;
 
 	/**
-	 *
-	 * @var UpdateCoupon
+	 * @var JobRepository
 	 */
-	protected $update_coupon_job;
-
-	/**
-	 *
-	 * @var DeleteCoupon
-	 */
-	protected $delete_coupon_job;
-
-	/**
-	 * @var CouponNotificationJob
-	 */
-	protected $coupon_notification_job;
+	protected $job_repository;
 
 	/**
 	 *
@@ -82,7 +70,6 @@ class SyncerHooks implements Service, Registerable {
 	 * @var NotificationsService
 	 */
 	protected $notifications_service;
-
 
 	/**
 	 *
@@ -115,14 +102,12 @@ class SyncerHooks implements Service, Registerable {
 		WC $wc,
 		WP $wp
 	) {
-		$this->update_coupon_job       = $job_repository->get( UpdateCoupon::class );
-		$this->delete_coupon_job       = $job_repository->get( DeleteCoupon::class );
-		$this->coupon_notification_job = $job_repository->get( CouponNotificationJob::class );
-		$this->coupon_helper           = $coupon_helper;
-		$this->merchant_center         = $merchant_center;
-		$this->notifications_service   = $notifications_service;
-		$this->wc                      = $wc;
-		$this->wp                      = $wp;
+		$this->coupon_helper         = $coupon_helper;
+		$this->job_repository        = $job_repository;
+		$this->merchant_center       = $merchant_center;
+		$this->notifications_service = $notifications_service;
+		$this->wc                    = $wc;
+		$this->wp                    = $wp;
 	}
 
 	/**
@@ -216,7 +201,7 @@ class SyncerHooks implements Service, Registerable {
 		// Schedule an update job if product sync is enabled.
 		if ( $this->coupon_helper->is_sync_ready( $coupon ) ) {
 			$this->coupon_helper->mark_as_pending( $coupon );
-			$this->update_coupon_job->schedule(
+			$this->job_repository->get( UpdateCoupon::class )->schedule(
 				[
 					[ $coupon_id ],
 				]
@@ -228,7 +213,7 @@ class SyncerHooks implements Service, Registerable {
 				$this->get_coupon_to_delete( $coupon ),
 				$this->coupon_helper->get_synced_google_ids( $coupon )
 			);
-			$this->delete_coupon_job->schedule(
+			$this->job_repository->get( DeleteCoupon::class )->schedule(
 				[
 					$coupon_to_delete,
 				]
@@ -303,7 +288,7 @@ class SyncerHooks implements Service, Registerable {
 		$coupon_to_delete = $this->delete_requests_map[ $coupon_id ];
 		if ( ! empty( $coupon_to_delete->get_synced_google_ids() ) &&
 				! $this->is_already_scheduled_to_delete( $coupon_id ) ) {
-			$this->delete_coupon_job->schedule(
+			$this->job_repository->get( DeleteCoupon::class )->schedule(
 				[
 					$coupon_to_delete,
 				]
@@ -323,7 +308,7 @@ class SyncerHooks implements Service, Registerable {
 
 		if ( $coupon instanceof WC_Coupon && $this->coupon_helper->should_trigger_delete_notification( $coupon ) ) {
 			$this->coupon_helper->set_notification_status( $coupon, NotificationStatus::NOTIFICATION_PENDING_DELETE );
-			$this->coupon_notification_job->schedule(
+			$this->job_repository->get( CouponNotificationJob::class )->schedule(
 				[
 					'item_id' => $coupon->get_id(),
 					'topic'   => NotificationsService::TOPIC_COUPON_DELETED,
@@ -415,7 +400,7 @@ class SyncerHooks implements Service, Registerable {
 	protected function handle_update_coupon_notification( WC_Coupon $coupon ) {
 		if ( $this->coupon_helper->should_trigger_create_notification( $coupon ) ) {
 			$this->coupon_helper->set_notification_status( $coupon, NotificationStatus::NOTIFICATION_PENDING_CREATE );
-			$this->coupon_notification_job->schedule(
+			$this->job_repository->get( CouponNotificationJob::class )->schedule(
 				[
 					'item_id' => $coupon->get_id(),
 					'topic'   => NotificationsService::TOPIC_COUPON_CREATED,
@@ -423,7 +408,7 @@ class SyncerHooks implements Service, Registerable {
 			);
 		} elseif ( $this->coupon_helper->should_trigger_update_notification( $coupon ) ) {
 			$this->coupon_helper->set_notification_status( $coupon, NotificationStatus::NOTIFICATION_PENDING_UPDATE );
-			$this->coupon_notification_job->schedule(
+			$this->job_repository->get( CouponNotificationJob::class )->schedule(
 				[
 					'item_id' => $coupon->get_id(),
 					'topic'   => NotificationsService::TOPIC_COUPON_UPDATED,
@@ -431,7 +416,7 @@ class SyncerHooks implements Service, Registerable {
 			);
 		} elseif ( $this->coupon_helper->should_trigger_delete_notification( $coupon ) ) {
 			$this->coupon_helper->set_notification_status( $coupon, NotificationStatus::NOTIFICATION_PENDING_DELETE );
-			$this->coupon_notification_job->schedule(
+			$this->job_repository->get( CouponNotificationJob::class )->schedule(
 				[
 					'item_id' => $coupon->get_id(),
 					'topic'   => NotificationsService::TOPIC_COUPON_DELETED,
