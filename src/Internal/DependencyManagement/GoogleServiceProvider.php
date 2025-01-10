@@ -106,7 +106,7 @@ class GoogleServiceProvider extends AbstractServiceProvider {
 		$this->register_google_classes();
 		$this->share( Middleware::class );
 		$this->add( Connection::class );
-		$this->add( Settings::class, ContainerInterface::class );
+		$this->add( Settings::class );
 
 		$this->share( Ads::class, GoogleAdsClient::class );
 		$this->share( AdsAssetGroup::class, GoogleAdsClient::class, AdsAssetGroupAsset::class );
