@@ -129,7 +129,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Utility\ImageUtility;
 use Automattic\WooCommerce\GoogleListingsAndAds\Utility\ISOUtility;
 use Automattic\WooCommerce\GoogleListingsAndAds\Utility\WPCLIMigrationGTIN;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\ISO3166\ISO3166DataProvider;
-use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Psr\Container\ContainerInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\View\PHPViewFactory;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use wpdb;
@@ -312,7 +311,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		$this->conditionally_share_with_tags( AttributeMapping::class );
 		$this->conditionally_share_with_tags( Settings::class );
 		$this->share_with_tags( TrackerSnapshot::class );
-		$this->conditionally_share_with_tags( EventTracking::class, ContainerInterface::class );
+		$this->share_with_tags( EventTracking::class );
 		$this->share_with_tags( RESTControllers::class );
 		$this->conditionally_share_with_tags( ConnectionTest::class );
 		$this->share_with_tags( CompleteSetupTask::class );
