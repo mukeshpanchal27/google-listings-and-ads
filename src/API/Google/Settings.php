@@ -207,7 +207,7 @@ class Settings {
 
 		if ( null === $times ) {
 			$time_query = $this->container->get( ShippingTimeQuery::class );
-			$times      = array_column( $time_query->get_results(), 'time', 'country' );
+			$times      = $time_query->get_all_shipping_times();
 		}
 
 		return $times;
