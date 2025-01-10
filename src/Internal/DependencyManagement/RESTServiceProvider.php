@@ -78,7 +78,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Shipping\ShippingSuggestionServi
 use Automattic\WooCommerce\GoogleListingsAndAds\Shipping\ShippingZone;
 use Automattic\WooCommerce\GoogleListingsAndAds\Utility\AddressUtility;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\Container\Definition\DefinitionInterface;
-use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Psr\Container\ContainerInterface;
 
 /**
  * Class RESTServiceProvider
@@ -159,16 +158,5 @@ class RESTServiceProvider extends AbstractServiceProvider {
 	 */
 	protected function share( string $class_name, ...$arguments ): DefinitionInterface {
 		return parent::share( $class_name, RESTServer::class, ...$arguments )->addTag( 'rest_controller' );
-	}
-
-	/**
-	 * Share a class with only the container object provided.
-	 *
-	 * @param string $class_name The class name to add.
-	 *
-	 * @return DefinitionInterface
-	 */
-	protected function share_with_container( string $class_name ): DefinitionInterface {
-		return parent::share( $class_name, ContainerInterface::class )->addTag( 'rest_controller' );
 	}
 }
