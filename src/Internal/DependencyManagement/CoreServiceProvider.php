@@ -400,8 +400,8 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		$this->conditionally_share_with_tags( MetaBoxInitializer::class, Admin::class, MetaBoxInterface::class );
 
 		// Share bulk edit views
-		$this->share_with_tags( CouponBulkEdit::class, CouponMetaHandler::class, MerchantCenterService::class, TargetAudience::class );
-		$this->share_with_tags( BulkEditInitializer::class );
+		$this->conditionally_share_with_tags( CouponBulkEdit::class, CouponMetaHandler::class, MerchantCenterService::class, TargetAudience::class );
+		$this->conditionally_share_with_tags( BulkEditInitializer::class );
 
 		$this->share_with_tags( PHPViewFactory::class );
 
