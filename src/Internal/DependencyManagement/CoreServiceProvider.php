@@ -320,8 +320,8 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		$this->share_with_tags( SiteVerificationMeta::class );
 		$this->conditionally_share_with_tags( MerchantSetupCompleted::class );
 		$this->conditionally_share_with_tags( AdsSetupCompleted::class );
-		$this->conditionally_share_with_tags( AdsAccountService::class, ContainerInterface::class );
-		$this->conditionally_share_with_tags( MerchantAccountService::class, ContainerInterface::class );
+		$this->share_with_tags( AdsAccountService::class, AdsAccountState::class );
+		$this->share_with_tags( MerchantAccountService::class, MerchantAccountState::class );
 
 		// Inbox Notes
 		$this->share_with_tags( ContactInformationNote::class );
