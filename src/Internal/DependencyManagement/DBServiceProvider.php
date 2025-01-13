@@ -50,6 +50,7 @@ class DBServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		AttributeMappingRulesTable::class => true,
+		AttributeMappingRulesQuery::class => true,
 		ShippingRateTable::class          => true,
 		ShippingRateQuery::class          => true,
 		ShippingTimeTable::class          => true,
