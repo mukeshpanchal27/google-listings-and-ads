@@ -3,7 +3,6 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds;
 
-use Automattic\WooCommerce\GoogleListingsAndAds\Exception\ValidateInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\FirstInstallInterface;
@@ -24,7 +23,6 @@ class Installer implements OptionsAwareInterface, Service, Registerable {
 
 	use OptionsAwareTrait;
 	use PluginHelper;
-	use ValidateInterface;
 
 	/**
 	 * @var InstallableInterface[]
@@ -52,8 +50,6 @@ class Installer implements OptionsAwareInterface, Service, Registerable {
 		$this->installables     = $installables;
 		$this->first_installers = $first_installers;
 		$this->wp               = $wp;
-		$this->validate_installables();
-		$this->validate_first_installers();
 	}
 
 	/**
@@ -138,23 +134,5 @@ class Installer implements OptionsAwareInterface, Service, Registerable {
 	 */
 	protected function get_file_version(): string {
 		return $this->options->get( OptionsInterface::FILE_VERSION, '' );
-	}
-
-	/**
-	 * Validate that each of the installable items is of the correct interface.
-	 */
-	protected function validate_installables() {
-		foreach ( $this->installables as $installable ) {
-			$this->validate_instanceof( $installable, InstallableInterface::class );
-		}
-	}
-
-	/**
-	 * Validate that each of the first installers is of the correct interface.
-	 */
-	protected function validate_first_installers() {
-		foreach ( $this->first_installers as $installer ) {
-			$this->validate_instanceof( $installer, FirstInstallInterface::class );
-		}
 	}
 }
