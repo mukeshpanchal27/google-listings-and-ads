@@ -4,7 +4,6 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Internal\DependencyManagement;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\GoogleGtagJs;
-use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\Http;
 use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\RESTServer;
 use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\Tracks;
 use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\WC as WCProxy;
@@ -28,7 +27,6 @@ class ProxyServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		Http::class         => true,
 		RESTServer::class   => true,
 		Tracks::class       => true,
 		GoogleGtagJs::class => true,
@@ -45,10 +43,6 @@ class ProxyServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		// The Http class should be a new object every time.
-		$this->add( Http::class );
-
-		// Our other classes can be shared like normal.
 		$this->share( RESTServer::class );
 		$this->share( Tracks::class );
 		$this->share( GoogleGtagJs::class );
