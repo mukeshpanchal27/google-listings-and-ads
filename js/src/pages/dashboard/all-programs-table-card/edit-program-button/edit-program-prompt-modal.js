@@ -7,10 +7,9 @@ import { getHistory } from '@woocommerce/navigation';
 /**
  * Internal dependencies
  */
-import { FREE_LISTINGS_PROGRAM_ID } from '~/constants';
 import AppButton from '~/components/app-button';
 import AppModal from '~/components/app-modal';
-import { getEditFreeListingsUrl, getEditCampaignUrl } from '~/utils/urls';
+import { getEditCampaignUrl } from '~/utils/urls';
 import { recordGlaEvent } from '~/utils/tracks';
 import './edit-program-prompt-modal.scss';
 
@@ -19,7 +18,7 @@ import './edit-program-prompt-modal.scss';
  *
  * @event gla_dashboard_edit_program_click
  * @property {string} programId program id
- * @property {string} url url (free or paid)
+ * @property {string} url URL for editing the program (paid campaign)
  */
 
 /**
@@ -35,10 +34,7 @@ const EditProgramPromptModal = ( { programId, onRequestClose } ) => {
 	};
 
 	const handleContinueEditClick = () => {
-		const url =
-			programId === FREE_LISTINGS_PROGRAM_ID
-				? getEditFreeListingsUrl()
-				: getEditCampaignUrl( programId );
+		const url = getEditCampaignUrl( programId );
 
 		getHistory().push( url );
 

@@ -19,10 +19,10 @@ export const pagePaths = {
 	reports: '/google/reports',
 	productFeed: '/google/product-feed',
 	settings: '/google/settings',
+	shipping: '/google/shipping',
 };
 
 export const subpaths = {
-	editFreeListings: '/free-listings/edit',
 	editCampaign: '/campaigns/edit',
 	createCampaign: '/campaigns/create',
 	editStoreAddress: '/edit-store-address',
@@ -35,10 +35,6 @@ const onboardingPath = pagePaths.onboarding;
 const dashboardPath = pagePaths.dashboard;
 const settingsPath = pagePaths.settings;
 const reportsPath = pagePaths.reports;
-
-export const getEditFreeListingsUrl = () => {
-	return getNewPath( { subpath: subpaths.editFreeListings }, dashboardPath );
-};
 
 /**
  * Gets the path to the campaign editing page with given query parameters.
@@ -82,6 +78,10 @@ export const getProductFeedUrl = ( query = null ) => {
 
 export const getSettingsUrl = () => {
 	return getNewPath( null, settingsPath, null );
+};
+
+export const getShippingUrl = () => {
+	return getNewPath( null, pagePaths.shipping, null );
 };
 
 export const geReportsUrl = () => {

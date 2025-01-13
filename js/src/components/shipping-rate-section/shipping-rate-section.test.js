@@ -40,7 +40,6 @@ jest.mock( '~/components/adaptive-form', () => ( {
 					shipping_country_times: [],
 					shipping_rate: 'flat',
 					shipping_time: 'flat',
-					tax_rate: null,
 				},
 			};
 		} ),

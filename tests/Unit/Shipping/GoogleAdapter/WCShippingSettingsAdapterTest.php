@@ -36,7 +36,12 @@ class WCShippingSettingsAdapterTest extends UnitTest {
 				'rates_collections' => [
 					new CountryRatesCollection( 'US', [ $location_rate_1 ] ),
 				],
-				'delivery_times'    => [ 'US' => 2 ],
+				'delivery_times'    => [
+					'US' => [
+						'time'     => 2,
+						'max_time' => 3,
+					],
+				],
 			]
 		);
 
@@ -57,7 +62,12 @@ class WCShippingSettingsAdapterTest extends UnitTest {
 				'rates_collections' => [
 					new CountryRatesCollection( 'US', [ $location_rate_1 ] ),
 				],
-				'delivery_times'    => [ 'US' => 2 ],
+				'delivery_times'    => [
+					'US' => [
+						'time'     => 2,
+						'max_time' => 3,
+					],
+				],
 			]
 		);
 
@@ -84,8 +94,14 @@ class WCShippingSettingsAdapterTest extends UnitTest {
 					new CountryRatesCollection( 'AU', [ $location_rate_3 ] ),
 				],
 				'delivery_times'    => [
-					'AU' => 1,
-					'US' => 2,
+					'AU' => [
+						'time'     => 1,
+						'max_time' => 2,
+					],
+					'US' => [
+						'time'     => 2,
+						'max_time' => 3,
+					],
 				],
 			]
 		);
@@ -138,8 +154,14 @@ class WCShippingSettingsAdapterTest extends UnitTest {
 					new CountryRatesCollection( 'AU', [ $location_rate_3 ] ),
 				],
 				'delivery_times'    => [
-					'AU' => 1,
-					'US' => 2,
+					'AU' => [
+						'time'     => 1,
+						'max_time' => 2,
+					],
+					'US' => [
+						'time'     => 2,
+						'max_time' => 3,
+					],
 				],
 			]
 		);
@@ -206,8 +228,14 @@ class WCShippingSettingsAdapterTest extends UnitTest {
 					new CountryRatesCollection( 'AU', [ $location_rate_2 ] ),
 				],
 				'delivery_times'    => [
-					'AU' => 5,
-					'US' => 10,
+					'AU' => [
+						'time'     => 5,
+						'max_time' => 6,
+					],
+					'US' => [
+						'time'     => 10,
+						'max_time' => 10,
+					],
 				],
 			]
 		);
@@ -238,7 +266,7 @@ class WCShippingSettingsAdapterTest extends UnitTest {
 		$au_service  = $au_services[ array_key_first( $au_services ) ];
 		$this->assertInstanceOf( DeliveryTime::class, $au_service->getDeliveryTime() );
 		$this->assertEquals( 5, $au_service->getDeliveryTime()->getMinTransitTimeInDays() );
-		$this->assertEquals( 5, $au_service->getDeliveryTime()->getMaxTransitTimeInDays() );
+		$this->assertEquals( 6, $au_service->getDeliveryTime()->getMaxTransitTimeInDays() );
 	}
 
 	public function test_sets_the_currency_provided() {
@@ -253,8 +281,14 @@ class WCShippingSettingsAdapterTest extends UnitTest {
 					new CountryRatesCollection( 'AU', [ $location_rate_2 ] ),
 				],
 				'delivery_times'    => [
-					'AU' => 5,
-					'US' => 10,
+					'AU' => [
+						'time'     => 5,
+						'max_time' => 6,
+					],
+					'US' => [
+						'time'     => 10,
+						'max_time' => 10,
+					],
 				],
 			]
 		);
@@ -270,7 +304,12 @@ class WCShippingSettingsAdapterTest extends UnitTest {
 		new WCShippingSettingsAdapter(
 			[
 				'currency'       => 'USD',
-				'delivery_times' => [ 'US' => 1 ],
+				'delivery_times' => [
+					'US' => [
+						'time'     => 1,
+						'max_time' => 1,
+					],
+				],
 			]
 		);
 	}
@@ -281,7 +320,12 @@ class WCShippingSettingsAdapterTest extends UnitTest {
 		new WCShippingSettingsAdapter(
 			[
 				'rates_collections' => [ new CountryRatesCollection( 'US', [] ) ],
-				'delivery_times'    => [ 'US' => 1 ],
+				'delivery_times'    => [
+					'US' => [
+						'time'     => 1,
+						'max_time' => 1,
+					],
+				],
 			]
 		);
 	}
@@ -310,7 +354,12 @@ class WCShippingSettingsAdapterTest extends UnitTest {
 					new CountryRatesCollection( 'US', [ $location_rate_1 ] ),
 					new CountryRatesCollection( 'AU', [ $location_rate_2 ] ),
 				],
-				'delivery_times'    => [ 'AU' => 1 ],
+				'delivery_times'    => [
+					'AU' => [
+						'time'     => 1,
+						'max_time' => 1,
+					],
+				],
 			]
 		);
 	}
@@ -321,7 +370,12 @@ class WCShippingSettingsAdapterTest extends UnitTest {
 		new WCShippingSettingsAdapter(
 			[
 				'currency'          => 'USD',
-				'delivery_times'    => [ 'US' => 1 ],
+				'delivery_times'    => [
+					'US' => [
+						'time'     => 1,
+						'max_time' => 1,
+					],
+				],
 				'rates_collections' => [ new \stdClass() ],
 			]
 		);

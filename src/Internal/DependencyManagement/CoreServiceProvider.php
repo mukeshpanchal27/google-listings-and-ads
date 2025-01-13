@@ -66,6 +66,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Menu\Reports;
 use Automattic\WooCommerce\GoogleListingsAndAds\Menu\Settings;
 use Automattic\WooCommerce\GoogleListingsAndAds\Menu\SetupAds;
 use Automattic\WooCommerce\GoogleListingsAndAds\Menu\SetupMerchantCenter;
+use Automattic\WooCommerce\GoogleListingsAndAds\Menu\Shipping;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\AccountService;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\AccountService as MerchantAccountService;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\ContactInformation;
@@ -173,6 +174,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		RESTControllers::class           => true,
 		Service::class                   => true,
 		Settings::class                  => true,
+		Shipping::class                  => true,
 		SetupAds::class                  => true,
 		SetupMerchantCenter::class       => true,
 		SetupCampaignNote::class         => true,
@@ -310,6 +312,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		$this->conditionally_share_with_tags( ProductFeed::class );
 		$this->conditionally_share_with_tags( AttributeMapping::class );
 		$this->conditionally_share_with_tags( Settings::class );
+		$this->conditionally_share_with_tags( Shipping::class );
 		$this->share_with_tags( TrackerSnapshot::class );
 		$this->share_with_tags( EventTracking::class );
 		$this->share_with_tags( RESTControllers::class );

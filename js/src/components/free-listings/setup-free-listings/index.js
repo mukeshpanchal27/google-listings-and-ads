@@ -2,15 +2,15 @@
  * External dependencies
  */
 import { useRef } from '@wordpress/element';
+import { createSlotFill } from '@wordpress/components';
 import { Form } from '@woocommerce/components';
 import { pick, noop } from 'lodash';
 
 /**
  * Internal dependencies
  */
-import useStoreCountry from '~/hooks/useStoreCountry';
 import AppSpinner from '~/components/app-spinner';
-import Hero from '~/components/free-listings/configure-product-listings/hero';
+import AppButton from '~/components/app-button';
 import AdaptiveForm from '~/components/adaptive-form';
 import ValidationErrors from '~/components/validation-errors';
 import checkErrors from '~/components/free-listings/configure-product-listings/checkErrors';
@@ -32,7 +32,7 @@ const targetAudienceFields = [ 'locale', 'language', 'location', 'countries' ];
  *
  * If we are adding a new settings field, it should be added into this array.
  */
-const settingsFieldNames = [ 'shipping_rate', 'shipping_time', 'tax_rate' ];
+const settingsFieldNames = [ 'shipping_rate', 'shipping_time' ];
 
 /**
  * Get settings object from Form values.
@@ -53,8 +53,15 @@ const getSettings = ( values ) => {
 	return pick( values, settingsFieldNames );
 };
 
+const alwaysTrue = () => true;
+
+const { Fill, Slot } = createSlotFill( 'gla/SetupFreeListings/SubmitButton' );
+
 /**
  * Setup step to configure free listings.
+ *
+ * Note that this component requires to specify the location where it wants to
+ * render its submit button via `<SetupFreeListings.SubmitButton />`.
  *
  * @param {Object} props
  * @param {TargetAudienceData} props.targetAudience Target audience value data to be initialed the form, if not given AppSpinner will be rendered.
@@ -66,10 +73,9 @@ const getSettings = ( values ) => {
  * @param {(newValue: Object) => void} [props.onShippingRatesChange] Callback called with new data once shipping rates are changed. Forwarded from {@link Form.Props.onChange}.
  * @param {Array<ShippingTime>} props.shippingTimes Shipping times data, if not given AppSpinner will be rendered.
  * @param {(newValue: Object) => void} [props.onShippingTimesChange] Callback called with new data once shipping times are changed. Forwarded from {@link Form.Props.onChange}.
+ * @param {() => boolean | Promise<boolean>} [props.onRequestSubmit] Callback called before the form is submitted. If it returns false, the form will not be submitted.
  * @param {() => void} [props.onContinue] Callback called once continue button is clicked. Could be async. While it's being resolved the form would turn into a saving state.
- * @param {string} [props.submitLabel] Submit button label, to be forwarded to `FormContent`.
- * @param {JSX.Element} props.headerTitle Title in the header block of this setup.
- * @param {boolean} [props.hideTaxRates=false] Whether to hide tax rate section, to be forwarded to `FormContent`.
+ * @param {string} props.submitLabel Submit button label.
  */
 const SetupFreeListings = ( {
 	targetAudience,
@@ -81,13 +87,11 @@ const SetupFreeListings = ( {
 	onShippingRatesChange = noop,
 	shippingTimes,
 	onShippingTimesChange = noop,
+	onRequestSubmit = alwaysTrue,
 	onContinue = noop,
 	submitLabel,
-	headerTitle,
-	hideTaxRates = false,
 } ) => {
 	const formRef = useRef();
-	const { code: storeCountryCode } = useStoreCountry();
 
 	if ( ! ( targetAudience && settings && shippingRates && shippingTimes ) ) {
 		return <AppSpinner />;
@@ -97,13 +101,7 @@ const SetupFreeListings = ( {
 		const countries = resolveFinalCountries( values );
 		const { shipping_country_times: shippingTimesData } = values;
 
-		return checkErrors(
-			values,
-			shippingTimesData,
-			countries,
-			storeCountryCode,
-			hideTaxRates
-		);
+		return checkErrors( values, shippingTimesData, countries );
 	};
 
 	const handleChange = ( change, values ) => {
@@ -208,7 +206,6 @@ const SetupFreeListings = ( {
 
 	return (
 		<div className="gla-setup-free-listings">
-			<Hero headerTitle={ headerTitle } />
 			<AdaptiveForm
 				ref={ formRef }
 				initialValues={ {
@@ -220,7 +217,6 @@ const SetupFreeListings = ( {
 					// These are the fields for settings.
 					shipping_rate: settings.shipping_rate,
 					shipping_time: settings.shipping_time,
-					tax_rate: settings.tax_rate,
 					// This is used in UI only, not used in API.
 					offer_free_shipping:
 						getOfferFreeShippingInitialValue( shippingRates ),
@@ -233,13 +229,39 @@ const SetupFreeListings = ( {
 				validate={ handleValidate }
 				onSubmit={ onContinue }
 			>
-				<FormContent
-					submitLabel={ submitLabel }
-					hideTaxRates={ hideTaxRates }
-				/>
+				{ ( formContext ) => {
+					const { isValidForm, handleSubmit, adapter } = formContext;
+					const handleSubmitClick = async ( event ) => {
+						if ( isValidForm ) {
+							if ( ! ( await onRequestSubmit() ) ) {
+								return;
+							}
+							return handleSubmit( event );
+						}
+
+						adapter.showValidation();
+					};
+
+					return (
+						<>
+							<FormContent />
+							<Fill>
+								<AppButton
+									isPrimary
+									loading={ adapter.isSubmitting }
+									onClick={ handleSubmitClick }
+								>
+									{ submitLabel }
+								</AppButton>
+							</Fill>
+						</>
+					);
+				} }
 			</AdaptiveForm>
 		</div>
 	);
 };
+
+SetupFreeListings.SubmitButton = Slot;
 
 export default SetupFreeListings;
