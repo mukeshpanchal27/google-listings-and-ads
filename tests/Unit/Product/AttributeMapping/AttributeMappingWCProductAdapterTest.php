@@ -192,8 +192,8 @@ class AttributeMappingWCProductAdapterTest extends UnitTest {
 		$adapted_product   = $this->generate_attribute_mapping_adapted_product( $rules );
 		$adapted_variation = $this->generate_attribute_mapping_adapted_product_variant( $rules );
 
-		$this->assertEquals( '1.1 kg', $adapted_product->getPattern() );
-		$this->assertEquals( '1.2 kg', $adapted_variation->getPattern() );
+		$this->assertEquals( '1.1 ' . get_option( 'woocommerce_weight_unit', 'lbs' ), $adapted_product->getPattern() );
+		$this->assertEquals( '1.2 ' . get_option( 'woocommerce_weight_unit', 'lbs' ), $adapted_variation->getPattern() );
 	}
 
 	/**
