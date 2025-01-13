@@ -3,8 +3,8 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Google;
 
-use Automattic\WooCommerce\GoogleListingsAndAds\DB\Query\ShippingRateQuery as RateQuery;
-use Automattic\WooCommerce\GoogleListingsAndAds\DB\Query\ShippingTimeQuery as TimeQuery;
+use Automattic\WooCommerce\GoogleListingsAndAds\DB\Query\ShippingRateQuery;
+use Automattic\WooCommerce\GoogleListingsAndAds\DB\Query\ShippingTimeQuery;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\TargetAudience;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\WC;
@@ -206,8 +206,8 @@ class Settings {
 		static $times = null;
 
 		if ( null === $times ) {
-			$time_query = $this->container->get( TimeQuery::class );
-			$times      = array_column( $time_query->get_results(), 'time', 'country' );
+			$time_query = $this->container->get( ShippingTimeQuery::class );
+			$times      = $time_query->get_all_shipping_times();
 		}
 
 		return $times;
@@ -219,7 +219,7 @@ class Settings {
 	 * @return array
 	 */
 	protected function get_shipping_rates_from_database(): array {
-		$rate_query = $this->container->get( RateQuery::class );
+		$rate_query = $this->container->get( ShippingRateQuery::class );
 
 		return $rate_query->get_results();
 	}
