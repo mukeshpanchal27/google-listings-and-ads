@@ -9,7 +9,6 @@ import { noop } from 'lodash';
  * Internal dependencies
  */
 import useAdminUrl from '~/hooks/useAdminUrl';
-import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
 import useAdsSetupCompleteCallback from '~/hooks/useAdsSetupCompleteCallback';
 import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
 import AdsCampaign from '~/components/paid-ads/ads-campaign';
@@ -17,6 +16,7 @@ import CampaignAssetsForm from '~/components/paid-ads/campaign-assets-form';
 import AppButton from '~/components/app-button';
 import useGoogleAdsAccountBillingStatus from '~/hooks/useGoogleAdsAccountBillingStatus';
 import { getProductFeedUrl } from '~/utils/urls';
+import { handleApiError } from '~/utils/handleError';
 import { useAppDispatch } from '~/data';
 import { GUIDE_NAMES, GOOGLE_ADS_BILLING_STATUS } from '~/constants';
 import { ACTION_COMPLETE, ACTION_SKIP } from './constants';
@@ -41,7 +41,6 @@ import AppSpinner from '~/components/app-spinner';
 export default function SetupPaidAds() {
 	const adminUrl = useAdminUrl();
 	const [ completing, setCompleting ] = useState( null );
-	const { createNotice } = useDispatchCoreNotices();
 	const { data: countryCodes } = useTargetAudienceFinalCountryCodes();
 	const { highestDailyBudget, hasFinishedResolution } =
 		useBudgetRecommendation( countryCodes );
@@ -54,18 +53,19 @@ export default function SetupPaidAds() {
 
 	const finishOnboardingSetup = async ( onBeforeFinish = noop ) => {
 		try {
-			await onBeforeFinish();
 			await syncSettings();
+			await onBeforeFinish();
 		} catch ( e ) {
 			setCompleting( null );
 
-			createNotice(
-				'error',
+			handleApiError(
+				e,
 				__(
 					'Unable to complete your setup.',
 					'google-listings-and-ads'
 				)
 			);
+			return;
 		}
 
 		// Force reload WC admin page to initiate the relevant dependencies of the Dashboard page.
