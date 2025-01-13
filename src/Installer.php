@@ -28,16 +28,6 @@ class Installer implements ContainerAwareInterface, OptionsAwareInterface, Regis
 	use PluginHelper;
 
 	/**
-	 * @var InstallableInterface[]
-	 */
-	protected $installables;
-
-	/**
-	 * @var FirstInstallInterface[]
-	 */
-	protected $first_installers;
-
-	/**
 	 * @var WP
 	 */
 	protected $wp;
@@ -45,14 +35,10 @@ class Installer implements ContainerAwareInterface, OptionsAwareInterface, Regis
 	/**
 	 * Installer constructor.
 	 *
-	 * @param InstallableInterface[]  $installables
-	 * @param FirstInstallInterface[] $first_installers
-	 * @param WP                      $wp
+	 * @param WP $wp
 	 */
-	public function __construct( array $installables, array $first_installers, WP $wp ) {
-		$this->installables     = $installables;
-		$this->first_installers = $first_installers;
-		$this->wp               = $wp;
+	public function __construct( WP $wp ) {
+		$this->wp = $wp;
 	}
 
 	/**
@@ -98,7 +84,10 @@ class Installer implements ContainerAwareInterface, OptionsAwareInterface, Regis
 		$old_version = $this->get_db_version();
 		$new_version = $this->get_version();
 
-		foreach ( $this->installables as $installable ) {
+		/** @var InstallableInterface[] */
+		$installables = $this->container->get( InstallableInterface::class );
+
+		foreach ( $installables as $installable ) {
 			$installable->install( $old_version, $new_version );
 		}
 	}
@@ -116,7 +105,10 @@ class Installer implements ContainerAwareInterface, OptionsAwareInterface, Regis
 	 * Runs on the first install of GLA.
 	 */
 	protected function first_install(): void {
-		foreach ( $this->first_installers as $installer ) {
+		/** @var FirstInstallInterface[] $first_installers */
+		$first_installers = $this->container->get( FirstInstallInterface::class );
+
+		foreach ( $first_installers as $installer ) {
 			$installer->first_install();
 		}
 	}
