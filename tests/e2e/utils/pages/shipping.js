@@ -1,9 +1,15 @@
 /**
+ * External dependencies
+ */
+import { Locator } from '@playwright/test';
+
+/**
  * Internal dependencies
  */
 import MockRequests from '../mock-requests';
+import { LOAD_STATE } from '../constants';
 
-export default class EditFreeListingsPage extends MockRequests {
+export default class ShippingPage extends MockRequests {
 	/**
 	 * @param {import('@playwright/test').Page} page
 	 */
@@ -13,14 +19,79 @@ export default class EditFreeListingsPage extends MockRequests {
 	}
 
 	/**
+	 * Mock all requests related to external resources.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async mockRequests() {
+		await this.mockSuccessfulSettingsSyncRequest();
+
+		await this.fulfillSettings( {
+			shipping_rate: 'flat',
+			shipping_time: 'flat',
+			tax_rate: 'destination',
+		} );
+
+		await this.fulfillTargetAudience( {
+			location: 'selected',
+			countries: [ 'US' ],
+			locale: 'en_US',
+			language: 'English',
+		} );
+	}
+
+	/**
+	 * Go to the Shipping page.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async goto() {
+		await this.page.goto(
+			'/wp-admin/admin.php?page=wc-admin&path=%2Fgoogle%2Fshipping',
+			{ waitUntil: LOAD_STATE.DOM_CONTENT_LOADED }
+		);
+	}
+
+	/**
 	 * Get Save Changes button.
 	 *
-	 * @return {Promise<import('@playwright/test').Locator>} Get Save Changes button.
+	 * @return {Locator} Get Save Changes button.
 	 */
-	async getSaveChangesButton() {
+	getSaveChangesButton() {
 		return this.page.getByRole( 'button', {
 			name: 'Save changes',
 			exact: true,
+		} );
+	}
+
+	/**
+	 * Get the "Don't save" button.
+	 *
+	 * @return {Locator} The button.
+	 */
+	getConfirmationModal() {
+		return this.page.getByRole( 'dialog', { name: 'Before you save…' } );
+	}
+
+	/**
+	 * Get the "Don't save" button in the confirmation modal.
+	 *
+	 * @return {Locator} The button.
+	 */
+	getDontSaveButton() {
+		return this.getConfirmationModal().getByRole( 'button', {
+			name: `Don't save`,
+		} );
+	}
+
+	/**
+	 * Get the "Continue to save" button in the confirmation modal.
+	 *
+	 * @return {Locator} The button.
+	 */
+	getContinueSaveButton() {
+		return this.getConfirmationModal().getByRole( 'button', {
+			name: 'Continue to save',
 		} );
 	}
 
@@ -30,8 +101,7 @@ export default class EditFreeListingsPage extends MockRequests {
 	 * @return {Promise<void>}
 	 */
 	async clickSaveChanges() {
-		const saveChangesButton = await this.getSaveChangesButton();
-		await saveChangesButton.click();
+		await this.getSaveChangesButton().click();
 	}
 
 	/**
@@ -57,29 +127,6 @@ export default class EditFreeListingsPage extends MockRequests {
 		const timesLocator = this.page.locator( '.countries-time input' );
 		await timesLocator.first().fill( min );
 		await timesLocator.last().fill( max );
-	}
-
-	/**
-	 * Check the destination based tax rates.
-	 *
-	 * @return {Promise<void>}
-	 */
-	async checkDestinationBasedTaxRates() {
-		await this.page
-			.locator( 'text=My store uses destination-based tax rates.' )
-			.check();
-	}
-
-	/**
-	 * Mock the successful saving settings response.
-	 *
-	 * @return {Promise<void>}
-	 */
-	async mockSuccessfulSavingSettingsResponse() {
-		await this.fulfillSettingsSync( {
-			status: 'success',
-			message: 'Successfully synchronized settings with Google.',
-		} );
 	}
 
 	/**

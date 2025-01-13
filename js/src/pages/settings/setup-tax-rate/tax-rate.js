@@ -19,10 +19,16 @@ import VerticalGapLayout from '~/components/vertical-gap-layout';
  * @fires gla_documentation_link_click with `{ context: 'setup-mc-tax-rate', link_id: 'tax-rate-manual', href: 'https://www.google.com/retail/solutions/merchant-center/' }`
  */
 
-const TaxRate = () => {
+/**
+ * Renders the options of tax rate.
+ *
+ * @param {Object} props React props.
+ * @param {JSX.Element} [props.children] Children to be rendered below the card.
+ */
+const TaxRate = ( { children } ) => {
 	const {
 		getInputProps,
-		adapter: { renderRequestedValidation },
+		adapter: { isSubmitting },
 	} = useAdaptiveFormContext();
 
 	return (
@@ -62,6 +68,7 @@ const TaxRate = () => {
 							) }
 							value="destination"
 							collapsible
+							disabled={ isSubmitting }
 						>
 							<RadioHelperText>
 								{ __(
@@ -78,6 +85,7 @@ const TaxRate = () => {
 							) }
 							value="manual"
 							collapsible
+							disabled={ isSubmitting }
 						>
 							<RadioHelperText>
 								{ createInterpolateElement(
@@ -98,9 +106,9 @@ const TaxRate = () => {
 							</RadioHelperText>
 						</AppRadioContentControl>
 					</VerticalGapLayout>
-					{ renderRequestedValidation( 'tax_rate' ) }
 				</Section.Card.Body>
 			</Section.Card>
+			{ children }
 		</Section>
 	);
 };

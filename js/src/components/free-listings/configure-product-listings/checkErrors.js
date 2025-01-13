@@ -6,15 +6,8 @@ import { __ } from '@wordpress/i18n';
 const validlocationSet = new Set( [ 'all', 'selected' ] );
 const validShippingRateSet = new Set( [ 'automatic', 'flat', 'manual' ] );
 const validShippingTimeSet = new Set( [ 'flat', 'manual' ] );
-const validTaxRateSet = new Set( [ 'destination', 'manual' ] );
 
-const checkErrors = (
-	values,
-	shippingTimes,
-	finalCountryCodes,
-	storeCountryCode,
-	hideTaxRates = false
-) => {
+const checkErrors = ( values, shippingTimes, finalCountryCodes ) => {
 	const errors = {};
 
 	// Check audience.
@@ -98,20 +91,6 @@ const checkErrors = (
 	) {
 		errors.shipping_country_times = __(
 			'The minimum shipping time must not be more than the maximum shipping time.',
-			'google-listings-and-ads'
-		);
-	}
-
-	/**
-	 * Check tax rate (required for U.S. only).
-	 */
-	if (
-		! hideTaxRates &&
-		( storeCountryCode === 'US' || finalCountryCodes.includes( 'US' ) ) &&
-		! validTaxRateSet.has( values.tax_rate )
-	) {
-		errors.tax_rate = __(
-			'Please specify tax rate option.',
 			'google-listings-and-ads'
 		);
 	}
