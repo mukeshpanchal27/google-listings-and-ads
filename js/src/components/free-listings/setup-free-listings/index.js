@@ -53,6 +53,8 @@ const getSettings = ( values ) => {
 	return pick( values, settingsFieldNames );
 };
 
+const alwaysTrue = () => true;
+
 const { Fill, Slot } = createSlotFill( 'gla/SetupFreeListings/SubmitButton' );
 
 /**
@@ -71,6 +73,7 @@ const { Fill, Slot } = createSlotFill( 'gla/SetupFreeListings/SubmitButton' );
  * @param {(newValue: Object) => void} [props.onShippingRatesChange] Callback called with new data once shipping rates are changed. Forwarded from {@link Form.Props.onChange}.
  * @param {Array<ShippingTime>} props.shippingTimes Shipping times data, if not given AppSpinner will be rendered.
  * @param {(newValue: Object) => void} [props.onShippingTimesChange] Callback called with new data once shipping times are changed. Forwarded from {@link Form.Props.onChange}.
+ * @param {() => boolean | Promise<boolean>} [props.onRequestSubmit] Callback called before the form is submitted. If it returns false, the form will not be submitted.
  * @param {() => void} [props.onContinue] Callback called once continue button is clicked. Could be async. While it's being resolved the form would turn into a saving state.
  * @param {string} props.submitLabel Submit button label.
  */
@@ -84,6 +87,7 @@ const SetupFreeListings = ( {
 	onShippingRatesChange = noop,
 	shippingTimes,
 	onShippingTimesChange = noop,
+	onRequestSubmit = alwaysTrue,
 	onContinue = noop,
 	submitLabel,
 } ) => {
@@ -227,8 +231,11 @@ const SetupFreeListings = ( {
 			>
 				{ ( formContext ) => {
 					const { isValidForm, handleSubmit, adapter } = formContext;
-					const handleSubmitClick = ( event ) => {
+					const handleSubmitClick = async ( event ) => {
 						if ( isValidForm ) {
+							if ( ! ( await onRequestSubmit() ) ) {
+								return;
+							}
 							return handleSubmit( event );
 						}
 

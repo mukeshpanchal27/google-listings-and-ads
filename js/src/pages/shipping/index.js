@@ -12,6 +12,7 @@ import { isEqual } from 'lodash';
 import { useAppDispatch } from '~/data';
 import MainTabNav from '~/components/main-tab-nav';
 import SetupFreeListings from '~/components/free-listings/setup-free-listings';
+import ConfirmSaveModal from './confirm-save-modal';
 import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
 import useSettings from '~/hooks/useSettings';
 import useNavigateAwayPromptEffect from '~/hooks/useNavigateAwayPromptEffect';
@@ -72,6 +73,8 @@ export default function Shipping() {
 	const [ shippingTimes, updateShippingTimes ] =
 		useState( savedShippingTimes );
 
+	const [ resolveConfirmation, setResolveConfirmation ] = useState( null );
+
 	// TODO: Consider making it less repetitive.
 	useEffect( () => updateSettings( savedSettings ), [ savedSettings ] );
 	useEffect(
@@ -123,6 +126,15 @@ export default function Shipping() {
 		),
 		didAnythingChanged
 	);
+
+	const handleRequestSubmit = () => {
+		return new Promise( ( resolve ) => {
+			setResolveConfirmation( () => ( shouldContinue ) => {
+				resolve( shouldContinue );
+				setResolveConfirmation( null );
+			} );
+		} );
+	};
 
 	const handleSetupFreeListingsContinue = async () => {
 		// TODO: Disable the form so the user won't be able to input any changes, which could be disregarded.
@@ -189,12 +201,19 @@ export default function Shipping() {
 				onShippingRatesChange={ updateShippingRates }
 				shippingTimes={ initialTimes }
 				onShippingTimesChange={ updateShippingTimes }
+				onRequestSubmit={ handleRequestSubmit }
 				onContinue={ handleSetupFreeListingsContinue }
 				submitLabel={ __( 'Save changes', 'google-listings-and-ads' ) }
 			/>
 			<Flex justify="flex-end">
 				<SetupFreeListings.SubmitButton />
 			</Flex>
+			{ resolveConfirmation && (
+				<ConfirmSaveModal
+					onContinue={ () => resolveConfirmation( true ) }
+					onRequestClose={ () => resolveConfirmation( false ) }
+				/>
+			) }
 		</>
 	);
 }

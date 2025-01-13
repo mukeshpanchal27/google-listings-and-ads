@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { Locator } from '@playwright/test';
+
+/**
  * Internal dependencies
  */
 import MockRequests from '../mock-requests';
@@ -23,6 +28,7 @@ export default class ShippingPage extends MockRequests {
 
 		await this.fulfillSettings( {
 			shipping_rate: 'flat',
+			shipping_time: 'flat',
 			tax_rate: 'destination',
 		} );
 
@@ -49,12 +55,43 @@ export default class ShippingPage extends MockRequests {
 	/**
 	 * Get Save Changes button.
 	 *
-	 * @return {Promise<import('@playwright/test').Locator>} Get Save Changes button.
+	 * @return {Locator} Get Save Changes button.
 	 */
-	async getSaveChangesButton() {
+	getSaveChangesButton() {
 		return this.page.getByRole( 'button', {
 			name: 'Save changes',
 			exact: true,
+		} );
+	}
+
+	/**
+	 * Get the "Don't save" button.
+	 *
+	 * @return {Locator} The button.
+	 */
+	getConfirmationModal() {
+		return this.page.getByRole( 'dialog', { name: 'Before you save…' } );
+	}
+
+	/**
+	 * Get the "Don't save" button in the confirmation modal.
+	 *
+	 * @return {Locator} The button.
+	 */
+	getDontSaveButton() {
+		return this.getConfirmationModal().getByRole( 'button', {
+			name: `Don't save`,
+		} );
+	}
+
+	/**
+	 * Get the "Continue to save" button in the confirmation modal.
+	 *
+	 * @return {Locator} The button.
+	 */
+	getContinueSaveButton() {
+		return this.getConfirmationModal().getByRole( 'button', {
+			name: 'Continue to save',
 		} );
 	}
 
@@ -64,8 +101,7 @@ export default class ShippingPage extends MockRequests {
 	 * @return {Promise<void>}
 	 */
 	async clickSaveChanges() {
-		const saveChangesButton = await this.getSaveChangesButton();
-		await saveChangesButton.click();
+		await this.getSaveChangesButton().click();
 	}
 
 	/**
