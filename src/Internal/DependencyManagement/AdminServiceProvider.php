@@ -3,6 +3,9 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Internal\DependencyManagement;
 
+use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Admin;
+use Automattic\WooCommerce\GoogleListingsAndAds\Ads\AdsService;
+use Automattic\WooCommerce\GoogleListingsAndAds\Assets\AssetsHandlerInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\ConnectionTest;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\AdminConditional;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Conditional;
@@ -16,6 +19,8 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Menu\Settings;
 use Automattic\WooCommerce\GoogleListingsAndAds\Menu\SetupAds;
 use Automattic\WooCommerce\GoogleListingsAndAds\Menu\SetupMerchantCenter;
 use Automattic\WooCommerce\GoogleListingsAndAds\Menu\Shipping;
+use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\MerchantCenterService;
+use Automattic\WooCommerce\GoogleListingsAndAds\View\PHPViewFactory;
 
 /**
  * Class AdminServiceProvider
@@ -33,6 +38,7 @@ class AdminServiceProvider extends AbstractServiceProvider implements Conditiona
 	 * @var array
 	 */
 	protected $provides = [
+		Admin::class               => true,
 		AttributeMapping::class    => true,
 		ConnectionTest::class      => true,
 		Dashboard::class           => true,
@@ -54,6 +60,15 @@ class AdminServiceProvider extends AbstractServiceProvider implements Conditiona
 	 * @return void
 	 */
 	public function register(): void {
+		$this->share_with_tags(
+			Admin::class,
+			AssetsHandlerInterface::class,
+			PHPViewFactory::class,
+			MerchantCenterService::class,
+			AdsService::class
+		);
+		$this->share_with_tags( PHPViewFactory::class );
+
 		$this->share_with_tags( ConnectionTest::class );
 
 		$this->share_with_tags( AttributeMapping::class );

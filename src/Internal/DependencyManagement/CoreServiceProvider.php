@@ -118,7 +118,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Utility\ImageUtility;
 use Automattic\WooCommerce\GoogleListingsAndAds\Utility\ISOUtility;
 use Automattic\WooCommerce\GoogleListingsAndAds\Utility\WPCLIMigrationGTIN;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\ISO3166\ISO3166DataProvider;
-use Automattic\WooCommerce\GoogleListingsAndAds\View\PHPViewFactory;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use wpdb;
 
@@ -135,7 +134,6 @@ class CoreServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		Installer::class                 => true,
 		Redirect::class                  => true,
-		Admin::class                     => true,
 		AddressUtility::class            => true,
 		AssetsHandlerInterface::class    => true,
 		BulkEditInitializer::class       => true,
@@ -265,13 +263,6 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		$this->share_with_tags( ISOUtility::class, ISO3166DataProvider::class );
 
 		// Share our regular service classes.
-		$this->conditionally_share_with_tags(
-			Admin::class,
-			AssetsHandlerInterface::class,
-			PHPViewFactory::class,
-			MerchantCenterService::class,
-			AdsService::class
-		);
 		$this->conditionally_share_with_tags( Redirect::class, WP::class );
 		$this->share_with_tags( TrackerSnapshot::class );
 		$this->share_with_tags( EventTracking::class );
@@ -364,8 +355,6 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		// Share bulk edit views
 		$this->conditionally_share_with_tags( CouponBulkEdit::class, CouponMetaHandler::class, MerchantCenterService::class, TargetAudience::class );
 		$this->conditionally_share_with_tags( BulkEditInitializer::class );
-
-		$this->share_with_tags( PHPViewFactory::class );
 
 		// Share other classes.
 		$this->share_with_tags( ActivatedEvents::class, $_SERVER );
