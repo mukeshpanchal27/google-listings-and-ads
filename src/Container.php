@@ -6,6 +6,7 @@
 namespace Automattic\WooCommerce\GoogleListingsAndAds;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Conditional;
+use Automattic\WooCommerce\GoogleListingsAndAds\Internal\DependencyManagement\AdminServiceProvider;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\DependencyManagement\CoreServiceProvider;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\DependencyManagement\DBServiceProvider;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\DependencyManagement\GoogleServiceProvider;
@@ -52,6 +53,7 @@ final class Container implements ContainerInterface {
 		JobServiceProvider::class,
 		IntegrationServiceProvider::class,
 		DBServiceProvider::class,
+		AdminServiceProvider::class,
 	];
 
 	/**
