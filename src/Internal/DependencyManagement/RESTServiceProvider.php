@@ -77,7 +77,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Shipping\ShippingSuggestionServi
 use Automattic\WooCommerce\GoogleListingsAndAds\Shipping\ShippingZone;
 use Automattic\WooCommerce\GoogleListingsAndAds\Utility\AddressUtility;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\Container\Definition\DefinitionInterface;
-use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Psr\Container\ContainerInterface;
 
 /**
  * Class RESTServiceProvider
@@ -111,7 +110,7 @@ class RESTServiceProvider extends AbstractServiceProvider {
 		$this->share( AdsAccountController::class, AdsAccountService::class );
 		$this->share( AdsCampaignController::class, AdsCampaign::class );
 		$this->share( AdsAssetGroupController::class, AdsAssetGroup::class );
-		$this->share_with_container( AdsReportsController::class );
+		$this->share( AdsReportsController::class );
 		$this->share( GoogleAccountController::class, Connection::class );
 		$this->share( JetpackAccountController::class, Manager::class, Middleware::class );
 		$this->share( MerchantCenterProductStatsController::class, MerchantStatuses::class, ProductSyncStats::class );
@@ -123,12 +122,12 @@ class RESTServiceProvider extends AbstractServiceProvider {
 		$this->share( PhoneVerificationController::class, PhoneVerification::class );
 		$this->share( MerchantCenterAccountController::class, MerchantAccountService::class );
 		$this->share( MerchantCenterRequestReviewController::class, Middleware::class, Merchant::class, RequestReviewStatuses::class, TransientsInterface::class );
-		$this->share_with_container( MerchantCenterReportsController::class );
+		$this->share( MerchantCenterReportsController::class );
 		$this->share( ShippingRateBatchController::class, ShippingRateQuery::class );
 		$this->share( ShippingRateController::class, ShippingRateQuery::class );
 		$this->share( ShippingRateSuggestionsController::class, ShippingSuggestionService::class );
-		$this->share_with_container( ShippingTimeBatchController::class );
-		$this->share_with_container( ShippingTimeController::class );
+		$this->share( ShippingTimeBatchController::class );
+		$this->share( ShippingTimeController::class );
 		$this->share( TargetAudienceController::class, WP::class, WC::class, ShippingZone::class, GoogleHelper::class );
 		$this->share( SupportedCountriesController::class, WC::class, GoogleHelper::class );
 		$this->share( SettingsSyncController::class, Settings::class );
@@ -158,16 +157,5 @@ class RESTServiceProvider extends AbstractServiceProvider {
 	 */
 	protected function share( string $class_name, ...$arguments ): DefinitionInterface {
 		return parent::share( $class_name, RESTServer::class, ...$arguments )->addTag( 'rest_controller' );
-	}
-
-	/**
-	 * Share a class with only the container object provided.
-	 *
-	 * @param string $class_name The class name to add.
-	 *
-	 * @return DefinitionInterface
-	 */
-	protected function share_with_container( string $class_name ): DefinitionInterface {
-		return parent::share( $class_name, ContainerInterface::class )->addTag( 'rest_controller' );
 	}
 }

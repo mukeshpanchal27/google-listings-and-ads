@@ -3,7 +3,6 @@
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\API\Site\Controllers\MerchantCenter;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\MerchantCenter\ShippingTimeController;
-use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\RESTServer;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\RESTControllerUnitTest;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\Container\Container;
 use Automattic\WooCommerce\GoogleListingsAndAds\DB\Query\ShippingTimeQuery;
@@ -41,10 +40,10 @@ class ShippingTimeControllerTest extends RESTControllerUnitTest {
 		$this->iso_provider       = $this->createMock( ISO3166DataProvider::class );
 
 		$this->container = new Container();
-		$this->container->addShared( RESTServer::class, $this->server );
 		$this->container->addShared( ShippingTimeQuery::class, $this->shiping_time_query );
 
-		$this->controller = new ShippingTimeController( $this->container );
+		$this->controller = new ShippingTimeController( $this->server );
+		$this->controller->set_container( $this->container );
 		$this->controller->set_iso3166_provider( $this->iso_provider );
 		$this->controller->register();
 	}

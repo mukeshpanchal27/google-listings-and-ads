@@ -16,6 +16,8 @@ use Automattic\WooCommerce\GoogleListingsAndAds\DB\Table\ShippingTimeTable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Exception\ApiNotReady;
 use Automattic\WooCommerce\GoogleListingsAndAds\Exception\ExceptionWithResponseData;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
+use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
+use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\CleanupSyncedProducts;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\JobRepository;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\AdsAccountState;
@@ -39,7 +41,6 @@ defined( 'ABSPATH' ) || exit;
  * - AdsAccountState
  * - JobRepository
  * - Merchant
- * - MerchantAccountState
  * - MerchantCenterService
  * - MerchantIssueTable
  * - MerchantStatuses
@@ -51,15 +52,11 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.12.0
  * @package Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter
  */
-class AccountService implements OptionsAwareInterface, Service {
+class AccountService implements ContainerAwareInterface, OptionsAwareInterface, Service {
 
+	use ContainerAwareTrait;
 	use OptionsAwareTrait;
 	use PluginHelper;
-
-	/**
-	 * @var ContainerInterface
-	 */
-	protected $container;
 
 	/**
 	 * @var MerchantAccountState
@@ -83,11 +80,10 @@ class AccountService implements OptionsAwareInterface, Service {
 	/**
 	 * AccountService constructor.
 	 *
-	 * @param ContainerInterface $container
+	 * @param MerchantAccountState $state
 	 */
-	public function __construct( ContainerInterface $container ) {
-		$this->state     = $container->get( MerchantAccountState::class );
-		$this->container = $container;
+	public function __construct( MerchantAccountState $state ) {
+		$this->state = $state;
 	}
 
 	/**

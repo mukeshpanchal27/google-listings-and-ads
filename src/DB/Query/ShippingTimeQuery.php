@@ -58,6 +58,7 @@ class ShippingTimeQuery extends Query {
 			$data = [
 				'country_code' => $time['country'],
 				'time'         => $time['time'],
+				'max_time'     => $time['max_time'] ?: $time['time'],
 			];
 
 			$items[ $time['country'] ] = $data;

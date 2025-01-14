@@ -66,6 +66,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Menu\Reports;
 use Automattic\WooCommerce\GoogleListingsAndAds\Menu\Settings;
 use Automattic\WooCommerce\GoogleListingsAndAds\Menu\SetupAds;
 use Automattic\WooCommerce\GoogleListingsAndAds\Menu\SetupMerchantCenter;
+use Automattic\WooCommerce\GoogleListingsAndAds\Menu\Shipping;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\AccountService;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\AccountService as MerchantAccountService;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\ContactInformation;
@@ -129,7 +130,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Utility\ImageUtility;
 use Automattic\WooCommerce\GoogleListingsAndAds\Utility\ISOUtility;
 use Automattic\WooCommerce\GoogleListingsAndAds\Utility\WPCLIMigrationGTIN;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\ISO3166\ISO3166DataProvider;
-use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Psr\Container\ContainerInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\View\PHPViewFactory;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use wpdb;
@@ -174,6 +174,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		RESTControllers::class           => true,
 		Service::class                   => true,
 		Settings::class                  => true,
+		Shipping::class                  => true,
 		SetupAds::class                  => true,
 		SetupMerchantCenter::class       => true,
 		SetupCampaignNote::class         => true,
@@ -276,17 +277,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		$this->share_with_tags( AssetSuggestionsService::class, WP::class, WC::class, ImageUtility::class, wpdb::class, AdsAssetGroupAsset::class );
 
 		// Set up the installer.
-		$installer_definition = $this->share_with_tags(
-			Installer::class,
-			InstallableInterface::class,
-			FirstInstallInterface::class,
-			WP::class
-		);
-		$installer_definition->setConcrete(
-			function ( ...$arguments ) {
-				return new Installer( ...$arguments );
-			}
-		);
+		$this->share_with_tags( Installer::class, WP::class );
 
 		// Share utility classes
 		$this->share_with_tags( AddressUtility::class );
@@ -311,17 +302,18 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		$this->conditionally_share_with_tags( ProductFeed::class );
 		$this->conditionally_share_with_tags( AttributeMapping::class );
 		$this->conditionally_share_with_tags( Settings::class );
+		$this->conditionally_share_with_tags( Shipping::class );
 		$this->share_with_tags( TrackerSnapshot::class );
-		$this->conditionally_share_with_tags( EventTracking::class, ContainerInterface::class );
-		$this->conditionally_share_with_tags( RESTControllers::class, ContainerInterface::class );
-		$this->conditionally_share_with_tags( ConnectionTest::class, ContainerInterface::class );
+		$this->share_with_tags( EventTracking::class );
+		$this->share_with_tags( RESTControllers::class );
+		$this->conditionally_share_with_tags( ConnectionTest::class );
 		$this->share_with_tags( CompleteSetupTask::class );
 		$this->conditionally_share_with_tags( GlobalSiteTag::class, AssetsHandlerInterface::class, GoogleGtagJs::class, ProductHelper::class, WC::class, WP::class );
 		$this->share_with_tags( SiteVerificationMeta::class );
 		$this->conditionally_share_with_tags( MerchantSetupCompleted::class );
 		$this->conditionally_share_with_tags( AdsSetupCompleted::class );
-		$this->conditionally_share_with_tags( AdsAccountService::class, ContainerInterface::class );
-		$this->conditionally_share_with_tags( MerchantAccountService::class, ContainerInterface::class );
+		$this->share_with_tags( AdsAccountService::class, AdsAccountState::class );
+		$this->share_with_tags( MerchantAccountService::class, MerchantAccountState::class );
 
 		// Inbox Notes
 		$this->share_with_tags( ContactInformationNote::class );
@@ -401,8 +393,8 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		$this->conditionally_share_with_tags( MetaBoxInitializer::class, Admin::class, MetaBoxInterface::class );
 
 		// Share bulk edit views
-		$this->share_with_tags( CouponBulkEdit::class, CouponMetaHandler::class, MerchantCenterService::class, TargetAudience::class );
-		$this->share_with_tags( BulkEditInitializer::class );
+		$this->conditionally_share_with_tags( CouponBulkEdit::class, CouponMetaHandler::class, MerchantCenterService::class, TargetAudience::class );
+		$this->conditionally_share_with_tags( BulkEditInitializer::class );
 
 		$this->share_with_tags( PHPViewFactory::class );
 

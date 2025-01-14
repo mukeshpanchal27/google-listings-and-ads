@@ -102,13 +102,15 @@ describe( 'AllProgramsTableCard', () => {
 		expect( checkbox ).toBeDisabled();
 	} );
 
-	it( 'Should render the free listings row without the remove button', () => {
+	it( 'Should render the free listings row without the edit and remove buttons', () => {
 		render( <AllProgramsTableCard /> );
 
 		const row = screen.getByRole( 'row', { name: /free listings/i } );
-		const button = getRemoveButton( row );
+		const editButton = getEditButton( row );
+		const removeButton = getRemoveButton( row );
 
-		expect( button ).not.toBeInTheDocument();
+		expect( editButton ).not.toBeInTheDocument();
+		expect( removeButton ).not.toBeInTheDocument();
 	} );
 
 	it( 'Should render the free listings row with a free daily budget text', () => {
@@ -168,17 +170,17 @@ describe( 'AllProgramsTableCard', () => {
 		expect( button2 ).toBeEnabled();
 	} );
 
-	it( 'Should render the free listings and PMax campaign rows with edit buttons', () => {
-		mockCampaigns( pmaxCampaign );
+	it( 'Should render the edit button for both enabled and disabled PMax campaign rows', () => {
+		mockCampaigns( pmaxCampaign, pmaxCampaignDisabled );
 		render( <AllProgramsTableCard /> );
 
-		const freeRow = screen.getByRole( 'row', { name: /free listings/i } );
-		const pmaxRow = screen.getByRole( 'row', { name: /campaign/i } );
-		const freeButton = getEditButton( freeRow );
-		const pmaxButton = getEditButton( pmaxRow );
+		const rows = screen.getAllByRole( 'row', { name: /campaign/i } );
+		const button1 = getEditButton( rows[ 0 ] );
+		const button2 = getEditButton( rows[ 1 ] );
 
-		expect( freeButton ).toBeEnabled();
-		expect( pmaxButton ).toBeEnabled();
+		expect( rows ).toHaveLength( 2 );
+		expect( button1 ).toBeEnabled();
+		expect( button2 ).toBeEnabled();
 	} );
 
 	it( 'Should render non-PMax campaign with an disabled edit button', () => {
@@ -195,13 +197,10 @@ describe( 'AllProgramsTableCard', () => {
 		mockCampaigns( shoppingCampaign, pmaxCampaign );
 		render( <AllProgramsTableCard /> );
 
-		const rows = screen.getAllByRole( 'row', {
-			name: /free listings|campaign/i,
-		} );
-		const [ freeRow, shoppingRow, pmaxRow ] = rows;
+		const rows = screen.getAllByRole( 'row', { name: /campaign/i } );
+		const [ shoppingRow, pmaxRow ] = rows;
 		const className = 'gla-campaign-edit-button';
 
-		expect( getEditButton( freeRow ) ).not.toHaveClass( className );
 		expect( getEditButton( shoppingRow ) ).not.toHaveClass( className );
 		expect( getEditButton( pmaxRow ) ).toHaveClass( className );
 	} );

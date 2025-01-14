@@ -11,6 +11,7 @@ import { glaData } from '~/constants';
 import AppTabNav from '~/components/app-tab-nav';
 import useMenuEffect from '~/hooks/useMenuEffect';
 import GtinMigrationBanner from '~/components/gtin-migration-banner';
+import { getShippingUrl } from '~/utils/urls';
 
 let tabs = [
 	{
@@ -37,6 +38,11 @@ let tabs = [
 		key: 'settings',
 		title: __( 'Settings', 'google-listings-and-ads' ),
 		href: getNewPath( {}, '/google/settings', {} ),
+	},
+	{
+		key: 'shipping',
+		title: __( 'Shipping', 'google-listings-and-ads' ),
+		href: getShippingUrl(),
 	},
 ];
 
