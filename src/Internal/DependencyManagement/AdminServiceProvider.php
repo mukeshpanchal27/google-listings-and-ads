@@ -3,6 +3,7 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Internal\DependencyManagement;
 
+use Automattic\WooCommerce\GoogleListingsAndAds\ConnectionTest;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\AdminConditional;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Conditional;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
@@ -33,6 +34,7 @@ class AdminServiceProvider extends AbstractServiceProvider implements Conditiona
 	 */
 	protected $provides = [
 		AttributeMapping::class    => true,
+		ConnectionTest::class      => true,
 		Dashboard::class           => true,
 		GetStarted::class          => true,
 		ProductFeed::class         => true,
@@ -52,14 +54,16 @@ class AdminServiceProvider extends AbstractServiceProvider implements Conditiona
 	 * @return void
 	 */
 	public function register(): void {
-		$this->conditionally_share_with_tags( AttributeMapping::class );
-		$this->conditionally_share_with_tags( Dashboard::class );
-		$this->conditionally_share_with_tags( GetStarted::class );
-		$this->conditionally_share_with_tags( ProductFeed::class );
-		$this->conditionally_share_with_tags( Reports::class );
-		$this->conditionally_share_with_tags( Settings::class );
-		$this->conditionally_share_with_tags( SetupAds::class );
-		$this->conditionally_share_with_tags( SetupMerchantCenter::class );
-		$this->conditionally_share_with_tags( Shipping::class );
+		$this->share_with_tags( ConnectionTest::class );
+
+		$this->share_with_tags( AttributeMapping::class );
+		$this->share_with_tags( Dashboard::class );
+		$this->share_with_tags( GetStarted::class );
+		$this->share_with_tags( ProductFeed::class );
+		$this->share_with_tags( Reports::class );
+		$this->share_with_tags( Settings::class );
+		$this->share_with_tags( SetupAds::class );
+		$this->share_with_tags( SetupMerchantCenter::class );
+		$this->share_with_tags( Shipping::class );
 	}
 }
