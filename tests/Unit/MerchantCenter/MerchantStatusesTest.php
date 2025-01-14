@@ -21,9 +21,10 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Service\ShoppingCo
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Service\ShoppingContent\ProductstatusesCustomBatchResponseEntry;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Service\ShoppingContent\ProductStatusItemLevelIssue;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Service\ShoppingContent\ProductStatus;
-use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\UpdateMerchantProductStatuses;
-use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\UpdateAllProducts;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\DeleteAllProducts;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\JobRepository;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\UpdateAllProducts;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\UpdateMerchantProductStatuses;
 use Automattic\WooCommerce\GoogleListingsAndAds\Value\MCStatus;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductMetaHandler;
 use Automattic\WooCommerce\GoogleListingsAndAds\PluginHelper;
@@ -75,6 +76,9 @@ class MerchantStatusesTest extends UnitTest {
 	private $initial_mc_statuses;
 	private $merchant_issue_table;
 
+	/** @var JobRepository $job_repository */
+	protected $job_repository;
+
 	/**
 	 * Runs before each test is executed.
 	 */
@@ -95,22 +99,25 @@ class MerchantStatusesTest extends UnitTest {
 
 		$this->merchant_issue_table = $this->createMock( MerchantIssueTable::class );
 
-		$container = new Container();
-		$container->addShared( Merchant::class, $this->merchant );
-		$container->addShared( MerchantIssueQuery::class, $this->merchant_issue_query );
-		$container->addShared( MerchantCenterService::class, $this->merchant_center_service );
-		$container->addShared( TransientsInterface::class, $this->transients );
-		$container->addShared( ProductRepository::class, $this->product_repository );
-		$container->addShared( ProductMetaQueryHelper::class, $this->product_meta_query_helper );
-		$container->addShared( ProductHelper::class, $this->product_helper );
-		$container->addShared( MerchantIssueTable::class, $this->merchant_issue_table );
-		$container->addShared( UpdateMerchantProductStatuses::class, $this->update_merchant_product_statuses_job );
-		$container->addShared( UpdateAllProducts::class, $this->update_all_product_job );
-		$container->addShared( DeleteAllProducts::class, $this->delete_all_product_job );
+		$this->container = new Container();
+		$this->container->addShared( Merchant::class, $this->merchant );
+		$this->container->addShared( MerchantIssueQuery::class, $this->merchant_issue_query );
+		$this->container->addShared( MerchantCenterService::class, $this->merchant_center_service );
+		$this->container->addShared( TransientsInterface::class, $this->transients );
+		$this->container->addShared( ProductRepository::class, $this->product_repository );
+		$this->container->addShared( ProductMetaQueryHelper::class, $this->product_meta_query_helper );
+		$this->container->addShared( ProductHelper::class, $this->product_helper );
+		$this->container->addShared( MerchantIssueTable::class, $this->merchant_issue_table );
+		$this->container->addShared( UpdateMerchantProductStatuses::class, $this->update_merchant_product_statuses_job );
+		$this->container->addShared( UpdateAllProducts::class, $this->update_all_product_job );
+		$this->container->addShared( DeleteAllProducts::class, $this->delete_all_product_job );
 
-		$this->container         = $container;
+		$this->job_repository = new JobRepository();
+		$this->job_repository->set_container( $this->container );
+		$this->container->addShared( JobRepository::class, $this->job_repository );
+
 		$this->merchant_statuses = new MerchantStatuses();
-		$this->merchant_statuses->set_container( $container );
+		$this->merchant_statuses->set_container( $this->container );
 		$this->merchant_statuses->set_options_object( $this->options );
 
 		$this->initial_mc_statuses = [

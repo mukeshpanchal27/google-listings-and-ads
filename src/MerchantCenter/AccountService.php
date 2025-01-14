@@ -19,6 +19,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\CleanupSyncedProducts;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\JobRepository;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\AdsAccountState;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\MerchantAccountState;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareInterface;
@@ -38,7 +39,7 @@ defined( 'ABSPATH' ) || exit;
  * Container used to access:
  * - Ads
  * - AdsAccountState
- * - CleanupSyncedProducts
+ * - JobRepository
  * - Merchant
  * - MerchantCenterService
  * - MerchantIssueTable
@@ -275,7 +276,7 @@ class AccountService implements ContainerAwareInterface, OptionsAwareInterface, 
 		$this->container->get( ShippingRateTable::class )->truncate();
 		$this->container->get( ShippingTimeTable::class )->truncate();
 
-		$this->container->get( CleanupSyncedProducts::class )->schedule();
+		$this->container->get( JobRepository::class )->get( CleanupSyncedProducts::class )->schedule();
 
 		$this->container->get( TransientsInterface::class )->delete( TransientsInterface::MC_ACCOUNT_REVIEW );
 		$this->container->get( TransientsInterface::class )->delete( TransientsInterface::URL_MATCHES );

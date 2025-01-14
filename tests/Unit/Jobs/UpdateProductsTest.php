@@ -8,12 +8,14 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\ActionSchedulerJobMonitor;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\JobException;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\UpdateProducts;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\MerchantCenterService;
+use Automattic\WooCommerce\GoogleListingsAndAds\Product\FilteredProductList;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductSyncer;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductRepository;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\UnitTest;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Tools\HelperTrait\JobTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Tools\HelperTrait\ProductTrait;
 use PHPUnit\Framework\MockObject\MockObject;
+use WC_Helper_Product;
 
 /**
  * Class UpdateProductsTest
@@ -75,6 +77,7 @@ class UpdateProductsTest extends UnitTest {
 
 	public function test_schedule_throws_exception_no_args() {
 		$this->expectException( JobException::class );
+		$this->expectExceptionMessage( 'Array of WooCommerce Product IDs' );
 
 		$this->job->schedule();
 	}
@@ -111,5 +114,33 @@ class UpdateProductsTest extends UnitTest {
 			);
 
 		$this->job->schedule( [ $ids ] );
+	}
+
+	public function test_process_items_no_products() {
+		$product_list = $this->createMock( FilteredProductList::class );
+		$product_list->method( 'get' )->willReturn( [] );
+
+		$this->product_repository->method( 'find_sync_ready_products' )->willReturn( $product_list );
+
+		$this->expectException( JobException::class );
+		$this->expectExceptionMessage( 'Job item not found' );
+
+		$this->job->process_items( [] );
+	}
+
+	public function test_process_items() {
+		$products = [
+			WC_Helper_Product::create_simple_product(),
+			WC_Helper_Product::create_simple_product(),
+		];
+
+		$product_list = $this->createMock( FilteredProductList::class );
+		$product_list->method( 'get' )->willReturn( $products );
+
+		$this->product_repository->method( 'find_sync_ready_products' )->willReturn( $product_list );
+
+		$this->product_syncer->expects( $this->once() )->method( 'update' )->with( $products );
+
+		$this->job->process_items( [] );
 	}
 }
