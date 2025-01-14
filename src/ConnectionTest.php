@@ -18,8 +18,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Merchant;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Middleware;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\WP\NotificationsService;
 use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\GTINMigrationUtilities;
-use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\AdminConditional;
-use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Conditional;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
@@ -46,9 +44,8 @@ use WP_REST_Request as Request;
 /**
  * Main class for Connection Test.
  */
-class ConnectionTest implements Conditional, ContainerAwareInterface, Service, Registerable {
+class ConnectionTest implements ContainerAwareInterface, Service, Registerable {
 
-	use AdminConditional;
 	use ContainerAwareTrait;
 	use GTINMigrationUtilities;
 	use PluginHelper;
