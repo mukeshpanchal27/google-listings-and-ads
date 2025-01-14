@@ -4,6 +4,7 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Internal\DependencyManagement;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Admin;
+use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Redirect;
 use Automattic\WooCommerce\GoogleListingsAndAds\Ads\AdsService;
 use Automattic\WooCommerce\GoogleListingsAndAds\Assets\AssetsHandlerInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\ConnectionTest;
@@ -20,6 +21,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Menu\SetupAds;
 use Automattic\WooCommerce\GoogleListingsAndAds\Menu\SetupMerchantCenter;
 use Automattic\WooCommerce\GoogleListingsAndAds\Menu\Shipping;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\MerchantCenterService;
+use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\WP;
 use Automattic\WooCommerce\GoogleListingsAndAds\View\PHPViewFactory;
 
 /**
@@ -44,6 +46,7 @@ class AdminServiceProvider extends AbstractServiceProvider implements Conditiona
 		Dashboard::class           => true,
 		GetStarted::class          => true,
 		ProductFeed::class         => true,
+		Redirect::class            => true,
 		Reports::class             => true,
 		Settings::class            => true,
 		SetupAds::class            => true,
@@ -68,6 +71,7 @@ class AdminServiceProvider extends AbstractServiceProvider implements Conditiona
 			AdsService::class
 		);
 		$this->share_with_tags( PHPViewFactory::class );
+		$this->share_with_tags( Redirect::class, WP::class );
 
 		$this->share_with_tags( ConnectionTest::class );
 

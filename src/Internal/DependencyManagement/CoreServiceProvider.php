@@ -5,7 +5,6 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\Internal\DependencyManagem
 
 use Automattic\WooCommerce\Admin\Marketing\MarketingChannels;
 use Automattic\WooCommerce\GoogleListingsAndAds\ActionScheduler\ActionScheduler;
-use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Redirect;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Admin;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\BulkEdit\BulkEditInitializer;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\BulkEdit\CouponBulkEdit;
@@ -133,7 +132,6 @@ class CoreServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		Installer::class                 => true,
-		Redirect::class                  => true,
 		AddressUtility::class            => true,
 		AssetsHandlerInterface::class    => true,
 		BulkEditInitializer::class       => true,
@@ -263,7 +261,6 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		$this->share_with_tags( ISOUtility::class, ISO3166DataProvider::class );
 
 		// Share our regular service classes.
-		$this->conditionally_share_with_tags( Redirect::class, WP::class );
 		$this->share_with_tags( TrackerSnapshot::class );
 		$this->share_with_tags( EventTracking::class );
 		$this->share_with_tags( RESTControllers::class );
