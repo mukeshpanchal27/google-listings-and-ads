@@ -56,15 +56,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Internal\DeprecatedFilters;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\InstallTimestamp;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\ProductSyncStats;
 use Automattic\WooCommerce\GoogleListingsAndAds\Logging\DebugLogger;
-use Automattic\WooCommerce\GoogleListingsAndAds\Menu\AttributeMapping;
-use Automattic\WooCommerce\GoogleListingsAndAds\Menu\Dashboard;
-use Automattic\WooCommerce\GoogleListingsAndAds\Menu\GetStarted;
-use Automattic\WooCommerce\GoogleListingsAndAds\Menu\ProductFeed;
-use Automattic\WooCommerce\GoogleListingsAndAds\Menu\Reports;
-use Automattic\WooCommerce\GoogleListingsAndAds\Menu\Settings;
-use Automattic\WooCommerce\GoogleListingsAndAds\Menu\SetupAds;
-use Automattic\WooCommerce\GoogleListingsAndAds\Menu\SetupMerchantCenter;
-use Automattic\WooCommerce\GoogleListingsAndAds\Menu\Shipping;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\AccountService;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\AccountService as MerchantAccountService;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\ContactInformation;
@@ -147,7 +138,6 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		Redirect::class                  => true,
 		Admin::class                     => true,
 		AddressUtility::class            => true,
-		Reports::class                   => true,
 		AssetsHandlerInterface::class    => true,
 		BulkEditInitializer::class       => true,
 		ContactInformationNote::class    => true,
@@ -157,24 +147,17 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		CouponHelper::class              => true,
 		CouponMetaHandler::class         => true,
 		CouponSyncer::class              => true,
-		Dashboard::class                 => true,
 		DateTimeUtility::class           => true,
 		EventTracking::class             => true,
-		GetStarted::class                => true,
 		GlobalSiteTag::class             => true,
 		ISOUtility::class                => true,
 		SiteVerificationEvents::class    => true,
 		OptionsInterface::class          => true,
 		TransientsInterface::class       => true,
-		ProductFeed::class               => true,
 		ReconnectWordPressNote::class    => true,
 		ReviewAfterClicksNote::class     => true,
 		RESTControllers::class           => true,
 		Service::class                   => true,
-		Settings::class                  => true,
-		Shipping::class                  => true,
-		SetupAds::class                  => true,
-		SetupMerchantCenter::class       => true,
 		SetupCampaignNote::class         => true,
 		SetupCampaign2Note::class        => true,
 		SetupCouponSharingNote::class    => true,
@@ -214,7 +197,6 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		ShippingZone::class              => true,
 		AdsAccountService::class         => true,
 		MerchantAccountService::class    => true,
-		AttributeMapping::class          => true,
 		MarketingChannelRegistrar::class => true,
 		OAuthService::class              => true,
 		WPCLIMigrationGTIN::class        => true,
@@ -292,15 +274,6 @@ class CoreServiceProvider extends AbstractServiceProvider {
 			AdsService::class
 		);
 		$this->conditionally_share_with_tags( Redirect::class, WP::class );
-		$this->conditionally_share_with_tags( GetStarted::class );
-		$this->conditionally_share_with_tags( SetupMerchantCenter::class );
-		$this->conditionally_share_with_tags( SetupAds::class );
-		$this->conditionally_share_with_tags( Dashboard::class );
-		$this->conditionally_share_with_tags( Reports::class );
-		$this->conditionally_share_with_tags( ProductFeed::class );
-		$this->conditionally_share_with_tags( AttributeMapping::class );
-		$this->conditionally_share_with_tags( Settings::class );
-		$this->conditionally_share_with_tags( Shipping::class );
 		$this->share_with_tags( TrackerSnapshot::class );
 		$this->share_with_tags( EventTracking::class );
 		$this->share_with_tags( RESTControllers::class );
