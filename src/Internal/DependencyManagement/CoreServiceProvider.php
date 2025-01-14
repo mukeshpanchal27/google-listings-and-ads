@@ -278,17 +278,7 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		$this->share_with_tags( AssetSuggestionsService::class, WP::class, WC::class, ImageUtility::class, wpdb::class, AdsAssetGroupAsset::class );
 
 		// Set up the installer.
-		$installer_definition = $this->share_with_tags(
-			Installer::class,
-			InstallableInterface::class,
-			FirstInstallInterface::class,
-			WP::class
-		);
-		$installer_definition->setConcrete(
-			function ( ...$arguments ) {
-				return new Installer( ...$arguments );
-			}
-		);
+		$this->share_with_tags( Installer::class, WP::class );
 
 		// Share utility classes
 		$this->share_with_tags( AddressUtility::class );
