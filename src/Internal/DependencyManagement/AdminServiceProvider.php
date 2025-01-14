@@ -4,6 +4,8 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Internal\DependencyManagement;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Admin;
+use Automattic\WooCommerce\GoogleListingsAndAds\Admin\BulkEdit\BulkEditInitializer;
+use Automattic\WooCommerce\GoogleListingsAndAds\Admin\BulkEdit\CouponBulkEdit;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\MetaBox\ChannelVisibilityMetaBox;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\MetaBox\CouponChannelVisibilityMetaBox;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\MetaBox\MetaBoxInitializer;
@@ -51,7 +53,9 @@ class AdminServiceProvider extends AbstractServiceProvider implements Conditiona
 	protected $provides = [
 		Admin::class               => true,
 		AttributeMapping::class    => true,
+		BulkEditInitializer::class => true,
 		ConnectionTest::class      => true,
+		CouponBulkEdit::class      => true,
 		Dashboard::class           => true,
 		GetStarted::class          => true,
 		MetaBoxInterface::class    => true,
@@ -83,6 +87,10 @@ class AdminServiceProvider extends AbstractServiceProvider implements Conditiona
 		);
 		$this->share_with_tags( PHPViewFactory::class );
 		$this->share_with_tags( Redirect::class, WP::class );
+
+		// Share bulk edit views
+		$this->share_with_tags( CouponBulkEdit::class, CouponMetaHandler::class, MerchantCenterService::class, TargetAudience::class );
+		$this->share_with_tags( BulkEditInitializer::class );
 
 		// Share admin meta boxes
 		$this->share_with_tags( ChannelVisibilityMetaBox::class, Admin::class, ProductMetaHandler::class, ProductHelper::class, MerchantCenterService::class );

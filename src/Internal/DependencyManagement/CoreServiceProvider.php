@@ -6,8 +6,6 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\Internal\DependencyManagem
 use Automattic\WooCommerce\Admin\Marketing\MarketingChannels;
 use Automattic\WooCommerce\GoogleListingsAndAds\ActionScheduler\ActionScheduler;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Admin;
-use Automattic\WooCommerce\GoogleListingsAndAds\Admin\BulkEdit\BulkEditInitializer;
-use Automattic\WooCommerce\GoogleListingsAndAds\Admin\BulkEdit\CouponBulkEdit;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\AttributesTab;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\VariationsAttributes;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\ChannelVisibilityBlock;
@@ -130,11 +128,9 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		Installer::class                 => true,
 		AddressUtility::class            => true,
 		AssetsHandlerInterface::class    => true,
-		BulkEditInitializer::class       => true,
 		ContactInformationNote::class    => true,
 		CompleteSetupTask::class         => true,
 		CompleteSetupNote::class         => true,
-		CouponBulkEdit::class            => true,
 		CouponHelper::class              => true,
 		CouponMetaHandler::class         => true,
 		CouponSyncer::class              => true,
@@ -337,10 +333,6 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->inflector( TracksAwareInterface::class )
 			->invokeMethod( 'set_tracks', [ TracksInterface::class ] );
-
-		// Share bulk edit views
-		$this->conditionally_share_with_tags( CouponBulkEdit::class, CouponMetaHandler::class, MerchantCenterService::class, TargetAudience::class );
-		$this->conditionally_share_with_tags( BulkEditInitializer::class );
 
 		// Share other classes.
 		$this->share_with_tags( ActivatedEvents::class, $_SERVER );
