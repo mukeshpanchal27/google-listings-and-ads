@@ -8,10 +8,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\ActionScheduler\ActionScheduler;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Admin;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\BulkEdit\BulkEditInitializer;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\BulkEdit\CouponBulkEdit;
-use Automattic\WooCommerce\GoogleListingsAndAds\Admin\MetaBox\ChannelVisibilityMetaBox;
-use Automattic\WooCommerce\GoogleListingsAndAds\Admin\MetaBox\CouponChannelVisibilityMetaBox;
-use Automattic\WooCommerce\GoogleListingsAndAds\Admin\MetaBox\MetaBoxInitializer;
-use Automattic\WooCommerce\GoogleListingsAndAds\Admin\MetaBox\MetaBoxInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\AttributesTab;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\Attributes\VariationsAttributes;
 use Automattic\WooCommerce\GoogleListingsAndAds\Admin\Product\ChannelVisibilityBlock;
@@ -167,8 +163,6 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		BatchProductHelper::class        => true,
 		ProductFilter::class             => true,
 		ProductRepository::class         => true,
-		MetaBoxInterface::class          => true,
-		MetaBoxInitializer::class        => true,
 		ViewFactory::class               => true,
 		DebugLogger::class               => true,
 		MerchantStatuses::class          => true,
@@ -343,11 +337,6 @@ class CoreServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->inflector( TracksAwareInterface::class )
 			->invokeMethod( 'set_tracks', [ TracksInterface::class ] );
-
-		// Share admin meta boxes
-		$this->conditionally_share_with_tags( ChannelVisibilityMetaBox::class, Admin::class, ProductMetaHandler::class, ProductHelper::class, MerchantCenterService::class );
-		$this->conditionally_share_with_tags( CouponChannelVisibilityMetaBox::class, Admin::class, CouponMetaHandler::class, CouponHelper::class, MerchantCenterService::class, TargetAudience::class );
-		$this->conditionally_share_with_tags( MetaBoxInitializer::class, Admin::class, MetaBoxInterface::class );
 
 		// Share bulk edit views
 		$this->conditionally_share_with_tags( CouponBulkEdit::class, CouponMetaHandler::class, MerchantCenterService::class, TargetAudience::class );
