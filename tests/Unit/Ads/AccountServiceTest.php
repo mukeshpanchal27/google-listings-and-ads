@@ -126,12 +126,12 @@ class AccountServiceTest extends UnitTest {
 		$this->container->addShared( AdsConversionAction::class, $this->conversion_action );
 		$this->container->addShared( Merchant::class, $this->merchant );
 		$this->container->addShared( Middleware::class, $this->middleware );
-		$this->container->addShared( AdsAccountState::class, $this->state );
 		$this->container->addShared( MerchantAccountState::class, $this->merchant_state );
 		$this->container->addShared( TransientsInterface::class, $this->transients );
 		$this->container->addShared( Connection::class, $this->connection );
 
-		$this->account = new AccountService( $this->container );
+		$this->account = new AccountService( $this->state );
+		$this->account->set_container( $this->container );
 		$this->account->set_options_object( $this->options );
 	}
 

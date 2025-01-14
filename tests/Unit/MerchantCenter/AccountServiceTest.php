@@ -139,22 +139,22 @@ class AccountServiceTest extends UnitTest {
 
 		$this->container = new Container();
 		$this->container->addShared( Ads::class, $this->ads );
+		$this->container->addShared( AdsAccountState::class, $this->ads_state );
 		$this->container->addShared( CleanupSyncedProducts::class, $this->cleanup_synced );
 		$this->container->addShared( Merchant::class, $this->merchant );
 		$this->container->addShared( MerchantCenterService::class, $this->mc_service );
 		$this->container->addShared( MerchantIssueTable::class, $this->issue_table );
 		$this->container->addShared( MerchantStatuses::class, $this->merchant_statuses );
 		$this->container->addShared( Middleware::class, $this->middleware );
+		$this->container->addShared( NotificationsService::class, $this->notifications_service );
 		$this->container->addShared( SiteVerification::class, $this->site_verification );
 		$this->container->addShared( ShippingRateTable::class, $this->rate_table );
 		$this->container->addShared( ShippingTimeTable::class, $this->time_table );
-		$this->container->addShared( MerchantAccountState::class, $this->state );
-		$this->container->addShared( AdsAccountState::class, $this->ads_state );
 		$this->container->addShared( TransientsInterface::class, $this->transients );
 		$this->container->addShared( TransientsInterface::class, $this->transients );
-		$this->container->addShared( NotificationsService::class, $this->notifications_service );
 
-		$this->account = new AccountService( $this->container );
+		$this->account = new AccountService( $this->state );
+		$this->account->set_container( $this->container );
 		$this->account->set_options_object( $this->options );
 	}
 
