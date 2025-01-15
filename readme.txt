@@ -156,11 +156,4 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Tweak - WC 9.5 compatibility.
 * Update - Drop support for WooCommerce < 7.9.
 
-= 2.9.2 - 2024-12-11 =
-* Dev - Centralize frontend images to the dedicated directory.
-* Fix - Ensure coupon brand restrictions are uploaded to Google Merchant Center.
-* Fix - Initial php 8.4 compatibility.
-* Fix - Prevent Warning when Saving a Variation if YOAST is activated.
-* Fix - The country selector in setup/edit free listing flow from being hidden.
-
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
