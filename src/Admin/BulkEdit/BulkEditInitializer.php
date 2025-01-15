@@ -3,7 +3,6 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Admin\BulkEdit;
 
-use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\AdminConditional;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use WP_Post;
@@ -16,8 +15,6 @@ defined( 'ABSPATH' ) || exit;
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Admin\BulkEdit
  */
 class BulkEditInitializer implements Service, Registerable {
-
-	use AdminConditional;
 
 	/**
 	 * Register a service.
