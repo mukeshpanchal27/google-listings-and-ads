@@ -23,6 +23,7 @@ import hasUnsavedShippingRates from './hasUnsavedShippingRates';
 import useSaveShippingRates from '~/hooks/useSaveShippingRates';
 import useSaveShippingTimes from '~/hooks/useSaveShippingTimes';
 import createErrorMessageForRejectedPromises from '~/utils/createErrorMessageForRejectedPromises';
+import { handleApiError } from '~/utils/handleError';
 import { recordGlaEvent } from '~/utils/tracks';
 
 /**
@@ -173,8 +174,9 @@ export default function Shipping() {
 
 			recordGlaEvent( 'gla_free_campaign_edited' );
 		} catch ( error ) {
-			createNotice(
-				'error',
+			handleApiError(
+				error,
+				__( 'Unable to save your changes.', 'google-listings-and-ads' ),
 				__(
 					'Something went wrong while saving your changes. Please try again later.',
 					'google-listings-and-ads'
