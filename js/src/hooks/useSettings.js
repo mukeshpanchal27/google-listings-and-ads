@@ -6,21 +6,28 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { STORE_KEY } from '~/data';
+import { STORE_KEY, useAppDispatch } from '~/data';
 
 /**
- * Returns an object `{ settings }` to be used in the Setup Free Listing page.
+ * Returns an object `{ settings, saveSettings, syncSettings }` to
+ * be used in the Setup Free Listing page.
  *
  * `settings` is the saved values retrieved from API.
+ * `saveSettings` action to save the plugin settings.
+ * `syncSettings` action to sync the shipping and tax rate settings to Google Merchant Center.
  */
 const useSettings = () => {
-	return useSelect( ( select ) => {
-		const settings = select( STORE_KEY ).getSettings();
+	const { saveSettings, syncSettings } = useAppDispatch();
 
-		return {
-			settings,
-		};
+	const settings = useSelect( ( select ) => {
+		return select( STORE_KEY ).getSettings();
 	}, [] );
+
+	return {
+		settings,
+		saveSettings,
+		syncSettings,
+	};
 };
 
 export default useSettings;

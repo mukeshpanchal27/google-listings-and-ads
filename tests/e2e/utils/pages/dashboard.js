@@ -14,12 +14,6 @@ export default class DashboardPage extends MockRequests {
 	constructor( page ) {
 		super( page );
 		this.page = page;
-		this.freeListingRow = this.page.locator(
-			'.gla-all-programs-table-card table tr:nth-child(2)'
-		);
-		this.editFreeListingButton = this.freeListingRow.getByRole( 'button', {
-			name: 'Edit',
-		} );
 		this.googleAdsSummaryCard = this.page.locator(
 			'.gla-dashboard__performance .gla-summary-card:nth-child(1)'
 		);
@@ -111,48 +105,5 @@ export default class DashboardPage extends MockRequests {
 			'/wp-admin/admin.php?page=wc-admin&path=%2Fgoogle%2Fdashboard',
 			{ waitUntil: LOAD_STATE.DOM_CONTENT_LOADED }
 		);
-	}
-
-	/**
-	 * Click the edit free listings button.
-	 *
-	 * @return {Promise<void>}
-	 */
-	async clickEditFreeListings() {
-		await this.editFreeListingButton.click();
-	}
-
-	/**
-	 * Get the continue to edit button from the modal.
-	 *
-	 * @return {Promise<import('@playwright/test').Locator>} Get the continue to edit button from the modal.
-	 */
-	async getContinueToEditButton() {
-		return this.page.getByRole( 'button', {
-			name: 'Continue to edit',
-			exact: true,
-		} );
-	}
-
-	/**
-	 * Get the don't edit button from the modal.
-	 *
-	 * @return {Promise<import('@playwright/test').Locator>}  Get the don't edit button from the modal.
-	 */
-	async getDontEditButton() {
-		return this.page.getByRole( 'button', {
-			name: "Don't edit",
-			exact: true,
-		} );
-	}
-
-	/**
-	 * Click the continue to edit button from the modal.
-	 *
-	 * @return {Promise<void>}
-	 */
-	async clickContinueToEditButton() {
-		const continueToEditButton = await this.getContinueToEditButton();
-		await continueToEditButton.click();
 	}
 }

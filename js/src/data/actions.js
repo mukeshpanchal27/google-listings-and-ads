@@ -325,10 +325,10 @@ export function* fetchSettings() {
 }
 
 /**
- * Save the the MC settings.
+ * Save the plugin settings.
  *
- * @param {SettingsData} settings settings
- * @return {Object} Action object to save target audience.
+ * @param {SettingsData} settings Plugin settings
+ * @return {Object} Action object to save the plugin settings.
  */
 export function* saveSettings( settings ) {
 	yield apiFetch( {
@@ -341,6 +341,18 @@ export function* saveSettings( settings ) {
 		type: TYPES.SAVE_SETTINGS,
 		settings,
 	};
+}
+
+/**
+ * Sync the shipping and tax rate settings to Google Merchant Center.
+ *
+ * @throws Will throw an error if the request failed.
+ */
+export function* syncSettings() {
+	yield apiFetch( {
+		path: `${ API_NAMESPACE }/mc/settings/sync`,
+		method: 'POST',
+	} );
 }
 
 export function* fetchJetpackAccount() {

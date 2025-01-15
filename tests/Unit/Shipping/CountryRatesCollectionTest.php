@@ -119,4 +119,14 @@ class CountryRatesCollectionTest extends UnitTest {
 
 		new CountryRatesCollection( 'US', $location_rates );
 	}
+
+	public function test_throws_exception_if_negative_rate_is_provided() {
+		$location_rates = [
+			new LocationRate( new ShippingLocation( 0, 'US' ), new ShippingRate( -1 ) ),
+		];
+
+		$this->expectException( InvalidValue::class );
+
+		new CountryRatesCollection( 'US', $location_rates );
+	}
 }

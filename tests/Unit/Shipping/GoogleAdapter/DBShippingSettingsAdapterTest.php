@@ -31,8 +31,14 @@ class DBShippingSettingsAdapterTest extends UnitTest {
 			[
 				'currency'       => 'USD',
 				'delivery_times' => [
-					'US' => 1,
-					'AU' => 2,
+					'US' => [
+						'time'     => 1,
+						'max_time' => 3,
+					],
+					'AU' => [
+						'time'     => 2,
+						'max_time' => 4,
+					],
 				],
 				'db_rates'       => $db_rates,
 			]
@@ -52,12 +58,12 @@ class DBShippingSettingsAdapterTest extends UnitTest {
 				$this->assertEquals( 'USD', $service->getRateGroups()[0]->getSingleValue()->getFlatRate()->getCurrency() );
 				$this->assertEquals( 10, $service->getRateGroups()[0]->getSingleValue()->getFlatRate()->getValue() );
 				$this->assertEquals( 1, $service->getDeliveryTime()->getMinTransitTimeInDays() );
-				$this->assertEquals( 1, $service->getDeliveryTime()->getMaxTransitTimeInDays() );
+				$this->assertEquals( 3, $service->getDeliveryTime()->getMaxTransitTimeInDays() );
 			} elseif ( 'AU' === $service->getDeliveryCountry() ) {
 				$this->assertEquals( 'USD', $service->getRateGroups()[0]->getSingleValue()->getFlatRate()->getCurrency() );
 				$this->assertEquals( 50, $service->getRateGroups()[0]->getSingleValue()->getFlatRate()->getValue() );
 				$this->assertEquals( 2, $service->getDeliveryTime()->getMinTransitTimeInDays() );
-				$this->assertEquals( 2, $service->getDeliveryTime()->getMaxTransitTimeInDays() );
+				$this->assertEquals( 4, $service->getDeliveryTime()->getMaxTransitTimeInDays() );
 			}
 		}
 	}
@@ -74,7 +80,12 @@ class DBShippingSettingsAdapterTest extends UnitTest {
 		$settings = new DBShippingSettingsAdapter(
 			[
 				'currency'       => 'USD',
-				'delivery_times' => [ 'US' => 1 ],
+				'delivery_times' => [
+					'US' => [
+						'time'     => 1,
+						'max_time' => 1,
+					],
+				],
 				'db_rates'       => $db_rates,
 			]
 		);
@@ -96,7 +107,12 @@ class DBShippingSettingsAdapterTest extends UnitTest {
 		$settings = new DBShippingSettingsAdapter(
 			[
 				'currency'       => 'USD',
-				'delivery_times' => [ 'US' => 1 ],
+				'delivery_times' => [
+					'US' => [
+						'time'     => 1,
+						'max_time' => 1,
+					],
+				],
 				'db_rates'       => $db_rates,
 			]
 		);
@@ -120,7 +136,12 @@ class DBShippingSettingsAdapterTest extends UnitTest {
 		$settings = new DBShippingSettingsAdapter(
 			[
 				'currency'       => 'USD',
-				'delivery_times' => [ 'US' => 1 ],
+				'delivery_times' => [
+					'US' => [
+						'time'     => 1,
+						'max_time' => 1,
+					],
+				],
 				'db_rates'       => $db_rates,
 			]
 		);
@@ -146,7 +167,12 @@ class DBShippingSettingsAdapterTest extends UnitTest {
 		$settings = new DBShippingSettingsAdapter(
 			[
 				'currency'       => 'USD',
-				'delivery_times' => [ 'US' => 1 ],
+				'delivery_times' => [
+					'US' => [
+						'time'     => 1,
+						'max_time' => 1,
+					],
+				],
 				'db_rates'       => $db_rates,
 			]
 		);
@@ -172,7 +198,12 @@ class DBShippingSettingsAdapterTest extends UnitTest {
 		new DBShippingSettingsAdapter(
 			[
 				'currency'       => 'USD',
-				'delivery_times' => [ 'US' => 1 ],
+				'delivery_times' => [
+					'US' => [
+						'time'     => 1,
+						'max_time' => 1,
+					],
+				],
 			]
 		);
 	}
@@ -182,7 +213,12 @@ class DBShippingSettingsAdapterTest extends UnitTest {
 
 		new DBShippingSettingsAdapter(
 			[
-				'delivery_times' => [ 'US' => 1 ],
+				'delivery_times' => [
+					'US' => [
+						'time'     => 1,
+						'max_time' => 1,
+					],
+				],
 				'db_rates'       => [
 					[
 						'country' => 'US',

@@ -8,9 +8,9 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\CountryCode
 use Automattic\WooCommerce\GoogleListingsAndAds\API\TransportMethods;
 use Automattic\WooCommerce\GoogleListingsAndAds\DB\Query\ShippingTimeQuery;
 use Automattic\WooCommerce\GoogleListingsAndAds\Exception\InvalidQuery;
+use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
+use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ISO3166AwareInterface;
-use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\RESTServer;
-use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Psr\Container\ContainerInterface;
 use WP_REST_Request as Request;
 use WP_REST_Response as Response;
 use WP_Error;
@@ -20,14 +20,15 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Class ShippingTimeController
  *
+ * ContainerAware used for:
+ * - ShippingTimeQuery
+ *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\MerchantCenter
  */
-class ShippingTimeController extends BaseController implements ISO3166AwareInterface {
+class ShippingTimeController extends BaseController implements ContainerAwareInterface, ISO3166AwareInterface {
 
+	use ContainerAwareTrait;
 	use CountryCodeTrait;
-
-	/** @var ContainerInterface */
-	protected $container;
 
 	/**
 	 * The base for routes in this controller.
@@ -35,16 +36,6 @@ class ShippingTimeController extends BaseController implements ISO3166AwareInter
 	 * @var string
 	 */
 	protected $route_base = 'mc/shipping/times';
-
-	/**
-	 * BaseController constructor.
-	 *
-	 * @param ContainerInterface $container
-	 */
-	public function __construct( ContainerInterface $container ) {
-		parent::__construct( $container->get( RESTServer::class ) );
-		$this->container = $container;
-	}
 
 	/**
 	 * Register rest routes with WordPress.

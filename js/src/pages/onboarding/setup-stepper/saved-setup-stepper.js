@@ -19,7 +19,7 @@ import useSaveShippingRates from '~/hooks/useSaveShippingRates';
 import useSaveShippingTimes from '~/hooks/useSaveShippingTimes';
 import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
 import SetupAccounts from './setup-accounts';
-import SetupFreeListings from '~/components/free-listings/setup-free-listings';
+import SetupListings from './setup-listings';
 import SetupPaidAds from './setup-paid-ads';
 import stepNameKeyMap from './stepNameKeyMap';
 import {
@@ -38,7 +38,7 @@ import {
 const SavedSetupStepper = ( { savedStep } ) => {
 	const [ step, setStep ] = useState( savedStep );
 
-	const { settings } = useSettings();
+	const { settings, saveSettings } = useSettings();
 	const { data: suggestedAudience } = useTargetAudienceWithSuggestions();
 	const { targetAudience, getFinalCountries } =
 		useTargetAudienceFinalCountryCodes();
@@ -51,7 +51,7 @@ const SavedSetupStepper = ( { savedStep } ) => {
 		data: shippingTimes,
 	} = useShippingTimes();
 
-	const { saveTargetAudience, saveSettings } = useAppDispatch();
+	const { saveTargetAudience } = useAppDispatch();
 	const { saveShippingRates } = useSaveShippingRates();
 	const { saveShippingTimes } = useSaveShippingTimes();
 	const { createNotice } = useDispatchCoreNotices();
@@ -157,15 +157,10 @@ const SavedSetupStepper = ( { savedStep } ) => {
 						'google-listings-and-ads'
 					),
 					content: (
-						<SetupFreeListings
-							headerTitle={ __(
-								'Configure your product listings',
-								'google-listings-and-ads'
-							) }
+						<SetupListings
 							targetAudience={ initTargetAudience }
 							settings={ initSettings }
 							shippingRates={ initShippingRates }
-							hideTaxRates={ true }
 							shippingTimes={ initShippingTimes }
 							resolveFinalCountries={ getFinalCountries }
 							onTargetAudienceChange={ handleFormChange.bind(

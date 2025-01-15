@@ -6,22 +6,17 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\MerchantCenter;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Settings;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\ContainerAwareUnitTest;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Tools\HelperTrait\MerchantTrait;
-use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Psr\Container\ContainerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class ContactInformationTest
+ * Class ValidateAddressTest
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\MerchantCenter
  */
 class ValidateAddressTest extends ContainerAwareUnitTest {
 
 	use MerchantTrait;
-
-	/** @var MockObject|ContainerInterface $container_interface */
-	protected $container_interface;
 
 	/** @var Settings $google_settings */
 	protected $google_settings;
@@ -37,8 +32,7 @@ class ValidateAddressTest extends ContainerAwareUnitTest {
 	 */
 	public function setUp(): void {
 		parent::setUp();
-		$this->container_interface = $this->createMock( ContainerInterface::class );
-		$this->google_settings     = new Settings( $this->container_interface );
+		$this->google_settings = new Settings();
 
 		$this->fields_to_validate = [
 			'address_1' => $this->get_sample_address()->getStreetAddress(),

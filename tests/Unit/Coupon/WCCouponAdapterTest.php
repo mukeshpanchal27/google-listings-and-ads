@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use WC_Helper_Product;
 
 /**
- * Class WCProductAdapterTest
+ * Class WCCouponAdapterTest
  *
  * @group Coupons
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\Coupon

@@ -11,7 +11,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Value\PhoneNumber;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * Class PhoneNumberControllerTest
+ * Class PhoneVerificationControllerTest
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\API\Site\Controllers\MerchantCenter
  */

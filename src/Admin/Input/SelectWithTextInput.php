@@ -16,7 +16,7 @@ class SelectWithTextInput extends Input {
 	public const SELECT_INPUT_KEY = '_gla_select';
 
 	/**
-	 * Select constructor.
+	 * SelectWithTextInput constructor.
 	 */
 	public function __construct() {
 		$select_input = ( new Select() )->set_id( self::SELECT_INPUT_KEY )

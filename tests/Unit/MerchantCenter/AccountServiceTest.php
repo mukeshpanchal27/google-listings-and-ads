@@ -14,6 +14,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\DB\Table\ShippingTimeTable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Exception\ApiNotReady;
 use Automattic\WooCommerce\GoogleListingsAndAds\Exception\ExceptionWithResponseData;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\CleanupSyncedProducts;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\JobRepository;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\AccountService;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\MerchantCenterService;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\MerchantStatuses;
@@ -93,6 +94,9 @@ class AccountServiceTest extends UnitTest {
 	/** @var Container $container */
 	protected $container;
 
+	/** @var JobRepository $job_repository */
+	protected $job_repository;
+
 	protected const TEST_ACCOUNT_ID     = 12345678;
 	protected const TEST_OLD_ACCOUNT_ID = 23456781;
 	protected const TEST_ADS_ID         = 1234567890;
@@ -139,22 +143,26 @@ class AccountServiceTest extends UnitTest {
 
 		$this->container = new Container();
 		$this->container->addShared( Ads::class, $this->ads );
+		$this->container->addShared( AdsAccountState::class, $this->ads_state );
 		$this->container->addShared( CleanupSyncedProducts::class, $this->cleanup_synced );
 		$this->container->addShared( Merchant::class, $this->merchant );
 		$this->container->addShared( MerchantCenterService::class, $this->mc_service );
 		$this->container->addShared( MerchantIssueTable::class, $this->issue_table );
 		$this->container->addShared( MerchantStatuses::class, $this->merchant_statuses );
 		$this->container->addShared( Middleware::class, $this->middleware );
+		$this->container->addShared( NotificationsService::class, $this->notifications_service );
 		$this->container->addShared( SiteVerification::class, $this->site_verification );
 		$this->container->addShared( ShippingRateTable::class, $this->rate_table );
 		$this->container->addShared( ShippingTimeTable::class, $this->time_table );
-		$this->container->addShared( MerchantAccountState::class, $this->state );
-		$this->container->addShared( AdsAccountState::class, $this->ads_state );
 		$this->container->addShared( TransientsInterface::class, $this->transients );
 		$this->container->addShared( TransientsInterface::class, $this->transients );
-		$this->container->addShared( NotificationsService::class, $this->notifications_service );
 
-		$this->account = new AccountService( $this->container );
+		$this->job_repository = new JobRepository();
+		$this->job_repository->set_container( $this->container );
+		$this->container->addShared( JobRepository::class, $this->job_repository );
+
+		$this->account = new AccountService( $this->state );
+		$this->account->set_container( $this->container );
 		$this->account->set_options_object( $this->options );
 	}
 

@@ -5,10 +5,10 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\API\TransportMethods;
 use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\GTINMigrationUtilities;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\JobRepository;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\MigrateGTIN;
 use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\RESTServer;
 use Exception;
-use WP_REST_Request as Request;
 use WP_REST_Response as Response;
 
 defined( 'ABSPATH' ) || exit;
@@ -23,21 +23,21 @@ class GTINMigrationController extends BaseController {
 	use GTINMigrationUtilities;
 
 	/**
-	 * Job responsible to run the migration in the background.
+	 * Repository to fetch job responsible to run the migration in the background.
 	 *
-	 * @var MigrateGTIN
+	 * @var JobRepository
 	 */
-	protected $job;
+	protected $job_repository;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param RESTServer  $server
-	 * @param MigrateGTIN $job
+	 * @param RESTServer    $server
+	 * @param JobRepository $job_repository
 	 */
-	public function __construct( RESTServer $server, MigrateGTIN $job ) {
+	public function __construct( RESTServer $server, JobRepository $job_repository ) {
 		parent::__construct( $server );
-		$this->job = $job;
+		$this->job_repository = $job_repository;
 	}
 
 	/**
@@ -69,9 +69,10 @@ class GTINMigrationController extends BaseController {
 	 * @return callable
 	 */
 	protected function start_migration_callback(): callable {
-		return function ( Request $request ) {
+		return function () {
 			try {
-				if ( ! $this->job->can_schedule( [ 1 ] ) ) {
+				$job = $this->job_repository->get( MigrateGTIN::class );
+				if ( ! $job->can_schedule( [ 1 ] ) ) {
 					return new Response(
 						[
 							'status'  => 'error',
@@ -81,7 +82,7 @@ class GTINMigrationController extends BaseController {
 					);
 				}
 
-				$this->job->schedule();
+				$job->schedule();
 				return new Response(
 					[
 						'status'  => 'success',

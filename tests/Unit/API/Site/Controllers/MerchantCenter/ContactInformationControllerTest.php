@@ -16,7 +16,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class PhoneNumberControllerTest
+ * Class ContactInformationControllerTest
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\API\Site\Controllers\MerchantCenter
  */

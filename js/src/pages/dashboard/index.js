@@ -20,7 +20,6 @@ import AllProgramsTableCard from './all-programs-table-card';
 import { glaData, GUIDE_NAMES } from '~/constants';
 import { subpaths, getCreateCampaignUrl } from '~/utils/urls';
 import isWCTracksEnabled from '~/utils/isWCTracksEnabled';
-import EditFreeListings from '~/pages/edit-free-listings';
 import EditPaidAdsCampaign from '~/pages/edit-paid-ads-campaign';
 import CreatePaidAdsCampaign from '~/pages/create-paid-ads-campaign';
 import { CTA_CREATE_ANOTHER_CAMPAIGN, CTA_CONFIRM } from './constants';
@@ -59,8 +58,6 @@ const Dashboard = () => {
 
 	const query = getQuery();
 	switch ( query.subpath ) {
-		case subpaths.editFreeListings:
-			return <EditFreeListings />;
 		case subpaths.editCampaign:
 			return <EditPaidAdsCampaign />;
 		case subpaths.createCampaign:

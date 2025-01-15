@@ -5,7 +5,6 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\API\Site\Contro
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\MerchantCenter\ShippingTimeBatchController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\TransportMethods;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\RESTControllerUnitTest;
-use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\Container\Container;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\ISO3166\ISO3166DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Exception;
@@ -17,9 +16,6 @@ use WP_REST_Response as Response;
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Tests\Unit\API\Site\Controllers\MerchantCenter
  */
 class ShippingTimeBatchControllerTest extends RESTControllerUnitTest {
-
-	/** @var MockObject|Container $container */
-	protected $container;
 
 	/** @var MockObject|ISO3166DataProvider $iso_provider */
 	protected $iso_provider;
@@ -35,11 +31,6 @@ class ShippingTimeBatchControllerTest extends RESTControllerUnitTest {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->container    = $this->createMock( Container::class );
-		$this->iso_provider = $this->createMock( ISO3166DataProvider::class );
-
-		$this->container->method( 'get' )->willReturn( $this->server );
-
 		$this->server->register_route(
 			'/wc/gla',
 			'/mc/shipping/times',
@@ -51,8 +42,9 @@ class ShippingTimeBatchControllerTest extends RESTControllerUnitTest {
 			]
 		);
 
-		$this->controller = new ShippingTimeBatchController( $this->container );
+		$this->iso_provider = $this->createMock( ISO3166DataProvider::class );
 
+		$this->controller = new ShippingTimeBatchController( $this->server );
 		$this->controller->set_iso3166_provider( $this->iso_provider );
 		$this->controller->register();
 	}

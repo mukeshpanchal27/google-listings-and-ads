@@ -91,7 +91,8 @@ class MiddlewareTest extends UnitTest {
 		$this->container->addShared( WC::class, $this->wc );
 		$this->container->addShared( WP::class, $this->wp );
 
-		$this->middleware = new Middleware( $this->container );
+		$this->middleware = new Middleware();
+		$this->middleware->set_container( $this->container );
 		$this->middleware->set_options_object( $this->options );
 
 		$this->login_as_administrator();

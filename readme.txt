@@ -1,11 +1,11 @@
 === Google for WooCommerce ===
 Contributors: automattic, google, woocommerce
 Tags: woocommerce, google, product feed, ads, listings
-Requires at least: 5.9
+Requires at least: 6.1
 Tested up to: 6.7
 Requires PHP: 7.4
 Requires PHP Architecture: 64 Bits
-Stable tag: 2.9.4
+Stable tag: 2.9.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -51,7 +51,7 @@ Once you’re running Google Ads campaigns, the Google tag feature in the extens
 
 = Minimum Requirements =
 
-* WordPress 5.9 or greater
+* WordPress 6.1 or greater
 * WooCommerce 7.9 or greater
 * PHP version 7.4 or greater
 * PHP Architecture 64 bits
@@ -140,6 +140,23 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
+= 2.9.5 - 2025-01-15 =
+* Dev - Fix E2E tests in WC 9.6.
+* Dev - Fix tests in WooCommerce 9.6.
+* Fix - Avoid the negative shipping rate taken from WooCommerce settings leading to false onboarding completion and make its error message more explicit.
+* Fix - Show leaving prompt in Edit Ads Campaign if the form was modified.
+* Fix - Sync shipping max times to Google Merchant Center.
+* Tweak - Add an admin service provider for WP Admin requests.
+* Tweak - Conditionally load job classes.
+* Tweak - Consistent usage of ContainerAware.
+* Tweak - Pop up confirmation prompt on the Shipping page before saving changes.
+* Tweak - Refactor installer class to load dependencies when needed.
+* Tweak - Remove unused Http proxy class.
+* Tweak - WC 9.6 compatibility.
+* Update - Drop support for WordPress < 6.1.
+* Update - Move tax rate setup from the Edit free listings page to the Settings page.
+* Update - Move the Edit free listings page to a dedicated page and rename the page to Shipping.
+
 = 2.9.4 - 2024-12-25 =
 * Fix - Clear previous errors after completing sync.
 * Tweak - Adjust conditions for MCM.
@@ -155,12 +172,5 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Tweak - Drop Jetpack packages and switch to packages bundled with WooCommerce.
 * Tweak - WC 9.5 compatibility.
 * Update - Drop support for WooCommerce < 7.9.
-
-= 2.9.2 - 2024-12-11 =
-* Dev - Centralize frontend images to the dedicated directory.
-* Fix - Ensure coupon brand restrictions are uploaded to Google Merchant Center.
-* Fix - Initial php 8.4 compatibility.
-* Fix - Prevent Warning when Saving a Variation if YOAST is activated.
-* Fix - The country selector in setup/edit free listing flow from being hidden.
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).

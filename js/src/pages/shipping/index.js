@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { useEffect, useState } from '@wordpress/element';
-import { getNewPath } from '@woocommerce/navigation';
+import { Flex } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { isEqual } from 'lodash';
 
@@ -10,47 +10,49 @@ import { isEqual } from 'lodash';
  * Internal dependencies
  */
 import { useAppDispatch } from '~/data';
-import TopBar from '~/components/stepper/top-bar';
+import MainTabNav from '~/components/main-tab-nav';
 import SetupFreeListings from '~/components/free-listings/setup-free-listings';
+import ConfirmSaveModal from './confirm-save-modal';
 import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
 import useSettings from '~/hooks/useSettings';
-import useApiFetchCallback from '~/hooks/useApiFetchCallback';
-import useLayout from '~/hooks/useLayout';
 import useNavigateAwayPromptEffect from '~/hooks/useNavigateAwayPromptEffect';
 import useShippingRates from '~/hooks/useShippingRates';
 import useShippingTimes from '~/hooks/useShippingTimes';
 import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
-import HelpIconButton from '~/components/help-icon-button';
 import hasUnsavedShippingRates from './hasUnsavedShippingRates';
 import useSaveShippingRates from '~/hooks/useSaveShippingRates';
 import useSaveShippingTimes from '~/hooks/useSaveShippingTimes';
 import createErrorMessageForRejectedPromises from '~/utils/createErrorMessageForRejectedPromises';
+import { handleApiError } from '~/utils/handleError';
 import { recordGlaEvent } from '~/utils/tracks';
 
 /**
- * Saving changes to the free listings.
+ * Saving changes of audience and/or shipping settings to the free listings.
  *
  * @event gla_free_campaign_edited
  */
 
 /**
- * Page Component to edit free listings.
- * Provides two steps:
- *  - Choose your audience
- *  - Configure your free listings
- * Given the user is editing an existing campaign, both steps should be available.
- * The displayed step is driven by `pageStep` URL parameter, to make it easier to permalink and navigate back and forth.
+ * Page component to edit audience and shipping settings.
+ *
+ * Note that:
+ * - This page used to be called "Edit free listings" page.
+ * - Although it's presented on UI as "Shipping" page,
+ *   it actually contains other Merchant Center settings.
  *
  * @fires gla_free_campaign_edited
  */
-const EditFreeListings = () => {
-	useLayout( 'full-content' );
-
+export default function Shipping() {
 	const { targetAudience: savedTargetAudience, getFinalCountries } =
 		useTargetAudienceFinalCountryCodes();
 
-	const { settings: savedSettings } = useSettings();
-	const { saveTargetAudience, saveSettings } = useAppDispatch();
+	const {
+		settings: savedSettings,
+		saveSettings,
+		syncSettings,
+	} = useSettings();
+
+	const { saveTargetAudience } = useAppDispatch();
 	const { saveShippingRates } = useSaveShippingRates();
 	const { saveShippingTimes } = useSaveShippingTimes();
 
@@ -72,6 +74,8 @@ const EditFreeListings = () => {
 	const [ shippingTimes, updateShippingTimes ] =
 		useState( savedShippingTimes );
 
+	const [ resolveConfirmation, setResolveConfirmation ] = useState( null );
+
 	// TODO: Consider making it less repetitive.
 	useEffect( () => updateSettings( savedSettings ), [ savedSettings ] );
 	useEffect(
@@ -87,10 +91,6 @@ const EditFreeListings = () => {
 		[ savedShippingTimes ]
 	);
 
-	const [ fetchSettingsSync ] = useApiFetchCallback( {
-		path: `/wc/gla/mc/settings/sync`,
-		method: 'POST',
-	} );
 	const { createNotice } = useDispatchCoreNotices();
 
 	// Check what've changed to show prompt, and send requests only to save changed things.
@@ -119,20 +119,23 @@ const EditFreeListings = () => {
 		didRatesChanged ||
 		didTimesChanged;
 
-	// Confirm leaving the page, if there are any changes and the user is navigating away from our stepper.
+	// Confirm leaving the page, if there are any changes and the user is navigating away from this page.
 	useNavigateAwayPromptEffect(
 		__(
-			'You have unsaved campaign data. Are you sure you want to leave?',
+			'You have unsaved changes. Are you sure you want to leave?',
 			'google-listings-and-ads'
 		),
 		didAnythingChanged
 	);
 
-	const dashboardURL = getNewPath(
-		// Clear the step we were at, but perserve programId to be able to highlight the program.
-		{ pageStep: undefined, subpath: undefined },
-		'/google/dashboard'
-	);
+	const handleRequestSubmit = () => {
+		return new Promise( ( resolve ) => {
+			setResolveConfirmation( () => ( shouldContinue ) => {
+				resolve( shouldContinue );
+				setResolveConfirmation( null );
+			} );
+		} );
+	};
 
 	const handleSetupFreeListingsContinue = async () => {
 		// TODO: Disable the form so the user won't be able to input any changes, which could be disregarded.
@@ -155,7 +158,7 @@ const EditFreeListings = () => {
 			);
 
 			// Sync data once our changes are saved, even partially succesfully.
-			await fetchSettingsSync();
+			await syncSettings();
 
 			if ( errorMessage ) {
 				createNotice( 'error', errorMessage );
@@ -163,7 +166,7 @@ const EditFreeListings = () => {
 				createNotice(
 					'success',
 					__(
-						'Your changes to your Free Listings have been saved and will be synced to your Google Merchant Center account.',
+						'Your changes have been saved and will be synced to your Google Merchant Center account.',
 						'google-listings-and-ads'
 					)
 				);
@@ -171,8 +174,9 @@ const EditFreeListings = () => {
 
 			recordGlaEvent( 'gla_free_campaign_edited' );
 		} catch ( error ) {
-			createNotice(
-				'error',
+			handleApiError(
+				error,
+				__( 'Unable to save your changes.', 'google-listings-and-ads' ),
 				__(
 					'Something went wrong while saving your changes. Please try again later.',
 					'google-listings-and-ads'
@@ -188,18 +192,8 @@ const EditFreeListings = () => {
 
 	return (
 		<>
-			<TopBar
-				title={ __( 'Edit free listings', 'google-listings-and-ads' ) }
-				helpButton={
-					<HelpIconButton eventContext="edit-free-listings" />
-				}
-				backHref={ dashboardURL }
-			/>
+			<MainTabNav />
 			<SetupFreeListings
-				headerTitle={ __(
-					'Edit your listings',
-					'google-listings-and-ads'
-				) }
 				targetAudience={ initialAudience }
 				resolveFinalCountries={ getFinalCountries }
 				onTargetAudienceChange={ updateTargetAudience }
@@ -209,11 +203,19 @@ const EditFreeListings = () => {
 				onShippingRatesChange={ updateShippingRates }
 				shippingTimes={ initialTimes }
 				onShippingTimesChange={ updateShippingTimes }
+				onRequestSubmit={ handleRequestSubmit }
 				onContinue={ handleSetupFreeListingsContinue }
 				submitLabel={ __( 'Save changes', 'google-listings-and-ads' ) }
 			/>
+			<Flex justify="flex-end">
+				<SetupFreeListings.SubmitButton />
+			</Flex>
+			{ resolveConfirmation && (
+				<ConfirmSaveModal
+					onContinue={ () => resolveConfirmation( true ) }
+					onRequestClose={ () => resolveConfirmation( false ) }
+				/>
+			) }
 		</>
 	);
-};
-
-export default EditFreeListings;
+}

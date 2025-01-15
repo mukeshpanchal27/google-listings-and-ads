@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import apiFetch from '@wordpress/api-fetch';
 import { useState } from '@wordpress/element';
 import { noop } from 'lodash';
 
@@ -10,7 +9,6 @@ import { noop } from 'lodash';
  * Internal dependencies
  */
 import useAdminUrl from '~/hooks/useAdminUrl';
-import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
 import useAdsSetupCompleteCallback from '~/hooks/useAdsSetupCompleteCallback';
 import useTargetAudienceFinalCountryCodes from '~/hooks/useTargetAudienceFinalCountryCodes';
 import AdsCampaign from '~/components/paid-ads/ads-campaign';
@@ -18,7 +16,8 @@ import CampaignAssetsForm from '~/components/paid-ads/campaign-assets-form';
 import AppButton from '~/components/app-button';
 import useGoogleAdsAccountBillingStatus from '~/hooks/useGoogleAdsAccountBillingStatus';
 import { getProductFeedUrl } from '~/utils/urls';
-import { API_NAMESPACE } from '~/data/constants';
+import { handleApiError } from '~/utils/handleError';
+import { useAppDispatch } from '~/data';
 import { GUIDE_NAMES, GOOGLE_ADS_BILLING_STATUS } from '~/constants';
 import { ACTION_COMPLETE, ACTION_SKIP } from './constants';
 import SkipButton from './skip-button';
@@ -42,33 +41,31 @@ import AppSpinner from '~/components/app-spinner';
 export default function SetupPaidAds() {
 	const adminUrl = useAdminUrl();
 	const [ completing, setCompleting ] = useState( null );
-	const { createNotice } = useDispatchCoreNotices();
 	const { data: countryCodes } = useTargetAudienceFinalCountryCodes();
 	const { highestDailyBudget, hasFinishedResolution } =
 		useBudgetRecommendation( countryCodes );
 	const [ handleSetupComplete ] = useAdsSetupCompleteCallback();
 	const { billingStatus } = useGoogleAdsAccountBillingStatus();
+	const { syncSettings } = useAppDispatch();
 
 	const isBillingCompleted =
 		billingStatus?.status === GOOGLE_ADS_BILLING_STATUS.APPROVED;
 
 	const finishOnboardingSetup = async ( onBeforeFinish = noop ) => {
 		try {
+			await syncSettings();
 			await onBeforeFinish();
-			await apiFetch( {
-				path: `${ API_NAMESPACE }/mc/settings/sync`,
-				method: 'POST',
-			} );
 		} catch ( e ) {
 			setCompleting( null );
 
-			createNotice(
-				'error',
+			handleApiError(
+				e,
 				__(
 					'Unable to complete your setup.',
 					'google-listings-and-ads'
 				)
 			);
+			return;
 		}
 
 		// Force reload WC admin page to initiate the relevant dependencies of the Dashboard page.
