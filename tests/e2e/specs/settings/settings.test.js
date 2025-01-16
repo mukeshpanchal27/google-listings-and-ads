@@ -40,7 +40,7 @@ test.describe( 'Settings', () => {
 	test.describe( 'Tax rate setup', () => {
 		test( 'Should not show the setup when selling in regions unrelated to the US', async () => {
 			// Mock the country where the store is located as outside of the US.
-			const once = settingsPage.fulfillTimes( 1 );
+			const once = settingsPage.withFulfillTimes( 1 );
 			await once.fulfillRequest(
 				// Having`(\w+%2C)*` is because multiple option queries may be consolidated into a single request.
 				/\/wc-admin\/options\?options=(\w+%2C)*woocommerce_default_country\b/,

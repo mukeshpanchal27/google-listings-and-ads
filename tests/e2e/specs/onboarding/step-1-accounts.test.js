@@ -230,7 +230,7 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.mockAdsCreateAccount();
 			await setUpAccountsPage.mockMCCreateAccountWebsiteClaimed();
 
-			const once = setUpAccountsPage.fulfillTimes( 1 );
+			const once = setUpAccountsPage.withFulfillTimes( 1 );
 
 			await once.mockAdsHasNoAccounts();
 			await once.mockMCHasNoAccounts();
@@ -260,7 +260,7 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.mockAdsAccountIncomplete( 'claim_account' );
 			await setUpAccountsPage.mockAdsStatusNotClaimed();
 
-			const once = setUpAccountsPage.fulfillTimes( 1 );
+			const once = setUpAccountsPage.withFulfillTimes( 1 );
 
 			await once.mockAdsHasNoAccounts();
 			await once.mockMCHasNoAccounts();
