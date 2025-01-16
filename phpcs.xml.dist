@@ -108,6 +108,7 @@
 	<file>./bin</file>
 	<file>./views</file>
 	<file>./google-listings-and-ads.php</file>
+	<file>./uninstall.php</file>
 
 	<!-- Show progress and sniff codes in all reports -->
 	<arg value="ps"/>
