@@ -131,7 +131,7 @@ class Middleware implements ContainerAwareInterface, OptionsAwareInterface {
 			$result = $client->post(
 				$this->get_manager_url( 'create-merchant' ),
 				[
-					'body' => json_encode(
+					'body' => wp_json_encode(
 						[
 							'name'       => $name,
 							'websiteUrl' => $site_url,
@@ -198,7 +198,7 @@ class Middleware implements ContainerAwareInterface, OptionsAwareInterface {
 			$result = $client->post(
 				$this->get_manager_url( 'link-merchant' ),
 				[
-					'body' => json_encode(
+					'body' => wp_json_encode(
 						[
 							'accountId' => $this->options->get_merchant_id(),
 						]
@@ -240,7 +240,7 @@ class Middleware implements ContainerAwareInterface, OptionsAwareInterface {
 			$result = $client->post(
 				$this->get_manager_url( 'claim-website' ),
 				[
-					'body' => json_encode(
+					'body' => wp_json_encode(
 						[
 							'accountId' => $this->options->get_merchant_id(),
 							'overwrite' => $overwrite,
@@ -299,7 +299,7 @@ class Middleware implements ContainerAwareInterface, OptionsAwareInterface {
 			$result = $client->post(
 				$this->get_manager_url( $country . '/create-customer' ),
 				[
-					'body' => json_encode(
+					'body' => wp_json_encode(
 						[
 							'descriptive_name' => $this->new_account_name(),
 							'currency_code'    => get_woocommerce_currency(),
@@ -358,7 +358,7 @@ class Middleware implements ContainerAwareInterface, OptionsAwareInterface {
 			$result = $client->post(
 				$this->get_manager_url( 'link-customer' ),
 				[
-					'body' => json_encode(
+					'body' => wp_json_encode(
 						[
 							'client_customer' => $id,
 						]
@@ -429,7 +429,7 @@ class Middleware implements ContainerAwareInterface, OptionsAwareInterface {
 			$result = $client->post(
 				$this->get_tos_url( $service ),
 				[
-					'body' => json_encode(
+					'body' => wp_json_encode(
 						[
 							'email' => $email,
 						]

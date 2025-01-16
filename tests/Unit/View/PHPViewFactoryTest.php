@@ -29,7 +29,7 @@ class PHPViewFactoryTest extends UnitTest {
 
 	public function test_create_view_fails_if_non_existing_view_file() {
 		$this->expectException( ViewException::class );
-		$this->view_factory->create( '/tmp/imaginary-folder/non-existing-view' . md5( (string) rand() ) );
+		$this->view_factory->create( '/tmp/imaginary-folder/non-existing-view' . md5( (string) wp_rand() ) );
 	}
 
 	/**

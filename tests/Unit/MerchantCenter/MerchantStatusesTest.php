@@ -627,7 +627,7 @@ class MerchantStatusesTest extends UnitTest {
 					'product'              => html_entity_decode( $product_1->get_name() ),
 					'product_id'           => $product_1->get_id(),
 					'created_at'           => $this->merchant_statuses->get_cache_created_time()->format( 'Y-m-d H:i:s' ),
-					'applicable_countries' => json_encode( [ 'ES' ] ),
+					'applicable_countries' => wp_json_encode( [ 'ES' ] ),
 					'source'               => 'mc',
 					'code'                 => $product_status->getItemLevelIssues()[0]->getCode(),
 					'issue'                => $product_status->getItemLevelIssues()[0]->getDescription(),

@@ -514,7 +514,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface, OptionsAware
 		$account_issues = array_map(
 			function ( $issue ) {
 				sort( $issue['applicable_countries'] );
-				$issue['applicable_countries'] = json_encode(
+				$issue['applicable_countries'] = wp_json_encode(
 					array_unique(
 						$issue['applicable_countries']
 					)
@@ -567,7 +567,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface, OptionsAware
 		ksort( $product_issues );
 		$product_issues = array_map(
 			function ( $unique_key, $issue ) {
-				$issue['applicable_countries'] = json_encode( $this->product_issue_countries[ $unique_key ] );
+				$issue['applicable_countries'] = wp_json_encode( $this->product_issue_countries[ $unique_key ] );
 				return $issue;
 			},
 			array_keys( $product_issues ),

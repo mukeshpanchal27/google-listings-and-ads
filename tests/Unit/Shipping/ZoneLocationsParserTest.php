@@ -298,7 +298,7 @@ class ZoneLocationsParserTest extends UnitTest {
 			->method( 'find_country_id_by_code' )
 			->willReturnCallback(
 				function () {
-					return rand();
+					return wp_rand();
 				}
 			);
 
@@ -319,7 +319,7 @@ class ZoneLocationsParserTest extends UnitTest {
 					if ( -1 !== $return_value ) {
 						return $return_value;
 					}
-					return rand();
+					return wp_rand();
 				}
 			);
 	}

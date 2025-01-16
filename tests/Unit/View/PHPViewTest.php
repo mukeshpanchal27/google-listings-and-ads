@@ -23,7 +23,7 @@ class PHPViewTest extends UnitTest {
 
 	public function test_view_construct_fails_if_non_existing_view_file() {
 		$this->expectException( ViewException::class );
-		new PHPView( '/tmp/imaginary-folder/non-existing-view' . md5( (string) rand() ), $this->view_factory );
+		new PHPView( '/tmp/imaginary-folder/non-existing-view' . md5( (string) wp_rand() ), $this->view_factory );
 	}
 
 	public function test_view_render_with_partial() {

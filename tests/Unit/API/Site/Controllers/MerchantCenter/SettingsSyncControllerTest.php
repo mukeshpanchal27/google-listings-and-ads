@@ -78,7 +78,7 @@ class SettingsSyncControllerTest extends RESTControllerUnitTest {
 			->method( 'sync_taxes' )
 			->willThrowException(
 				new Exception(
-					json_encode(
+					wp_json_encode(
 						[
 							'code'    => 400,
 							'message' => 'error',

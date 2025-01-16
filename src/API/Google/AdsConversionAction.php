@@ -57,7 +57,7 @@ class AdsConversionAction implements OptionsAwareInterface {
 	 */
 	public function create_conversion_action(): array {
 		try {
-			$unique = sprintf( '%04x', mt_rand( 0, 0xffff ) );
+			$unique = sprintf( '%04x', wp_rand( 0, 0xffff ) );
 
 			$conversion_action_operation = new ConversionActionOperation();
 			$conversion_action_operation->setCreate(

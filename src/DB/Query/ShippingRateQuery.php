@@ -46,7 +46,7 @@ class ShippingRateQuery extends Query {
 				throw InvalidQuery::invalid_value( $column );
 			}
 
-			$value = json_encode( $value );
+			$value = wp_json_encode( $value );
 		}
 
 		return $value;

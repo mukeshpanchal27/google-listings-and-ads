@@ -216,8 +216,8 @@ class WCCouponAdapterTest extends UnitTest {
 	}
 
 	public function test_product_id_restrictions() {
-		$product_id_1 = rand();
-		$product_id_2 = rand();
+		$product_id_1 = wp_rand();
+		$product_id_2 = wp_rand();
 		$coupon       = $this->create_ready_to_sync_coupon();
 		$coupon->set_product_ids( [ $product_id_1 ] );
 		$coupon->set_excluded_product_ids( [ $product_id_2 ] );
