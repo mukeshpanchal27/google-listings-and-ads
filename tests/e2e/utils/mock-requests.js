@@ -51,6 +51,23 @@ export default class MockRequests {
 	}
 
 	/**
+	 * Defer the fulfillment of subsequent requests until calling the `continueFulfill` of the returned proxied instance.
+	 *
+	 * @return {this} A proxied instance intercepts the subsequent fulfillRequest calls to attach the `beforeFulfill` option.
+	 */
+	withFulfillDeferred() {
+		let continueFulfill;
+		const beforeFulfill = new Promise( ( resolve ) => {
+			continueFulfill = resolve;
+		} );
+
+		const proxiedInstance = proxyFulfill( this, { beforeFulfill } );
+		proxiedInstance.continueFulfill = continueFulfill;
+
+		return proxiedInstance;
+	}
+
+	/**
 	 * Fulfill a request with a payload.
 	 *
 	 * @param {RegExp|string} url The url to fulfill.
@@ -59,6 +76,7 @@ export default class MockRequests {
 	 * @param {Array} [methods] The HTTP methods in the request to be fulfill.
 	 * @param {Object} [options] Options to customize the request to be fulfill.
 	 * @param {number} [options.times] The number of times to fulfill the request.
+	 * @param {Promise<void>} [options.beforeFulfill] A promise that resolves before fulfilling the request.
 	 * @return {Promise<void>}
 	 */
 	async fulfillRequest(
@@ -73,12 +91,18 @@ export default class MockRequests {
 				methods.length === 0 ||
 				methods.includes( route.request().method() )
 			) {
-				return route.fulfill( {
+				const fulfillOptions = {
 					status,
 					contentType: 'application/json',
 					headers: { 'Access-Control-Allow-Origin': '*' },
 					body: JSON.stringify( payload ),
-				} );
+				};
+
+				const { beforeFulfill = Promise.resolve() } = options;
+
+				return beforeFulfill.then( () =>
+					route.fulfill( fulfillOptions )
+				);
 			}
 			return route.fallback();
 		};
