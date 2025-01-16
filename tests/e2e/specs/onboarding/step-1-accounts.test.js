@@ -225,12 +225,14 @@ test.describe( 'Set up accounts', () => {
 		} );
 
 		test( 'should create merchant center and ads account if does not exist for the user', async () => {
+			const once = setUpAccountsPage.withFulfillTimes( 1 );
+			const deferred = once.withFulfillDeferred();
+
 			await setUpAccountsPage.mockJetpackConnected();
 			await setUpAccountsPage.mockGoogleConnected();
-			await setUpAccountsPage.mockAdsCreateAccount();
-			await setUpAccountsPage.mockMCCreateAccountWebsiteClaimed();
 
-			const once = setUpAccountsPage.fulfillTimes( 1 );
+			await deferred.mockMCCreateAccountWebsiteClaimed();
+			await deferred.mockAdsCreateAccount();
 
 			await once.mockAdsHasNoAccounts();
 			await once.mockMCHasNoAccounts();
@@ -250,6 +252,12 @@ test.describe( 'Set up accounts', () => {
 					}
 				)
 			).toBeVisible();
+
+			deferred.continueFulfill();
+
+			await expect(
+				googleAccountCard.getByText( 'mail@example.com' )
+			).toBeVisible();
 		} );
 
 		test( 'should show Ads claim and MC Reclaim after auto-creation, when appropriate', async () => {
@@ -260,7 +268,7 @@ test.describe( 'Set up accounts', () => {
 			await setUpAccountsPage.mockAdsAccountIncomplete( 'claim_account' );
 			await setUpAccountsPage.mockAdsStatusNotClaimed();
 
-			const once = setUpAccountsPage.fulfillTimes( 1 );
+			const once = setUpAccountsPage.withFulfillTimes( 1 );
 
 			await once.mockAdsHasNoAccounts();
 			await once.mockMCHasNoAccounts();

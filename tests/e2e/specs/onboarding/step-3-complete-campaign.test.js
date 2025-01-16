@@ -374,12 +374,18 @@ test.describe( 'Complete your campaign', () => {
 					} );
 
 					await newPage.close();
-					// return focus to the page.
-					await setupBudgetPage.focusBudget();
 					await setupBudgetPage.fulfillBillingStatusRequest( {
 						status: 'approved',
 					} );
-					await setupBudgetPage.awaitForBillingStatusRequest();
+
+					const requestPromise =
+						setupBudgetPage.awaitForBillingStatusRequest();
+
+					// Regain page focus to trigger a new request to update billing status.
+					await page.dispatchEvent( 'body', 'blur' );
+					await page.dispatchEvent( 'body', 'focus' );
+
+					await requestPromise;
 
 					const billingSetupSuccessSection =
 						setupBudgetPage.getBillingSetupSuccessSection();
