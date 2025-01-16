@@ -225,12 +225,14 @@ test.describe( 'Set up accounts', () => {
 		} );
 
 		test( 'should create merchant center and ads account if does not exist for the user', async () => {
+			const once = setUpAccountsPage.withFulfillTimes( 1 );
+			const deferred = once.withFulfillDeferred();
+
 			await setUpAccountsPage.mockJetpackConnected();
 			await setUpAccountsPage.mockGoogleConnected();
-			await setUpAccountsPage.mockAdsCreateAccount();
-			await setUpAccountsPage.mockMCCreateAccountWebsiteClaimed();
 
-			const once = setUpAccountsPage.withFulfillTimes( 1 );
+			await deferred.mockMCCreateAccountWebsiteClaimed();
+			await deferred.mockAdsCreateAccount();
 
 			await once.mockAdsHasNoAccounts();
 			await once.mockMCHasNoAccounts();
@@ -249,6 +251,12 @@ test.describe( 'Set up accounts', () => {
 						exact: true,
 					}
 				)
+			).toBeVisible();
+
+			deferred.continueFulfill();
+
+			await expect(
+				googleAccountCard.getByText( 'mail@example.com' )
 			).toBeVisible();
 		} );
 
