@@ -495,10 +495,7 @@ class WCProductAdapterTest extends UnitTest {
 			]
 		);
 
-		$expected_description = <<<DESCRIPTION
-Parent description.
-Variation description.
-DESCRIPTION;
+		$expected_description = "Parent description.\nVariation description.";
 
 		$this->assertEquals( $expected_description, $adapted_product->getDescription() );
 	}
@@ -519,10 +516,7 @@ DESCRIPTION;
 			]
 		);
 
-		$expected_description = <<<DESCRIPTION
-Parent short description.
-Variation description.
-DESCRIPTION;
+		$expected_description = "Parent short description.\nVariation description.";
 
 		$this->assertEquals( $expected_description, $adapted_product->getDescription() );
 	}

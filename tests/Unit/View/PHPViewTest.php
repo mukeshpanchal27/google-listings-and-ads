@@ -29,15 +29,13 @@ class PHPViewTest extends UnitTest {
 	public function test_view_render_with_partial() {
 		$view = new PHPView( $this->get_data_file_path( 'test-php-view.php' ), $this->view_factory );
 
-		$expected = <<<VIEW
-Variable value is: Test
+		$expected = 'Variable value is: Test
 Raw variable value is: <strong>Test Raw HTML</strong>
 Boolean variable value is: 1
 Array variable value is: Value 1, Value 2
 Partial variable value is: Test partial
 Partial with no context:
-Partial variable value is: Test
-VIEW;
+Partial variable value is: Test';
 
 		$this->assertEquals(
 			$expected,
