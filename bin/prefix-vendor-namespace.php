@@ -457,7 +457,7 @@ function update_autoloads( string $file, array $composer_autoload, array $packag
 	if ( $modified ) {
 		file_put_contents(
 			$file,
-			wp_json_encode( $json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
+			json_encode( $json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
 		);
 	}
 }
