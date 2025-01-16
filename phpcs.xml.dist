@@ -85,16 +85,6 @@
 		</properties>
 	</rule>
 
-	<!-- We'd rather use native functions -->
-	<rule ref="WordPress.WP.AlternativeFunctions">
-		<properties>
-			<property name="exclude" type="array">
-				<element value="json_encode"/>
-				<element value="rand"/>
-			</property>
-		</properties>
-	</rule>
-
 	<!-- We're judicious in our usage of meta queries -->
 	<rule ref="WordPress.DB.SlowDBQuery">
 		<properties>
