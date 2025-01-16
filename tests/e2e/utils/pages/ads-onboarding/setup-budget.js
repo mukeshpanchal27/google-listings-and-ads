@@ -100,16 +100,6 @@ export default class SetupBudget extends MockRequests {
 	}
 
 	/**
-	 * Focus the budget input.
-	 *
-	 * @return {Promise<void>}
-	 */
-	async focusBudget() {
-		const input = this.getBudgetInput();
-		await input.focus();
-	}
-
-	/**
 	 * Click set up billing button.
 	 *
 	 * @return {Promise<void>}
@@ -138,8 +128,7 @@ export default class SetupBudget extends MockRequests {
 		return this.page.waitForRequest(
 			( request ) =>
 				request.url().includes( '/gla/ads/billing-status' ) &&
-				request.method() === 'GET',
-			{ timeout: 35000 }
+				request.method() === 'GET'
 		);
 	}
 
