@@ -16,6 +16,9 @@
  * WC tested up to: 9.6
  * Woo:
  *
+ * License: GPLv3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ *
  * @package WooCommerce\Admin
  */
 
