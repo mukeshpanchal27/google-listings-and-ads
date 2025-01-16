@@ -624,7 +624,7 @@ class MerchantStatusesTest extends UnitTest {
 		$this->merchant_issue_query->expects( $this->once() )->method( 'update_or_insert' )->with(
 			[
 				[
-					'product'              => html_entity_decode( $product_1->get_name() ),
+					'product'              => html_entity_decode( $product_1->get_name(), ENT_QUOTES ),
 					'product_id'           => $product_1->get_id(),
 					'created_at'           => $this->merchant_statuses->get_cache_created_time()->format( 'Y-m-d H:i:s' ),
 					'applicable_countries' => json_encode( [ 'ES' ] ),
