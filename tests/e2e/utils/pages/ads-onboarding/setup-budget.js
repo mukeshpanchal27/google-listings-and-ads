@@ -140,23 +140,16 @@ export default class SetupBudget extends MockRequests {
 	 * @return {Promise<Request>} The request.
 	 */
 	async awaitForCampaignCreationRequest( budget, targetLocations ) {
-		return this.page.waitForRequest(
-			( request ) => {
-				return (
-					request.url().includes( '/gla/ads/campaigns' ) &&
-					request.method() === 'POST' &&
-					request.postDataJSON().amount === parseInt( budget, 10 ) &&
-					targetLocations.every( ( item ) =>
-						request
-							.postDataJSON()
-							.targeted_locations.includes( item )
-					)
-				);
-			},
-			{
-				timeout: 35000,
-			}
-		);
+		return this.page.waitForRequest( ( request ) => {
+			return (
+				request.url().includes( '/gla/ads/campaigns' ) &&
+				request.method() === 'POST' &&
+				request.postDataJSON().amount === parseInt( budget, 10 ) &&
+				targetLocations.every( ( item ) =>
+					request.postDataJSON().targeted_locations.includes( item )
+				)
+			);
+		} );
 	}
 
 	/**

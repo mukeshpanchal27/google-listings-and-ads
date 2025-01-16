@@ -400,7 +400,6 @@ test.describe( 'Set up Ads account', () => {
 			await page.waitForURL(
 				'/wp-admin/admin.php?page=wc-admin&path=%2Fgoogle%2Fdashboard&guide=campaign-creation-success',
 				{
-					timeout: 30000,
 					waitUntil: LOAD_STATE.DOM_CONTENT_LOADED,
 				}
 			);
