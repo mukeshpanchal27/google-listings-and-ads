@@ -480,11 +480,21 @@ class ProductHelperTest extends ContainerAwareUnitTest {
 		$this->assertEquals( [ 'US' => 'online:en:US:gla_1' ], $this->product_helper->get_synced_google_product_ids( $product ) );
 	}
 
+	/**
+	 * Test a legitimate Google product ID both with and without namespacing.
+	 *
+	 * @return void
+	 */
 	public function test_get_wc_product_id() {
 		$google_id  = 'online:en:US:gla_1234567';
 		$product_id = $this->product_helper->get_wc_product_id( $google_id );
 
 		$this->assertEquals( 1234567, $product_id );
+
+		$google_id  = 'gla_4567890';
+		$product_id = $this->product_helper->get_wc_product_id( $google_id );
+
+		$this->assertEquals( 4567890, $product_id );
 	}
 
 	/**
@@ -512,7 +522,15 @@ class ProductHelperTest extends ContainerAwareUnitTest {
 		$this->assertEquals( 0, $product_id );
 	}
 
+	/**
+	 * Confirm `gla_` prefix must be at the beginning and followed by a numeric ID.
+	 */
 	public function test_get_wc_product_id_returns_zero_if_no_id_matches() {
+		$google_id  = 'online:en:US:invalid_gla_123';
+		$product_id = $this->product_helper->get_wc_product_id( $google_id );
+
+		$this->assertEquals( 0, $product_id );
+
 		$google_id  = 'online:en:US:gla_invalid_id_1';
 		$product_id = $this->product_helper->get_wc_product_id( $google_id );
 
