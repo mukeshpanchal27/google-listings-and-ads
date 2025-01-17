@@ -28,11 +28,11 @@ const EVENT_NAME = 'gla_modal_closed';
 
 const image = (
 	<div className="gla-submission-success-guide__logo-block">
-		<div className="gla-submission-success-guide__logo-item">
+		<div className="gla-submission-success-guide__logo-item gla-submission-success-guide__logo-item--woocommerce">
 			<img
 				src={ wooLogoURL }
 				alt={ __( 'WooCommerce Logo', 'google-listings-and-ads' ) }
-				width="150"
+				width="187.5"
 			/>
 		</div>
 		<div className="gla-submission-success-guide__logo-separator-line" />
@@ -40,8 +40,7 @@ const image = (
 			<img
 				src={ googleLogoURL }
 				alt={ __( 'Google Logo', 'google-listings-and-ads' ) }
-				width="106"
-				height="36"
+				width="85"
 			/>
 		</div>
 	</div>
