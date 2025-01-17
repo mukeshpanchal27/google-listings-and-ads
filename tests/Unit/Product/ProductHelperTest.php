@@ -487,6 +487,31 @@ class ProductHelperTest extends ContainerAwareUnitTest {
 		$this->assertEquals( 1234567, $product_id );
 	}
 
+	/**
+	 * Confirm we support converting a product ID without the `gla_` prefix.
+	 */
+	public function test_get_wc_product_id_without_prefix() {
+		$google_id  = 'online:en:US:1234567';
+		$product_id = $this->product_helper->get_wc_product_id( $google_id );
+
+		$this->assertEquals( 1234567, $product_id );
+	}
+
+	/**
+	 * If we don't add the prefix confirm it only accepts a fully numeric ID.
+	 */
+	public function test_get_wc_product_id_without_prefix_only_numeric() {
+		$google_id  = 'online:en:US:123abc';
+		$product_id = $this->product_helper->get_wc_product_id( $google_id );
+
+		$this->assertEquals( 0, $product_id );
+
+		$google_id  = 'online:en:US:abc123';
+		$product_id = $this->product_helper->get_wc_product_id( $google_id );
+
+		$this->assertEquals( 0, $product_id );
+	}
+
 	public function test_get_wc_product_id_returns_zero_if_no_id_matches() {
 		$google_id  = 'online:en:US:gla_invalid_id_1';
 		$product_id = $this->product_helper->get_wc_product_id( $google_id );
