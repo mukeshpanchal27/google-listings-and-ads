@@ -23,21 +23,19 @@ class PHPViewTest extends UnitTest {
 
 	public function test_view_construct_fails_if_non_existing_view_file() {
 		$this->expectException( ViewException::class );
-		new PHPView( '/tmp/imaginary-folder/non-existing-view' . md5( (string) rand() ), $this->view_factory );
+		new PHPView( '/tmp/imaginary-folder/non-existing-view' . md5( (string) wp_rand() ), $this->view_factory );
 	}
 
 	public function test_view_render_with_partial() {
 		$view = new PHPView( $this->get_data_file_path( 'test-php-view.php' ), $this->view_factory );
 
-		$expected = <<<VIEW
-Variable value is: Test
+		$expected = 'Variable value is: Test
 Raw variable value is: <strong>Test Raw HTML</strong>
 Boolean variable value is: 1
 Array variable value is: Value 1, Value 2
 Partial variable value is: Test partial
 Partial with no context:
-Partial variable value is: Test
-VIEW;
+Partial variable value is: Test';
 
 		$this->assertEquals(
 			$expected,

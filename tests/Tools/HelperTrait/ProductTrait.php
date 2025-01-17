@@ -28,7 +28,7 @@ trait ProductTrait {
 	 */
 	public function generate_variable_product_mock( int $number_of_variations = 3 ) {
 		$product = $this->createMock( WC_Product_Variable::class );
-		$id      = rand();
+		$id      = wp_rand();
 
 		$children = [];
 		for ( $i = 0; $i < $number_of_variations; $i++ ) {
@@ -36,7 +36,7 @@ trait ProductTrait {
 
 			$child->expects( $this->any() )
 				->method( 'get_id' )
-				->willReturn( rand() );
+				->willReturn( wp_rand() );
 			$child->expects( $this->any() )
 				->method( 'get_parent_id' )
 				->willReturn( $id );
@@ -75,7 +75,7 @@ trait ProductTrait {
 		$product = $this->createMock( GoogleProduct::class );
 
 		$target_country = $target_country ?: $this->get_sample_target_country();
-		$id             = $id ?: "online:en:{$target_country}:gla_" . rand();
+		$id             = $id ?: "online:en:{$target_country}:gla_" . wp_rand();
 
 		$product->expects( $this->any() )
 				->method( 'getId' )
@@ -99,7 +99,7 @@ trait ProductTrait {
 
 		$product->expects( $this->any() )
 				->method( 'get_id' )
-				->willReturn( $product_id ?: rand() );
+				->willReturn( $product_id ?: wp_rand() );
 
 		$product->expects( $this->any() )
 				->method( 'get_type' )
@@ -118,10 +118,10 @@ trait ProductTrait {
 
 		$product->expects( $this->any() )
 				->method( 'get_id' )
-				->willReturn( rand() );
+				->willReturn( wp_rand() );
 		$product->expects( $this->any() )
 				->method( 'get_parent_id' )
-				->willReturn( rand() );
+				->willReturn( wp_rand() );
 		$product->expects( $this->any() )
 				->method( 'get_type' )
 				->willReturn( 'variation' );
@@ -137,7 +137,7 @@ trait ProductTrait {
 	public function generate_google_id( $product ): string {
 		$product_id = $product;
 		if ( $product instanceof WC_Product ) {
-			$product_id = $product->get_id() ?: rand();
+			$product_id = $product->get_id() ?: wp_rand();
 		}
 
 		return 'online:en:' . $this->get_sample_target_country() . ':gla_' . $product_id;

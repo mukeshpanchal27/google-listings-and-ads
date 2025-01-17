@@ -27,7 +27,7 @@ trait CouponTrait {
 
 		$coupon->expects( $this->any() )
 			->method( 'get_id' )
-			->willReturn( rand() );
+			->willReturn( wp_rand() );
 
 		return $coupon;
 	}
@@ -39,7 +39,7 @@ trait CouponTrait {
 	 */
 	public function create_simple_coupon() {
 		$coupon = new WC_Coupon();
-		$coupon->set_code( sprintf( 'simple_coupon_%d', rand() ) );
+		$coupon->set_code( sprintf( 'simple_coupon_%d', wp_rand() ) );
 		$coupon->set_amount( 10 );
 		$coupon->set_discount_type( 'percent' );
 		$coupon->set_free_shipping( true );
@@ -108,7 +108,7 @@ trait CouponTrait {
 		$promotion = $this->createMock( GooglePromotion::class );
 
 		$target_country = $target_country ?: $this->get_sample_target_country();
-		$promotion_id   = $coupon_id ?: rand();
+		$promotion_id   = $coupon_id ?: wp_rand();
 
 		$promotion->expects( $this->any() )
 			->method( 'getPromotionId' )
