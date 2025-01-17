@@ -427,7 +427,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface, OptionsAware
 			}
 
 			$product_issue_template = [
-				'product'              => html_entity_decode( $wc_product->get_name() ),
+				'product'              => html_entity_decode( $wc_product->get_name(), ENT_QUOTES ),
 				'product_id'           => $wc_product_id,
 				'created_at'           => $created_at,
 				'applicable_countries' => [],
