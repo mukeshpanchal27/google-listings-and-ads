@@ -770,7 +770,7 @@ class ConnectionTest implements ContainerAwareInterface, Service, Registerable {
 								<th><label>Errors:</label></th>
 								<td>
 									<p>
-										<code><?php echo isset( $this->integration_status_response['errors'] ) ? wp_kses_post( json_encode( $this->integration_status_response['errors'] ) ) ?? '' : '-'; ?></code>
+										<code><?php echo isset( $this->integration_status_response['errors'] ) ? wp_kses_post( wp_json_encode( $this->integration_status_response['errors'] ) ) ?? '' : '-'; ?></code>
 									</p>
 								</td>
 							</tr>

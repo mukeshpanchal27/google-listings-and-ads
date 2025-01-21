@@ -22,7 +22,7 @@ class ShippingTimeTable extends Table {
 	 * @return string
 	 */
 	protected function get_install_query(): string {
-		return <<< SQL
+		return "
 CREATE TABLE `{$this->get_sql_safe_name()}` (
     id bigint(20) NOT NULL AUTO_INCREMENT,
     country varchar(2) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE `{$this->get_sql_safe_name()}` (
     PRIMARY KEY (id),
     KEY country (country)
 ) {$this->get_collation()};
-SQL;
+";
 	}
 
 	/**

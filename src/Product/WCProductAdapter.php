@@ -207,7 +207,7 @@ class WCProductAdapter extends GoogleProduct implements Validatable {
 				sprintf(
 					'Product category (ID: %s): %s.',
 					$base_product_id,
-					json_encode( $google_product_types )
+					wp_json_encode( $google_product_types )
 				),
 				__METHOD__
 			);

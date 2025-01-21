@@ -82,7 +82,7 @@ class AttributeManagerTest extends ContainerAwareUnitTest {
 	public function test_get_throws_exception_if_attribute_id_invalid() {
 		$product = WC_Helper_Product::create_simple_product();
 		$this->expectException( InvalidValue::class );
-		$this->attribute_manager->get( $product, 'some_random_string' . rand() );
+		$this->attribute_manager->get( $product, 'some_random_string' . wp_rand() );
 	}
 
 	public function test_get_throws_exception_if_attribute_inapplicable_to_product() {
@@ -147,7 +147,7 @@ class AttributeManagerTest extends ContainerAwareUnitTest {
 	public function test_delete_throws_exception_if_attribute_id_invalid() {
 		$product = WC_Helper_Product::create_simple_product();
 		$this->expectException( InvalidValue::class );
-		$this->attribute_manager->delete( $product, 'some_random_string' . rand() );
+		$this->attribute_manager->delete( $product, 'some_random_string' . wp_rand() );
 	}
 
 	public function test_delete_throws_exception_if_attribute_inapplicable_to_product() {

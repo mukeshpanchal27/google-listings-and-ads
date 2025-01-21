@@ -427,7 +427,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface, OptionsAware
 			}
 
 			$product_issue_template = [
-				'product'              => html_entity_decode( $wc_product->get_name() ),
+				'product'              => html_entity_decode( $wc_product->get_name(), ENT_QUOTES ),
 				'product_id'           => $wc_product_id,
 				'created_at'           => $created_at,
 				'applicable_countries' => [],
@@ -514,7 +514,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface, OptionsAware
 		$account_issues = array_map(
 			function ( $issue ) {
 				sort( $issue['applicable_countries'] );
-				$issue['applicable_countries'] = json_encode(
+				$issue['applicable_countries'] = wp_json_encode(
 					array_unique(
 						$issue['applicable_countries']
 					)
@@ -567,7 +567,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface, OptionsAware
 		ksort( $product_issues );
 		$product_issues = array_map(
 			function ( $unique_key, $issue ) {
-				$issue['applicable_countries'] = json_encode( $this->product_issue_countries[ $unique_key ] );
+				$issue['applicable_countries'] = wp_json_encode( $this->product_issue_countries[ $unique_key ] );
 				return $issue;
 			},
 			array_keys( $product_issues ),

@@ -1,3 +1,32 @@
+const proxyFulfill = ( instance, options ) => {
+	return new Proxy( instance.originalTarget || instance, {
+		get( target, property ) {
+			if ( property === 'originalTarget' ) {
+				return target;
+			}
+
+			if ( property === 'previousOptions' ) {
+				return options;
+			}
+
+			const value = Reflect.get( ...arguments );
+
+			if ( property === 'fulfillRequest' ) {
+				return function ( url, payload, status, methods ) {
+					const mergedOpts = {
+						...instance.previousOptions,
+						...options,
+					};
+					const args = [ url, payload, status, methods, mergedOpts ];
+					return value.apply( target, args );
+				};
+			}
+
+			return value;
+		},
+	} );
+};
+
 /**
  * Mock Requests
  *
@@ -17,50 +46,68 @@ export default class MockRequests {
 	 * @param {number} times The number of times to fulfill the request.
 	 * @return {this} A proxied instance intercepts the subsequent fulfillRequest calls to attach the `times` option.
 	 */
-	fulfillTimes( times ) {
-		return new Proxy( this, {
-			get( target, property ) {
-				const value = Reflect.get( ...arguments );
+	withFulfillTimes( times ) {
+		return proxyFulfill( this, { times } );
+	}
 
-				if ( property === 'fulfillRequest' ) {
-					return function ( url, payload, status, methods ) {
-						const args = [ url, payload, status, methods, times ];
-						return value.apply( target, args );
-					};
-				}
-
-				return value;
-			},
+	/**
+	 * Defer the fulfillment of subsequent requests until calling the `continueFulfill` of the returned proxied instance.
+	 *
+	 * @return {this} A proxied instance intercepts the subsequent fulfillRequest calls to attach the `beforeFulfill` option.
+	 */
+	withFulfillDeferred() {
+		let continueFulfill;
+		const beforeFulfill = new Promise( ( resolve ) => {
+			continueFulfill = resolve;
 		} );
+
+		const proxiedInstance = proxyFulfill( this, { beforeFulfill } );
+		proxiedInstance.continueFulfill = continueFulfill;
+
+		return proxiedInstance;
 	}
 
 	/**
 	 * Fulfill a request with a payload.
 	 *
-	 * @param {RegExp|string} url      The url to fulfill.
-	 * @param {Object}        payload  The payload to send.
-	 * @param {number}        status   The HTTP status in the response.
-	 * @param {Array}         methods  The HTTP methods in the request to be fulfill.
-	 * @param {number}        [times]    The number of times to fulfill the request. Optional.
+	 * @param {RegExp|string} url The url to fulfill.
+	 * @param {Object} payload The payload to send.
+	 * @param {number} [status] The HTTP status in the response.
+	 * @param {Array} [methods] The HTTP methods in the request to be fulfill.
+	 * @param {Object} [options] Options to customize the request to be fulfill.
+	 * @param {number} [options.times] The number of times to fulfill the request.
+	 * @param {Promise<void>} [options.beforeFulfill] A promise that resolves before fulfilling the request.
 	 * @return {Promise<void>}
 	 */
-	async fulfillRequest( url, payload, status = 200, methods = [], times ) {
+	async fulfillRequest(
+		url,
+		payload,
+		status = 200,
+		methods = [],
+		options = {}
+	) {
 		const handler = async ( route ) => {
 			if (
 				methods.length === 0 ||
 				methods.includes( route.request().method() )
 			) {
-				return route.fulfill( {
+				const fulfillOptions = {
 					status,
 					contentType: 'application/json',
 					headers: { 'Access-Control-Allow-Origin': '*' },
 					body: JSON.stringify( payload ),
-				} );
+				};
+
+				const { beforeFulfill = Promise.resolve() } = options;
+
+				return beforeFulfill.then( () =>
+					route.fulfill( fulfillOptions )
+				);
 			}
 			return route.fallback();
 		};
 
-		await this.page.route( url, handler, { times } );
+		await this.page.route( url, handler, { times: options.times } );
 	}
 
 	/**

@@ -40,7 +40,7 @@ trait GuzzleClientTrait {
 	 */
 	protected function generate_request_mock( $response, string $type = 'get', int $code = 200 ) {
 		$body = $this->createMock( StreamInterface::class );
-		$body->method( 'getContents' )->willReturn( json_encode( $response ) );
+		$body->method( 'getContents' )->willReturn( wp_json_encode( $response ) );
 
 		$result = $this->createMock( ResponseInterface::class );
 		$result->method( 'getBody' )->willReturn( $body );
@@ -61,8 +61,8 @@ trait GuzzleClientTrait {
 		$body->method( 'getContents' )
 			->will(
 				$this->onConsecutiveCalls(
-					json_encode( [ 'status' => 'accepted' ] ),
-					json_encode( $response )
+					wp_json_encode( [ 'status' => 'accepted' ] ),
+					wp_json_encode( $response )
 				)
 			);
 
@@ -87,8 +87,8 @@ trait GuzzleClientTrait {
 		$body->method( 'getContents' )
 			->will(
 				$this->onConsecutiveCalls(
-					json_encode( [ 'status' => 'accepted' ] ),
-					json_encode( $response )
+					wp_json_encode( [ 'status' => 'accepted' ] ),
+					wp_json_encode( $response )
 				)
 			);
 
@@ -151,7 +151,7 @@ trait GuzzleClientTrait {
 	 */
 	protected function generate_exception_mock( string $message, int $code ): BadResponseException {
 		$body = $this->createMock( StreamInterface::class );
-		$body->method( 'getContents' )->willReturn( json_encode( [ 'message' => $message ] ) );
+		$body->method( 'getContents' )->willReturn( wp_json_encode( [ 'message' => $message ] ) );
 
 		$request  = $this->createMock( RequestInterface::class );
 		$response = $this->createMock( ResponseInterface::class );
