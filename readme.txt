@@ -162,15 +162,4 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Tweak - Adjust conditions for MCM.
 * Update - Google Ads API to v18.
 
-= 2.9.3 - 2024-12-18 =
-* Dev - Eliminate the duplicate functions used to group shipping time data.
-* Dev - Improve E2E tests for related products.
-* Fix - Budget Recommendation data not populating on install.
-* Fix - PHP 8.4 package compatibility.
-* Fix - Prevent duplicate conversion and purchase event tracking.
-* Fix - The saved max shipping time is not showing after revisiting the free listings editing page.
-* Tweak - Drop Jetpack packages and switch to packages bundled with WooCommerce.
-* Tweak - WC 9.5 compatibility.
-* Update - Drop support for WooCommerce < 7.9.
-
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
