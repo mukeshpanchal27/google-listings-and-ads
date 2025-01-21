@@ -5,7 +5,7 @@ Requires at least: 6.1
 Tested up to: 6.7
 Requires PHP: 7.4
 Requires PHP Architecture: 64 Bits
-Stable tag: 2.9.5
+Stable tag: 2.9.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -140,6 +140,10 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
+= 2.9.6 - 2025-01-21 =
+* Tweak - Resolve some of the plugin check errors and warnings.
+* Tweak - Set specific flags for html_entity_decode.
+
 = 2.9.5 - 2025-01-15 =
 * Dev - Fix E2E tests in WC 9.6.
 * Dev - Fix tests in WooCommerce 9.6.
@@ -161,16 +165,5 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Fix - Clear previous errors after completing sync.
 * Tweak - Adjust conditions for MCM.
 * Update - Google Ads API to v18.
-
-= 2.9.3 - 2024-12-18 =
-* Dev - Eliminate the duplicate functions used to group shipping time data.
-* Dev - Improve E2E tests for related products.
-* Fix - Budget Recommendation data not populating on install.
-* Fix - PHP 8.4 package compatibility.
-* Fix - Prevent duplicate conversion and purchase event tracking.
-* Fix - The saved max shipping time is not showing after revisiting the free listings editing page.
-* Tweak - Drop Jetpack packages and switch to packages bundled with WooCommerce.
-* Tweak - WC 9.5 compatibility.
-* Update - Drop support for WooCommerce < 7.9.
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
