@@ -140,6 +140,10 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
+= 2.9.6 - 2025-01-21 =
+* Tweak - Resolve some of the plugin check errors and warnings.
+* Tweak - Set specific flags for html_entity_decode.
+
 = 2.9.5 - 2025-01-15 =
 * Dev - Fix E2E tests in WC 9.6.
 * Dev - Fix tests in WooCommerce 9.6.
