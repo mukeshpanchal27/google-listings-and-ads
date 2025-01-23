@@ -27,10 +27,14 @@ import DisconnectModal, {
 import { getSettingsUrl } from '~/utils/urls';
 
 /**
+ * @typedef {import('~/data/types.js').GoogleMCAccount} GoogleMCAccount
+ */
+
+/**
  * Renders a Google Merchant Center account card UI with connected account information.
  *
  * @param {Object} props React props.
- * @param {{ id: number }} props.googleMCAccount A data payload object containing the user's Google Merchant Center account ID.
+ * @param {GoogleMCAccount} props.googleMCAccount A data payload object of Google Merchant Center account.
  */
 const MerchantCenterAccountInfoCard = ( { googleMCAccount } ) => {
 	const { createNotice, removeNotice } = useDispatchCoreNotices();
