@@ -31,7 +31,6 @@ const EnableNewProductSyncButton = ( params ) => {
 		try {
 			setLoading( true );
 			const d = await fetchRestAPIAuthorize();
-			setLoading( false );
 			window.location.href = d.auth_url;
 		} catch ( error ) {
 			setLoading( false );
