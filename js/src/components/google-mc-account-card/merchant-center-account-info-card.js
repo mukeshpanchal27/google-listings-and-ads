@@ -31,12 +31,8 @@ import { getSettingsUrl } from '~/utils/urls';
  *
  * @param {Object} props React props.
  * @param {{ id: number }} props.googleMCAccount A data payload object containing the user's Google Merchant Center account ID.
- * @param {boolean} [props.hideNotificationService=true] Indicate whether hide the enable Notification service block at the card footer.
  */
-const MerchantCenterAccountInfoCard = ( {
-	googleMCAccount,
-	hideNotificationService = false,
-} ) => {
+const MerchantCenterAccountInfoCard = ( { googleMCAccount } ) => {
 	const { createNotice, removeNotice } = useDispatchCoreNotices();
 	const { invalidateResolution } = useAppDispatch();
 
@@ -83,15 +79,13 @@ const MerchantCenterAccountInfoCard = ( {
 		removeNotice( notice.id );
 	};
 
-	// Show the button if the status is "approved" and the Notification Service is not hidden.
+	// Show the button if the status is "approved".
 	const showDisconnectNotificationsButton =
-		! hideNotificationService &&
 		googleMCAccount.wpcom_rest_api_status ===
-			GOOGLE_WPCOM_APP_CONNECTED_STATUS.APPROVED;
+		GOOGLE_WPCOM_APP_CONNECTED_STATUS.APPROVED;
 
-	// Show the error if the status is set but is not "approved" and the Notification Service is not hidden.
+	// Show the error if the status is set but is not "approved".
 	const showErrorNotificationsNotice =
-		! hideNotificationService &&
 		googleMCAccount.wpcom_rest_api_status &&
 		googleMCAccount.notification_service_enabled &&
 		googleMCAccount.wpcom_rest_api_status !==
