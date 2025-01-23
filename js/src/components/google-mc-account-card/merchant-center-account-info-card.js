@@ -25,9 +25,16 @@ import DisconnectModal, {
 	API_DATA_FETCH_FEATURE,
 } from '~/pages/settings/disconnect-modal';
 import { getSettingsUrl } from '~/utils/urls';
+import { recordGlaEvent } from '~/utils/tracks';
 
 /**
  * @typedef {import('~/data/types.js').GoogleMCAccount} GoogleMCAccount
+ */
+
+/**
+ * Clicking on the button to disable the new product sync (API Pull).
+ *
+ * @event gla_disable_product_sync_click
  */
 
 /**
@@ -35,6 +42,8 @@ import { getSettingsUrl } from '~/utils/urls';
  *
  * @param {Object} props React props.
  * @param {GoogleMCAccount} props.googleMCAccount A data payload object of Google Merchant Center account.
+ *
+ * @fires gla_disable_product_sync_click
  */
 const MerchantCenterAccountInfoCard = ( { googleMCAccount } ) => {
 	const { createNotice, removeNotice } = useDispatchCoreNotices();
@@ -59,6 +68,8 @@ const MerchantCenterAccountInfoCard = ( { googleMCAccount } ) => {
 	const domain = new URL( getSetting( 'homeUrl' ) ).host;
 
 	const disableNotifications = async () => {
+		recordGlaEvent( 'gla_disable_product_sync_click' );
+
 		const { notice } = await createNotice(
 			'info',
 			__(
@@ -154,7 +165,6 @@ const MerchantCenterAccountInfoCard = ( { googleMCAccount } ) => {
 							'Disable product data fetch',
 							'google-listings-and-ads'
 						) }
-						eventName="gla_disable_product_sync_click"
 						onClick={ openDisableDataFetchModal }
 					/>
 				</Section.Card.Footer>
