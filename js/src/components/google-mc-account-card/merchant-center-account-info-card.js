@@ -108,8 +108,7 @@ const MerchantCenterAccountInfoCard = ( { googleMCAccount } ) => {
 				showErrorNotificationsNotice ? (
 					<EnableNewProductSyncButton
 						text={ __( 'Grant access', 'google-listings-and-ads' ) }
-						eventName="gla_enable_product_sync_click"
-						eventProps={ { context: 'mc_card' } }
+						eventProps={ { page: 'settings', context: 'mc_card' } }
 					/>
 				) : (
 					<ConnectedIconLabel />
