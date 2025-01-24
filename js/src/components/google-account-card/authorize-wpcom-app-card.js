@@ -74,6 +74,7 @@ export default function AuthorizeWPComAppCard() {
 
 	return (
 		<AccountCard
+			className="gla-authorize-wpcom-app-card"
 			appearance={ APPEARANCE.GOOGLE }
 			description={
 				<Flex direction="column" gap={ 3 }>
