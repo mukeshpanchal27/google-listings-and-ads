@@ -2,9 +2,11 @@
  * Internal dependencies
  */
 import useGoogleAccount from '~/hooks/useGoogleAccount';
+import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
 import AppSpinner from '~/components/app-spinner';
 import AccountCard from '~/components/account-card';
 import { RequestFullAccessGoogleAccountCard } from '~/components/google-account-card';
+import { AuthorizeWPComAppCard } from '~/components/wpcom-account-card';
 import ConnectGoogleComboAccountCard from './connect-google-combo-account-card';
 import ConnectedGoogleComboAccountCard from './connected-google-combo-account-card';
 import './index.scss';
@@ -18,24 +20,34 @@ import './index.scss';
  * @param {boolean} [props.disabled=false] Whether display the Card in disabled style.
  */
 export default function GoogleComboAccountCard( { disabled = false } ) {
-	const { google, scope, hasFinishedResolution } = useGoogleAccount();
+	const {
+		google,
+		scope,
+		hasFinishedResolution: hasResolvedGoogle,
+	} = useGoogleAccount();
+	const { isWPComAppGranted, hasFinishedResolution: hasResolvedGMC } =
+		useGoogleMCAccount();
 
-	if ( ! hasFinishedResolution ) {
+	if ( ! hasResolvedGoogle || ! hasResolvedGMC ) {
 		return <AccountCard description={ <AppSpinner /> } />;
 	}
 
 	const isConnected = google?.active === 'yes';
 
-	if ( isConnected && scope.onboardingRequired ) {
-		return <ConnectedGoogleComboAccountCard />;
-	}
+	if ( isConnected ) {
+		if ( ! scope.onboardingRequired ) {
+			return (
+				<RequestFullAccessGoogleAccountCard
+					additionalScopeEmail={ google.email }
+				/>
+			);
+		}
 
-	if ( isConnected && ! scope.onboardingRequired ) {
-		return (
-			<RequestFullAccessGoogleAccountCard
-				additionalScopeEmail={ google.email }
-			/>
-		);
+		if ( ! isWPComAppGranted ) {
+			return <AuthorizeWPComAppCard />;
+		}
+
+		return <ConnectedGoogleComboAccountCard />;
 	}
 
 	return <ConnectGoogleComboAccountCard disabled={ disabled } />;
