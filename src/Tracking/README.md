@@ -421,7 +421,7 @@ Clicking on the button to start enabling the new product sync (API Pull).
 `page` | `string` | Indicates which page this event happened
 `context` | `string` | Indicates where or which the button triggered this event
 #### Emitters
-- [`EnableNewProductSyncButton`](../../js/src/components/enable-new-product-sync-button.js#L31) with `{ page: 'settings', context: 'banner' | 'mc_card' }`
+- [`EnableNewProductSyncButton`](../../js/src/components/enable-new-product-sync-button.js#L31) with `{ page: 'setup-mc' | 'settings', context: 'banner' | 'mc_card' }`
 
 ### [`gla_faq`](../../js/src/components/faqs-panel/index.js#L22)
 Clicking on faq item to collapse or expand it.
