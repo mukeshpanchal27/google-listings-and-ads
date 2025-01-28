@@ -161,9 +161,4 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Update - Move tax rate setup from the Edit free listings page to the Settings page.
 * Update - Move the Edit free listings page to a dedicated page and rename the page to Shipping.
 
-= 2.9.4 - 2024-12-25 =
-* Fix - Clear previous errors after completing sync.
-* Tweak - Adjust conditions for MCM.
-* Update - Google Ads API to v18.
-
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
