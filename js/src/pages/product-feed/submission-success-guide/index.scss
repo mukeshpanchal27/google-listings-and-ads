@@ -102,21 +102,19 @@
 	}
 
 	&__logo-item {
-		flex: 1;
-		margin-bottom: 0;
-
 		// Clear the 4px space gap for SVG
 		line-height: 0;
-		&:first-child {
-			text-align: right;
+
+		&--woocommerce {
+			padding-bottom: 6px;
 		}
 	}
 
 	&__logo-separator-line {
 		width: $border-width;
-		height: 63px;
-		margin: 0 28px;
-		background-color: $gray-600;
+		height: 42px;
+		margin: 0 22px;
+		background-color: #dcdcde;
 	}
 
 	&__space_holder {
