@@ -148,21 +148,4 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Tweak - Resolve some of the plugin check errors and warnings.
 * Tweak - Set specific flags for html_entity_decode.
 
-= 2.9.5 - 2025-01-15 =
-* Dev - Fix E2E tests in WC 9.6.
-* Dev - Fix tests in WooCommerce 9.6.
-* Fix - Avoid the negative shipping rate taken from WooCommerce settings leading to false onboarding completion and make its error message more explicit.
-* Fix - Show leaving prompt in Edit Ads Campaign if the form was modified.
-* Fix - Sync shipping max times to Google Merchant Center.
-* Tweak - Add an admin service provider for WP Admin requests.
-* Tweak - Conditionally load job classes.
-* Tweak - Consistent usage of ContainerAware.
-* Tweak - Pop up confirmation prompt on the Shipping page before saving changes.
-* Tweak - Refactor installer class to load dependencies when needed.
-* Tweak - Remove unused Http proxy class.
-* Tweak - WC 9.6 compatibility.
-* Update - Drop support for WordPress < 6.1.
-* Update - Move tax rate setup from the Edit free listings page to the Settings page.
-* Update - Move the Edit free listings page to a dedicated page and rename the page to Shipping.
-
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
