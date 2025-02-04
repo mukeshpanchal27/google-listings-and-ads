@@ -140,6 +140,9 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
+= 2.9.8 - 2025-02-04 =
+* Tweak - Replace WooCommerce logo with Woo 2.0 Brand.
+
 = 2.9.7 - 2025-01-28 =
 * Tweak - Adjust some query and table functions.
 * Tweak - Allow mapping of a Google ID without a prefix.
