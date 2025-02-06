@@ -52,12 +52,6 @@ export const getSettings = ( state ) => {
  */
 
 /**
- * @typedef {Object} GoogleMCAccount
- * @property {number} id Account ID. It's 0 if not yet connected.
- * @property {string} status Connection status.
- */
-
-/**
  * @typedef {Object} Tour
  * @property {string} id The tour ID
  * @property {boolean} checked True if the tour was checked by the user.

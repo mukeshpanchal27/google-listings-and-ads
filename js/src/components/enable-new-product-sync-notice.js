@@ -42,8 +42,10 @@ const EnableNewProductSyncNotice = () => {
 				{
 					enableButton: (
 						<EnableNewProductSyncButton
-							eventName="gla_enable_product_sync_click"
-							eventProps={ { context: 'banner' } }
+							eventProps={ {
+								page: 'settings',
+								context: 'banner',
+							} }
 						/>
 					),
 					p: <p />,
