@@ -74,7 +74,7 @@ class SyncController extends BaseOptionsController {
 	}
 
 	/**
-	 * Get the callback function for getting the current sync mode.
+	 * Get the callback function for getting the current sync mode for API PULL.
 	 *
 	 * @return callable
 	 */
