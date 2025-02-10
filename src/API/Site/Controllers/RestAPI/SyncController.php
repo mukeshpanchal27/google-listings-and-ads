@@ -21,12 +21,24 @@ defined( 'ABSPATH' ) || exit;
  */
 class SyncController extends BaseOptionsController {
 
-	private const DEFAULT_SYNC_MODE = array(
-		'products' => array( 'pull' => false, 'push' => false ),
-		'coupons' => array( 'pull' => false, 'push' => false ),
-		'shipping' => array( 'pull' => false, 'push' => false ),
-		'settings' => array( 'pull' => false, 'push' => false ),
-	);
+	private const DEFAULT_SYNC_MODE = [
+		'products' => [
+			'pull' => false,
+			'push' => false,
+		],
+		'coupons'  => [
+			'pull' => false,
+			'push' => false,
+		],
+		'shipping' => [
+			'pull' => false,
+			'push' => false,
+		],
+		'settings' => [
+			'pull' => false,
+			'push' => false,
+		],
+	];
 
 	/**
 	 * The base for routes in this controller.
@@ -38,7 +50,7 @@ class SyncController extends BaseOptionsController {
 	/**
 	 * SyncController constructor.
 	 *
-	 * @param RESTServer     $server
+	 * @param RESTServer $server
 	 */
 	public function __construct( RESTServer $server ) {
 		parent::__construct( $server );
@@ -98,37 +110,38 @@ class SyncController extends BaseOptionsController {
 	 */
 	protected function get_schema_properties(): array {
 		return [
-			'products' => array(
-				'type' => 'array',
-				'items' => $this->get_pull_push_schema_fields()
-			),
-			'coupons' => array(
-				'type' => 'array',
-				'items' => $this->get_pull_push_schema_fields()
-			),
-			'shipping' => array(
-				'type' => 'array',
-				'items' => $this->get_pull_push_schema_fields()
-			),
-			'settings' => array(
-				'type' => 'array',
-				'items' => $this->get_pull_push_schema_fields()
-			),
+			'products' => [
+				'type'  => 'array',
+				'items' => $this->get_pull_push_schema_fields(),
+			],
+			'coupons'  => [
+				'type'  => 'array',
+				'items' => $this->get_pull_push_schema_fields(),
+			],
+			'shipping' => [
+				'type'  => 'array',
+				'items' => $this->get_pull_push_schema_fields(),
+			],
+			'settings' => [
+				'type'  => 'array',
+				'items' => $this->get_pull_push_schema_fields(),
+			],
 		];
 	}
 
 	/**
 	 * Get the item schema properties for the pull and push field.
+	 *
 	 * @return array[]
 	 */
 	private function get_pull_push_schema_fields() {
-		return array(
-			'push' => array(
-				'type' => 'boolean'
-			),
-			'pull' => array(
-				'type' => 'boolean'
-			)
-		);
+		return [
+			'push' => [
+				'type' => 'boolean',
+			],
+			'pull' => [
+				'type' => 'boolean',
+			],
+		];
 	}
 }
