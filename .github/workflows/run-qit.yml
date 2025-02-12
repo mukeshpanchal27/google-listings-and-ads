@@ -54,7 +54,7 @@ jobs:
     secrets: inherit
   qit-tests:
     name: Run QIT Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: build
     steps:
       - name: Download artifact
