@@ -399,7 +399,7 @@ class MiddlewareTest extends UnitTest {
 	public function test_get_sdi_auth_endpoint() {
 		$this->assertEquals(
 			$this->middleware->get_sdi_auth_endpoint(),
-			'https://connect-server.test/google/google-sdi/v1/credentials/partners/WOO_COMMERCE/merchants/example.org/oauth/redirect:generate?merchant_id=0'
+			'https://connect-server.test/google/google-sdi/v1/credentials/partners/WOO_COMMERCE/merchants/example.org/oauth/redirect:generate'
 		);
 	}
 
