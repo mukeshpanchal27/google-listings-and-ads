@@ -483,8 +483,7 @@ class Middleware implements ContainerAwareInterface, OptionsAwareInterface {
 		return $this->container->get( 'connect_server_root' )
 				. 'google/google-sdi/v1/credentials/partners/WOO_COMMERCE/merchants/'
 				. $this->strip_url_protocol( $this->get_site_url() )
-				. '/oauth/redirect:generate'
-				. '?merchant_id=' . $this->options->get_merchant_id();
+				. '/oauth/redirect:generate';
 	}
 
 	/**
