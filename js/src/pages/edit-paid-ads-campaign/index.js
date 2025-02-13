@@ -168,7 +168,7 @@ const EditPaidAdsCampaign = () => {
 		const hasChange =
 			allValues.amount !== campaign.amount ||
 			! isEqual(
-				assetEntityGroup.display_url_path,
+				assetEntityGroup?.display_url_path,
 				allValues.display_url_path
 			) ||
 			diffAssetOperations( assetEntityGroup, allValues ).length > 0;
