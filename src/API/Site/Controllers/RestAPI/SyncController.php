@@ -85,9 +85,8 @@ class SyncController extends BaseOptionsController {
 				if ( ! is_array( $sync_mode ) ) {
 					$sync_mode = [];
 				}
-				
+
 				$sync_mode = wp_parse_args( $sync_mode, self::DEFAULT_SYNC_MODE );
-				}
 				return $this->prepare_item_for_response( $sync_mode, $request );
 			} catch ( Exception $e ) {
 				return $this->response_from_exception( $e );
