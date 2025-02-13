@@ -82,8 +82,11 @@ class SyncController extends BaseOptionsController {
 		return function ( Request $request ) {
 			try {
 				$sync_mode = $this->options->get( OptionsInterface::API_PULL_SYNC_MODE );
-				if ( ! $sync_mode ) {
-					$sync_mode = self::DEFAULT_SYNC_MODE;
+				if ( ! is_array( $sync_mode ) ) {
+					$sync_mode = [];
+				}
+				
+				$sync_mode = wp_parse_args( $sync_mode, self::DEFAULT_SYNC_MODE );
 				}
 				return $this->prepare_item_for_response( $sync_mode, $request );
 			} catch ( Exception $e ) {
