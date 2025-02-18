@@ -15,12 +15,22 @@ import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 import useDispatchCoreNotices from '~/hooks/useDispatchCoreNotices';
 
 /**
+ * Clicking on the button to start enabling the new product sync (API Pull).
+ *
+ * @event gla_enable_product_sync_click
+ * @property {string} [page] Indicates which page this event happened
+ * @property {string} [context] Indicates where or which the button triggered this event
+ */
+
+/**
  * Button to initiate auth process for WP Rest API
  *
- * @param {Object} params The component params
+ * @param {Object} props The component props to be forwarded to AppButton.
  * @return {JSX.Element} The button.
+ *
+ * @fires gla_enable_product_sync_click with `{ page: 'settings', context: 'banner' | 'mc_card' }`
  */
-const EnableNewProductSyncButton = ( params ) => {
+const EnableNewProductSyncButton = ( props ) => {
 	const { createNotice } = useDispatchCoreNotices();
 	const [ loading, setLoading ] = useState( false );
 	const nextPageName = glaData.mcSetupComplete ? 'settings' : 'setup-mc';
@@ -31,7 +41,6 @@ const EnableNewProductSyncButton = ( params ) => {
 		try {
 			setLoading( true );
 			const d = await fetchRestAPIAuthorize();
-			setLoading( false );
 			window.location.href = d.auth_url;
 		} catch ( error ) {
 			setLoading( false );
@@ -50,7 +59,8 @@ const EnableNewProductSyncButton = ( params ) => {
 			isSecondary
 			loading={ loading }
 			onClick={ handleEnableClick }
-			{ ...params }
+			eventName="gla_enable_product_sync_click"
+			{ ...props }
 		/>
 	);
 };

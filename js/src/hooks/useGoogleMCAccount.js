@@ -11,7 +11,7 @@ import useGoogleAccount from './useGoogleAccount';
 import { GOOGLE_MC_ACCOUNT_STATUS } from '~/constants';
 
 /**
- * @typedef {import('~/data/selectors').GoogleMCAccount} GoogleMCAccount
+ * @typedef {import('~/data/types.js').GoogleMCAccount} GoogleMCAccount
  *
  * @typedef {Object} GoogleMCAccountPayload
  * @property {GoogleMCAccount|undefined} googleMCAccount The connection data of Google Merchant Center account associated with GLA.

@@ -305,6 +305,11 @@ Triggered when datepicker (date ranger picker) is updated,
 - [`ProductsReportFilters`](../../js/src/pages/reports/products/products-report-filters.js#L41)
 - [`ProgramsReportFilters`](../../js/src/pages/reports/programs/programs-report-filters.js#L43)
 
+### [`gla_disable_product_sync_click`](../../js/src/components/google-mc-account-card/merchant-center-account-info-card.js#L34)
+Clicking on the button to disable the new product sync (API Pull).
+#### Emitters
+- [`MerchantCenterAccountInfoCard`](../../js/src/components/google-mc-account-card/merchant-center-account-info-card.js#L48)
+
 ### [`gla_disconnected_accounts`](../../js/src/pages/settings/linked-accounts.js#L31)
 Accounts are disconnected from the Setting page
 #### Properties
@@ -408,6 +413,16 @@ Triggered when store address "Edit in WooCommerce Settings" button is clicked.
 #### Emitters
 - [`StoreAddressCard`](../../js/src/components/contact-information/store-address-card.js#L49) Whenever "Edit in WooCommerce Settings" button is clicked.
 
+### [`gla_enable_product_sync_click`](../../js/src/components/enable-new-product-sync-button.js#L17)
+Clicking on the button to start enabling the new product sync (API Pull).
+#### Properties
+| name | type | description |
+| ---- | ---- | ----------- |
+`page` | `string` | Indicates which page this event happened
+`context` | `string` | Indicates where or which the button triggered this event
+#### Emitters
+- [`EnableNewProductSyncButton`](../../js/src/components/enable-new-product-sync-button.js#L33) with `{ page: 'settings', context: 'banner' | 'mc_card' }`
+
 ### [`gla_faq`](../../js/src/components/faqs-panel/index.js#L22)
 Clicking on faq item to collapse or expand it.
 #### Properties
@@ -468,10 +483,10 @@ Clicking on the link to view free ad credit value by country.
 #### Emitters
 - [`FreeAdCredit`](../../js/src/components/free-ad-credit/index.js#L27) with `{ context: 'setup-ads' }`.
 
-### [`gla_free_campaign_edited`](../../js/src/pages/shipping/index.js#L28)
+### [`gla_free_campaign_edited`](../../js/src/pages/shipping/index.js#L29)
 Saving changes of audience and/or shipping settings to the free listings.
 #### Emitters
-- [`exports`](../../js/src/pages/shipping/index.js#L44)
+- [`exports`](../../js/src/pages/shipping/index.js#L45)
 
 ### [`gla_google_account_connect_button_click`](../../js/src/utils/tracks.js#L175)
 Clicking on the button to connect Google account.

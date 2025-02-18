@@ -6,6 +6,14 @@
  */
 
 /**
+ * @typedef {Object} GoogleMCAccount
+ * @property {number} id Account ID. It's 0 if not yet connected.
+ * @property {string} status Connection status.
+ * @property {null|'approved'|'disapproved'|'error'|'disabled'} wpcom_rest_api_status The status of Google WPCOM app's access to WooCommerce products, coupons, shipping and settings.
+ * @property {boolean} notification_service_enabled Whether the service of notifying a partner of the shop data updates is enabled.
+ */
+
+/**
  * @typedef {Object} SuggestedAssets
  * @property {string} business_name The name of merchant's business or brand.
  * @property {string} final_url The page URL on merchant's website that people reach when they click the ad.
