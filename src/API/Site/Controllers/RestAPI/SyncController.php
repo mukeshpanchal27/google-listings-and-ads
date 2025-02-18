@@ -199,8 +199,14 @@ class SyncController extends BaseOptionsController {
 	 */
 	protected function get_request_params( Request $request ): array {
 		$request_params = $request->get_json_params();
-		$params         = array_intersect_key( $request_params, self::DEFAULT_SYNC_MODE );
-		$valid_params   = [];
+
+		// JSON Data
+		if ( is_null( $request_params ) ) {
+			$request_params = json_decode( $request->get_body(), true );
+		}
+
+		$params       = array_intersect_key( $request_params, self::DEFAULT_SYNC_MODE );
+		$valid_params = [];
 
 		foreach ( $params as $key => $param ) {
 			if ( isset( $param['push'] ) && isset( $param['pull'] ) && is_bool( $param['push'] ) && is_bool( $param['pull'] ) ) {
