@@ -147,8 +147,4 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Tweak - Adjust some query and table functions.
 * Tweak - Allow mapping of a Google ID without a prefix.
 
-= 2.9.6 - 2025-01-21 =
-* Tweak - Resolve some of the plugin check errors and warnings.
-* Tweak - Set specific flags for html_entity_decode.
-
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
