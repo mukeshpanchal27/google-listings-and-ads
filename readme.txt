@@ -140,6 +140,12 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
+= 2.9.9 - 2025-02-18 =
+* Fix - Error displayed when accessing campaign assets editing page without attached asset groups.
+* Tweak - Opt-in to URL expansion.
+* Tweak - Supplement the implementation of API Pull for the Settings page.
+* Tweak - WC 9.7 compatibility.
+
 = 2.9.8 - 2025-02-04 =
 * Tweak - Replace WooCommerce logo with Woo 2.0 Brand.
 
