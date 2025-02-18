@@ -18,11 +18,11 @@ export default function GoogleComboAccountCard( { disabled = false } ) {
 
 	const isConnected = google?.active === 'yes';
 
-	if ( isConnected && scope.gmcRequired && scope.adsRequired ) {
+	if ( isConnected && scope.onboardingRequired ) {
 		return <ConnectedGoogleComboAccountCard />;
 	}
 
-	if ( isConnected && ( ! scope.gmcRequired || ! scope.adsRequired ) ) {
+	if ( isConnected && ! scope.onboardingRequired ) {
 		return (
 			<RequestFullAccessGoogleAccountCard
 				additionalScopeEmail={ google.email }

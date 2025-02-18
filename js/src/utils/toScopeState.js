@@ -12,6 +12,9 @@ const SCOPE = {
  * @typedef {Object} ScopeState
  * @property {boolean} gmcRequired Whether has the required scopes of Google Merchant Center.
  * @property {boolean} adsRequired Whether has the required scopes of Google Ads.
+ * @property {boolean} onboardingRequired Whether has the required scopes to continue the onboarding process.
+ *   All scopes are required because interconnections between this plugin, Google Ads
+ *   and Google Merchant Center, and domain claiming are set up during onboarding.
  * @property {boolean} reconnectionRequired Whether has the required scopes to complete the reconnection process.
  *   The reconnection process only happens when the user has previously completed
  *   onboarding but this plugin has somehow lost access to the user's Google account.
@@ -36,8 +39,11 @@ export default function toScopeState( adsSetupComplete, scopes = [] ) {
 		scopes.includes( SCOPE.CONTENT ) &&
 		scopes.includes( SCOPE.SITE_VERIFICATION_VERIFY_ONLY );
 
+	const allRequired = state.gmcRequired && state.adsRequired;
+
+	state.onboardingRequired = allRequired;
 	state.reconnectionRequired = adsSetupComplete
-		? state.gmcRequired && state.adsRequired
+		? allRequired
 		: state.gmcRequired;
 
 	return state;

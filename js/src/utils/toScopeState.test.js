@@ -51,6 +51,7 @@ describe( 'toScopeState', () => {
 
 		expect( scopeState ).toHaveProperty( 'gmcRequired' );
 		expect( scopeState ).toHaveProperty( 'adsRequired' );
+		expect( scopeState ).toHaveProperty( 'onboardingRequired' );
 		expect( scopeState ).toHaveProperty( 'reconnectionRequired' );
 	} );
 
@@ -58,11 +59,13 @@ describe( 'toScopeState', () => {
 		expect( toScopeState( false ) ).toMatchObject( {
 			gmcRequired: false,
 			adsRequired: false,
+			onboardingRequired: false,
 			reconnectionRequired: false,
 		} );
 		expect( toScopeState( true ) ).toMatchObject( {
 			gmcRequired: false,
 			adsRequired: false,
+			onboardingRequired: false,
 			reconnectionRequired: false,
 		} );
 	} );
@@ -116,6 +119,44 @@ describe( 'toScopeState', () => {
 				).toBe( false );
 				expect(
 					toScopeState( adsSetupComplete, gmcScopes ).adsRequired
+				).toBe( false );
+			} );
+		}
+	);
+
+	describe.each( [ [ false ], [ true ] ] )(
+		'For `onboardingRequired`, if the parameter `adsSetupComplete` = %p',
+		( adsSetupComplete ) => {
+			it( 'and the `scopes` contains all required scopes, should be `true`', () => {
+				expect(
+					toScopeState( adsSetupComplete, allScopes )
+						.onboardingRequired
+				).toBe( true );
+			} );
+
+			it( "and the `scopes` doesn't contains all required scopes, should be `false`", () => {
+				expect(
+					toScopeState( adsSetupComplete, [] ).onboardingRequired
+				).toBe( false );
+				expect(
+					toScopeState( adsSetupComplete, contentScopes )
+						.onboardingRequired
+				).toBe( false );
+				expect(
+					toScopeState( adsSetupComplete, siteVerificationScopes )
+						.onboardingRequired
+				).toBe( false );
+				expect(
+					toScopeState( adsSetupComplete, adsScopes )
+						.onboardingRequired
+				).toBe( false );
+				expect(
+					toScopeState( adsSetupComplete, gmcScopes )
+						.onboardingRequired
+				).toBe( false );
+				expect(
+					toScopeState( adsSetupComplete, contentAndAdsdScopes )
+						.onboardingRequired
 				).toBe( false );
 			} );
 		}
