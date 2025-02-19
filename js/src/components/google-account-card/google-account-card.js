@@ -9,16 +9,13 @@ import ConnectedGoogleAccountCard from './connected-google-account-card';
 import ConnectGoogleAccountCard from './connect-google-account-card';
 
 /**
- * Renders the Google Account Card.
+ * Renders a card to connect, request full access, or display a connected Google account.
  *
- * Please note that this component is only used on the Settings and Reconnection pages.
+ * Please note that this component is only used on the Reconnection page.
  * For the onboarding flow, the `GoogleComboAccountCard` component is used instead.
  * Therefore, the `scope` is checked for reconnection requirements.
- *
- * @param {Object} props React props
- * @param {boolean} [props.disabled=false] Whether display the Card in disabled style.
  */
-export default function GoogleAccountCard( { disabled = false } ) {
+export default function GoogleAccountCard() {
 	const { google, scope, hasFinishedResolution } = useGoogleAccount();
 
 	if ( ! hasFinishedResolution ) {
@@ -39,5 +36,5 @@ export default function GoogleAccountCard( { disabled = false } ) {
 		);
 	}
 
-	return <ConnectGoogleAccountCard disabled={ disabled } />;
+	return <ConnectGoogleAccountCard />;
 }
