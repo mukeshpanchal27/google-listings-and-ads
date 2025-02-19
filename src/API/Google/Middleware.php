@@ -475,15 +475,35 @@ class Middleware implements ContainerAwareInterface, OptionsAwareInterface {
 	}
 
 	/**
-	 * Get the Google Shopping Data Integration auth endpoint URL
+	 * Get the URL for the Google Shopping Data Integration auth endpoint.
 	 *
 	 * @return string
 	 */
 	public function get_sdi_auth_endpoint(): string {
+		return $this->get_sdi_endpoint() . 'oauth/redirect:generate';
+	}
+
+	/**
+	 * Get the URL for the Google SDI merchant update endpoint.
+	 *
+	 * @return string
+	 */
+	public function get_sdi_merchant_update_endpoint(): string {
+		return $this->get_sdi_endpoint()
+			. 'account:connect?merchant_id='
+			. $this->options->get_merchant_id();
+	}
+
+	/**
+	 * Get the base endpoint to the Google Shopping Data Integration (SDI).
+	 *
+	 * @return string
+	 */
+	protected function get_sdi_endpoint(): string {
 		return $this->container->get( 'connect_server_root' )
-				. 'google/google-sdi/v1/credentials/partners/WOO_COMMERCE/merchants/'
-				. $this->strip_url_protocol( $this->get_site_url() )
-				. '/oauth/redirect:generate';
+			. 'google/google-sdi/v1/credentials/partners/WOO_COMMERCE/merchants/'
+			. $this->strip_url_protocol( $this->get_site_url() )
+			. '/';
 	}
 
 	/**
@@ -593,6 +613,40 @@ class Middleware implements ContainerAwareInterface, OptionsAwareInterface {
 
 			throw new Exception(
 				$this->client_exception_message( $e, __( 'Error authenticating Google Partner APP.', 'google-listings-and-ads' ) ),
+				$e->getCode()
+			);
+		}
+	}
+
+	/**
+	 * Performs a request to Google Shopping Data Integration (SDI) to update the merchant center account.
+	 *
+	 * @return array An array with the JSON response from the WCS server.
+	 * @throws NotFoundExceptionInterface  When the container was not found.
+	 * @throws ContainerExceptionInterface When an error happens while retrieving the container.
+	 * @throws Exception When the response status is not successful.
+	 * @see google-sdi in google/services inside WCS
+	 */
+	public function update_sdi_merchant_account() {
+		try {
+			/** @var Client $client */
+			$client   = $this->container->get( Client::class );
+			$result   = $client->get( $this->get_sdi_merchant_update_endpoint() );
+			$response = json_decode( $result->getBody()->getContents(), true );
+
+			if ( 200 !== $result->getStatusCode() ) {
+				do_action( 'woocommerce_gla_guzzle_invalid_response', $response, __METHOD__ );
+				$error = $response['message'] ?? __( 'Invalid response when updating merchant account in Google partner app.', 'google-listings-and-ads' );
+				throw new Exception( $error, $result->getStatusCode() );
+			}
+
+			return $response;
+
+		} catch ( ClientExceptionInterface $e ) {
+			do_action( 'woocommerce_gla_guzzle_client_exception', $e, __METHOD__ );
+
+			throw new Exception(
+				$this->client_exception_message( $e, __( 'Error updating merchant account in Google Partner APP.', 'google-listings-and-ads' ) ),
 				$e->getCode()
 			);
 		}
