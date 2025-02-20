@@ -441,4 +441,39 @@ class MiddlewareTest extends UnitTest {
 		$this->middleware->get_sdi_auth_params();
 		$this->assertEquals( 1, did_action( 'woocommerce_gla_guzzle_client_exception' ) );
 	}
+
+	public function test_update_sdi_merchant_account_no_merchant() {
+		$this->expectException( Exception::class );
+		$this->expectExceptionMessage( 'Merchant ID must be set before updating in SDI.' );
+		$this->middleware->update_sdi_merchant_account();
+	}
+
+	public function test_update_sdi_merchant_account_invalid_response() {
+		$this->options->method( 'get_merchant_id' )->willReturn( self::TEST_MERCHANT_ID );
+		$this->generate_request_mock( [], 'post', 400 );
+
+		$this->expectException( Exception::class );
+		$this->expectExceptionMessage( 'Invalid response when updating merchant account in Google Partner APP.' );
+		$this->expectExceptionCode( 400 );
+
+		$this->middleware->update_sdi_merchant_account();
+	}
+
+	public function test_update_sdi_merchant_account_exception() {
+		$this->options->method( 'get_merchant_id' )->willReturn( self::TEST_MERCHANT_ID );
+		$this->generate_request_mock_exception( 'Some exception.', 'post', 400 );
+
+		$this->expectException( Exception::class );
+		$this->expectExceptionMessage( 'Error updating merchant account in Google Partner APP.' );
+		$this->expectExceptionCode( 400 );
+
+		$this->middleware->update_sdi_merchant_account();
+	}
+
+	public function test_update_sdi_merchant_account() {
+		$this->options->method( 'get_merchant_id' )->willReturn( self::TEST_MERCHANT_ID );
+		$this->generate_request_mock( null, 'post', 200 );
+
+		$this->middleware->update_sdi_merchant_account();
+	}
 }
