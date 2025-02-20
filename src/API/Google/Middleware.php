@@ -480,7 +480,15 @@ class Middleware implements ContainerAwareInterface, OptionsAwareInterface {
 	 * @return string
 	 */
 	public function get_sdi_auth_endpoint(): string {
-		return $this->get_sdi_endpoint() . 'oauth/redirect:generate';
+		$endpoint = $this->get_sdi_endpoint() . 'oauth/redirect:generate';
+
+		// Add merchant ID for cases where we've already completed onboarding.
+		$merchant_id = $this->options->get_merchant_id();
+		if ( $merchant_id ) {
+			$endpoint .= "?merchant_id={$merchant_id}";
+		}
+
+		return $endpoint;
 	}
 
 	/**
