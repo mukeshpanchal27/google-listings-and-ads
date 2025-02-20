@@ -403,6 +403,15 @@ class MiddlewareTest extends UnitTest {
 		);
 	}
 
+	public function test_get_sdi_auth_endpoint_with_merchant_id() {
+		$this->options->method( 'get_merchant_id' )->willReturn( self::TEST_MERCHANT_ID );
+
+		$this->assertEquals(
+			$this->middleware->get_sdi_auth_endpoint(),
+			'https://connect-server.test/google/google-sdi/v1/credentials/partners/WOO_COMMERCE/merchants/example.org/oauth/redirect:generate?merchant_id=' . self::TEST_MERCHANT_ID
+		);
+	}
+
 	public function test_get_sdi_auth_params() {
 		$expected_response = [
 			'clientId'    => self::TEST_MERCHANT_ID,
