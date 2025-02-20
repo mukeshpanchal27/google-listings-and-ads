@@ -497,9 +497,7 @@ class Middleware implements ContainerAwareInterface, OptionsAwareInterface {
 	 * @return string
 	 */
 	public function get_sdi_merchant_update_endpoint(): string {
-		return $this->get_sdi_endpoint()
-			. 'account:connect?merchant_id='
-			. $this->options->get_merchant_id();
+		return $this->get_sdi_endpoint() . 'account:connect';
 	}
 
 	/**
@@ -629,27 +627,40 @@ class Middleware implements ContainerAwareInterface, OptionsAwareInterface {
 	/**
 	 * Performs a request to Google Shopping Data Integration (SDI) to update the merchant center account.
 	 *
-	 * @return array An array with the JSON response from the WCS server.
 	 * @throws NotFoundExceptionInterface  When the container was not found.
 	 * @throws ContainerExceptionInterface When an error happens while retrieving the container.
-	 * @throws Exception When the response status is not successful.
+	 * @throws Exception When the response status is not successful, or merchant ID is not set.
 	 * @see google-sdi in google/services inside WCS
 	 */
 	public function update_sdi_merchant_account() {
 		try {
-			/** @var Client $client */
-			$client   = $this->container->get( Client::class );
-			$result   = $client->get( $this->get_sdi_merchant_update_endpoint() );
-			$response = json_decode( $result->getBody()->getContents(), true );
-
-			if ( 200 !== $result->getStatusCode() ) {
-				do_action( 'woocommerce_gla_guzzle_invalid_response', $response, __METHOD__ );
-				$error = $response['message'] ?? __( 'Invalid response when updating merchant account in Google partner app.', 'google-listings-and-ads' );
-				throw new Exception( $error, $result->getStatusCode() );
+			if ( ! $this->options->get_merchant_id() ) {
+				throw new Exception( __( 'Merchant ID must be set before updating in SDI.', 'google-listings-and-ads' ) );
 			}
 
-			return $response;
+			/** @var Client $client */
+			$client = $this->container->get( Client::class );
+			$result = $client->post(
+				$this->get_sdi_merchant_update_endpoint(),
+				[
+					'body' => wp_json_encode(
+						[
+							'merchant_center_id' => $this->options->get_merchant_id(),
+						]
+					),
+				]
+			);
 
+			// Check the status, since an empty response is returned upon success.
+			if ( 200 !== $result->getStatusCode() ) {
+				$response = json_decode( $result->getBody()->getContents(), true );
+				do_action( 'woocommerce_gla_guzzle_invalid_response', $response, __METHOD__ );
+
+				throw new Exception(
+					__( 'Invalid response when updating merchant account in Google Partner APP.', 'google-listings-and-ads' ),
+					$result->getStatusCode()
+				);
+			}
 		} catch ( ClientExceptionInterface $e ) {
 			do_action( 'woocommerce_gla_guzzle_client_exception', $e, __METHOD__ );
 
