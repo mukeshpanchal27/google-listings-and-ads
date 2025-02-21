@@ -15,6 +15,46 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Class SyncController
  *
+ * GET wp-json/wc/gla/sync
+ * POST wp-json/wc/gla/sync
+ * Body Params: @see get_schema_properties
+ *
+ * We support 4 data types Products, Coupons, Shipping and Settings.
+ * Each of this data types contains pull and push methods.
+ *
+ * Push: Legacy method pushing store data to Google Merchant Center using Google's API
+ * Pull: New method where Google fetches the data from the store.
+ *
+ * All the data types and methods are optional. When set, they update the current config.
+ *
+ * Examples
+ *
+ * POST wp-json/wc/gla/sync
+ *
+ * {
+ *     "products": {
+ *          "pull": true,
+ *          "push": false,
+ *     },
+ *     "settings": {
+ *         "pull": true,
+ *         "push": false,
+ *     }
+ * }
+ *
+ * Updates Only Products and Settings to enable Pull and disable Push. Rest of the data types will remain unchanged.
+ *
+ *
+ * POST wp-json/wc/gla/sync
+ *
+ *  {
+ *      "products": {
+ *           "pull": true,
+ *      }
+ *  }
+ *
+ * Updates Only Products to enable Pull. Rest of the data types and Products Pull method will remain unchanged.
+ *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\RestAPI
  *
  * @since x.x.x
@@ -105,7 +145,8 @@ class SyncController extends BaseOptionsController {
 			try {
 				$sync_mode     = $this->get_current_sync_value();
 				$new_params    = $this->get_request_params( $request );
-				$new_sync_mode = wp_parse_args( $new_params, $sync_mode );
+				$new_sync_mode = array_replace_recursive( $sync_mode, $new_params );
+
 				$this->options->update( OptionsInterface::API_PULL_SYNC_MODE, $new_sync_mode );
 				return $this->prepare_item_for_response( $this->options->get( OptionsInterface::API_PULL_SYNC_MODE ), $request );
 			} catch ( Exception $e ) {
@@ -133,20 +174,24 @@ class SyncController extends BaseOptionsController {
 	protected function get_schema_properties(): array {
 		return [
 			'products' => [
-				'type'  => 'object',
-				'items' => $this->get_pull_push_schema_fields(),
+				'type'        => 'object',
+				'description' => 'Set pull and push sync method for Products.',
+				'items'       => $this->get_pull_push_schema_fields(),
 			],
 			'coupons'  => [
-				'type'  => 'object',
-				'items' => $this->get_pull_push_schema_fields(),
+				'type'        => 'object',
+				'description' => 'Set the config for Push and Pull methods for Coupons.',
+				'items'       => $this->get_pull_push_schema_fields(),
 			],
 			'shipping' => [
-				'type'  => 'object',
-				'items' => $this->get_pull_push_schema_fields(),
+				'type'        => 'object',
+				'description' => 'Set the config for Push and Pull methods for Shipping.',
+				'items'       => $this->get_pull_push_schema_fields(),
 			],
 			'settings' => [
-				'type'  => 'object',
-				'items' => $this->get_pull_push_schema_fields(),
+				'type'        => 'object',
+				'description' => 'Set the config for Push and Pull methods for Settings.',
+				'items'       => $this->get_pull_push_schema_fields(),
 			],
 		];
 	}
@@ -154,15 +199,23 @@ class SyncController extends BaseOptionsController {
 	/**
 	 * Get the item schema properties for the pull and push field.
 	 *
+	 * Push: Legacy method pushing store data to Google Merchant Center using Google's API
+	 * Pull: New method where Google fetches the data from the store.
+	 *
+	 * If true: Method is enabled
+	 * If false: Method is disabled
+	 *
 	 * @return array[]
 	 */
 	private function get_pull_push_schema_fields(): array {
 		return [
 			'push' => [
-				'type' => 'boolean',
+				'description' => 'Enable or disable Push method.',
+				'type'        => 'boolean',
 			],
 			'pull' => [
-				'type' => 'boolean',
+				'description' => 'Enable or disable Pull method.',
+				'type'        => 'boolean',
 			],
 		];
 	}
@@ -177,43 +230,45 @@ class SyncController extends BaseOptionsController {
 	}
 
 	/**
-	 * Get the current value for the API PULL Sync
+	 * Get the current value for the API PULL Sync.
+	 * Notice that malformed data will be replaced by default data.
 	 *
 	 * @return array
 	 */
 	protected function get_current_sync_value(): array {
 		$sync_mode = $this->options->get( OptionsInterface::API_PULL_SYNC_MODE );
+
 		if ( ! is_array( $sync_mode ) ) {
-			$sync_mode = [];
+			$sync_mode = self::DEFAULT_SYNC_MODE;
 		}
 
-		return wp_parse_args( $sync_mode, self::DEFAULT_SYNC_MODE );
+		return array_replace_recursive( self::DEFAULT_SYNC_MODE, $sync_mode );
 	}
 
 	/**
 	 * Get the parameters from the request body.
-	 * Only the keys in self::DEFAULT_SYNC_MODE that contains pull/push values as boolean are allowed as params.
+	 * Only the keys in self::DEFAULT_SYNC_MODE that contains boolean pull and/or push param are allowed.
 	 *
 	 * @param Request $request The request
 	 * @return array
 	 */
 	protected function get_request_params( Request $request ): array {
-		$request_params = $request->get_json_params();
+		$request_params = json_decode( $request->get_body(), true );
 
-		// JSON Data
 		if ( is_null( $request_params ) ) {
-			$request_params = json_decode( $request->get_body(), true );
+			return [];
 		}
 
 		$params       = array_intersect_key( $request_params, self::DEFAULT_SYNC_MODE );
 		$valid_params = [];
 
 		foreach ( $params as $key => $param ) {
-			if ( isset( $param['push'] ) && isset( $param['pull'] ) && is_bool( $param['push'] ) && is_bool( $param['pull'] ) ) {
-				$valid_params[ $key ] = [
-					'push' => $param['push'],
-					'pull' => $param['pull'],
-				];
+			if ( isset( $param['push'] ) && is_bool( $param['push'] ) ) {
+				$valid_params[ $key ]['push'] = $param['push'];
+			}
+
+			if ( isset( $param['pull'] ) && is_bool( $param['pull'] ) ) {
+				$valid_params[ $key ]['pull'] = $param['pull'];
 			}
 		}
 
