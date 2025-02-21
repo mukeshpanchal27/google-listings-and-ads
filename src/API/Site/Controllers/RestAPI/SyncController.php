@@ -5,6 +5,7 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\RestA
 
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\BaseOptionsController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\TransportMethods;
+use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\SyncTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\RESTServer;
 use Exception;
@@ -61,24 +62,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class SyncController extends BaseOptionsController {
 
-	private const DEFAULT_SYNC_MODE = [
-		'products' => [
-			'pull' => false,
-			'push' => false,
-		],
-		'coupons'  => [
-			'pull' => false,
-			'push' => false,
-		],
-		'shipping' => [
-			'pull' => false,
-			'push' => false,
-		],
-		'settings' => [
-			'pull' => false,
-			'push' => false,
-		],
-	];
+	use SyncTrait;
 
 	/**
 	 * The base for routes in this controller.
@@ -227,22 +211,6 @@ class SyncController extends BaseOptionsController {
 	 */
 	protected function get_update_sync_params(): array {
 		return $this->get_schema_properties();
-	}
-
-	/**
-	 * Get the current value for the API PULL Sync.
-	 * Notice that malformed data will be replaced by default data.
-	 *
-	 * @return array
-	 */
-	protected function get_current_sync_value(): array {
-		$sync_mode = $this->options->get( OptionsInterface::API_PULL_SYNC_MODE );
-
-		if ( ! is_array( $sync_mode ) ) {
-			$sync_mode = self::DEFAULT_SYNC_MODE;
-		}
-
-		return array_replace_recursive( self::DEFAULT_SYNC_MODE, $sync_mode );
 	}
 
 	/**

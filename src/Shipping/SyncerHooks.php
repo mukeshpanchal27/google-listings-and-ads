@@ -5,6 +5,7 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\Shipping;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Settings as GoogleSettings;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\WP\NotificationsService;
+use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\SyncTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\JobRepository;
@@ -24,6 +25,8 @@ defined( 'ABSPATH' ) || exit;
  * @since 2.1.0
  */
 class SyncerHooks implements Service, Registerable {
+
+	use SyncTrait;
 
 	/**
 	 * This property is used to avoid scheduling duplicate jobs in the same request.
@@ -138,7 +141,7 @@ class SyncerHooks implements Service, Registerable {
 			return;
 		}
 
-		if ( $this->notifications_service->is_ready() ) {
+		if ( $this->notifications_service->is_ready( self::DATATYPE_SHIPPING ) ) {
 			$this->job_repository->get( ShippingNotificationJob::class )->schedule( [ 'topic' => NotificationsService::TOPIC_SHIPPING_UPDATED ] );
 		}
 

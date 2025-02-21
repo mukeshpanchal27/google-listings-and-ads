@@ -4,6 +4,7 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\GoogleListingsAndAds\API\WP;
 
 use Automattic\Jetpack\Connection\Client;
+use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\SyncTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\AccountService;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\MerchantCenterService;
@@ -23,6 +24,7 @@ defined( 'ABSPATH' ) || exit;
 class NotificationsService implements Service, OptionsAwareInterface {
 
 	use OptionsAwareTrait;
+	use SyncTrait;
 
 	// List of Topics to be used.
 	public const TOPIC_PRODUCT_CREATED  = 'product.create';
@@ -45,6 +47,21 @@ class NotificationsService implements Service, OptionsAwareInterface {
 		self::TOPIC_SHIPPING_UPDATED,
 		self::TOPIC_SETTINGS_UPDATED,
 	];
+
+	public const PRODUCT_TOPICS =  [
+		self::TOPIC_PRODUCT_CREATED,
+		self::TOPIC_PRODUCT_UPDATED,
+		self::TOPIC_PRODUCT_DELETED
+	];
+
+	public const COUPON_TOPICS =  [
+		self::TOPIC_COUPON_CREATED,
+		self::TOPIC_COUPON_UPDATED,
+		self::TOPIC_COUPON_DELETED
+	];
+
+	public const SHIPPING_TOPICS =  [ self::TOPIC_SHIPPING_UPDATED ];
+	public const SETTINGS_TOPICS =  [ self::TOPIC_SETTINGS_UPDATED ];
 
 	/**
 	 * The url to send the notification
@@ -100,7 +117,7 @@ class NotificationsService implements Service, OptionsAwareInterface {
 		 * @param int $item_id The item_id for the notification.
 		 * @param string $topic The topic for the notification.
 		 */
-		if ( ! apply_filters( 'woocommerce_gla_notify', $this->is_ready() && in_array( $topic, self::ALLOWED_TOPICS, true ), $item_id, $topic ) ) {
+		if ( ! apply_filters( 'woocommerce_gla_notify', $this->is_ready( $this->get_datatype_from_topic( $topic ) ) && in_array( $topic, self::ALLOWED_TOPICS, true ), $item_id, $topic ) ) {
 			$this->notification_error( $topic, 'Notification was not sent because the Notification Service is not ready or the topic is not valid.', $item_id );
 			return false;
 		}
@@ -172,10 +189,12 @@ class NotificationsService implements Service, OptionsAwareInterface {
 	 * This happens when the WPCOM API is Authorized and the feature is enabled.
 	 *
 	 * @param bool $with_health_check If true. Performs a remote request to WPCOM API to get the status.
+	 * @param string|null $data_type The data type to check.
 	 * @return bool
 	 */
-	public function is_ready( bool $with_health_check = true ): bool {
-		return $this->options->is_wpcom_api_authorized() && $this->is_enabled() && $this->merchant_center->is_ready_for_syncing() && ( $with_health_check === false || $this->account_service->is_wpcom_api_status_healthy() );
+	public function is_ready( string $data_type = null, bool $with_health_check = true ): bool {
+		$is_ready = $this->options->is_wpcom_api_authorized() && $this->is_enabled() && $this->merchant_center->is_ready_for_syncing() && ( $with_health_check === false || $this->account_service->is_wpcom_api_status_healthy() );
+		return $is_ready && $this->is_pull_enabled_for_datatype( $data_type );
 	}
 
 	/**
@@ -185,5 +204,31 @@ class NotificationsService implements Service, OptionsAwareInterface {
 	 */
 	public function is_enabled(): bool {
 		return apply_filters( 'woocommerce_gla_notifications_enabled', true );
+	}
+
+	/**
+	 * Get the DataType from a Notification Topic
+	 *
+	 * @param string $topic The topic.
+	 * @return string The DataType
+	 */
+	protected function get_datatype_from_topic( string $topic ): string {
+		if ( in_array( $topic, self::PRODUCT_TOPICS, true ) ) {
+			return self::DATATYPE_PRODUCTS;
+		}
+
+		if ( in_array( $topic, self::COUPON_TOPICS, true ) ) {
+			return self::DATATYPE_COUPONS;
+		}
+
+		if ( in_array( $topic, self::SHIPPING_TOPICS, true ) ) {
+			return self::DATATYPE_SHIPPING;
+		}
+
+		if ( in_array( $topic, self::SETTINGS_TOPICS, true ) ) {
+			return self::DATATYPE_SETTINGS;
+		}
+
+		return $topic;
 	}
 }

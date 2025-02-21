@@ -5,6 +5,7 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\Product;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\Google\BatchProductIDRequestEntry;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\WP\NotificationsService;
+use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\SyncTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\DeleteProducts;
@@ -30,6 +31,7 @@ defined( 'ABSPATH' ) || exit;
 class SyncerHooks implements Service, Registerable {
 
 	use PluginHelper;
+	use SyncTrait;
 
 	protected const SCHEDULE_TYPE_UPDATE = 'update';
 	protected const SCHEDULE_TYPE_DELETE = 'delete';
@@ -209,7 +211,7 @@ class SyncerHooks implements Service, Registerable {
 			$product_id = $product->get_id();
 
 			// Avoid to handle variations directly. We handle them from the parent.
-			if ( $this->notifications_service->is_ready() && $notify ) {
+			if ( $this->notifications_service->is_ready( self::DATATYPE_PRODUCTS ) && $notify ) {
 				$this->handle_update_product_notification( $product );
 			}
 
@@ -344,7 +346,7 @@ class SyncerHooks implements Service, Registerable {
 	 * @param int $product_id
 	 */
 	protected function handle_pre_delete_product( int $product_id ) {
-		if ( $this->notifications_service->is_ready() ) {
+		if ( $this->notifications_service->is_ready( self::DATATYPE_PRODUCTS ) ) {
 			/**
 			 * For deletions, we do send directly the notification instead of scheduling it.
 			 * This is because we want to avoid that the product is not in the database anymore when the scheduled action runs.
