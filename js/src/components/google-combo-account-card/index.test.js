@@ -111,6 +111,7 @@ describe( 'GoogleComboAccountCard', () => {
 		} );
 		useGoogleMCAccount.mockReturnValue( {
 			hasFinishedResolution: true,
+			googleMCAccount: {},
 			isWPComAppGranted: false,
 		} );
 		render( <GoogleComboAccountCard /> );
