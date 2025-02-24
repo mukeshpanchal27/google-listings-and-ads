@@ -64,20 +64,20 @@ trait SyncTrait {
 	protected function get_default_sync_mode(): array {
 		return [
 			$this->get_products_datatype() => [
-				'pull' => false,
-				'push' => false,
+				'pull' => true,
+				'push' => true,
 			],
 			$this->get_coupons_datatype()  => [
-				'pull' => false,
-				'push' => false,
+				'pull' => true,
+				'push' => true,
 			],
 			$this->get_shipping_datatype() => [
-				'pull' => false,
-				'push' => false,
+				'pull' => true,
+				'push' => true,
 			],
 			$this->get_settings_datatype() => [
-				'pull' => false,
-				'push' => false,
+				'pull' => true,
+				'push' => true,
 			],
 		];
 	}
