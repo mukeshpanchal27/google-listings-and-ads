@@ -20,29 +20,54 @@ trait SyncTrait {
 
 	use OptionsAwareTrait;
 
-	protected function get_products_datatype() {
+	/**
+	 * Get the products datatype key
+	 *
+	 * @return string
+	 */
+	protected function get_products_datatype(): string {
 		return 'products';
 	}
 
-	protected function get_coupons_datatype() {
+	/**
+	 * Get the coupons datatype key
+	 *
+	 * @return string
+	 */
+	protected function get_coupons_datatype(): string {
 		return 'coupons';
 	}
 
-	protected function get_shipping_datatype() {
+	/**
+	 * Get the shipping datatype key
+	 *
+	 * @return string
+	 */
+	protected function get_shipping_datatype(): string {
 		return 'shipping';
 	}
 
-	protected function get_settings_datatype() {
+	/**
+	 * Get the settings datatype key
+	 *
+	 * @return string
+	 */
+	protected function get_settings_datatype(): string {
 		return 'settings';
 	}
 
-	protected function get_default_sync_mode() {
+	/**
+	 * Get the default config for the sync mode.
+	 *
+	 * @return array[]
+	 */
+	protected function get_default_sync_mode(): array {
 		return [
 			$this->get_products_datatype() => [
 				'pull' => false,
 				'push' => false,
 			],
-			$this->get_coupons_datatype() => [
+			$this->get_coupons_datatype()  => [
 				'pull' => false,
 				'push' => false,
 			],
@@ -64,13 +89,13 @@ trait SyncTrait {
 	 * @return array
 	 */
 	protected function get_current_sync_value(): array {
-		$sync_mode = $this->options->get(OptionsInterface::API_PULL_SYNC_MODE);
+		$sync_mode = $this->options->get( OptionsInterface::API_PULL_SYNC_MODE );
 
-		if (!is_array($sync_mode)) {
+		if ( ! is_array( $sync_mode ) ) {
 			$sync_mode = $this->get_default_sync_mode();
 		}
 
-		return array_replace_recursive($this->get_default_sync_mode(), $sync_mode);
+		return array_replace_recursive( $this->get_default_sync_mode(), $sync_mode );
 	}
 
 	/**
@@ -83,7 +108,6 @@ trait SyncTrait {
 	 * @return bool
 	 */
 	protected function is_pull_enabled_for_datatype( string $data_type = null ): bool {
-
 		if ( is_null( $data_type ) ) {
 			return true;
 		}
@@ -95,17 +119,17 @@ trait SyncTrait {
 
 	/**
 	 * Check if MC PUSH is enabled for a specific data type.
+	 *
 	 * @param string|null $data_type The data type to check.
 	 * @return bool
 	 */
 	protected function is_push_enabled_for_datatype( string $data_type = null ): bool {
-
 		if ( is_null( $data_type ) ) {
 			return true;
 		}
 
 		$sync_modes = $this->get_current_sync_value();
 
-		return apply_filters( 'woocommerce_gla_is_push_enabled_for_datatype', $sync_modes[ $data_type ]['push'] ?? false  );
+		return apply_filters( 'woocommerce_gla_is_push_enabled_for_datatype', $sync_modes[ $data_type ]['push'] ?? false );
 	}
 }

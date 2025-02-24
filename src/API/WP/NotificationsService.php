@@ -48,20 +48,20 @@ class NotificationsService implements Service, OptionsAwareInterface {
 		self::TOPIC_SETTINGS_UPDATED,
 	];
 
-	public const PRODUCT_TOPICS =  [
+	public const PRODUCT_TOPICS = [
 		self::TOPIC_PRODUCT_CREATED,
 		self::TOPIC_PRODUCT_UPDATED,
-		self::TOPIC_PRODUCT_DELETED
+		self::TOPIC_PRODUCT_DELETED,
 	];
 
-	public const COUPON_TOPICS =  [
+	public const COUPON_TOPICS = [
 		self::TOPIC_COUPON_CREATED,
 		self::TOPIC_COUPON_UPDATED,
-		self::TOPIC_COUPON_DELETED
+		self::TOPIC_COUPON_DELETED,
 	];
 
-	public const SHIPPING_TOPICS =  [ self::TOPIC_SHIPPING_UPDATED ];
-	public const SETTINGS_TOPICS =  [ self::TOPIC_SETTINGS_UPDATED ];
+	public const SHIPPING_TOPICS = [ self::TOPIC_SHIPPING_UPDATED ];
+	public const SETTINGS_TOPICS = [ self::TOPIC_SETTINGS_UPDATED ];
 
 	/**
 	 * The url to send the notification
@@ -188,9 +188,9 @@ class NotificationsService implements Service, OptionsAwareInterface {
 	 * If the Notifications are ready
 	 * This happens when the WPCOM API is Authorized and the feature is enabled.
 	 *
-	 * @param bool $with_health_check If true. Performs a remote request to WPCOM API to get the status.
 	 * @param string|null $data_type The data type to check.
-	 * @return bool
+	 * @param bool        $with_health_check If true. Performs a remote request to WPCOM API to get the status.
+	 *        * @return bool
 	 */
 	public function is_ready( string $data_type = null, bool $with_health_check = true ): bool {
 		$is_ready = $this->options->is_wpcom_api_authorized() && $this->is_enabled() && $this->merchant_center->is_ready_for_syncing() && ( $with_health_check === false || $this->account_service->is_wpcom_api_status_healthy() );
