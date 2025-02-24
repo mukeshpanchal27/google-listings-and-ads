@@ -20,35 +20,42 @@ trait SyncTrait {
 
 	use OptionsAwareTrait;
 
-	public const PULL = 'pull';
-	public const PUSH = 'push';
+	protected function get_products_datatype() {
+		return 'products';
+	}
 
-	public const DATATYPE_PRODUCTS = 'products';
-	public const DATATYPE_COUPONS  = 'coupons';
-	public const DATATYPE_SHIPPING = 'shipping';
-	public const DATATYPE_SETTINGS = 'settings';
+	protected function get_coupons_datatype() {
+		return 'coupons';
+	}
 
-	public const DEFAULT_SYNC_MODE = [
-		self::DATATYPE_PRODUCTS => [
-			self::PULL => false,
-			self::PUSH => false,
-		],
-		self::DATATYPE_COUPONS => [
-			self::PULL => false,
-			self::PUSH => false,
-		],
-		self::DATATYPE_SHIPPING => [
-			self::PULL => false,
-			self::PUSH => false,
-		],
-		self::DATATYPE_SETTINGS => [
-			self::PULL => false,
-			self::PUSH => false,
-		],
-	];
+	protected function get_shipping_datatype() {
+		return 'shipping';
+	}
 
+	protected function get_settings_datatype() {
+		return 'settings';
+	}
 
-
+	protected function get_default_sync_mode() {
+		return [
+			$this->get_products_datatype() => [
+				'pull' => false,
+				'push' => false,
+			],
+			$this->get_coupons_datatype() => [
+				'pull' => false,
+				'push' => false,
+			],
+			$this->get_shipping_datatype() => [
+				'pull' => false,
+				'push' => false,
+			],
+			$this->get_settings_datatype() => [
+				'pull' => false,
+				'push' => false,
+			],
+		];
+	}
 
 	/**
 	 * Get the current value for the API PULL Sync.
@@ -60,10 +67,10 @@ trait SyncTrait {
 		$sync_mode = $this->options->get(OptionsInterface::API_PULL_SYNC_MODE);
 
 		if (!is_array($sync_mode)) {
-			$sync_mode = self::DEFAULT_SYNC_MODE;
+			$sync_mode = $this->get_default_sync_mode();
 		}
 
-		return array_replace_recursive(self::DEFAULT_SYNC_MODE, $sync_mode);
+		return array_replace_recursive($this->get_default_sync_mode(), $sync_mode);
 	}
 
 	/**
@@ -83,7 +90,7 @@ trait SyncTrait {
 
 		$sync_modes = $this->get_current_sync_value();
 
-		return apply_filters( 'woocommerce_gla_is_pull_enabled_for_datatype', $sync_modes[ $data_type ][self::PULL] ?? false );
+		return apply_filters( 'woocommerce_gla_is_pull_enabled_for_datatype', $sync_modes[ $data_type ]['pull'] ?? false );
 	}
 
 	/**
@@ -99,6 +106,6 @@ trait SyncTrait {
 
 		$sync_modes = $this->get_current_sync_value();
 
-		return apply_filters( 'woocommerce_gla_is_push_enabled_for_datatype', $sync_modes[ $data_type ][self::PUSH] ?? false  );
+		return apply_filters( 'woocommerce_gla_is_push_enabled_for_datatype', $sync_modes[ $data_type ]['push'] ?? false  );
 	}
 }

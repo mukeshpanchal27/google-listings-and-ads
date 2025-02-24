@@ -141,7 +141,7 @@ class SyncerHooks implements Service, Registerable {
 			return;
 		}
 
-		if ( $this->notifications_service->is_ready( self::DATATYPE_SHIPPING ) ) {
+		if ( $this->notifications_service->is_ready( self::get_shipping_datatype() ) ) {
 			$this->job_repository->get( ShippingNotificationJob::class )->schedule( [ 'topic' => NotificationsService::TOPIC_SHIPPING_UPDATED ] );
 		}
 
