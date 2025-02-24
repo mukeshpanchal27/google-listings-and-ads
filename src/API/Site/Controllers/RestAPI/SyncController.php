@@ -215,7 +215,7 @@ class SyncController extends BaseOptionsController {
 
 	/**
 	 * Get the parameters from the request body.
-	 * Only the keys in self::DEFAULT_SYNC_MODE that contains boolean pull and/or push param are allowed.
+	 * Only the keys in SyncTrait::get_default_sync_mode() that contains boolean pull and/or push param are allowed.
 	 *
 	 * @param Request $request The request
 	 * @return array
@@ -227,7 +227,7 @@ class SyncController extends BaseOptionsController {
 			return [];
 		}
 
-		$params       = array_intersect_key( $request_params, self::DEFAULT_SYNC_MODE );
+		$params       = array_intersect_key( $request_params, self::get_default_sync_mode() );
 		$valid_params = [];
 
 		foreach ( $params as $key => $param ) {
