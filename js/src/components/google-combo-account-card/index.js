@@ -9,6 +9,14 @@ import ConnectGoogleComboAccountCard from './connect-google-combo-account-card';
 import ConnectedGoogleComboAccountCard from './connected-google-combo-account-card';
 import './index.scss';
 
+/**
+ * Renders a card to connect, request full access, or display a connected Google account.
+ *
+ * Please note that this component is only used on the onboarding flow.
+ *
+ * @param {Object} props React props
+ * @param {boolean} [props.disabled=false] Whether display the Card in disabled style.
+ */
 export default function GoogleComboAccountCard( { disabled = false } ) {
 	const { google, scope, hasFinishedResolution } = useGoogleAccount();
 
@@ -18,11 +26,11 @@ export default function GoogleComboAccountCard( { disabled = false } ) {
 
 	const isConnected = google?.active === 'yes';
 
-	if ( isConnected && scope.gmcRequired && scope.adsRequired ) {
+	if ( isConnected && scope.onboardingRequired ) {
 		return <ConnectedGoogleComboAccountCard />;
 	}
 
-	if ( isConnected && ( ! scope.gmcRequired || ! scope.adsRequired ) ) {
+	if ( isConnected && ! scope.onboardingRequired ) {
 		return (
 			<RequestFullAccessGoogleAccountCard
 				additionalScopeEmail={ google.email }
