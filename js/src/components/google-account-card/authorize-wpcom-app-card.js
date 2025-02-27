@@ -47,6 +47,7 @@ function getDetail( status ) {
  * Please note that the authorization process involves multiple external
  * services, this component may be technically ambiguous in these places:
  * - Component name
+ * - The directory where it is located
  * - The data source for its grant status
  * - The presenation on UI
  */
