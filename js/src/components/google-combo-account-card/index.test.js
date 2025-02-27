@@ -120,7 +120,9 @@ describe( 'GoogleComboAccountCard', () => {
 			screen.getByRole( 'button', { name: 'Grant access' } )
 		).toBeInTheDocument();
 		expect(
-			screen.getByText( /Granting access to the application is required/ )
+			screen.getByText(
+				/Granting Google access to your WooCommerce store is required/
+			)
 		).toBeInTheDocument();
 	} );
 

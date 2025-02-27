@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Notice } from '@wordpress/components';
+import { Flex, FlexBlock, Notice } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -11,6 +11,7 @@ import AccountCard, { APPEARANCE } from '~/components/account-card';
 import LoadingLabel from '~/components/loading-label';
 import EnableNewProductSyncButton from '~/components/enable-new-product-sync-button';
 import { SwitchAccountButton } from '~/components/google-account-card';
+import useGoogleAccount from '~/hooks/useGoogleAccount';
 import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
 import { GOOGLE_WPCOM_APP_CONNECTED_STATUS } from '~/constants';
 
@@ -19,7 +20,7 @@ function getDetail( status ) {
 		return (
 			<Notice status="warning" isDismissible={ false }>
 				{ __(
-					'Notice and status after the user denied the authorization.',
+					'Access was denied. Please make sure to grant Google access to your WooCommerce store to continue.',
 					'google-listings-and-ads'
 				) }
 			</Notice>
@@ -29,7 +30,7 @@ function getDetail( status ) {
 		return (
 			<Notice status="error" isDismissible={ false }>
 				{ __(
-					'Notice and status when an error occurs.',
+					'There was an error granting Google access to your WooCommerce store. Please try again, or contact support for further help.',
 					'google-listings-and-ads'
 				) }
 			</Notice>
@@ -52,6 +53,7 @@ function getDetail( status ) {
  * - The presenation on UI
  */
 export default function AuthorizeWPComAppCard() {
+	const { google } = useGoogleAccount();
 	const { googleMCAccount, hasFinishedResolution } = useGoogleMCAccount();
 
 	const getIndicator = () => {
@@ -73,14 +75,17 @@ export default function AuthorizeWPComAppCard() {
 	return (
 		<AccountCard
 			appearance={ APPEARANCE.GOOGLE }
-			title={ __(
-				`Google's WordPress.com application`,
-				'google-listings-and-ads'
-			) }
-			description={ __(
-				'Granting access to the application is required in order to synchronize product data with Google through it.',
-				'google-listings-and-ads'
-			) }
+			description={
+				<Flex direction="column" gap={ 3 }>
+					<FlexBlock>{ google?.email }</FlexBlock>
+					<FlexBlock>
+						{ __(
+							'Granting Google access to your WooCommerce store is required in order to synchronize product data with Google.',
+							'google-listings-and-ads'
+						) }
+					</FlexBlock>
+				</Flex>
+			}
 			alignIcon={ alignment }
 			alignIndicator={ alignment }
 			expandedDetail={ Boolean( detail ) }
