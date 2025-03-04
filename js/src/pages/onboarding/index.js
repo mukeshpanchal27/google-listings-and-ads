@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { Spinner } from '@woocommerce/components';
+
+/**
  * Internal dependencies
  */
 import useLayout from '~/hooks/useLayout';
@@ -18,10 +23,10 @@ const Onboarding = () => {
 
 	const canContinueRendering = useAutoWPComAppAuthorization();
 
-	// Render nothing as the requirement is to make it look like the redirections
+	// Render a spinner only as the requirement is to make it look like the redirections
 	// between Google authorization and WPCOM app authorization are seamless.
 	if ( ! canContinueRendering ) {
-		return null;
+		return <Spinner />;
 	}
 
 	return (
