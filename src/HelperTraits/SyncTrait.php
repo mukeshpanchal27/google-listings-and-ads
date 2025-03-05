@@ -62,23 +62,16 @@ trait SyncTrait {
 	 * @return array[]
 	 */
 	protected function get_default_sync_mode(): array {
+		$default_mode = [
+			'pull' => true,
+			'push' => true
+		];
+
 		return [
-			$this->get_products_datatype() => [
-				'pull' => true,
-				'push' => true,
-			],
-			$this->get_coupons_datatype()  => [
-				'pull' => true,
-				'push' => true,
-			],
-			$this->get_shipping_datatype() => [
-				'pull' => true,
-				'push' => true,
-			],
-			$this->get_settings_datatype() => [
-				'pull' => true,
-				'push' => true,
-			],
+			$this->get_products_datatype() => $default_mode,
+			$this->get_coupons_datatype()  => $default_mode,
+			$this->get_shipping_datatype() => $default_mode,
+			$this->get_settings_datatype() => $default_mode,
 		];
 	}
 
