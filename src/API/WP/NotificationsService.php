@@ -214,19 +214,19 @@ class NotificationsService implements Service, OptionsAwareInterface {
 	 */
 	protected function get_datatype_from_topic( string $topic ): string {
 		if ( in_array( $topic, self::PRODUCT_TOPICS, true ) ) {
-			return self::get_products_datatype();
+			return $this->get_products_datatype();
 		}
 
 		if ( in_array( $topic, self::COUPON_TOPICS, true ) ) {
-			return self::get_coupons_datatype();
+			return $this->get_coupons_datatype();
 		}
 
 		if ( in_array( $topic, self::SHIPPING_TOPICS, true ) ) {
-			return self::get_shipping_datatype();
+			return $this->get_shipping_datatype();
 		}
 
 		if ( in_array( $topic, self::SETTINGS_TOPICS, true ) ) {
-			return self::get_settings_datatype();
+			return $this->get_settings_datatype();
 		}
 
 		return $topic;

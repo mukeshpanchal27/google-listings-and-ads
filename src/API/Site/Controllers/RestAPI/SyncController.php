@@ -227,7 +227,7 @@ class SyncController extends BaseOptionsController {
 			return [];
 		}
 
-		$params       = array_intersect_key( $request_params, self::get_default_sync_mode() );
+		$params       = array_intersect_key( $request_params, $this->get_default_sync_mode() );
 		$valid_params = [];
 
 		foreach ( $params as $key => $param ) {
