@@ -111,7 +111,7 @@ class SyncController extends BaseOptionsController {
 	protected function get_sync_callback(): callable {
 		return function ( Request $request ) {
 			try {
-				$sync_mode = $this->get_current_sync_value();
+				$sync_mode = $this->get_current_sync_mode();
 				return $this->prepare_item_for_response( $sync_mode, $request );
 			} catch ( Exception $e ) {
 				return $this->response_from_exception( $e );
@@ -127,7 +127,7 @@ class SyncController extends BaseOptionsController {
 	protected function get_update_sync_callback(): callable {
 		return function ( Request $request ) {
 			try {
-				$sync_mode     = $this->get_current_sync_value();
+				$sync_mode     = $this->get_current_sync_mode();
 				$new_params    = $this->get_request_params( $request );
 				$new_sync_mode = array_replace_recursive( $sync_mode, $new_params );
 

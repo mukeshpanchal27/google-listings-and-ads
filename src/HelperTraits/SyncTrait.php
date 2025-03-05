@@ -73,19 +73,20 @@ trait SyncTrait {
 	}
 
 	/**
-	 * Get the current value for the API PULL Sync.
+	 * Get the current value for the API PULL / MC PUSH Sync mode.
 	 * Notice that malformed data will be replaced by default data.
 	 *
 	 * @return array
 	 */
-	protected function get_current_sync_value(): array {
+	protected function get_current_sync_mode(): array {
 		$sync_mode = $this->options->get( OptionsInterface::API_PULL_SYNC_MODE );
 
 		if ( ! is_array( $sync_mode ) ) {
 			$sync_mode = $this->get_default_sync_mode();
 		}
 
-		return array_replace_recursive( $this->get_default_sync_mode(), $sync_mode );
+		$sync_mode = array_replace_recursive( $this->get_default_sync_mode(), $sync_mode );
+		return apply_filters( 'woocommerce_gla_sync_mode', $sync_mode );
 	}
 
 	/**
@@ -102,7 +103,7 @@ trait SyncTrait {
 			return true;
 		}
 
-		$sync_modes = $this->get_current_sync_value();
+		$sync_modes = $this->get_current_sync_mode();
 
 		return (bool) apply_filters( 'woocommerce_gla_is_pull_enabled_for_datatype', $data_type, $sync_modes[ $data_type ]['pull'] ?? false );
 	}
@@ -118,7 +119,7 @@ trait SyncTrait {
 			return true;
 		}
 
-		$sync_modes = $this->get_current_sync_value();
+		$sync_modes = $this->get_current_sync_mode();
 
 		return (bool) apply_filters( 'woocommerce_gla_is_push_enabled_for_datatype', $data_type, $sync_modes[ $data_type ]['push'] ?? false );
 	}
