@@ -61,7 +61,7 @@ trait SyncTrait {
 	protected function get_default_sync_mode(): array {
 		$default_mode = [
 			'pull' => true,
-			'push' => true
+			'push' => true,
 		];
 
 		return [
