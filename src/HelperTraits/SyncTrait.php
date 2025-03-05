@@ -107,7 +107,7 @@ trait SyncTrait {
 
 		$sync_modes = $this->get_current_sync_value();
 
-		return apply_filters( 'woocommerce_gla_is_pull_enabled_for_datatype', $sync_modes[ $data_type ]['pull'] ?? false );
+		return (bool) apply_filters( 'woocommerce_gla_is_pull_enabled_for_datatype', $data_type, $sync_modes[ $data_type ]['pull'] ?? false );
 	}
 
 	/**
@@ -123,6 +123,6 @@ trait SyncTrait {
 
 		$sync_modes = $this->get_current_sync_value();
 
-		return apply_filters( 'woocommerce_gla_is_push_enabled_for_datatype', $sync_modes[ $data_type ]['push'] ?? false );
+		return (bool) apply_filters( 'woocommerce_gla_is_push_enabled_for_datatype', $data_type, $sync_modes[ $data_type ]['push'] ?? false );
 	}
 }
