@@ -91,20 +91,13 @@ trait SyncTrait {
 
 	/**
 	 * Check if API PULL is enabled for a specific data type.
-	 *
-	 * Checking null data type returns true.
 	 * Checking a non-existent data type will return false.
 	 *
-	 * @param string|null $data_type The data type to check.
+	 * @param string $data_type The data type to check.
 	 * @return bool
 	 */
-	protected function is_pull_enabled_for_datatype( string $data_type = null ): bool {
-		if ( is_null( $data_type ) ) {
-			return true;
-		}
-
+	protected function is_pull_enabled_for_datatype( string $data_type ): bool {
 		$sync_modes = $this->get_current_sync_mode();
-
 		return (bool) apply_filters( 'woocommerce_gla_is_pull_enabled_for_datatype', $data_type, $sync_modes[ $data_type ]['pull'] ?? false );
 	}
 
