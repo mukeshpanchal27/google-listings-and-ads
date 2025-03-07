@@ -4,7 +4,6 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\Coupon;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\Google\DeleteCouponEntry;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\WP\NotificationsService;
-use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\SyncTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\JobRepository;
@@ -29,7 +28,6 @@ defined( 'ABSPATH' ) || exit();
 class SyncerHooks implements Service, Registerable {
 
 	use PluginHelper;
-	use SyncTrait;
 
 	protected const SCHEDULE_TYPE_UPDATE = 'update';
 
@@ -196,7 +194,7 @@ class SyncerHooks implements Service, Registerable {
 	protected function handle_update_coupon( WC_Coupon $coupon ) {
 		$coupon_id = $coupon->get_id();
 
-		if ( $this->notifications_service->is_ready( $this->get_coupons_datatype() ) ) {
+		if ( $this->notifications_service->is_ready( $this->notifications_service->get_coupons_datatype() ) ) {
 			$this->handle_update_coupon_notification( $coupon );
 		}
 
@@ -279,7 +277,7 @@ class SyncerHooks implements Service, Registerable {
 	 * @param int $coupon_id
 	 */
 	protected function handle_delete_coupon( int $coupon_id ) {
-		if ( $this->notifications_service->is_ready( $this->get_coupons_datatype() ) ) {
+		if ( $this->notifications_service->is_ready( $this->notifications_service->get_coupons_datatype() ) ) {
 			$this->maybe_send_delete_notification( $coupon_id );
 		}
 

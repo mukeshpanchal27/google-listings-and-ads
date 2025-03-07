@@ -3,9 +3,6 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits;
 
-use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
-use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -14,8 +11,6 @@ defined( 'ABSPATH' ) || exit;
  * @package Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits
  */
 trait SyncTrait {
-
-	use OptionsAwareTrait;
 
 	/**
 	 * Get the products datatype key
@@ -70,50 +65,5 @@ trait SyncTrait {
 			$this->get_shipping_datatype() => $default_mode,
 			$this->get_settings_datatype() => $default_mode,
 		];
-	}
-
-	/**
-	 * Get the current value for the API PULL / MC PUSH Sync mode.
-	 * Notice that malformed data will be replaced by default data.
-	 *
-	 * @return array
-	 */
-	protected function get_current_sync_mode(): array {
-		$sync_mode = $this->options->get( OptionsInterface::API_PULL_SYNC_MODE );
-
-		if ( ! is_array( $sync_mode ) ) {
-			$sync_mode = $this->get_default_sync_mode();
-		}
-
-		$sync_mode = array_replace_recursive( $this->get_default_sync_mode(), $sync_mode );
-		return apply_filters( 'woocommerce_gla_sync_mode', $sync_mode );
-	}
-
-	/**
-	 * Check if API PULL is enabled for a specific data type.
-	 * Checking a non-existent data type will return false.
-	 *
-	 * @param string $data_type The data type to check.
-	 * @return bool
-	 */
-	protected function is_pull_enabled_for_datatype( string $data_type ): bool {
-		$sync_modes = $this->get_current_sync_mode();
-		return (bool) apply_filters( 'woocommerce_gla_is_pull_enabled_for_datatype', $data_type, $sync_modes[ $data_type ]['pull'] ?? false );
-	}
-
-	/**
-	 * Check if MC PUSH is enabled for a specific data type.
-	 *
-	 * @param string|null $data_type The data type to check.
-	 * @return bool
-	 */
-	protected function is_push_enabled_for_datatype( string $data_type = null ): bool {
-		if ( is_null( $data_type ) ) {
-			return true;
-		}
-
-		$sync_modes = $this->get_current_sync_mode();
-
-		return (bool) apply_filters( 'woocommerce_gla_is_push_enabled_for_datatype', $data_type, $sync_modes[ $data_type ]['push'] ?? false );
 	}
 }

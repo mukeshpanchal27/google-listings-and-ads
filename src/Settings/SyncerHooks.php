@@ -4,7 +4,6 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Settings;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\API\WP\NotificationsService;
-use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\SyncTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Registerable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\JobRepository;
@@ -22,8 +21,6 @@ defined( 'ABSPATH' ) || exit;
  * @since 2.8.0
  */
 class SyncerHooks implements Service, Registerable {
-
-	use SyncTrait;
 
 	/**
 	 * @var NotificationsService $notifications_service
@@ -83,7 +80,7 @@ class SyncerHooks implements Service, Registerable {
 	 * Register the service.
 	 */
 	public function register(): void {
-		if ( ! $this->notifications_service->is_ready( self::get_settings_datatype(), false ) ) {
+		if ( ! $this->notifications_service->is_ready( $this->notifications_service->get_settings_datatype(), false ) ) {
 			return;
 		}
 

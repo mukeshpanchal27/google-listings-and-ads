@@ -5,7 +5,7 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\RestA
 
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\BaseOptionsController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\TransportMethods;
-use Automattic\WooCommerce\GoogleListingsAndAds\HelperTraits\SyncTrait;
+use Automattic\WooCommerce\GoogleListingsAndAds\API\WP\NotificationsService;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\RESTServer;
 use Exception;
@@ -62,7 +62,11 @@ defined( 'ABSPATH' ) || exit;
  */
 class SyncController extends BaseOptionsController {
 
-	use SyncTrait;
+
+	/**
+	 * @var NotificationsService
+	 */
+	protected $notifications_service;
 
 	/**
 	 * The base for routes in this controller.
@@ -74,10 +78,12 @@ class SyncController extends BaseOptionsController {
 	/**
 	 * SyncController constructor.
 	 *
-	 * @param RESTServer $server
+	 * @param RESTServer           $server
+	 * @param NotificationsService $notifications_service
 	 */
-	public function __construct( RESTServer $server ) {
+	public function __construct( RESTServer $server, NotificationsService $notifications_service ) {
 		parent::__construct( $server );
+		$this->notifications_service = $notifications_service;
 	}
 
 	/**
@@ -111,7 +117,7 @@ class SyncController extends BaseOptionsController {
 	protected function get_sync_callback(): callable {
 		return function ( Request $request ) {
 			try {
-				$sync_mode = $this->get_current_sync_mode();
+				$sync_mode = $this->notifications_service->get_current_sync_mode();
 				return $this->prepare_item_for_response( $sync_mode, $request );
 			} catch ( Exception $e ) {
 				return $this->response_from_exception( $e );
@@ -127,7 +133,7 @@ class SyncController extends BaseOptionsController {
 	protected function get_update_sync_callback(): callable {
 		return function ( Request $request ) {
 			try {
-				$sync_mode     = $this->get_current_sync_mode();
+				$sync_mode     = $this->notifications_service->get_current_sync_mode();
 				$new_params    = $this->get_request_params( $request );
 				$new_sync_mode = array_replace_recursive( $sync_mode, $new_params );
 
@@ -227,7 +233,7 @@ class SyncController extends BaseOptionsController {
 			return [];
 		}
 
-		$params       = array_intersect_key( $request_params, $this->get_default_sync_mode() );
+		$params       = array_intersect_key( $request_params, $this->notifications_service->get_default_sync_mode() );
 		$valid_params = [];
 
 		foreach ( $params as $key => $param ) {
