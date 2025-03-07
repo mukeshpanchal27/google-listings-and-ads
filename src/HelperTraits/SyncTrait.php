@@ -17,7 +17,7 @@ trait SyncTrait {
 	 *
 	 * @return string
 	 */
-	protected function get_products_datatype(): string {
+	public function get_products_datatype(): string {
 		return 'products';
 	}
 
@@ -26,7 +26,7 @@ trait SyncTrait {
 	 *
 	 * @return string
 	 */
-	protected function get_coupons_datatype(): string {
+	public function get_coupons_datatype(): string {
 		return 'coupons';
 	}
 
@@ -35,7 +35,7 @@ trait SyncTrait {
 	 *
 	 * @return string
 	 */
-	protected function get_shipping_datatype(): string {
+	public function get_shipping_datatype(): string {
 		return 'shipping';
 	}
 
@@ -44,7 +44,7 @@ trait SyncTrait {
 	 *
 	 * @return string
 	 */
-	protected function get_settings_datatype(): string {
+	public function get_settings_datatype(): string {
 		return 'settings';
 	}
 
@@ -53,7 +53,7 @@ trait SyncTrait {
 	 *
 	 * @return array[]
 	 */
-	protected function get_default_sync_mode(): array {
+	public function get_default_sync_mode(): array {
 		$default_mode = [
 			'pull' => true,
 			'push' => true,

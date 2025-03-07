@@ -259,7 +259,7 @@ class NotificationsService implements Service, OptionsAwareInterface {
 	 */
 	public function is_pull_enabled_for_datatype( string $data_type ): bool {
 		$sync_modes = $this->get_current_sync_mode();
-		return (bool) apply_filters( 'woocommerce_gla_is_pull_enabled_for_datatype', $data_type, $sync_modes[ $data_type ]['pull'] ?? false );
+		return (bool) apply_filters( 'woocommerce_gla_is_pull_enabled_for_datatype', $sync_modes[ $data_type ]['pull'] ?? false, $data_type );
 	}
 
 	/**
@@ -271,6 +271,6 @@ class NotificationsService implements Service, OptionsAwareInterface {
 	 */
 	public function is_push_enabled_for_datatype( string $data_type ): bool {
 		$sync_modes = $this->get_current_sync_mode();
-		return (bool) apply_filters( 'woocommerce_gla_is_push_enabled_for_datatype', $data_type, $sync_modes[ $data_type ]['push'] ?? false );
+		return (bool) apply_filters( 'woocommerce_gla_is_push_enabled_for_datatype', $sync_modes[ $data_type ]['push'] ?? false, $data_type );
 	}
 }
