@@ -114,4 +114,5 @@ trait Utilities {
 		// Decode Base64 string and return the original data
 		return base64_decode( $b64 );
 	}
+
 }

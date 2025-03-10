@@ -80,7 +80,7 @@ class SyncerHooks implements Service, Registerable {
 	 * Register the service.
 	 */
 	public function register(): void {
-		if ( ! $this->notifications_service->is_ready( $this->notifications_service->get_settings_datatype(), false ) ) {
+		if ( ! $this->notifications_service->is_ready( NotificationsService::DATATYPE_SETTINGS, false ) ) {
 			return;
 		}
 
