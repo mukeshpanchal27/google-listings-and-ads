@@ -114,4 +114,30 @@ trait Utilities {
 		// Decode Base64 string and return the original data
 		return base64_decode( $b64 );
 	}
+
+	/**
+	 * Returns enabled or disabled based on a boolean value.
+	 *
+	 * Returns "enabled" for truthy
+	 * Returns "disabled" for falsy.
+	 *
+	 * @param bool $value The value to check.
+	 * @return string
+	 */
+	public function enabled_or_disabled( bool $value ): string {
+		return $value ? 'enabled' : 'disabled';
+	}
+
+	/**
+	 * Returns Yes or No based on a boolean value.
+	 *
+	 * Returns "yes" for truthy
+	 * Returns "no" for falsy.
+	 *
+	 * @param bool $value The value to check.
+	 * @return string
+	 */
+	public function yes_or_no( bool $value ): string {
+		return $value ? 'yes' : 'no';
+	}
 }

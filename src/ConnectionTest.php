@@ -683,6 +683,42 @@ class ConnectionTest implements ContainerAwareInterface, Service, Registerable {
 							</td>
 						</tr>
 						<tr>
+							<th><label>Products API PULL Sync:</label></th>
+							<td>
+								<p>
+
+									<code><?php echo $notification_service->is_pull_enabled_for_datatype( NotificationsService::DATATYPE_PRODUCT ) ? 'enabled' : 'disabled' ?></code>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<th><label>Coupons API PULL Sync:</label></th>
+							<td>
+								<p>
+
+									<code><?php echo $notification_service->is_pull_enabled_for_datatype( NotificationsService::DATATYPE_COUPON ) ? 'enabled' : 'disabled' ?></code>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<th><label>Shipping API PULL Sync:</label></th>
+							<td>
+								<p>
+
+									<code><?php echo $notification_service->is_pull_enabled_for_datatype( NotificationsService::DATATYPE_SHIPPING ) ? 'enabled' : 'disabled' ?></code>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<th><label>Settings API PULL Sync:</label></th>
+							<td>
+								<p>
+
+									<code><?php echo $notification_service->is_pull_enabled_for_datatype( NotificationsService::DATATYPE_SETTINGS ) ? 'enabled' : 'disabled' ?></code>
+								</p>
+							</td>
+						</tr>
+						<tr>
 							<th><label>WPCOM REST API Status:</label></th>
 							<td>
 								<p>
