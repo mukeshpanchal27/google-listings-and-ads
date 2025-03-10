@@ -221,7 +221,7 @@ class SyncController extends BaseOptionsController {
 
 	/**
 	 * Get the parameters from the request body.
-	 * Only the keys in SyncTrait::get_default_sync_mode() that contains boolean pull and/or push param are allowed.
+	 * Only the keys in NotificationsService::get_default_sync_mode() that contains boolean pull and/or push param are allowed.
 	 *
 	 * @param Request $request The request
 	 * @return array
