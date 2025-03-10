@@ -5,6 +5,7 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\RestA
 
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\BaseOptionsController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\TransportMethods;
+use Automattic\WooCommerce\GoogleListingsAndAds\API\WP\NotificationsService;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\RESTServer;
 use Exception;
@@ -61,24 +62,11 @@ defined( 'ABSPATH' ) || exit;
  */
 class SyncController extends BaseOptionsController {
 
-	private const DEFAULT_SYNC_MODE = [
-		'products' => [
-			'pull' => false,
-			'push' => false,
-		],
-		'coupons'  => [
-			'pull' => false,
-			'push' => false,
-		],
-		'shipping' => [
-			'pull' => false,
-			'push' => false,
-		],
-		'settings' => [
-			'pull' => false,
-			'push' => false,
-		],
-	];
+
+	/**
+	 * @var NotificationsService
+	 */
+	protected $notifications_service;
 
 	/**
 	 * The base for routes in this controller.
@@ -90,10 +78,12 @@ class SyncController extends BaseOptionsController {
 	/**
 	 * SyncController constructor.
 	 *
-	 * @param RESTServer $server
+	 * @param RESTServer           $server
+	 * @param NotificationsService $notifications_service
 	 */
-	public function __construct( RESTServer $server ) {
+	public function __construct( RESTServer $server, NotificationsService $notifications_service ) {
 		parent::__construct( $server );
+		$this->notifications_service = $notifications_service;
 	}
 
 	/**
@@ -127,7 +117,7 @@ class SyncController extends BaseOptionsController {
 	protected function get_sync_callback(): callable {
 		return function ( Request $request ) {
 			try {
-				$sync_mode = $this->get_current_sync_value();
+				$sync_mode = $this->notifications_service->get_current_sync_mode();
 				return $this->prepare_item_for_response( $sync_mode, $request );
 			} catch ( Exception $e ) {
 				return $this->response_from_exception( $e );
@@ -143,7 +133,7 @@ class SyncController extends BaseOptionsController {
 	protected function get_update_sync_callback(): callable {
 		return function ( Request $request ) {
 			try {
-				$sync_mode     = $this->get_current_sync_value();
+				$sync_mode     = $this->notifications_service->get_current_sync_mode();
 				$new_params    = $this->get_request_params( $request );
 				$new_sync_mode = array_replace_recursive( $sync_mode, $new_params );
 
@@ -230,24 +220,8 @@ class SyncController extends BaseOptionsController {
 	}
 
 	/**
-	 * Get the current value for the API PULL Sync.
-	 * Notice that malformed data will be replaced by default data.
-	 *
-	 * @return array
-	 */
-	protected function get_current_sync_value(): array {
-		$sync_mode = $this->options->get( OptionsInterface::API_PULL_SYNC_MODE );
-
-		if ( ! is_array( $sync_mode ) ) {
-			$sync_mode = self::DEFAULT_SYNC_MODE;
-		}
-
-		return array_replace_recursive( self::DEFAULT_SYNC_MODE, $sync_mode );
-	}
-
-	/**
 	 * Get the parameters from the request body.
-	 * Only the keys in self::DEFAULT_SYNC_MODE that contains boolean pull and/or push param are allowed.
+	 * Only the keys in NotificationsService::get_default_sync_mode() that contains boolean pull and/or push param are allowed.
 	 *
 	 * @param Request $request The request
 	 * @return array
@@ -259,7 +233,7 @@ class SyncController extends BaseOptionsController {
 			return [];
 		}
 
-		$params       = array_intersect_key( $request_params, self::DEFAULT_SYNC_MODE );
+		$params       = array_intersect_key( $request_params, $this->notifications_service->get_default_sync_mode() );
 		$valid_params = [];
 
 		foreach ( $params as $key => $param ) {
