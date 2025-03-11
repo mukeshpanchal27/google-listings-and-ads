@@ -305,11 +305,6 @@ Triggered when datepicker (date ranger picker) is updated,
 - [`ProductsReportFilters`](../../js/src/pages/reports/products/products-report-filters.js#L41)
 - [`ProgramsReportFilters`](../../js/src/pages/reports/programs/programs-report-filters.js#L43)
 
-### [`gla_disable_product_sync_click`](../../js/src/components/google-mc-account-card/merchant-center-account-info-card.js#L34)
-Clicking on the button to disable the new product sync (API Pull).
-#### Emitters
-- [`MerchantCenterAccountInfoCard`](../../js/src/components/google-mc-account-card/merchant-center-account-info-card.js#L48)
-
 ### [`gla_disconnected_accounts`](../../js/src/pages/settings/linked-accounts.js#L31)
 Accounts are disconnected from the Setting page
 #### Properties
