@@ -40,7 +40,6 @@ const EnableNewProductSyncNotice = () => {
 				) }
 			</p>
 			<EnableNewProductSyncButton
-				text={ __( 'Grant access', 'google-listings-and-ads' ) }
 				eventProps={ {
 					page: 'settings',
 					context: 'banner',
