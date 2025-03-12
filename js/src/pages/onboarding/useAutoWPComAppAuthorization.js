@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { getQuery } from '@woocommerce/navigation';
-import { useRef } from '@wordpress/element';
+import { useRef, useReducer } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -30,6 +30,7 @@ export default function useAutoWPComAppAuthorization() {
 	const { googleMCAccount, isWPComAppGranted } = useGoogleMCAccount();
 	const { fetchWPComAppAuthorizationUrl } = useAppDispatch();
 	const lockRef = useRef( null );
+	const [ , forceUpdate ] = useReducer( ( x ) => x + 1, 0 );
 
 	const query = getQuery();
 	const isBackFromGoogleAuth = query[ 'google-mc' ] === 'connected';
@@ -65,6 +66,7 @@ export default function useAutoWPComAppAuthorization() {
 				.catch( () => {
 					// Silently fall back to the subsequent process if any error occurs.
 					lockRef.current = true;
+					forceUpdate();
 				} );
 		}
 	} else {
