@@ -11,9 +11,6 @@ import { getSetting } from '@woocommerce/settings'; // eslint-disable-line impor
  */
 import AccountCard, { APPEARANCE } from '~/components/account-card';
 import ConnectedIconLabel from '~/components/connected-icon-label';
-import { GOOGLE_WPCOM_APP_CONNECTED_STATUS } from '~/constants';
-import EnableNewProductSyncButton from '~/components/enable-new-product-sync-button';
-import AppNotice from '~/components/app-notice';
 
 /**
  * @typedef {import('~/data/types.js').GoogleMCAccount} GoogleMCAccount
@@ -28,18 +25,6 @@ import AppNotice from '~/components/app-notice';
 const MerchantCenterAccountInfoCard = ( { googleMCAccount } ) => {
 	const domain = new URL( getSetting( 'homeUrl' ) ).host;
 
-	// Show the button if the status is "approved".
-	const showDisconnectNotificationsButton =
-		googleMCAccount.wpcom_rest_api_status ===
-		GOOGLE_WPCOM_APP_CONNECTED_STATUS.APPROVED;
-
-	// Show the error if the status is set but is not "approved".
-	const showErrorNotificationsNotice =
-		googleMCAccount.wpcom_rest_api_status &&
-		googleMCAccount.notification_service_enabled &&
-		googleMCAccount.wpcom_rest_api_status !==
-			GOOGLE_WPCOM_APP_CONNECTED_STATUS.APPROVED;
-
 	return (
 		<AccountCard
 			appearance={ APPEARANCE.GOOGLE_MERCHANT_CENTER }
@@ -49,35 +34,8 @@ const MerchantCenterAccountInfoCard = ( { googleMCAccount } ) => {
 				domain,
 				googleMCAccount.id
 			) }
-			indicator={
-				showErrorNotificationsNotice ? (
-					<EnableNewProductSyncButton
-						text={ __( 'Grant access', 'google-listings-and-ads' ) }
-						eventProps={ { page: 'settings', context: 'mc_card' } }
-					/>
-				) : (
-					<ConnectedIconLabel />
-				)
-			}
-		>
-			{ showDisconnectNotificationsButton && (
-				<AppNotice status="success" isDismissible={ false }>
-					{ __(
-						'Google has been granted access to fetch your product data.',
-						'google-listings-and-ads'
-					) }
-				</AppNotice>
-			) }
-
-			{ showErrorNotificationsNotice && (
-				<AppNotice status="warning" isDismissible={ false }>
-					{ __(
-						'There was an issue granting access to Google for fetching your products.',
-						'google-listings-and-ads'
-					) }
-				</AppNotice>
-			) }
-		</AccountCard>
+			indicator={ <ConnectedIconLabel /> }
+		/>
 	);
 };
 

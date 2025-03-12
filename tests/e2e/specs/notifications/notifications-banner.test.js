@@ -65,7 +65,7 @@ test.describe( 'Notifications Banner', () => {
 		expect( page.url() ).toMatch( mockAuthURL );
 	} );
 
-	test( 'When REST API is Approved it shows a success notice in MC', async () => {
+	test( 'When REST API is Approved it shows a success notice', async () => {
 		await settingsPage.goto();
 		await settingsPage.mockMCConnected( 1234, true, 'approved' );
 		const grantedAccessMessage = page
@@ -76,7 +76,7 @@ test.describe( 'Notifications Banner', () => {
 		await expect( grantedAccessMessage ).toBeVisible();
 	} );
 
-	test( 'When REST API is Error it shows a waring notice in MC and allows to grant access', async () => {
+	test( 'When REST API is Error it shows a waring notice and allows to grant access', async () => {
 		await settingsPage.goto();
 		await settingsPage.mockMCConnected( 1234, true, 'error' );
 		const mockAuthURL = 'https://example.com';
@@ -84,7 +84,7 @@ test.describe( 'Notifications Banner', () => {
 		const errorAccessMessage = page
 			.locator( '#woocommerce-layout__primary' )
 			.getByText(
-				'There was an issue granting access to Google for fetching your products.'
+				'There was an error granting Google access to your WooCommerce store.'
 			);
 		const grantAccessBtn = page.getByRole( 'button', {
 			name: 'Grant access',
