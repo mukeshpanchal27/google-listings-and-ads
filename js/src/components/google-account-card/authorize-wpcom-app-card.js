@@ -54,8 +54,12 @@ function getDetail( status ) {
  *
  * @param {Object} props React props.
  * @param {Object} props.eventPropsOfEnableButton Event tracking properties for the enable button.
+ * @param {boolean} [props.hideAccountSwitch=false] Whether to hide the account switch button.
  */
-export default function AuthorizeWPComAppCard( { eventPropsOfEnableButton } ) {
+export default function AuthorizeWPComAppCard( {
+	eventPropsOfEnableButton,
+	hideAccountSwitch = false,
+} ) {
 	const { google } = useGoogleAccount();
 	const { googleMCAccount, hasFinishedResolution } = useGoogleMCAccount();
 
@@ -95,7 +99,7 @@ export default function AuthorizeWPComAppCard( { eventPropsOfEnableButton } ) {
 			expandedDetail={ Boolean( detail ) }
 			indicator={ getIndicator() }
 			detail={ detail }
-			actions={ <SwitchAccountButton /> }
+			actions={ ! hideAccountSwitch && <SwitchAccountButton /> }
 		/>
 	);
 }
