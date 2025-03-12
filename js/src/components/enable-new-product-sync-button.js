@@ -53,6 +53,7 @@ const EnableNewProductSyncButton = ( props ) => {
 	return (
 		<AppButton
 			isSecondary
+			text={ __( 'Grant access', 'google-listings-and-ads' ) }
 			loading={ loading }
 			onClick={ handleEnableClick }
 			eventName="gla_enable_product_sync_click"

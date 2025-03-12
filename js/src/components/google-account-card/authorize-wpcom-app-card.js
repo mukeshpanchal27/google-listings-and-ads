@@ -70,7 +70,6 @@ export default function AuthorizeWPComAppCard( {
 
 		return (
 			<EnableNewProductSyncButton
-				text={ __( 'Grant access', 'google-listings-and-ads' ) }
 				eventProps={ eventPropsOfEnableButton }
 			/>
 		);
