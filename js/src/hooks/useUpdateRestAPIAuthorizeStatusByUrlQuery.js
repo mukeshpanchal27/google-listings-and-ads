@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { useCallback, useEffect } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 import { getQuery, getNewPath, getHistory } from '@woocommerce/navigation';
 
 /**
@@ -23,6 +23,7 @@ import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 const useUpdateRestAPIAuthorizeStatusByUrlQuery = () => {
 	const { google_wpcom_app_status: googleWPCOMAppStatus, nonce } = getQuery();
 	const { invalidateResolution } = useAppDispatch();
+	const lockRef = useRef( null );
 
 	const path = `${ API_NAMESPACE }/rest-api/authorize`;
 	const [ fetchUpdateRestAPIAuthorize ] = useApiFetchCallback( {
@@ -30,7 +31,7 @@ const useUpdateRestAPIAuthorizeStatusByUrlQuery = () => {
 		method: 'PUT',
 	} );
 
-	const handleUpdateRestAPIAuthorize = useCallback( async () => {
+	const handleUpdateRestAPIAuthorize = async () => {
 		try {
 			await fetchUpdateRestAPIAuthorize( {
 				data: {
@@ -54,25 +55,24 @@ const useUpdateRestAPIAuthorizeStatusByUrlQuery = () => {
 			nonce: undefined,
 		} );
 		getHistory().replace( url );
-	}, [
-		fetchUpdateRestAPIAuthorize,
-		googleWPCOMAppStatus,
-		invalidateResolution,
-		nonce,
-	] );
+	};
+
+	if ( lockRef.current === null ) {
+		lockRef.current = handleUpdateRestAPIAuthorize;
+	}
 
 	useEffect( () => {
-		async function updateStatus() {
-			await handleUpdateRestAPIAuthorize( googleWPCOMAppStatus );
-		}
-		if (
-			Object.values( GOOGLE_WPCOM_APP_CONNECTED_STATUS ).includes(
-				googleWPCOMAppStatus
-			)
-		) {
+		const isValidStatus = Object.values(
+			GOOGLE_WPCOM_APP_CONNECTED_STATUS
+		).includes( googleWPCOMAppStatus );
+
+		if ( isValidStatus && lockRef.current ) {
+			const updateStatus = lockRef.current;
+			lockRef.current = false;
+
 			updateStatus();
 		}
-	}, [ googleWPCOMAppStatus, handleUpdateRestAPIAuthorize ] );
+	}, [ googleWPCOMAppStatus ] );
 };
 
 export default useUpdateRestAPIAuthorizeStatusByUrlQuery;
