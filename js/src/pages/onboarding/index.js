@@ -20,7 +20,7 @@ import SetupStepper from './setup-stepper';
  */
 const Onboarding = () => {
 	useLayout( 'full-page' );
-	useUpdateRestAPIAuthorizeStatusByUrlQuery();
+	useUpdateRestAPIAuthorizeStatusByUrlQuery( CONTEXT_EXTENSION_ONBOARDING );
 
 	const canContinueRendering = useAutoWPComAppAuthorization(
 		CONTEXT_EXTENSION_ONBOARDING
