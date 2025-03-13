@@ -3,6 +3,7 @@
  */
 import { renderHook, waitFor } from '@testing-library/react';
 import { getQuery, getHistory } from '@woocommerce/navigation';
+import { recordEvent } from '@woocommerce/tracks';
 
 /**
  * Internal dependencies
@@ -11,6 +12,9 @@ import useUpdateRestAPIAuthorizeStatusByUrlQuery from './useUpdateRestAPIAuthori
 import useApiFetchCallback from '~/hooks/useApiFetchCallback';
 
 jest.mock( '@woocommerce/navigation' );
+jest.mock( '@woocommerce/tracks', () => ( {
+	recordEvent: jest.fn().mockName( 'recordEvent' ),
+} ) );
 jest.mock( '~/hooks/useApiFetchCallback' );
 
 describe( 'useUpdateRestAPIAuthorizeStatusByUrlQuery', () => {
@@ -19,6 +23,8 @@ describe( 'useUpdateRestAPIAuthorizeStatusByUrlQuery', () => {
 	let consoleErrorSpy;
 
 	beforeEach( () => {
+		recordEvent.mockClear();
+
 		historyReplace = jest.fn().mockName( 'getHistory().replace' );
 		getHistory.mockReturnValue( { replace: historyReplace } );
 
@@ -130,7 +136,28 @@ describe( 'useUpdateRestAPIAuthorizeStatusByUrlQuery', () => {
 		} );
 		renderHook( () => useUpdateRestAPIAuthorizeStatusByUrlQuery() );
 		expect( fetchUpdateRestAPIAuthorize ).toHaveBeenCalledTimes( 0 );
+		expect( recordEvent ).toHaveBeenCalledTimes( 0 );
 	} );
+
+	it.each( [ 'approved', 'disapproved', 'error' ] )(
+		"Should record an event if the auth status is '%s'",
+		( status ) => {
+			getQuery.mockReturnValue( {
+				google_wpcom_app_status: status,
+				nonce: 'nonce-123',
+			} );
+
+			renderHook( () =>
+				useUpdateRestAPIAuthorizeStatusByUrlQuery( 'jest-testing' )
+			);
+
+			expect( recordEvent ).toHaveBeenCalledTimes( 1 );
+			expect( recordEvent ).toHaveBeenCalledWith(
+				'gla_product_sync_status_callback',
+				{ page: 'jest-testing', status }
+			);
+		}
+	);
 
 	it( 'Should only call API one time', async () => {
 		getQuery.mockClear().mockReturnValue( {
@@ -140,8 +167,8 @@ describe( 'useUpdateRestAPIAuthorizeStatusByUrlQuery', () => {
 
 		expect( fetchUpdateRestAPIAuthorize ).not.toHaveBeenCalled();
 
-		const hook = renderHook( () =>
-			useUpdateRestAPIAuthorizeStatusByUrlQuery()
+		const hook = renderHook( ( page ) =>
+			useUpdateRestAPIAuthorizeStatusByUrlQuery( page )
 		);
 
 		hook.rerender();
@@ -150,5 +177,6 @@ describe( 'useUpdateRestAPIAuthorizeStatusByUrlQuery', () => {
 
 		await waitFor( () => expect( getQuery ).toHaveBeenCalledTimes( 4 ) );
 		expect( fetchUpdateRestAPIAuthorize ).toHaveBeenCalledTimes( 1 );
+		expect( recordEvent ).toHaveBeenCalledTimes( 1 );
 	} );
 } );
