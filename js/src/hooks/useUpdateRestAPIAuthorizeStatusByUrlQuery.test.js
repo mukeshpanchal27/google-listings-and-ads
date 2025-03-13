@@ -131,4 +131,24 @@ describe( 'useUpdateRestAPIAuthorizeStatusByUrlQuery', () => {
 		renderHook( () => useUpdateRestAPIAuthorizeStatusByUrlQuery() );
 		expect( fetchUpdateRestAPIAuthorize ).toHaveBeenCalledTimes( 0 );
 	} );
+
+	it( 'Should only call API one time', async () => {
+		getQuery.mockClear().mockReturnValue( {
+			google_wpcom_app_status: 'approved',
+			nonce: 'nonce-123',
+		} );
+
+		expect( fetchUpdateRestAPIAuthorize ).not.toHaveBeenCalled();
+
+		const hook = renderHook( () =>
+			useUpdateRestAPIAuthorizeStatusByUrlQuery()
+		);
+
+		hook.rerender();
+		hook.rerender( 'jest-testing' );
+		hook.rerender();
+
+		await waitFor( () => expect( getQuery ).toHaveBeenCalledTimes( 4 ) );
+		expect( fetchUpdateRestAPIAuthorize ).toHaveBeenCalledTimes( 1 );
+	} );
 } );
