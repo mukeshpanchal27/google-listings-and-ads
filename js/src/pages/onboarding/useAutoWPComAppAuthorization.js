@@ -11,6 +11,15 @@ import { useAppDispatch } from '~/data';
 import useJetpackAccount from '~/hooks/useJetpackAccount';
 import useGoogleAccount from '~/hooks/useGoogleAccount';
 import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
+import { recordGlaEvent } from '~/utils/tracks';
+
+/**
+ * Start the WPCOM app authorization process to enable the product sync (API Pull).
+ *
+ * @event gla_enable_product_sync
+ * @property {string} page Indicates the page where this event happened
+ * @property {string} context Indicates the origin that triggered this event
+ */
 
 /**
  * Hook to automatically redirect the user to WPCOM app authorization once they
@@ -19,12 +28,15 @@ import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
  * Please note that this hook is a special business logic exclusive to the onboarding flow
  * and should not be used elsewhere.
  *
+ * @param {string} page The page where this hook is being used. It's used for tracking purposes.
  * @return {null|boolean} A state that indicates whether the caller can continue the subsequent process.
  *   - `null` if it's still loading the required data for determining whether to do the redirection.
  *   - `true` if it's ready to continue the subsequent process.
  *   - `false` if it's processing the redirection and the caller should block the subsequent process.
+ *
+ * @fires gla_enable_product_sync with `{ page: 'setup-mc', context: 'auto-redirection' }`
  */
-export default function useAutoWPComAppAuthorization() {
+export default function useAutoWPComAppAuthorization( page ) {
 	const { jetpack } = useJetpackAccount();
 	const { google, scope } = useGoogleAccount();
 	const { googleMCAccount, isWPComAppGranted } = useGoogleMCAccount();
@@ -58,6 +70,11 @@ export default function useAutoWPComAppAuthorization() {
 		// Make sure it only triggers the redirection one time.
 		if ( lockRef.current === null ) {
 			lockRef.current = false;
+
+			recordGlaEvent( 'gla_enable_product_sync', {
+				page,
+				context: 'auto-redirection',
+			} );
 
 			fetchWPComAppAuthorizationUrl()
 				.then( ( authUrl ) => {
