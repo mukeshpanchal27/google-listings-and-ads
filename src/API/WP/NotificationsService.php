@@ -42,8 +42,6 @@ class NotificationsService implements Service, OptionsAwareInterface {
 	public const DATATYPE_SHIPPING = 'shipping';
 	public const DATATYPE_SETTINGS = 'settings';
 
-
-
 	// Constant used to get all the allowed topics
 	public const ALLOWED_TOPICS = [
 		self::TOPIC_PRODUCT_CREATED,
@@ -91,7 +89,6 @@ class NotificationsService implements Service, OptionsAwareInterface {
 	 * @var AccountService $account_service
 	 */
 	public AccountService $account_service;
-
 
 	/**
 	 * NotificationsService constructor
@@ -295,7 +292,6 @@ class NotificationsService implements Service, OptionsAwareInterface {
 		$sync_modes = $this->get_current_sync_mode();
 		return (bool) apply_filters( 'woocommerce_gla_is_push_enabled_for_datatype', $sync_modes[ $data_type ]['push'] ?? false, $data_type );
 	}
-
 
 	/**
 	 * Get the default config for the sync mode.
