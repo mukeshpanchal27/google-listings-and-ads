@@ -77,8 +77,7 @@ const ConnectExistingAccount = ( { onCreateClick } ) => {
 		 * Prevent the `value` from staying on the unclaimed and disconnected account ID.
 		 * Please note that the reset works because the `AdsAccountSelectControl` happens to
 		 * switch between two different `AppSelectControls` so that `autoSelectFirstOption`
-		 * can be triggered again. Otherwise, it would need to specify `key={ Boolean(value) }`
-		 * in the `<AdsAccountSelectControl>` use of this component.
+		 * can be triggered again.
 		 */
 		setValue( undefined );
 	};
@@ -124,6 +123,10 @@ const ConnectExistingAccount = ( { onCreateClick } ) => {
 			indicator={ getIndicator() }
 			detail={
 				<AdsAccountSelectControl
+					// Setting `key` is to ensure that `autoSelectFirstOption` will be
+					// triggered after disconnecting, so that the automatically selected
+					// account can call back to this component.
+					key={ Boolean( value ) }
 					value={ value }
 					onChange={ setValue }
 					autoSelectFirstOption
