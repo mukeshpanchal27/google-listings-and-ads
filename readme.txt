@@ -140,6 +140,10 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
+= 2.9.10 - 2025-03-18 =
+* Dev - Add the conversion action details to the connection test page.
+* Fix - It may be unable to connect to the auto-selected Google Ads account after disconnecting during onboarding.
+
 = 2.9.9 - 2025-02-18 =
 * Fix - Error displayed when accessing campaign assets editing page without attached asset groups.
 * Tweak - Opt-in to URL expansion.
