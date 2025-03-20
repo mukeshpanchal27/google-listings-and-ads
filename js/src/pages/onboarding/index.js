@@ -9,6 +9,7 @@ import { Spinner } from '@woocommerce/components';
 import useLayout from '~/hooks/useLayout';
 import useAutoWPComAppAuthorization from './useAutoWPComAppAuthorization';
 import useUpdateRestAPIAuthorizeStatusByUrlQuery from '~/hooks/useUpdateRestAPIAuthorizeStatusByUrlQuery';
+import { CONTEXT_EXTENSION_ONBOARDING } from '~/utils/tracks';
 import SetupTopBar from './setup-top-bar';
 import SetupStepper from './setup-stepper';
 
@@ -19,9 +20,11 @@ import SetupStepper from './setup-stepper';
  */
 const Onboarding = () => {
 	useLayout( 'full-page' );
-	useUpdateRestAPIAuthorizeStatusByUrlQuery();
+	useUpdateRestAPIAuthorizeStatusByUrlQuery( CONTEXT_EXTENSION_ONBOARDING );
 
-	const canContinueRendering = useAutoWPComAppAuthorization();
+	const canContinueRendering = useAutoWPComAppAuthorization(
+		CONTEXT_EXTENSION_ONBOARDING
+	);
 
 	// Render a spinner only as the requirement is to make it look like the redirections
 	// between Google authorization and WPCOM app authorization are seamless.
