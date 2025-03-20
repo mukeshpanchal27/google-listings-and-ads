@@ -46,7 +46,11 @@ export default function GoogleComboAccountCard( { disabled = false } ) {
 		}
 
 		if ( ! isWPComAppGranted ) {
-			return <AuthorizeWPComAppCard />;
+			return (
+				<AuthorizeWPComAppCard
+					eventPropsOfEnableButton={ { page: 'setup-mc' } }
+				/>
+			);
 		}
 
 		return <ConnectedGoogleComboAccountCard />;
