@@ -10,9 +10,14 @@ import userEvent from '@testing-library/user-event';
  */
 import GoogleComboAccountCard from './';
 import useGoogleAccount from '~/hooks/useGoogleAccount';
+import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
 
 jest.mock( '~/hooks/useGoogleAccount', () =>
 	jest.fn().mockName( 'useGoogleAccount' )
+);
+
+jest.mock( '~/hooks/useGoogleMCAccount', () =>
+	jest.fn().mockName( 'useGoogleMCAccount' )
 );
 
 jest.mock( './connected-google-combo-account-card', () =>
@@ -25,8 +30,9 @@ jest.mock( './connected-google-combo-account-card', () =>
 );
 
 describe( 'GoogleComboAccountCard', () => {
-	it( 'Should render a spinner when the Google account connection data is loading', () => {
+	it( 'Should render a spinner when the Google or GMC account connection is loading', () => {
 		useGoogleAccount.mockReturnValue( { hasFinishedResolution: false } );
+		useGoogleMCAccount.mockReturnValue( { hasFinishedResolution: false } );
 		const { rerender } = render( <GoogleComboAccountCard /> );
 
 		expect(
@@ -34,6 +40,13 @@ describe( 'GoogleComboAccountCard', () => {
 		).toBeInTheDocument();
 
 		useGoogleAccount.mockReturnValue( { hasFinishedResolution: true } );
+		rerender( <GoogleComboAccountCard /> );
+
+		expect(
+			screen.getByRole( 'status', { name: /Loading/ } )
+		).toBeInTheDocument();
+
+		useGoogleMCAccount.mockReturnValue( { hasFinishedResolution: true } );
 		rerender( <GoogleComboAccountCard /> );
 
 		expect(
@@ -46,6 +59,7 @@ describe( 'GoogleComboAccountCard', () => {
 			hasFinishedResolution: true,
 			google: { active: 'no' },
 		} );
+		useGoogleMCAccount.mockReturnValue( { hasFinishedResolution: true } );
 
 		const user = userEvent.setup();
 		const { rerender } = render( <GoogleComboAccountCard disabled /> );
@@ -76,6 +90,7 @@ describe( 'GoogleComboAccountCard', () => {
 			google: { active: 'yes' },
 			scope: { onboardingRequired: false },
 		} );
+		useGoogleMCAccount.mockReturnValue( { hasFinishedResolution: true } );
 		render( <GoogleComboAccountCard /> );
 
 		expect(
@@ -88,13 +103,41 @@ describe( 'GoogleComboAccountCard', () => {
 		).toBeInTheDocument();
 	} );
 
+	it( 'Should render a card for re-asking to connect to WPComApp', () => {
+		useGoogleAccount.mockReturnValue( {
+			hasFinishedResolution: true,
+			google: { active: 'yes' },
+			scope: { onboardingRequired: true },
+		} );
+		useGoogleMCAccount.mockReturnValue( {
+			hasFinishedResolution: true,
+			googleMCAccount: {},
+			isWPComAppGranted: false,
+		} );
+		render( <GoogleComboAccountCard /> );
+
+		expect(
+			screen.getByRole( 'button', { name: 'Grant access' } )
+		).toBeInTheDocument();
+		expect(
+			screen.getByText(
+				/Granting Google access to your WooCommerce store is required/
+			)
+		).toBeInTheDocument();
+	} );
+
 	it( 'Should render a card for the connected Google account', () => {
 		useGoogleAccount.mockReturnValue( {
 			hasFinishedResolution: true,
 			google: { active: 'yes' },
 			scope: { onboardingRequired: true },
 		} );
+		useGoogleMCAccount.mockReturnValue( {
+			hasFinishedResolution: true,
+			isWPComAppGranted: true,
+		} );
 		render( <GoogleComboAccountCard /> );
+
 		expect(
 			screen.getByText( '--Test--ConnectedGoogleComboAccountCard' )
 		).toBeInTheDocument();
