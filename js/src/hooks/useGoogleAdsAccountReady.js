@@ -27,7 +27,7 @@ const useGoogleAdsAccountReady = () => {
 		return null;
 	}
 
-	// A temorary fix to prevent the user from proceeding when the link merchant step failed but hasAccess is true.
+	// A temporary fix to prevent the user from proceeding when the link merchant step failed but hasAccess is true.
 	const linkMerchantFailed =
 		hasAccess &&
 		step === 'link_merchant' &&
