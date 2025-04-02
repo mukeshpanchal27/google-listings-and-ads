@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import { GOOGLE_ADS_ACCOUNT_STATUS } from '~/constants';
 import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
 import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
 
@@ -12,6 +13,7 @@ import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
  */
 const useGoogleAdsAccountReady = () => {
 	const {
+		googleAdsAccount,
 		hasGoogleAdsConnection,
 		hasFinishedResolution: adsAccountResolved,
 	} = useGoogleAdsAccount();
@@ -25,7 +27,14 @@ const useGoogleAdsAccountReady = () => {
 		return null;
 	}
 
+	// A temorary fix to prevent the user from proceeding when the link merchant step failed but hasAccess is true.
+	const linkMerchantFailed =
+		hasAccess &&
+		step === 'link_merchant' &&
+		googleAdsAccount?.status === GOOGLE_ADS_ACCOUNT_STATUS.INCOMPLETE;
+
 	return (
+		! linkMerchantFailed &&
 		hasGoogleAdsConnection &&
 		hasAccess &&
 		[ '', 'billing', 'link_merchant' ].includes( step )
