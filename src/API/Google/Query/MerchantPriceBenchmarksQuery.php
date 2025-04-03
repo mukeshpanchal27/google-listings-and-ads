@@ -5,6 +5,11 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantQuery;
 
+/**
+ * Class MerchantPriceBenchmarksQuery
+ *
+ * @package Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query
+ */
 class MerchantPriceBenchmarksQuery extends MerchantQuery {
 
 	use ReportQueryTrait;

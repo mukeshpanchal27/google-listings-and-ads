@@ -28,9 +28,8 @@ class PriceBenchmarksController extends BaseController {
 			'mc/price-benchmarks',
 			[
 				[
-					'methods'             => TransportMethods::READABLE,
-					'callback'            => $this->get_price_benchmarks_callback(),
-					//'permission_callback' => $this->get_permission_callback(),
+					'methods'  => TransportMethods::READABLE,
+					'callback' => $this->get_price_benchmarks_callback(),
 				],
 				'schema' => $this->get_api_response_schema_callback(),
 			]
@@ -51,6 +50,7 @@ class PriceBenchmarksController extends BaseController {
 						'per_page'  => 10,
 					]
 				);
+
 				$response = $benchmarks_query
 					->set_client( $this->service, $merchant_id )
 					->get_results();
@@ -76,20 +76,23 @@ class PriceBenchmarksController extends BaseController {
 	 */
 	protected function get_schema_properties(): array {
 		return [
-			'product' => [
+			'product'         => [
 				'description' => __( 'Product details.', 'google-listings-and-ads' ),
 				'type'        => 'object',
 				'properties'  => [
 					'id'        => [ 'type' => 'integer' ],
-					'thumbnail' => [ 'type' => 'string', 'format' => 'uri' ],
+					'thumbnail' => [
+						'type'   => 'string',
+						'format' => 'uri',
+					],
 					'title'     => [ 'type' => 'string' ],
 				],
 			],
-			'effectiveness' => [
+			'effectiveness'   => [
 				'description' => __( 'Effectiveness score.', 'google-listings-and-ads' ),
 				'type'        => 'number',
 			],
-			'regular_price' => [
+			'regular_price'   => [
 				'description' => __( 'Regular price of the product.', 'google-listings-and-ads' ),
 				'type'        => 'number',
 			],
@@ -97,7 +100,7 @@ class PriceBenchmarksController extends BaseController {
 				'description' => __( 'Price of the product on Google.', 'google-listings-and-ads' ),
 				'type'        => 'number',
 			],
-			'price_gap' => [
+			'price_gap'       => [
 				'description' => __( 'Price gap between the regular price and the price on Google.', 'google-listings-and-ads' ),
 				'type'        => 'number',
 			],
