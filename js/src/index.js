@@ -46,6 +46,12 @@ const AttributeMapping = lazy( () =>
 	)
 );
 
+const PriceBenchmark = lazy( () =>
+	import(
+		/* webpackChunkName: "price-benchmark" */ './pages/price-benchmark'
+	)
+);
+
 const Settings = lazy( () =>
 	import( /* webpackChunkName: "settings" */ './pages/settings' )
 );
@@ -118,6 +124,15 @@ addFilter(
 				],
 				container: ProductFeed,
 				path: '/google/product-feed',
+				wpOpenMenu: 'toplevel_page_woocommerce-marketing',
+			},
+			{
+				breadcrumbs: [
+					...initialBreadcrumbs,
+					__( 'Price Benchmark', 'google-listings-and-ads' ),
+				],
+				container: PriceBenchmark,
+				path: '/google/price-benchmark',
 				wpOpenMenu: 'toplevel_page_woocommerce-marketing',
 			},
 			{
