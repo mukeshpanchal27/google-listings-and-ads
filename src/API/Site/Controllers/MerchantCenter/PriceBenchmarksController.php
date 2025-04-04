@@ -5,9 +5,13 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\Merch
 
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\BaseController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\TransportMethods;
-use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceBenchmarksQuery;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceSuggestionsQuery;
-use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
+use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
+use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
+use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
+use Exception;
+use WP_REST_Request as Request;
+use WP_REST_Response as Response;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -16,9 +20,9 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\MerchantCenter
  */
-class PriceBenchmarksController extends BaseController {
+class PriceBenchmarksController extends BaseController implements ContainerAwareInterface {
 
-	use OptionsAwareTrait;
+	use ContainerAwareTrait;
 
 	/**
 	 * Register rest routes with WordPress.
@@ -37,34 +41,48 @@ class PriceBenchmarksController extends BaseController {
 	}
 
 	/**
+	 * Maps query arguments from the REST request.
+	 *
+	 * @param Request $request REST Request.
+	 * @return array
+	 */
+	protected function prepare_query_arguments( Request $request ): array {
+		$args = wp_parse_args(
+			array_intersect_key(
+				$request->get_query_params(),
+				$this->get_collection_params()
+			),
+			$request->get_default_params()
+		);
+
+		return $args;
+	}
+
+	/**
 	 * Get the callback function for the price benchmarks request.
 	 *
 	 * @return callable
 	 */
 	protected function get_price_benchmarks_callback(): callable {
-		return function () {
+		return function ( Request $request ) {
 			try {
-				$benchmarks_query = new MerchantPriceBenchmarksQuery(
+				/** @var MerchantPriceBenchmarks $merchant */
+				$merchant = $this->container->get( MerchantPriceBenchmarks::class );
+
+				$benchmark_data = $merchant->get_benchmark_data( 'products', $this->prepare_query_arguments( $request ) );
+				$benchmark_data = $this->prepare_item_for_response( $benchmark_data, $request );
+
+				$get_price_insights_product_view = $merchant->get_price_insights_product_view( 'products', $this->prepare_query_arguments( $request ) );
+				$get_price_insights_product_view = $this->prepare_item_for_response( $get_price_insights_product_view, $request );
+
+				return new Response(
 					[
-						'next_page' => 2,
-						'per_page'  => 10,
+						'price_benchmarks' => $benchmark_data,
+						'price_insights'   => $get_price_insights_product_view,
 					]
 				);
-
-				$response = $benchmarks_query
-					->set_client( $this->service, $merchant_id )
-					->get_results();
-
-				return rest_ensure_response( $response );
-			} catch ( \Exception $e ) {
-				return new \WP_Error(
-					'price_benchmarks_error',
-					__( 'Failed to fetch price benchmarks.', 'google-listings-and-ads' ),
-					[
-						'status'  => 500,
-						'message' => $e->getMessage(),
-					]
-				);
+			} catch ( Exception $e ) {
+				return $this->response_from_exception( $e );
 			}
 		};
 	}

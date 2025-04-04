@@ -12,17 +12,12 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantQuery;
  */
 class MerchantPriceBenchmarksQuery extends MerchantQuery {
 
-	use ReportQueryTrait;
-
 	/**
 	 * MerchantPriceBenchmarksQuery constructor.
-	 *
-	 * @param array $args Query arguments.
 	 */
-	public function __construct( array $args ) {
+	public function __construct() {
 		parent::__construct( 'PriceCompetitivenessProductView' );
 		$this->set_initial_columns();
-		$this->handle_query_args( $args );
 	}
 
 	/**
@@ -45,13 +40,12 @@ class MerchantPriceBenchmarksQuery extends MerchantQuery {
 	protected function set_initial_columns() {
 		$this->columns(
 			[
-				'id'                     => 'product_view.id',
-				'title'                  => 'product_view.title',
-				'price_micros'           => 'product_view.price_micros',
-				'benchmark_price_micros' => 'price_competitiveness.benchmark_price_micros',
-				'currency_code'          => 'product_view.currency_code',
-				'country_code'           => 'product_view.country_code',
-				'date'                   => 'product_view.date',
+				'id'                                 => 'product_view.id',
+				'title'                              => 'product_view.title',
+				'price_micros'                       => 'product_view.price_micros',
+				'benchmark_price_micros'             => 'price_competitiveness.benchmark_price_micros',
+				'currency_code'                      => 'product_view.currency_code',
+				'price_competitiveness_country_code' => 'price_competitiveness.country_code',
 			]
 		);
 	}
