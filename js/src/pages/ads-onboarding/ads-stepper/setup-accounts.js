@@ -24,13 +24,13 @@ const SetupAccounts = ( props ) => {
 	const { onContinue = () => {} } = props;
 	const { google } = useGoogleAccount();
 	const { googleAdsAccount } = useGoogleAdsAccount();
-	const { isGoogleAdsReady } = useGoogleAdsAccountReady();
+	const { isLinkedToMerchantCenter } = useGoogleAdsAccountReady();
 
 	if ( ! google || ( google.active === 'yes' && ! googleAdsAccount ) ) {
 		return <AppSpinner />;
 	}
 
-	const isContinueButtonDisabled = ! isGoogleAdsReady;
+	const isContinueButtonDisabled = ! isLinkedToMerchantCenter;
 
 	return (
 		<StepContent>
