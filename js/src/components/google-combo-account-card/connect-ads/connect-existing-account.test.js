@@ -96,6 +96,7 @@ describe( 'ConnectExistingAccount', () => {
 
 			useGoogleAdsAccountReady.mockReturnValue( {
 				isGoogleAdsReady: true,
+				isLinkedToMerchantCenter: true,
 			} );
 		} );
 
@@ -131,6 +132,7 @@ describe( 'ConnectExistingAccount', () => {
 
 					useGoogleAdsAccountReady.mockReturnValue( {
 						isGoogleAdsReady: false,
+						isLinkedToMerchantCenter: false,
 					} );
 				} )
 			);
