@@ -30,7 +30,7 @@ const ConnectExistingAccount = ( { onCreateClick } ) => {
 	const [ isLoading, setLoading ] = useState( false );
 	const { createNotice } = useDispatchCoreNotices();
 	const { fetchGoogleAdsAccountStatus } = useAppDispatch();
-	const isConnected = useGoogleAdsAccountReady();
+	const { isGoogleAdsReady } = useGoogleAdsAccountReady();
 	const {
 		googleAdsAccount,
 		hasFinishedResolution,
@@ -95,7 +95,7 @@ const ConnectExistingAccount = ( { onCreateClick } ) => {
 			);
 		}
 
-		if ( isConnected ) {
+		if ( isGoogleAdsReady ) {
 			return <ConnectedIconLabel />;
 		}
 

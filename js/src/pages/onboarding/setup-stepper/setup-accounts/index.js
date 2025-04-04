@@ -92,7 +92,7 @@ const SetupAccounts = ( props ) => {
 	} = useGoogleMCAccount();
 	const { hasFinishedResolution } = useGoogleAdsAccount();
 	const isStoreAddressReady = useStoreAddressReady();
-	const isGoogleAdsReady = useGoogleAdsAccountReady();
+	const { isGoogleAdsReady } = useGoogleAdsAccountReady();
 	const { updateGoogleMCContactInformation } = useAppDispatch();
 	const [ isSubmitting, setIsSubmitting ] = useState( false );
 

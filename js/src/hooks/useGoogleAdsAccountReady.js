@@ -1,19 +1,28 @@
 /**
  * Internal dependencies
  */
-import { GOOGLE_ADS_ACCOUNT_STATUS } from '~/constants';
 import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
 import useGoogleAdsAccountStatus from '~/hooks/useGoogleAdsAccountStatus';
 
 /**
- * Hook to check if the Google Ads account is ready.
+ * @typedef {Object} GoogleAdsAccountReady
+ * @property {null|boolean} isGoogleAdsReady True if the Google Ads account is connected, claimed, and granted access. `null` if the state is not yet determined.
+ * @property {null|boolean} isLinkedToMerchantCenter True if the Google Ads account is linked to a Merchant Center account. `null` if the state is not yet determined.
+ */
+
+const notDetermined = {
+	isGoogleAdsReady: null,
+	isLinkedToMerchantCenter: null,
+};
+
+/**
+ * Hook to check if the Google Ads account is ready or connected to a Merchant Center account.
  * This is used to determine if the user can proceed to the next step.
  *
- * @return {boolean|null} Whether the Google Ads account is ready. `null` if the state is not yet determined.
+ * @return {GoogleAdsAccountReady} The state of the Google Ads account.
  */
 const useGoogleAdsAccountReady = () => {
 	const {
-		googleAdsAccount,
 		hasGoogleAdsConnection,
 		hasFinishedResolution: adsAccountResolved,
 	} = useGoogleAdsAccount();
@@ -24,21 +33,21 @@ const useGoogleAdsAccountReady = () => {
 	} = useGoogleAdsAccountStatus();
 
 	if ( ! adsAccountResolved || ! adsAccountStatusResolved ) {
-		return null;
+		return notDetermined;
 	}
 
-	// A temporary fix to prevent the user from proceeding when the link merchant step failed but hasAccess is true.
-	const linkMerchantFailed =
-		hasAccess &&
-		step === 'link_merchant' &&
-		googleAdsAccount?.status === GOOGLE_ADS_ACCOUNT_STATUS.INCOMPLETE;
+	const isLinkedToMerchantCenter =
+		hasAccess && [ '', 'billing' ].includes( step );
 
-	return (
-		! linkMerchantFailed &&
+	const isGoogleAdsReady =
 		hasGoogleAdsConnection &&
 		hasAccess &&
-		[ '', 'billing', 'link_merchant' ].includes( step )
-	);
+		[ '', 'billing', 'link_merchant' ].includes( step );
+
+	return {
+		isGoogleAdsReady,
+		isLinkedToMerchantCenter,
+	};
 };
 
 export default useGoogleAdsAccountReady;

@@ -94,7 +94,9 @@ describe( 'ConnectExistingAccount', () => {
 				refetchGoogleAdsAccount,
 			} );
 
-			useGoogleAdsAccountReady.mockReturnValue( true );
+			useGoogleAdsAccountReady.mockReturnValue( {
+				isGoogleAdsReady: true,
+			} );
 		} );
 
 		it( 'Should render the state in connected', () => {
@@ -127,7 +129,9 @@ describe( 'ConnectExistingAccount', () => {
 						refetchGoogleAdsAccount,
 					} );
 
-					useGoogleAdsAccountReady.mockReturnValue( false );
+					useGoogleAdsAccountReady.mockReturnValue( {
+						isGoogleAdsReady: false,
+					} );
 				} )
 			);
 

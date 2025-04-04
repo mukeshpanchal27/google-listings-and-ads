@@ -24,7 +24,7 @@ const SetupAccounts = ( props ) => {
 	const { onContinue = () => {} } = props;
 	const { google } = useGoogleAccount();
 	const { googleAdsAccount } = useGoogleAdsAccount();
-	const isGoogleAdsReady = useGoogleAdsAccountReady();
+	const { isGoogleAdsReady } = useGoogleAdsAccountReady();
 
 	if ( ! google || ( google.active === 'yes' && ! googleAdsAccount ) ) {
 		return <AppSpinner />;
