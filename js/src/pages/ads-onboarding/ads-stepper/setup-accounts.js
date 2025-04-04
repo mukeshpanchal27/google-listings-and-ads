@@ -30,6 +30,12 @@ const SetupAccounts = ( props ) => {
 		return <AppSpinner />;
 	}
 
+	/**
+	 * Here it uses `isLinkedToMerchantCenter` rather than `isGoogleAdsReady`
+	 * state because the latter is still true when the linking process fails.
+	 * When `isLinkedToMerchantCenter` is true, it already means the connection
+	 * process of Ads account is completed.
+	 */
 	const isContinueButtonDisabled = ! isLinkedToMerchantCenter;
 
 	return (
