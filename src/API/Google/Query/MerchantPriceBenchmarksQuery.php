@@ -35,7 +35,7 @@ class MerchantPriceBenchmarksQuery extends MerchantQuery {
 	 */
 	public function filter( array $ids ): QueryInterface {
 		if ( ! empty( $ids ) ) {
-			$this->where( 'product_view.id', 'IN', $ids );
+			$this->where( 'product_view.id', $ids, 'IN' );
 		}
 		return $this;
 	}
