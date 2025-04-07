@@ -69,10 +69,10 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				/** @var MerchantPriceBenchmarks $merchant */
 				$merchant = $this->container->get( MerchantPriceBenchmarks::class );
 
-				$benchmark_data = $merchant->get_benchmark_data( 'products', $this->prepare_query_arguments( $request ) );
+				$benchmark_data = $merchant->get_benchmark_data( $this->prepare_query_arguments( $request ) );
 				$benchmark_data = $this->prepare_item_for_response( $benchmark_data, $request );
 
-				$get_price_insights_product_view = $merchant->get_price_insights_product_view( 'products', $this->prepare_query_arguments( $request ) );
+				$get_price_insights_product_view = $merchant->get_price_insights_product_view( $this->prepare_query_arguments( $request ) );
 				$get_price_insights_product_view = $this->prepare_item_for_response( $get_price_insights_product_view, $request );
 
 				return new Response(

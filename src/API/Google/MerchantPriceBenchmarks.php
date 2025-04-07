@@ -38,13 +38,15 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	/**
 	 * Get MerchantPriceBenchmarksQuery Query response.
 	 *
-	 * @return array Associative array with product statuses and the next page token.
+	 * @param array $args Query arguments.
+	 *
+	 * @return array
 	 *
 	 * @throws Exception If the merchant price benchmarks report data can't be retrieved.
 	 */
-	public function get_benchmark_data(): array {
+	public function get_benchmark_data( array $args ): array {
 		try {
-			$response = ( new MerchantPriceBenchmarksQuery( [] ) )
+			$response = ( new MerchantPriceBenchmarksQuery( $args ) )
 			->set_client( $this->service, $this->options->get_merchant_id() )
 			->get_results();
 
@@ -60,13 +62,15 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	/**
 	 * Get MerchantPriceSuggestions Query response.
 	 *
+	 * @param array $args Query arguments.
+	 *
 	 * @return array Associative array with product statuses and the next page token.
 	 *
 	 * @throws Exception If the merchant price suggestions data can't be retrieved.
 	 */
-	public function get_price_insights_product_view(): array {
+	public function get_price_insights_product_view( array $args ): array {
 		try {
-			$response = ( new MerchantPriceSuggestionsQuery( [] ) )
+			$response = ( new MerchantPriceSuggestionsQuery( $args ) )
 			->set_client( $this->service, $this->options->get_merchant_id() )
 			->get_results();
 
