@@ -12,12 +12,18 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantQuery;
  */
 class MerchantPriceSuggestionsQuery extends MerchantQuery {
 
+	use ReportQueryTrait;
+
 	/**
 	 * MerchantPriceSuggestionsQuery constructor.
+	 *
+	 * @param array $args Query arguments.
 	 */
-	public function __construct() {
+	public function __construct( array $args ) {
 		parent::__construct( 'PriceInsightsProductView' );
+
 		$this->set_initial_columns();
+		$this->handle_query_args( $args );
 	}
 
 	/**

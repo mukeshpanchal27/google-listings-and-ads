@@ -66,7 +66,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	 */
 	public function get_price_insights_product_view(): array {
 		try {
-			$response = ( new MerchantPriceSuggestionsQuery() )
+			$response = ( new MerchantPriceSuggestionsQuery( [] ) )
 			->set_client( $this->service, $this->options->get_merchant_id() )
 			->get_results();
 
