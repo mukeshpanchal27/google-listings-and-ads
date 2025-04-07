@@ -7,7 +7,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceBe
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceSuggestionsQuery;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
-use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductHelper;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Service\ShoppingContent;
 use Exception;
 
@@ -28,21 +27,12 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	protected $service;
 
 	/**
-	 * Product helper class.
-	 *
-	 * @var ProductHelper
-	 */
-	protected $product_helper;
-
-	/**
 	 * Merchant Report constructor.
 	 *
 	 * @param ShoppingContent $service
-	 * @param ProductHelper   $product_helper
 	 */
-	public function __construct( ShoppingContent $service, ProductHelper $product_helper ) {
-		$this->service        = $service;
-		$this->product_helper = $product_helper;
+	public function __construct( ShoppingContent $service ) {
+		$this->service = $service;
 	}
 
 	/**
