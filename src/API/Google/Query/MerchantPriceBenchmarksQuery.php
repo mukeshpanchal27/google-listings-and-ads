@@ -47,6 +47,7 @@ class MerchantPriceBenchmarksQuery extends MerchantQuery {
 		$this->columns(
 			[
 				'id'                                 => 'product_view.id',
+				'offer_id'                           => 'product_view.offer_id',
 				'title'                              => 'product_view.title',
 				'price_micros'                       => 'product_view.price_micros',
 				'benchmark_price_micros'             => 'price_competitiveness.benchmark_price_micros',
