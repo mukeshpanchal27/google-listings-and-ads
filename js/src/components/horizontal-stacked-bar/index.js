@@ -6,6 +6,8 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import Legend from './legend';
+import Bars from './bars';
 import './index.scss';
 
 /**
@@ -50,39 +52,11 @@ const HorizontalStackedBar = ( { title, segments, className } ) => {
 			<p className="horizontal-stacked-bar__title">{ title }</p>
 
 			<div className="horizontal-stacked-bar__legend">
-				<ul>
-					{ sortedSegments.map( ( segment ) => {
-						return (
-							<li
-								key={ segment.id }
-								className="horizontal-stacked-bar__legend-item"
-							>
-								<span
-									className="horizontal-stacked-bar__legend-color"
-									style={ {
-										backgroundColor: segment.color,
-									} }
-								/>
-								{ `${ segment.percentage }% ${ segment.label }` }
-							</li>
-						);
-					} ) }
-				</ul>
+				<Legend segments={ sortedSegments } />
 			</div>
 
 			<div className="horizontal-stacked-bar__chart">
-				{ sortedSegments.map( ( segment ) => {
-					return (
-						<span
-							key={ segment.id }
-							style={ {
-								width: `${ segment.percentage }%`,
-								backgroundColor: segment.color,
-							} }
-							title={ `${ segment.percentage }% ${ segment.label }` }
-						/>
-					);
-				} ) }
+				<Bars segments={ sortedSegments } />
 			</div>
 		</div>
 	);

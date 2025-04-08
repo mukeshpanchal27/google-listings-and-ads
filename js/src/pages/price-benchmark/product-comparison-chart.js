@@ -9,8 +9,22 @@ import { __ } from '@wordpress/i18n';
 import usePriceBenchmarkSummary from '~/hooks/usePriceBenchmarkSummary';
 import HorizontalStackedBar from '~/components/horizontal-stacked-bar';
 
+/**
+ * ProductComparisonChart component.
+ *
+ * This component renders a horizontal stacked bar chart that compares the pricing
+ * of the user's products to competitors. It uses data from the price benchmark summary
+ * to display segments representing different price categories.
+ *
+ * @return {JSX.Element|null} The rendered HorizontalStackedBar component or null if
+ * the data is not yet resolved or unavailable.
+ */
 const ProductComparisonChart = () => {
-	const { summary } = usePriceBenchmarkSummary();
+	const { summary, hasFinishedResolution } = usePriceBenchmarkSummary();
+
+	if ( ! hasFinishedResolution || ! summary ) {
+		return null;
+	}
 
 	const segments = [
 		{
