@@ -61,7 +61,7 @@ const TABLE_DATA_HEADERS = [
 	},
 ];
 
-const PriceBenchmarkSuggestions = () => {
+const PriceBenchmarkAdjustments = () => {
 	return (
 		<TablePlaceholder
 			headers={ TABLE_DATA_HEADERS }
@@ -73,4 +73,4 @@ const PriceBenchmarkSuggestions = () => {
 	);
 };
 
-export default PriceBenchmarkSuggestions;
+export default PriceBenchmarkAdjustments;

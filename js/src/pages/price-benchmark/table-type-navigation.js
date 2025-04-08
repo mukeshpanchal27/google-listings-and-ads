@@ -10,7 +10,7 @@ import { getNewPath } from '@woocommerce/navigation';
 import AppTabNav from '~/components/app-tab-nav';
 import { TABLE_TYPE_SUGGESTIONS, TABLE_TYPE_ADJUSTMENTS } from './constants';
 
-const IssueTypeNavigation = ( { tableType } ) => {
+const TableTypeNavigation = ( { tableType } ) => {
 	const tabs = [
 		{
 			key: TABLE_TYPE_SUGGESTIONS,
@@ -38,4 +38,4 @@ const IssueTypeNavigation = ( { tableType } ) => {
 	return <AppTabNav tabs={ tabs } selectedKey={ tableType } />;
 };
 
-export default IssueTypeNavigation;
+export default TableTypeNavigation;

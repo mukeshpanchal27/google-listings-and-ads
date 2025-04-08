@@ -53,5 +53,45 @@ test.describe( 'Price Benchmark Page', () => {
 				await expect( tabLocator ).toBeVisible();
 			}
 		} );
+
+		test( 'Click on "Price Adjustments" should update the URL', async () => {
+			await priceBenchmarkPage.goto();
+
+			const priceAdjustmentsTab = page.locator(
+				'a[role="tab"]:has-text("Price Adjustments")'
+			);
+			await priceAdjustmentsTab.click();
+
+			await expect( page ).toHaveURL(
+				'/wp-admin/admin.php?page=wc-admin&tableType=adjustments&path=%2Fgoogle%2Fprice-benchmark'
+			);
+		} );
+
+		test( 'Click on "Price Benchmark & Suggestions" should update the URL', async () => {
+			await priceBenchmarkPage.goto();
+
+			const priceBenchmarkTab = page.locator(
+				'a[role="tab"]:has-text("Price Benchmark & Suggestions")'
+			);
+			await priceBenchmarkTab.click();
+
+			await expect( page ).toHaveURL(
+				'/wp-admin/admin.php?page=wc-admin&tableType=suggestions&path=%2Fgoogle%2Fprice-benchmark'
+			);
+		} );
+
+		test( 'Visiting the adjustments URL should show the "Price Adjustments" tab by default', async () => {
+			await priceBenchmarkPage.goto(
+				'/wp-admin/admin.php?page=wc-admin&tableType=adjustments&path=%2Fgoogle%2Fprice-benchmark'
+			);
+
+			const priceAdjustmentsTab = page.locator(
+				'a[role="tab"]:has-text("Price Adjustments")'
+			);
+			await expect( priceAdjustmentsTab ).toHaveAttribute(
+				'aria-selected',
+				'true'
+			);
+		} );
 	} );
 } );

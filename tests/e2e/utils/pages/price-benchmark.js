@@ -18,14 +18,18 @@ export default class PriceBenchmarkPage extends MockRequests {
 
 	/**
 	 * Go to the product feed page.
+	 * 
+	 * @param {string|null} path - The path to navigate to. If null, defaults to the Price Benchmark page.
 	 *
 	 * @return {Promise<void>}
 	 */
-	async goto() {
-		await this.page.goto(
-			'/wp-admin/admin.php?page=wc-admin&path=%2Fgoogle%2Fprice-benchmark',
-			{ waitUntil: LOAD_STATE.DOM_CONTENT_LOADED }
-		);
+	async goto( path = null ) {
+		const url =
+			path ||
+			'/wp-admin/admin.php?page=wc-admin&path=%2Fgoogle%2Fprice-benchmark';
+		await this.page.goto( url, {
+			waitUntil: LOAD_STATE.DOM_CONTENT_LOADED,
+		} );
 	}
 
 	/**
