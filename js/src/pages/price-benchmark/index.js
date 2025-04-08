@@ -9,6 +9,7 @@ import { Card } from '@wordpress/components';
  */
 import MainTabNav from '~/components/main-tab-nav';
 import TableTypeNavigation from './table-type-navigation';
+import './index.scss';
 import { TABLE_TYPE_ADJUSTMENTS, TABLE_TYPE_SUGGESTIONS } from './constants';
 import PriceBenchmarkAdjustments from './price-benchmark-adjustments';
 import PriceBenchmarkSuggestions from './price-benchmark-suggestions';
@@ -19,7 +20,7 @@ const PriceBenchmark = () => {
 	return (
 		<div className="gla-price-benchmark">
 			<MainTabNav />
-			<Card>
+			<Card className="gla-price-benchmark__card">
 				<TableTypeNavigation tableType={ tableType } />
 				{ tableType === TABLE_TYPE_ADJUSTMENTS && (
 					<PriceBenchmarkAdjustments />

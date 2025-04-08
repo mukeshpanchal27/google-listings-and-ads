@@ -18,7 +18,7 @@ export default class PriceBenchmarkPage extends MockRequests {
 
 	/**
 	 * Go to the product feed page.
-	 * 
+	 *
 	 * @param {string|null} path - The path to navigate to. If null, defaults to the Price Benchmark page.
 	 *
 	 * @return {Promise<void>}
