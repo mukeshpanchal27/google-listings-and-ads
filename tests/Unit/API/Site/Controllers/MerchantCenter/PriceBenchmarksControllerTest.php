@@ -66,14 +66,5 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 
 		// Assert the response status.
 		$this->assertEquals( 200, $response->get_status() );
-
-		// Assert the response data.
-		// $this->assertEquals(
-		//     [
-		//         'price_benchmarks' => $mock_benchmark_data,
-		//         'price_insights'   => $mock_price_insights_data,
-		//     ],
-		//     $response->get_data()
-		// );
 	}
 }
