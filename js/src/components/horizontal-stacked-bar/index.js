@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Internal dependencies
  */
 import './index.scss';
@@ -19,9 +24,10 @@ import './index.scss';
  * @param {Object} props - Component props.
  * @param {string} props.title - Title of the chart.
  * @param {Array<Segment>} [props.segments=[]] - Array of data segments to display in the chart.
+ * @param {string} [props.className] - Additional CSS class for the component.
  * @return {JSX.Element|null} The rendered component or null if no valid segments.
  */
-const HorizontalStackedBar = ( { title, segments } ) => {
+const HorizontalStackedBar = ( { title, segments, className } ) => {
 	if ( ! segments || segments.length === 0 ) {
 		return null;
 	}
@@ -40,7 +46,7 @@ const HorizontalStackedBar = ( { title, segments } ) => {
 	} );
 
 	return (
-		<div className="horizontal-stacked-bar">
+		<div className={ classnames( 'horizontal-stacked-bar', className ) }>
 			<p className="horizontal-stacked-bar__title">{ title }</p>
 
 			<div className="horizontal-stacked-bar__legend">

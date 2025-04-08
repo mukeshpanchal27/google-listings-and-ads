@@ -72,6 +72,15 @@ const DEFAULT_STATE = {
 		budgetRecommendations: {},
 	},
 	gtinMigrationStatus: null,
+	price_benchmark: {
+		summary: {
+			total_products: 0,
+			price_similar: 2,
+			price_higher: 60,
+			price_lower: 30,
+			price_unknown: 8,
+		},
+	},
 };
 
 /**
@@ -522,6 +531,11 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 		case TYPES.RECEIVE_GTIN_MIGRATION_STATUS: {
 			const { data } = action;
 			return setIn( state, 'gtinMigrationStatus', data?.status );
+		}
+
+		case TYPES.RECEIVE_PRICE_BENCHMARK_SUMMARY: {
+			const { data } = action;
+			return setIn( state, 'price_benchmark.summary', data );
 		}
 
 		// Page will be reloaded after all accounts have been disconnected, so no need to mutate state.
