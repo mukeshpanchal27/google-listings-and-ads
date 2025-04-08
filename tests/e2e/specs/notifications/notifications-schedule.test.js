@@ -35,7 +35,7 @@ let productEditor = null;
 let page = null;
 
 const actionSchedulerLink =
-	'wp-admin/admin.php?page=wc-status&tab=action-scheduler&orderby=schedule&order=desc';
+	'wp-admin/admin.php?page=wc-status&tab=action-scheduler&orderby=schedule&order=desc&s=gla%2Fjobs%2Fnotifications';
 
 const getASJobRowName = ( itemId, notificationType, status = 'Pending' ) => {
 	return `gla/jobs/notifications/products/process_item Run | Cancel ${ status } 0 => array ( 'item_id' => ${ itemId }, 'topic' => '${ notificationType }'`;
