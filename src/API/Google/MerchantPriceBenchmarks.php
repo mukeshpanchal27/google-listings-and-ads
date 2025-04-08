@@ -68,7 +68,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	 *
 	 * @throws Exception If the merchant price suggestions data can't be retrieved.
 	 */
-	public function get_price_insights_product_view( array $args ): array {
+	public function get_price_insights( array $args ): array {
 		try {
 			$response = ( new MerchantPriceSuggestionsQuery( $args ) )
 			->set_client( $this->service, $this->options->get_merchant_id() )
