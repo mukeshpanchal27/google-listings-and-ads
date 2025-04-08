@@ -49,7 +49,6 @@ class MerchantPriceSuggestionsQuery extends MerchantQuery {
 				'id'                                    => 'product_view.id',
 				'offer_id'                              => 'product_view.offer_id',
 				'title'                                 => 'product_view.title',
-				'brand'                                 => 'product_view.brand',
 				'price_micros'                          => 'product_view.price_micros',
 				'currency_code'                         => 'product_view.currency_code',
 				'suggested_price_micros'                => 'price_insights.suggested_price_micros',
