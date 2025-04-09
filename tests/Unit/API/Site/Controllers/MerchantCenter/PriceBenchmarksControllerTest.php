@@ -105,12 +105,6 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 		// Simulate a GET request.
 		$response = $this->do_request( self::ROUTE_PRICE_BENCHMARKS, 'GET' );
 
-		// Current shape.
-		$current = [
-			'price_benchmarks' => $mock_benchmark_data,
-			'price_insights'   => $mock_price_insights_data,
-		];
-
 		// Expected shape once data from the two queries are stitched together.
 		$expected = [
 			[
@@ -129,8 +123,6 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 
 		// Assert the response status.
 		$this->assertEquals( 200, $response->get_status() );
-
-		//$this->assertSameSets( $current, $response->get_data(), 'The current implementation is returning this shape.' );
 
 		// The expected shape should pass once the implementation is updated.
 		$this->assertSameSets( $expected, $response->get_data(), 'The response data should match the expected structure.' );
