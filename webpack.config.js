@@ -71,6 +71,14 @@ const webpackConfig = {
 		new WooCommerceDependencyExtractionWebpackPlugin( {
 			externalizedReport:
 				! hasReactFastRefresh && '../../.externalized.json',
+			requestToExternal: ( request ) => {
+				if ( request === '@wordpress/dataviews/wp' ) {
+					return false;
+				}
+
+				// Keep existing external mapping logic
+				return undefined;
+			},
 		} ),
 		new MiniCSSExtractPlugin( {
 			filename: '[name].css',
