@@ -9,10 +9,10 @@ import { Card } from '@wordpress/components';
  */
 import MainTabNav from '~/components/main-tab-nav';
 import TableTypeNavigation from './table-type-navigation';
-import './index.scss';
 import { TABLE_TYPE_ADJUSTMENTS, TABLE_TYPE_SUGGESTIONS } from './constants';
 import PriceBenchmarkAdjustments from './price-benchmark-adjustments';
 import PriceBenchmarkSuggestions from './price-benchmark-suggestions';
+import './index.scss';
 
 const PriceBenchmark = () => {
 	const tableType = getQuery()?.tableType || TABLE_TYPE_SUGGESTIONS;
