@@ -14,6 +14,8 @@ const Bars = ( { segments } ) => {
 	return (
 		<>
 			{ segments.map( ( segment ) => {
+				const label = `${ segment.percentage }% ${ segment.label }`;
+
 				return (
 					<span
 						key={ segment.id }
@@ -21,7 +23,8 @@ const Bars = ( { segments } ) => {
 							width: `${ segment.percentage }%`,
 							backgroundColor: segment.color,
 						} }
-						title={ `${ segment.percentage }% ${ segment.label }` }
+						aria-label={ label }
+						title={ label }
 					/>
 				);
 			} ) }

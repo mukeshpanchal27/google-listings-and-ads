@@ -17,10 +17,10 @@ const Legend = ( { segments } ) => {
 				return (
 					<li
 						key={ segment.id }
-						className="horizontal-stacked-bar__legend-item"
+						className="gla-horizontal-stacked-bar__legend-item"
 					>
 						<span
-							className="horizontal-stacked-bar__legend-color"
+							className="gla-horizontal-stacked-bar__legend-color"
 							style={ {
 								backgroundColor: segment.color,
 							} }

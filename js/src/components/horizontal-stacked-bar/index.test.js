@@ -63,19 +63,19 @@ describe( 'HorizontalStackedBar', () => {
 		expect( chartSegments[ 1 ] ).toHaveStyle( 'background-color: blue' );
 	} );
 
-	test( 'sorts segments by value in ascending order', () => {
+	test( 'renders the chart with valid segment values', () => {
 		render(
 			<HorizontalStackedBar
 				title="Test Chart"
 				segments={ [
-					{ id: 1, label: 'Segment 1', value: 70, color: 'red' },
-					{ id: 2, label: 'Segment 2', value: 30, color: 'blue' },
+					{ id: 1, label: 'Segment 1', value: 25, color: 'red' },
+					{ id: 2, label: 'Segment 2', value: 'xyz', color: 'blue' },
 				] }
 			/>
 		);
 
-		const legendItems = screen.getAllByRole( 'listitem' );
-		expect( legendItems[ 0 ] ).toHaveTextContent( '30% Segment 2' );
-		expect( legendItems[ 1 ] ).toHaveTextContent( '70% Segment 1' );
+		const chartSegments = screen.getAllByTitle( /% Segment/ );
+		expect( chartSegments[ 0 ] ).toHaveStyle( 'width: 100%' );
+		expect( chartSegments[ 0 ] ).toHaveStyle( 'background-color: red' );
 	} );
 } );

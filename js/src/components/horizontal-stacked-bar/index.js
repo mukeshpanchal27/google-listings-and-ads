@@ -21,7 +21,6 @@ import './index.scss';
 
 /**
  * Renders a horizontal stacked bar chart with colored segments and a legend.
- * The segments are sorted by value in ascending order.
  *
  * @param {Object} props - Component props.
  * @param {string} props.title - Title of the chart.
@@ -34,29 +33,34 @@ const HorizontalStackedBar = ( { title, segments, className } ) => {
 		return null;
 	}
 
-	const sortedSegments = [ ...segments ].sort( ( a, b ) => {
-		return Number( a.value ) - Number( b.value );
-	} );
+	const validSegments = segments.filter(
+		( segment ) => ! isNaN( Number( segment.value ) )
+	);
 
-	const total = sortedSegments.reduce(
+	const total = validSegments.reduce(
 		( sum, segment ) => sum + Number( segment.value ),
 		0
 	);
 
-	sortedSegments.forEach( ( segment ) => {
-		segment.percentage = ( segment.value / total ) * 100;
+	const segmentsWithPercentage = validSegments.map( ( segment ) => {
+		return {
+			...segment,
+			percentage: Math.round( ( segment.value / total ) * 100 ),
+		};
 	} );
 
 	return (
-		<div className={ classnames( 'horizontal-stacked-bar', className ) }>
-			<p className="horizontal-stacked-bar__title">{ title }</p>
+		<div
+			className={ classnames( 'gla-horizontal-stacked-bar', className ) }
+		>
+			<p className="gla-horizontal-stacked-bar__title">{ title }</p>
 
-			<div className="horizontal-stacked-bar__legend">
-				<Legend segments={ sortedSegments } />
+			<div className="gla-horizontal-stacked-bar__legend">
+				<Legend segments={ segmentsWithPercentage } />
 			</div>
 
-			<div className="horizontal-stacked-bar__chart">
-				<Bars segments={ sortedSegments } />
+			<div className="gla-horizontal-stacked-bar__chart">
+				<Bars segments={ segmentsWithPercentage } />
 			</div>
 		</div>
 	);
