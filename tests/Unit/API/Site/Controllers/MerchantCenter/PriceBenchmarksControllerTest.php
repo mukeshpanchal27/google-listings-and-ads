@@ -1,6 +1,7 @@
 <?php
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\MerchantCenter\PriceBenchmarksController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
+use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductHelper;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\RESTControllerUnitTest;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\Container\Container;
 use WP_REST_Request as Request;
@@ -16,6 +17,9 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 	/** @var PriceBenchmarksController */
 	protected $controller;
 
+	/** @var Stub|ProductHelper $product_helper */
+	protected $product_helper;
+
 	/** @var MockObject|MerchantPriceBenchmarks */
 	protected $merchant_price_benchmarks;
 
@@ -27,14 +31,16 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 	public function setUp(): void {
 		parent::setUp();
 
+		$this->product_helper            = $this->createMock( ProductHelper::class );
 		$this->merchant_price_benchmarks = $this->createMock( MerchantPriceBenchmarks::class );
 
 		// Mock the container to return the mocked MerchantPriceBenchmarks.
 		$this->container = new Container();
 		$this->container->addShared( MerchantPriceBenchmarks::class, $this->merchant_price_benchmarks );
+		$this->container->addShared( PriceBenchmarksController::class, $this->product_helper );
 
 		// Initialize the controller.
-		$this->controller = new PriceBenchmarksController( $this->server );
+		$this->controller = new PriceBenchmarksController( $this->server, $this->product_helper );
 		$this->controller->set_container( $this->container );
 		$this->controller->register();
 	}
@@ -48,7 +54,7 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 			'results'       => [
 				[
 					'productView'          => [
-						'id'           => 'online:en:US:' . $product_id,
+						'id'           => 'online:en:US:gla_' . $product_id,
 						'offer_id'     => $product_id,
 						'title'        => $product_title,
 						'priceMicros'  => '124990000',
@@ -69,7 +75,7 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 			'results'       => [
 				[
 					'productView'          => [
-						'id'           => 'online:en:US:' . $product_id,
+						'id'           => 'online:en:US:gla_' . $product_id,
 						'offer_id'     => $product_id,
 						'priceMicros'  => '124990000',
 						'currencyCode' => 'USD',
@@ -80,7 +86,7 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 						'predictedImpressionsChangeFraction' => '0.12609300017356873',
 						'predictedClicksChangeFraction' => '0.508745014667511',
 						'predictedConversionsChangeFraction' => '2.3431060314178467',
-						'effectiveness'                 => '3',
+						'effectiveness'                 => 3,
 					],
 				],
 			],
@@ -113,20 +119,20 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 					'thumbnail' => '', // The thumbnail URL of the ID.
 					'title'     => $product_title,
 				],
-				'regular_price'   => '$124.99', // Not sure the formatting here.
-				'price_on_google' => '$119.92', // Converted from micros.
-				'price_gap'       => '$5.07', // Reg price - Price on Google, Converted from micros.
-				'suggested_price' => '$118.99', // Converted from micros.
 				'effectiveness'   => 3,
+				'regular_price'   => 124.99,
+				'price_on_google' => 119.92, // Converted from micros.
+				'price_gap'       => 5.07, // Reg price - Price on Google, Converted from micros.
+				'suggested_price' => 118.99, // Converted from micros.
 			],
 		];
 
 		// Assert the response status.
 		$this->assertEquals( 200, $response->get_status() );
 
-		$this->assertSameSets( $current, $response->get_data(), 'The current implementation is returning this shape.' );
+		//$this->assertSameSets( $current, $response->get_data(), 'The current implementation is returning this shape.' );
 
 		// The expected shape should pass once the implementation is updated.
-		// $this->assertSameSets( $expected, $response->get_data(), 'The response data should match the expected structure.' );
+		$this->assertSameSets( $expected, $response->get_data(), 'The response data should match the expected structure.' );
 	}
 }
