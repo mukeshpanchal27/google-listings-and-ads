@@ -197,10 +197,17 @@ const hasAddedFallback = () =>
  * after the fallback is set.
  */
 if ( hasRunFilter() && ! hasAddedFallback() && ! hasAddedPluginAdminPages ) {
+	const startTime = Date.now();
 	const timerId = setInterval( () => {
 		if ( hasAddedFallback() ) {
 			clearInterval( timerId );
 			registerPluginAdminPages();
+			return;
+		}
+
+		// Stop trying after 3 seconds to avoid performance issues.
+		if ( Date.now() - startTime > 3000 ) {
+			clearInterval( timerId );
 		}
 	}, 10 );
 } else {
