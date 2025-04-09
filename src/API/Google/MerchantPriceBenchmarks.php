@@ -40,9 +40,9 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	 *
 	 * @param array $args Query arguments.
 	 *
-	 * @return array
+	 * @return array Associative array with price benchmarks data and the next page token.
 	 *
-	 * @throws Exception If the merchant price benchmarks report data can't be retrieved.
+	 * @throws Exception If the merchant price benchmarks data can't be retrieved.
 	 */
 	public function get_benchmark_data( array $args ): array {
 		try {
@@ -64,7 +64,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	 *
 	 * @param array $args Query arguments.
 	 *
-	 * @return array Associative array with product statuses and the next page token.
+	 * @return array Associative array with price benchmarks data and the next page token.
 	 *
 	 * @throws Exception If the merchant price suggestions data can't be retrieved.
 	 */
