@@ -1,15 +1,19 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { useState, useMemo } from '@wordpress/element';
 import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews/wp';
-import { __ } from '@wordpress/i18n';
+import CurrencyFactory from '@woocommerce/currency';
+import { getSetting } from '@woocommerce/settings'; // eslint-disable-line import/no-unresolved
 
 /**
  * Internal dependencies
  */
 import { TOOLTIPS } from './constants';
 import EffectivenessIndicator from './effectiveness-indicator';
+
+const currencyFactory = CurrencyFactory( getSetting( 'currency' ) );
 
 const fields = [
 	{
@@ -20,7 +24,11 @@ const fields = [
 		label: __( 'Image', 'google-listings-and-ads' ),
 		render: ( { item } ) => {
 			return (
-				<img src={ item.image } alt={item.title} className="gla-price-benchmark-table__image"/>
+				<img
+					src={ item.image }
+					alt={ item.title }
+					className="gla-price-benchmark-table__image"
+				/>
 			);
 		},
 	},
@@ -48,7 +56,7 @@ const fields = [
 		enableGlobalSearch: false,
 		header: (
 			<div className="gla-price-benchmark-table-header__price-change-effectiveness">
-				{TOOLTIPS.PRICE_CHANGE_EFFECTIVENESS}
+				{ TOOLTIPS.PRICE_CHANGE_EFFECTIVENESS }
 			</div>
 		),
 		label: __( 'Price Change Effectiveness', 'google-listings-and-ads' ),
@@ -69,7 +77,7 @@ const fields = [
 		render: ( { item } ) => {
 			return (
 				<span className="gla-price-benchmark-table__regular-price">
-					{ item[ 'regular-price' ] }
+					{ currencyFactory.formatAmount( item[ 'regular-price' ] ) }
 				</span>
 			);
 		},
@@ -81,6 +89,9 @@ const fields = [
 		enableGlobalSearch: false,
 		header: TOOLTIPS.PRICE_ON_GOOGLE,
 		label: __( 'Avg. Price on Google', 'google-listings-and-ads' ),
+		render: ( { item } ) => {
+			return currencyFactory.formatAmount( item[ 'price-on-google' ] );
+		},
 	},
 	{
 		id: 'price-gap',
@@ -89,6 +100,9 @@ const fields = [
 		enableGlobalSearch: false,
 		header: TOOLTIPS.PRICE_GAP,
 		label: __( 'Price Gap', 'google-listings-and-ads' ),
+		render: ( { item } ) => {
+			return `${ item[ 'price-gap' ] }%`;
+		},
 	},
 	{
 		id: 'suggested-price',
@@ -97,6 +111,9 @@ const fields = [
 		enableGlobalSearch: false,
 		header: TOOLTIPS.SUGGESTED_PRICE,
 		label: __( 'Suggested Price', 'google-listings-and-ads' ),
+		render: ( { item } ) => {
+			return currencyFactory.formatAmount( item[ 'suggested-price' ] );
+		},
 	},
 	{
 		id: 'action',
@@ -189,7 +206,7 @@ const PriceBenchmarkSuggestions = () => {
 					totalPages: 0,
 				} }
 				onChangeView={ handleOnChangeView }
-				defaultLayouts={['table']}
+				defaultLayouts={ [ 'table' ] }
 			/>
 		</div>
 	);
