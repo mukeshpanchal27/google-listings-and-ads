@@ -1,0 +1,24 @@
+.gla-price-benchmark-table {
+
+	.dataviews-view-table-header-button {
+		font-size: $gla-font-base;
+		font-weight: 600;
+		line-height: $gla-line-height-smaller;
+	}
+
+	.gla-tooltip__children-container {
+		border-bottom: 1px dashed currentcolor;
+	}
+
+	th:not(:first-child):not(:has(.gla-price-benchmark__label--align-left)) {
+		text-align: right;
+	}
+
+	td > .dataviews-view-table__cell-content-wrapper:not(:has(.gla-badge)) {
+		justify-content: flex-end;
+	}
+}
+
+.gla-price-benchmark-table__image {
+	width: 100%;
+}
