@@ -60,6 +60,10 @@ const DEFAULT_STATE = {
 		reviewEligibleRegions: [],
 	},
 	mc_product_feed: null,
+	price_benchmark: {
+		suggestions: [],
+		adjustments: [],
+	},
 	report: {},
 	store_categories: [],
 	tours: {},
