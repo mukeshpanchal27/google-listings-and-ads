@@ -17,9 +17,6 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 	/** @var PriceBenchmarksController */
 	protected $controller;
 
-	/** @var Stub|ProductHelper $product_helper */
-	protected $product_helper;
-
 	/** @var MockObject|MerchantPriceBenchmarks */
 	protected $merchant_price_benchmarks;
 
@@ -31,22 +28,20 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->product_helper            = $this->createMock( ProductHelper::class );
 		$this->merchant_price_benchmarks = $this->createMock( MerchantPriceBenchmarks::class );
 
 		// Mock the container to return the mocked MerchantPriceBenchmarks.
 		$this->container = new Container();
 		$this->container->addShared( MerchantPriceBenchmarks::class, $this->merchant_price_benchmarks );
-		$this->container->addShared( PriceBenchmarksController::class, $this->product_helper );
 
 		// Initialize the controller.
-		$this->controller = new PriceBenchmarksController( $this->server, $this->product_helper );
+		$this->controller = new PriceBenchmarksController( $this->server );
 		$this->controller->set_container( $this->container );
 		$this->controller->register();
 	}
 
 	public function test_get_price_benchmarks() {
-		$product_id    = '123456';
+		$product_id    = 123456;
 		$product_title = "UGG Women's s Classic Mini";
 
 		// Mock the benchmark data.
