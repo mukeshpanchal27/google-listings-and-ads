@@ -50,7 +50,6 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 				[
 					'productView'          => [
 						'id'           => 'online:en:US:gla_' . $product_id,
-						'offer_id'     => $product_id,
 						'title'        => $product_title,
 						'priceMicros'  => '124990000',
 						'currencyCode' => 'USD',
@@ -71,7 +70,6 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 				[
 					'productView'          => [
 						'id'           => 'online:en:US:gla_' . $product_id,
-						'offer_id'     => $product_id,
 						'priceMicros'  => '124990000',
 						'currencyCode' => 'USD',
 					],
