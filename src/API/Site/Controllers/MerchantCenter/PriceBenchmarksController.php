@@ -99,40 +99,36 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 
 		// Process benchmark data and add it to $mapped_data keyed by product ID.
 		foreach ( $benchmark_data['results'] as $benchmark_result ) {
-			$product_view = $benchmark_result['productView'];
-			$product_id   = $this->get_product_id( $product_view['id'] );
+			$product_id = $benchmark_result['offer_id'];
 
 			$mapped_data[ $product_id ] = [
-				'product_view'          => $product_view,
-				'price_competitiveness' => $benchmark_result['priceCompetitiveness'] ?? [],
+				'price_competitiveness' => $benchmark_result ?? [],
 				'price_insights'        => [], // Placeholder for price insights data.
 			];
 		}
 
 		// Process price insights data and merge it into $mapped_data.
 		foreach ( $price_insights_data['results'] as $price_insights_result ) {
-			$product_view = $price_insights_result['productView'];
-			$product_id   = $this->get_product_id( $product_view['id'] );
+			$product_id = $price_insights_result['offer_id'];
 
 			if ( isset( $mapped_data[ $product_id ] ) ) {
-				$mapped_data[ $product_id ]['price_insights'] = $price_insights_result['priceCompetitiveness'] ?? [];
+				$mapped_data[ $product_id ]['price_insights'] = $price_insights_result ?? [];
 			}
 		}
 
 		// Transform $mapped_data into the desired response format using array_map.
 		$response_data = array_map(
 			function ( $data ) {
-				$product_view          = $data['product_view'];
 				$price_competitiveness = $data['price_competitiveness'];
 				$price_insights        = $data['price_insights'];
 
 				// Calculate the price gap.
-				$regular_price   = (int) $product_view['priceMicros'];
-				$price_on_google = (int) $price_competitiveness['benchmarkPriceMicros'];
+				$regular_price   = (int) $price_competitiveness['price_micros'];
+				$price_on_google = (int) $price_competitiveness['benchmark_price_micros'];
 				$price_gap       = $regular_price - $price_on_google;
 
 				// Get the WooCommerce product ID and thumbnail.
-				$wc_product_id = $this->get_product_id( $product_view['id'] );
+				$wc_product_id = (int) $price_competitiveness['offer_id'];
 				$thumbnail     = $this->get_product_thumbnail( $wc_product_id );
 
 				// Map the data to the required format.
@@ -140,14 +136,14 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 					'product'         => [
 						'id'        => $wc_product_id,
 						'thumbnail' => $thumbnail,
-						'title'     => $product_view['title'],
+						'title'     => $price_competitiveness['title'],
 					],
 					'effectiveness'   => $price_insights['effectiveness'] ?? '',
 					'regular_price'   => round( $regular_price / 1000000, 2 ),
 					'price_on_google' => round( $price_on_google / 1000000, 2 ),
 					'price_gap'       => round( $price_gap / 1000000, 2 ),
-					'suggested_price' => isset( $price_insights['suggestedPriceMicros'] )
-						? round( $price_insights['suggestedPriceMicros'] / 1000000, 2 )
+					'suggested_price' => isset( $price_insights['suggested_price_micros'] )
+						? round( $price_insights['suggested_price_micros'] / 1000000, 2 )
 						: '',
 				];
 			},
@@ -173,34 +169,6 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 		$thumbnail_url = wp_get_attachment_url( $thumbnail_id );
 
 		return $thumbnail_url ?? '';
-	}
-
-	/**
-	 * Gets the product ID from the Google product ID.
-	 *
-	 * @param string $mc_product_id Simple product ID (`merchant_center_id`) or
-	 *                              namespaced product ID (`online:en:GB:merchant_center_id`)
-	 *
-	 * @return int the ID for the WC product linked to the provided Google product ID (0 if not found)
-	 */
-	public function get_product_id( string $mc_product_id ): int {
-		// Maybe remove everything before the last colon ':'
-		$mc_product_id_tokens = explode( ':', $mc_product_id );
-		$mc_product_id        = end( $mc_product_id_tokens );
-
-		// Support a fully numeric ID both with and without the `gla_` prefix.
-		$wc_product_id = 0;
-		$pattern       = '/^(' . preg_quote( $this->get_slug(), '/' ) . '_)?(\d+)$/';
-		if ( preg_match( $pattern, $mc_product_id, $matches ) ) {
-			$wc_product_id = (int) $matches[2];
-		}
-
-		/**
-		 * This filter is documented in ProductHelper::get_wc_product_id.
-		 *
-		 * @see ProductHelper::get_wc_product_id
-		 */
-		return (int) apply_filters( 'woocommerce_gla_get_wc_product_id', $wc_product_id, $mc_product_id );
 	}
 
 	/**

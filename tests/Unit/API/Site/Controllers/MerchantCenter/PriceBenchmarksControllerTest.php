@@ -41,49 +41,43 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 	}
 
 	public function test_get_price_benchmarks() {
-		$product_id    = 123456;
+		$product_id    = '123456';
 		$product_title = "UGG Women's s Classic Mini";
 
 		// Mock the benchmark data.
 		$mock_benchmark_data = [
-			'results'       => [
+			'results'         => [
 				[
-					'productView'          => [
-						'id'           => 'online:en:US:gla_' . $product_id,
-						'title'        => $product_title,
-						'priceMicros'  => '124990000',
-						'currencyCode' => 'USD',
-					],
-					'priceCompetitiveness' => [
-						'countryCode'                => 'US',
-						'benchmarkPriceMicros'       => '119922291',
-						'benchmarkPriceCurrencyCode' => 'USD',
-					],
+					'id'                            => 'online:en:US:gla_' . $product_id,
+					'offer_id'                      => $product_id,
+					'title'                         => $product_title,
+					'price_micros'                  => '124990000',
+					'currency_code'                 => 'USD',
+					'benchmark_price_micros'        => '119922291',
+					'benchmark_price_currency_code' => 'USD',
 				],
 			],
-			'nextPageToken' => 'next_page_token',
+			'next_page_token' => 'next_page_token',
 		];
 
 		// Mock the price insights data.
 		$mock_price_insights_data = [
-			'results'       => [
+			'results'         => [
 				[
-					'productView'          => [
-						'id'           => 'online:en:US:gla_' . $product_id,
-						'priceMicros'  => '124990000',
-						'currencyCode' => 'USD',
-					],
-					'priceCompetitiveness' => [
-						'suggestedPriceMicros'          => '118990000',
-						'suggestedPriceCurrencyCode'    => 'US',
-						'predictedImpressionsChangeFraction' => '0.12609300017356873',
-						'predictedClicksChangeFraction' => '0.508745014667511',
-						'predictedConversionsChangeFraction' => '2.3431060314178467',
-						'effectiveness'                 => 3,
-					],
+
+					'id'                               => 'online:en:US:gla_' . $product_id,
+					'offer_id'                         => $product_id,
+					'price_micros'                     => '124990000',
+					'currency_code'                    => 'USD',
+					'suggested_price_micros'           => '118990000',
+					'suggested_price_currency_code'    => 'US',
+					'predicted_impressions_change_fraction' => '0.12609300017356873',
+					'predicted_clicks_change_fraction' => '0.508745014667511',
+					'predicted_conversions_change_fraction' => '2.3431060314178467',
+					'effectiveness'                    => 3,
 				],
 			],
-			'nextPageToken' => 'next_page_token',
+			'next_page_token' => 'next_page_token',
 		];
 
 		// Configure the mocked methods.
@@ -102,7 +96,7 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 		$expected = [
 			[
 				'product'         => [
-					'id'        => $product_id,
+					'id'        => (int) $product_id,
 					'thumbnail' => '', // The thumbnail URL of the ID.
 					'title'     => $product_title,
 				],

@@ -46,13 +46,13 @@ class MerchantPriceBenchmarksQuery extends MerchantQuery {
 	protected function set_initial_columns() {
 		$this->columns(
 			[
-				'id'                                 => 'product_view.id',
-				'offer_id'                           => 'product_view.offer_id',
-				'title'                              => 'product_view.title',
-				'price_micros'                       => 'product_view.price_micros',
-				'benchmark_price_micros'             => 'price_competitiveness.benchmark_price_micros',
-				'currency_code'                      => 'product_view.currency_code',
-				'price_competitiveness_country_code' => 'price_competitiveness.country_code',
+				'id'                            => 'product_view.id',
+				'offer_id'                      => 'product_view.offer_id',
+				'title'                         => 'product_view.title',
+				'price_micros'                  => 'product_view.price_micros',
+				'currency_code'                 => 'product_view.currency_code',
+				'benchmark_price_micros'        => 'price_competitiveness.benchmark_price_micros',
+				'benchmark_price_currency_code' => 'price_competitiveness.benchmark_price_country_code',
 			]
 		);
 	}
