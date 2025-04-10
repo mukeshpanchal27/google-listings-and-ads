@@ -61,7 +61,7 @@ const ProductComparisonChart = () => {
 				'google-listings-and-ads'
 			) }
 			segments={ segments }
-			className="price-benchmark__comparison-chart"
+			className="gla-price-benchmark__comparison-chart"
 		/>
 	);
 };
