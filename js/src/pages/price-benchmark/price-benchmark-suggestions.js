@@ -9,7 +9,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { TOOLTIPS } from './constants';
-import AppTooltip from '~/components/app-tooltip';
 import EffectivenessIndicator from './effectiveness-indicator';
 
 const fields = [
@@ -21,7 +20,7 @@ const fields = [
 		label: __( 'Image', 'google-listings-and-ads' ),
 		render: ( { item } ) => {
 			return (
-				<img src={ item.image } alt="" style={ { width: '100%' } } />
+				<img src={ item.image } alt={item.title} className="gla-price-benchmark-table__image"/>
 			);
 		},
 	},
@@ -47,7 +46,12 @@ const fields = [
 		enableHiding: false,
 		enableSorting: false,
 		enableGlobalSearch: false,
-		header: TOOLTIPS.PRICE_CHANGE_EFFECTIVENESS,
+		header: (
+			<div className="gla-price-benchmark-table-header__price-change-effectiveness">
+				{TOOLTIPS.PRICE_CHANGE_EFFECTIVENESS}
+			</div>
+		),
+		label: __( 'Price Change Effectiveness', 'google-listings-and-ads' ),
 		render: ( { item } ) => {
 			return (
 				<EffectivenessIndicator
@@ -64,7 +68,7 @@ const fields = [
 		label: __( 'Regular Price', 'google-listings-and-ads' ),
 		render: ( { item } ) => {
 			return (
-				<span className="gla-price-benchmark-suggestions__regular-price">
+				<span className="gla-price-benchmark-table__regular-price">
 					{ item[ 'regular-price' ] }
 				</span>
 			);
@@ -76,13 +80,15 @@ const fields = [
 		enableSorting: false,
 		enableGlobalSearch: false,
 		header: TOOLTIPS.PRICE_ON_GOOGLE,
+		label: __( 'Avg. Price on Google', 'google-listings-and-ads' ),
 	},
 	{
 		id: 'price-gap',
 		enableHiding: false,
 		enableSorting: false,
 		enableGlobalSearch: false,
-		header: TOOLTIPS.PRICE_GAP
+		header: TOOLTIPS.PRICE_GAP,
+		label: __( 'Price Gap', 'google-listings-and-ads' ),
 	},
 	{
 		id: 'suggested-price',
@@ -90,6 +96,7 @@ const fields = [
 		enableSorting: false,
 		enableGlobalSearch: false,
 		header: TOOLTIPS.SUGGESTED_PRICE,
+		label: __( 'Suggested Price', 'google-listings-and-ads' ),
 	},
 	{
 		id: 'action',
@@ -182,6 +189,7 @@ const PriceBenchmarkSuggestions = () => {
 					totalPages: 0,
 				} }
 				onChangeView={ handleOnChangeView }
+				defaultLayouts={['table']}
 			/>
 		</div>
 	);
