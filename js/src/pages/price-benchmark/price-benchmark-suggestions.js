@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import { TOOLTIPS } from './constants';
 import AppTooltip from '~/components/app-tooltip';
 import EffectivenessIndicator from './effectiveness-indicator';
 
@@ -46,19 +47,7 @@ const fields = [
 		enableHiding: false,
 		enableSorting: false,
 		enableGlobalSearch: false,
-		header: (
-			<AppTooltip
-				text={ __(
-					'Effectiveness tells you which products would benefit most from price changes. This rating takes into consideration the performance boost predicted by adjusting the sale price and the difference between your current price and the suggested price. Price suggestions with “High” effectiveness are predicted to drive the largest increase in performance. Keep in mind that predictions do not guarantee improvements in future performance.',
-					'google-listings-and-ads'
-				) }
-			>
-				{ __(
-					'Price Change Effectiveness',
-					'google-listings-and-ads'
-				) }
-			</AppTooltip>
-		),
+		header: TOOLTIPS.PRICE_CHANGE_EFFECTIVENESS,
 		render: ( { item } ) => {
 			return (
 				<EffectivenessIndicator
@@ -75,7 +64,7 @@ const fields = [
 		label: __( 'Regular Price', 'google-listings-and-ads' ),
 		render: ( { item } ) => {
 			return (
-				<span className="gla-price-benchmark-suggestions__header-price">
+				<span className="gla-price-benchmark-suggestions__regular-price">
 					{ item[ 'regular-price' ] }
 				</span>
 			);
@@ -86,48 +75,21 @@ const fields = [
 		enableHiding: false,
 		enableSorting: false,
 		enableGlobalSearch: false,
-		header: (
-			<AppTooltip
-				text={ __(
-					'The effective price for a product across all retailers selling the same product weighted by customer clicks. Products are matched based on the GTIN you provide in the product details.',
-					'google-listings-and-ads'
-				) }
-			>
-				{ __( 'Price on Google', 'google-listings-and-ads' ) }
-			</AppTooltip>
-		),
+		header: TOOLTIPS.PRICE_ON_GOOGLE,
 	},
 	{
 		id: 'price-gap',
 		enableHiding: false,
 		enableSorting: false,
 		enableGlobalSearch: false,
-		header: (
-			<AppTooltip
-				text={ __(
-					'The percentage difference between your price and the price on Google for this product.',
-					'google-listings-and-ads'
-				) }
-			>
-				{ __( 'Price Gap %', 'google-listings-and-ads' ) }
-			</AppTooltip>
-		),
+		header: TOOLTIPS.PRICE_GAP
 	},
 	{
 		id: 'suggested-price',
 		enableHiding: false,
 		enableSorting: false,
 		enableGlobalSearch: false,
-		header: (
-			<AppTooltip
-				text={ __(
-					'Suggested sale price predicted by Google for products that benefit most from pricing adjustments. It is based on advanced simulations at different price points over the past 7 days factoring in price elasticity, current performance and the performance impact on price changes for businesses similar to you. Use suggested sale prices as valuable directional guidance to help shape your pricing strategy. Learn more about how to change the sale price of your products. Keep in mind that predictions do not guarantee future performance outcomes.',
-					'google-listings-and-ads'
-				) }
-			>
-				{ __( 'Suggested Price', 'google-listings-and-ads' ) }
-			</AppTooltip>
-		),
+		header: TOOLTIPS.SUGGESTED_PRICE,
 	},
 	{
 		id: 'action',
@@ -209,7 +171,7 @@ const PriceBenchmarkSuggestions = () => {
 	};
 
 	return (
-		<>
+		<div className="gla-price-benchmark-suggestions">
 			<DataViews
 				getItemId={ ( item ) => item.id }
 				fields={ fields }
@@ -221,7 +183,7 @@ const PriceBenchmarkSuggestions = () => {
 				} }
 				onChangeView={ handleOnChangeView }
 			/>
-		</>
+		</div>
 	);
 };
 

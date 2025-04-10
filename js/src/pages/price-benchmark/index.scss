@@ -7,3 +7,21 @@
 .gla-price-benchmark__comparison-chart {
 	margin: $grid-unit-40 0;
 }
+
+.gla-price-benchmark-suggestions {
+
+	.dataviews-view-table-header-button {
+		font-size: $gla-font-base;
+		font-weight: 600;
+		line-height: $gla-line-height-smaller;
+		text-transform: capitalize;
+	}
+
+	.gla-tooltip__children-container {
+		border-bottom: 1px dashed currentcolor;
+	}
+}
+
+.gla-price-benchmark-suggestions__regular-price {
+	color: $gray-900;
+}
