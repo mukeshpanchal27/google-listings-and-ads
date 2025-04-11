@@ -52,7 +52,8 @@ class MerchantPriceBenchmarksQuery extends MerchantQuery {
 				'price_micros'                  => 'product_view.price_micros',
 				'currency_code'                 => 'product_view.currency_code',
 				'benchmark_price_micros'        => 'price_competitiveness.benchmark_price_micros',
-				'benchmark_price_currency_code' => 'price_competitiveness.benchmark_price_country_code',
+				'benchmark_price_currency_code' => 'price_competitiveness.benchmark_price_currency_code',
+				'benchmark_price_country_code'  => 'price_competitiveness.country_code',
 			]
 		);
 	}
