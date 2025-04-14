@@ -2,27 +2,14 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useMemo } from '@wordpress/element';
+import { useState, useMemo, useEffect } from '@wordpress/element';
 import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews/wp';
+import { withViewportMatch } from '@wordpress/viewport';
+import { TablePlaceholder } from '@woocommerce/components';
 
 /**
  * Internal dependencies
  */
-import ChangePrice from '../change-price';
-import EffectivenessIndicator from '../effectiveness-indicator';
-import Label from '../label';
-import Price from '../price';
-import {
-	LABELS,
-	LABEL_PRICE_CHANGE_EFFECTIVENESS,
-	LABEL_PRICE_ON_GOOGLE,
-	LABEL_PRICE_GAP,
-	LABEL_SUGGESTED_PRICE,
-	LABEL_REGULAR_PRICE,
-	LABEL_ACTION,
-	TABLE_TYPE_SUGGESTIONS,
-	TABLE_TYPE_ADJUSTMENTS,
-} from '../constants';
 import './index.scss';
 
 // Defines the base fields (image, title, description) that are consistently used across all tables.
@@ -62,98 +49,24 @@ const BASE_FIELDS = [
 	},
 ];
 
-// Fields specific to the benchmark suggestions table.
-export const SUGGESTIONS_TABLE_FIELDS = [
-	...BASE_FIELDS,
-	{
-		id: 'price-change-effectiveness',
-		enableHiding: false,
-		enableSorting: false,
-		enableGlobalSearch: false,
-		header: (
-			<Label labelKey={ LABEL_PRICE_CHANGE_EFFECTIVENESS } alignLeft />
-		),
-		label: LABELS[ LABEL_PRICE_CHANGE_EFFECTIVENESS ].title,
-		render: ( { item } ) => {
-			return (
-				<EffectivenessIndicator
-					effectiveness={ item[ 'price-change-effectiveness' ] }
-				/>
-			);
-		},
-	},
-	{
-		id: 'regular-price',
-		enableHiding: false,
-		enableSorting: false,
-		enableGlobalSearch: false,
-		label: <Label labelKey={ LABEL_REGULAR_PRICE } />,
-		render: ( { item } ) => {
-			return <Price amount={ item[ 'regular-price' ] } highlight />;
-		},
-	},
-	{
-		id: 'price-on-google',
-		enableHiding: false,
-		enableSorting: false,
-		enableGlobalSearch: false,
-		header: <Label labelKey={ LABEL_PRICE_ON_GOOGLE } />,
-		label: LABELS[ LABEL_PRICE_ON_GOOGLE ].title,
-		render: ( { item } ) => {
-			return <Price amount={ item[ 'price-on-google' ] } />;
-		},
-	},
-	{
-		id: 'price-gap',
-		enableHiding: false,
-		enableSorting: false,
-		enableGlobalSearch: false,
-		header: <Label labelKey={ LABEL_PRICE_GAP } />,
-		label: LABELS[ LABEL_PRICE_GAP ].title,
-		render: ( { item } ) => {
-			return `${ item[ 'price-gap' ] }%`;
-		},
-	},
-	{
-		id: 'suggested-price',
-		enableHiding: false,
-		enableSorting: false,
-		enableGlobalSearch: false,
-		header: <Label labelKey={ LABEL_SUGGESTED_PRICE } />,
-		label: LABELS[ LABEL_SUGGESTED_PRICE ].title,
-		render: ( { item } ) => {
-			return <Price amount={ item[ 'suggested-price' ] } />;
-		},
-	},
-	{
-		id: 'action',
-		enableHiding: false,
-		enableSorting: false,
-		enableGlobalSearch: false,
-		label: LABELS[ LABEL_ACTION ].title,
-		render: ( { item } ) => {
-			return <ChangePrice id={ item.id } />;
-		},
-	},
-];
-
-const FIELDS_MAP = {
-	[ TABLE_TYPE_SUGGESTIONS ]: SUGGESTIONS_TABLE_FIELDS,
-	[ TABLE_TYPE_ADJUSTMENTS ]: [ ...BASE_FIELDS ],
-};
-
 /**
- * PriceBenchmarkTable component renders a table view for price benchmarking data.
+ * PriceBenchmarkTable component renders a table or other data views for price benchmarking.
  *
  * @param {Object} props - The component props.
  * @param {Array} props.data - The data to be displayed in the table.
- * @param {string} [props.tableType=TABLE_TYPE_SUGGESTIONS] - The type of table to render, which determines the fields to display.
+ * @param {Array} props.fields - The fields to be displayed in the table for desktop view.
+ * @param {Array} props.fieldsMobile - The fields to be displayed in the table for mobile view.
+ * @param {boolean} props.isViewportMobile - Indicates if the viewport is in mobile mode.
+ * @param {boolean} props.isReady - Indicates if the data is ready to be displayed.
  *
  * @return {JSX.Element} The rendered PriceBenchmarkTable component.
  */
 const PriceBenchmarkTable = ( {
 	data,
-	tableType = TABLE_TYPE_SUGGESTIONS,
+	fields,
+	fieldsMobile,
+	isViewportMobile,
+	isReady,
 } ) => {
 	const [ view, setView ] = useState( {
 		type: 'table',
@@ -162,20 +75,12 @@ const PriceBenchmarkTable = ( {
 		perPage: 10,
 		layout: {},
 		filters: [],
-		fields: [
-			'price-change-effectiveness',
-			'regular-price',
-			'price-on-google',
-			'price-gap',
-			'suggested-price',
-			'action',
-		],
+		fields: [],
 		titleField: 'title',
 		descriptionField: 'description',
 		mediaField: 'image',
 	} );
 
-	const fields = FIELDS_MAP[ tableType ];
 	const { data: shownData, paginationInfo } = useMemo( () => {
 		const updatedData = filterSortAndPaginate( data, view, fields );
 
@@ -186,19 +91,61 @@ const PriceBenchmarkTable = ( {
 		setView( newView );
 	};
 
+	// Determine the fields to be displayed based on the viewport size.
+	const viewportFields = useMemo( () => {
+		if ( isViewportMobile ) {
+			return fieldsMobile;
+		}
+		return fields.map( ( field ) => field.id );
+	}, [ isViewportMobile, fields, fieldsMobile ] );
+
+	const placeholderTableHeaders = useMemo( () => {
+		return fields.map( ( { id, label } ) => {
+			return {
+				key: id,
+				label,
+			};
+		} );
+	}, [ fields ] );
+
+	useEffect( () => {
+		setView( ( prevView ) => ( {
+			...prevView,
+			fields: viewportFields,
+		} ) );
+	}, [ viewportFields ] );
+
 	return (
 		<div className="gla-price-benchmark-table">
-			<DataViews
-				getItemId={ ( item ) => item.id }
-				fields={ fields }
-				data={ shownData }
-				view={ view }
-				paginationInfo={ paginationInfo }
-				onChangeView={ handleOnChangeView }
-				defaultLayouts={ [] }
-			/>
+			{ ! isReady && (
+				<TablePlaceholder
+					headers={ [
+						{
+							key: 'product',
+							label: __( 'Product', 'google-listings-and-ads' ),
+						},
+						...placeholderTableHeaders,
+					] }
+					caption={ __( 'Loading data…', 'google-listings-and-ads' ) }
+					numberOfRows={ 10 }
+				/>
+			) }
+
+			{ isReady && (
+				<DataViews
+					getItemId={ ( item ) => item.id }
+					fields={ [ ...BASE_FIELDS, ...fields ] }
+					data={ shownData }
+					view={ view }
+					paginationInfo={ paginationInfo }
+					onChangeView={ handleOnChangeView }
+					defaultLayouts={ [] }
+				/>
+			) }
 		</div>
 	);
 };
 
-export default PriceBenchmarkTable;
+export default withViewportMatch( {
+	isViewportMobile: '< medium',
+} )( PriceBenchmarkTable );

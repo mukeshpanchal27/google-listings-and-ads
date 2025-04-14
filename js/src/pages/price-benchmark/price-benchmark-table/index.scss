@@ -17,6 +17,16 @@
 	td > .dataviews-view-table__cell-content-wrapper:not(:has(.gla-badge)) {
 		justify-content: flex-end;
 	}
+
+	.woocommerce-table__table.is-loading {
+
+		.woocommerce-table__header,
+		.woocommerce-table__item {
+			&:not(:first-child) {
+				text-align: right;
+			}
+		}
+	}
 }
 
 .gla-price-benchmark-table__image {
