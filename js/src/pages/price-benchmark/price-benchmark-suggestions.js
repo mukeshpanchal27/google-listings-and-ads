@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import PriceBenchmarkTable from './price-benchmark-table';
+import usePriceBenchmarkSuggestions from '~/hooks/usePriceBenchmarkSuggestions';
 
 const data = [
 	{
@@ -227,6 +228,9 @@ const data = [
 ];
 
 const PriceBenchmarkSuggestions = () => {
+	const { suggestions, hasFinishedResolution } =
+		usePriceBenchmarkSuggestions();
+
 	return (
 		<div className="gla-price-benchmark-suggestions">
 			<PriceBenchmarkTable data={ data } />

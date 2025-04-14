@@ -1208,7 +1208,7 @@ export function* fetchGoogleAdsAccountStatus() {
 export function* fetchPriceBenchmarkSummary() {
 	try {
 		const data = yield apiFetch( {
-			path: `${ API_NAMESPACE }/mc/price-benchmark/summary`,
+			path: `${ API_NAMESPACE }/mc/price-benchmarks/summary`,
 		} );
 
 		return {
@@ -1232,7 +1232,7 @@ export function* fetchPriceBenchmarkSummary() {
 export function* fetchPriceBenchmarkSuggestions() {
 	try {
 		const data = yield apiFetch( {
-			path: `${ API_NAMESPACE }/mc/price-benchmark/suggestions`,
+			path: `${ API_NAMESPACE }/mc/price-benchmarks`,
 		} );
 
 		return {
