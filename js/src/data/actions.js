@@ -1225,3 +1225,27 @@ export function* fetchPriceBenchmarkSummary() {
 		);
 	}
 }
+
+/**
+ * Action to fetch the Price Benchmark suggestions.
+ */
+export function* fetchPriceBenchmarkSuggestions() {
+	try {
+		const data = yield apiFetch( {
+			path: `${ API_NAMESPACE }/mc/price-benchmark/suggestions`,
+		} );
+
+		return {
+			type: TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS,
+			data,
+		};
+	} catch ( error ) {
+		handleApiError(
+			error,
+			__(
+				'There was an error getting the price benchmark suggestions.',
+				'google-listings-and-ads'
+			)
+		);
+	}
+}

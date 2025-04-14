@@ -8,6 +8,7 @@ import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews/wp';
 /**
  * Internal dependencies
  */
+import ChangePrice from '../change-price';
 import EffectivenessIndicator from '../effectiveness-indicator';
 import Label from '../label';
 import Price from '../price';
@@ -24,6 +25,7 @@ import {
 } from '../constants';
 import './index.scss';
 
+// Defines the base fields (image, title, description) that are consistently used across all tables.
 const BASE_FIELDS = [
 	{
 		id: 'image',
@@ -60,6 +62,7 @@ const BASE_FIELDS = [
 	},
 ];
 
+// Fields specific to the benchmark suggestions table.
 export const SUGGESTIONS_TABLE_FIELDS = [
 	...BASE_FIELDS,
 	{
@@ -129,33 +132,14 @@ export const SUGGESTIONS_TABLE_FIELDS = [
 		enableGlobalSearch: false,
 		label: LABELS[ LABEL_ACTION ].title,
 		render: ( { item } ) => {
-			return <p>Change Price</p>;
+			return <ChangePrice id={ item.id } />;
 		},
 	},
 ];
 
 const FIELDS_MAP = {
 	[ TABLE_TYPE_SUGGESTIONS ]: SUGGESTIONS_TABLE_FIELDS,
-	[ TABLE_TYPE_ADJUSTMENTS ]: [
-		...BASE_FIELDS,
-		{
-			id: 'price-change-effectiveness',
-			enableHiding: false,
-			enableSorting: false,
-			enableGlobalSearch: false,
-			label: __(
-				'Price Change Effectiveness',
-				'google-listings-and-ads'
-			),
-			render: ( { item } ) => {
-				return (
-					<EffectivenessIndicator
-						effectiveness={ item[ 'price-change-effectiveness' ] }
-					/>
-				);
-			},
-		},
-	],
+	[ TABLE_TYPE_ADJUSTMENTS ]: [ ...BASE_FIELDS ],
 };
 
 /**
