@@ -2,10 +2,10 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useMemo, useEffect } from '@wordpress/element';
-import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews/wp';
 import { withViewportMatch } from '@wordpress/viewport';
 import { TablePlaceholder } from '@woocommerce/components';
+import { useState, useMemo, useEffect } from '@wordpress/element';
+import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews/wp';
 
 /**
  * Internal dependencies
