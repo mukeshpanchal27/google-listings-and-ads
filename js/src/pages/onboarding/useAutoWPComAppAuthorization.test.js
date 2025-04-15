@@ -3,6 +3,7 @@
  */
 import { renderHook, waitFor } from '@testing-library/react';
 import { getQuery } from '@woocommerce/navigation';
+import { recordEvent } from '@woocommerce/tracks';
 
 /**
  * Internal dependencies
@@ -14,6 +15,9 @@ import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
 import { useAppDispatch } from '~/data';
 
 jest.mock( '@woocommerce/navigation' );
+jest.mock( '@woocommerce/tracks', () => ( {
+	recordEvent: jest.fn().mockName( 'recordEvent' ),
+} ) );
 jest.mock( '~/hooks/useJetpackAccount' );
 jest.mock( '~/hooks/useGoogleAccount' );
 jest.mock( '~/hooks/useGoogleMCAccount' );
@@ -34,6 +38,7 @@ describe( 'useAutoWPComAppAuthorization', () => {
 
 	beforeEach( () => {
 		getQuery.mockClear().mockReturnValue( { 'google-mc': 'connected' } );
+		recordEvent.mockClear();
 		useJetpackAccount.mockReturnValue( { jetpack: { active: 'yes' } } );
 		useGoogleAccount.mockReturnValue( googleAccount );
 		useGoogleMCAccount.mockReturnValue( googleMCAccount );
@@ -168,20 +173,40 @@ describe( 'useAutoWPComAppAuthorization', () => {
 			expect( spyHref ).toHaveBeenCalledWith( 'https://jest/wpcom-auth' );
 		} );
 
+		it( 'Should record an event when starting the redirection to WPCom app authorization URL', () => {
+			expect( recordEvent ).not.toHaveBeenCalled();
+
+			renderHook( () => useAutoWPComAppAuthorization( 'jest-testing' ) );
+
+			expect( recordEvent ).toHaveBeenCalledTimes( 1 );
+			expect( recordEvent ).toHaveBeenCalledWith(
+				'gla_enable_product_sync',
+				{
+					page: 'jest-testing',
+					context: 'auto-redirection',
+				}
+			);
+		} );
+
 		it( 'Should only fetch and redirect to WPCom app authorization URL one time', async () => {
+			expect( recordEvent ).not.toHaveBeenCalled();
 			expect( fetchWPComAppAuthorizationUrl ).not.toHaveBeenCalled();
 			expect( spyHref ).not.toHaveBeenCalled();
 
-			const hook = renderHook( () => useAutoWPComAppAuthorization() );
+			const hook = renderHook( ( page ) =>
+				useAutoWPComAppAuthorization( page )
+			);
 
+			expect( recordEvent ).toHaveBeenCalledTimes( 1 );
 			expect( fetchWPComAppAuthorizationUrl ).toHaveBeenCalledTimes( 1 );
 			await waitFor( () => expect( spyHref ).toHaveBeenCalledTimes( 1 ) );
 
 			hook.rerender();
-			hook.rerender();
+			hook.rerender( 'jest-testing' );
 			hook.rerender();
 
 			expect( getQuery ).toHaveBeenCalledTimes( 4 );
+			expect( recordEvent ).toHaveBeenCalledTimes( 1 );
 			expect( fetchWPComAppAuthorizationUrl ).toHaveBeenCalledTimes( 1 );
 			await waitFor( () => expect( spyHref ).toHaveBeenCalledTimes( 1 ) );
 		} );
