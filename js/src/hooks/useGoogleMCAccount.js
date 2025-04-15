@@ -19,6 +19,7 @@ import { GOOGLE_MC_ACCOUNT_STATUS } from '~/constants';
  * @property {boolean} hasFinishedResolution Whether resolution has completed.
  * @property {boolean} isPreconditionReady Whether the precondition of continued connection processing is fulfilled.
  * @property {boolean} hasGoogleMCConnection Whether the user has a Google Merchant Center account connection established.
+ * @property {boolean} isLinkedToAds Whether the Google Merchant Center account is linked to a Google Ads account.
  * @property {boolean} isReady Whether the user has a Google Merchant Center account is in connected state.
  */
 
@@ -49,6 +50,7 @@ const useGoogleMCAccount = () => {
 					// the precondition doesn't meet.
 					isPreconditionReady: false,
 					hasGoogleMCConnection: false,
+					isLinkedToAds: false,
 					isReady: false,
 				};
 			}
@@ -66,8 +68,11 @@ const useGoogleMCAccount = () => {
 					GOOGLE_MC_ACCOUNT_STATUS.INCOMPLETE,
 				].includes( acc?.status );
 
+			const isLinkedToAds =
+				acc?.status === GOOGLE_MC_ACCOUNT_STATUS.CONNECTED;
+
 			const isReady =
-				acc?.status === GOOGLE_MC_ACCOUNT_STATUS.CONNECTED ||
+				isLinkedToAds ||
 				( acc?.status === GOOGLE_MC_ACCOUNT_STATUS.INCOMPLETE &&
 					acc?.step === 'link_ads' );
 
@@ -79,6 +84,7 @@ const useGoogleMCAccount = () => {
 				),
 				isPreconditionReady: true,
 				hasGoogleMCConnection,
+				isLinkedToAds,
 				isReady,
 			};
 		},

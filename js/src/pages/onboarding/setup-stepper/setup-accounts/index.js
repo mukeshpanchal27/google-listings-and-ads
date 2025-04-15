@@ -87,11 +87,13 @@ const SetupAccounts = ( props ) => {
 	const {
 		googleMCAccount,
 		isPreconditionReady: isGMCPreconditionReady,
+		isLinkedToAds,
 		isReady: isGoogleMCReady,
 	} = useGoogleMCAccount();
 	const { hasFinishedResolution } = useGoogleAdsAccount();
 	const isStoreAddressReady = useStoreAddressReady();
-	const isGoogleAdsReady = useGoogleAdsAccountReady();
+	const { isGoogleAdsReady, isLinkedToMerchantCenter } =
+		useGoogleAdsAccountReady();
 	const { updateGoogleMCContactInformation } = useAppDispatch();
 	const [ isSubmitting, setIsSubmitting ] = useState( false );
 
@@ -123,8 +125,21 @@ const SetupAccounts = ( props ) => {
 		return <AppSpinner />;
 	}
 
+	/**
+	 * Because the order in which Google Ads and Google Merchant Center accounts
+	 * are connected is not always in order, and the second connected one doesn't
+	 * ask the first one to refetch its new state, the states on the frontend may
+	 * not be up-to-date but remain in a mid-state.
+	 *
+	 * Therefore, here it checks if either of the two accounts can indicate that
+	 * the interlinking is complete.
+	 */
+	const isAdsAndMerchantCenterInterlinked =
+		isLinkedToMerchantCenter || isLinkedToAds;
+
 	const isContinueButtonDisabled = ! (
 		hasFinishedResolution &&
+		isAdsAndMerchantCenterInterlinked &&
 		isGoogleAdsReady &&
 		isGoogleMCReady &&
 		isStoreAddressReady
