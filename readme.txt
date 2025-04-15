@@ -150,7 +150,4 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Tweak - Supplement the implementation of API Pull for the Settings page.
 * Tweak - WC 9.7 compatibility.
 
-= 2.9.8 - 2025-02-04 =
-* Tweak - Replace WooCommerce logo with Woo 2.0 Brand.
-
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
