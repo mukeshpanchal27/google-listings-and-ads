@@ -1,5 +1,11 @@
 *** Google for WooCommerce Changelog ***
 
+= 2.9.11 - 2025-04-15 =
+* Fix - Ads merchant linking failure display issue & improve retry mechanism.
+* Fix - Compatibility issue with WordPress 6.8 and WooCommerce 9.8, which may cause all pages not to display properly.
+* Tweak - WC 9.8 compatibility.
+* Tweak - WP 6.8 compatibility.
+
 = 2.9.10 - 2025-03-18 =
 * Dev - Add the conversion action details to the connection test page.
 * Fix - It may be unable to connect to the auto-selected Google Ads account after disconnecting during onboarding.
