@@ -12,6 +12,9 @@ import './index.scss';
  * Badge component.
  *
  * A reusable badge component that displays content with optional styling based on intent.
+ * This is a temporary port of the Badge component from the Gutenberg repository:
+ * https://github.com/WordPress/gutenberg/tree/trunk/packages/components/src/badge
+ * until that package is made public.
  *
  * @param {Object} props - The component props.
  * @param {string} [props.className] - Additional CSS classes to apply to the badge.

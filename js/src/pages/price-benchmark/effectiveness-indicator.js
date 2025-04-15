@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import {
+	EFFECTIVENESS_UNSPECIFIED,
 	EFFECTIVENESS_LOW,
 	EFFECTIVENESS_MEDIUM,
 	EFFECTIVENESS_HIGH,
@@ -14,6 +15,10 @@ import {
 import Badge from '~/components/badge';
 
 const EFFECTIVENESS_MAP = {
+	[ EFFECTIVENESS_UNSPECIFIED ]: {
+		intent: 'default',
+		label: __( 'Unspecified', 'google-listings-and-ads' ),
+	},
 	[ EFFECTIVENESS_LOW ]: {
 		intent: 'error',
 		label: __( 'Low', 'google-listings-and-ads' ),
