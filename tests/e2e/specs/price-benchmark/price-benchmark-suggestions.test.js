@@ -7,6 +7,7 @@ import { expect, test } from '@playwright/test';
  * Internal dependencies
  */
 import { clearOnboardedMerchant } from '../../utils/api';
+import priceBenchmarlSuggestionsData from '../../utils/__fixtures__/price-benchmark-suggestions.json';
 import PriceBenchmarkPage from '../../utils/pages/price-benchmark';
 
 test.use( { storageState: process.env.ADMINSTATE } );
@@ -92,6 +93,42 @@ test.describe( 'Price Benchmark Page', () => {
 				'aria-selected',
 				'true'
 			);
+		} );
+	} );
+
+	test.describe( 'Price Benchmark Suggestions Functionality', () => {
+		test( 'Shows no results if there is no data', async () => {
+			await priceBenchmarkPage.goto();
+
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
+
+			await expect( page.getByText( 'No results' ) ).toBeVisible();
+		} );
+
+		test( 'Shows 10 results per page by default', async () => {
+			await priceBenchmarkPage.goto();
+
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarlSuggestionsData,
+			] );
+
+			const tableRows = page.locator( 'table tbody tr' );
+			await expect( tableRows ).toHaveCount( 10 );
+		} );
+
+		test( 'Navigates to the next page and shows 5 results', async () => {
+			await priceBenchmarkPage.goto();
+
+			priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarlSuggestionsData,
+			] );
+
+			const nextPageButton = page.locator( '[aria-label="Next page"]' );
+			await nextPageButton.click();
+
+			// Ensure the table displays 5 rows on the second page
+			const tableRows = page.locator( 'table tbody tr' );
+			await expect( tableRows ).toHaveCount( 5 );
 		} );
 	} );
 } );
