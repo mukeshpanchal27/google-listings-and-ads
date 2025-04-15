@@ -52,7 +52,7 @@ test.describe( 'Notifications Banner', () => {
 
 	test( 'Grant Access button is visible on Settings page when notifications service is enabled', async () => {
 		// Mock Merchant Center as connected
-		await settingsPage.mockMCConnected( 1234, true );
+		await settingsPage.mockMCConnected( 1234, true, null );
 		const button = settingsPage.getGrantAccessBtn();
 
 		await expect( button ).toBeVisible();
@@ -61,7 +61,7 @@ test.describe( 'Notifications Banner', () => {
 	test( 'When click on Grant Access button redirect to Auth page', async () => {
 		const mockAuthURL = 'https://example.com';
 		// Mock Merchant Center as connected
-		await settingsPage.mockMCConnected( 1234, true );
+		await settingsPage.mockMCConnected( 1234, true, null );
 		await settingsPage.fulfillRESTApiAuthorize( { auth_url: mockAuthURL } );
 		const button = settingsPage.getGrantAccessBtn();
 
