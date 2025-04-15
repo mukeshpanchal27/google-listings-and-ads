@@ -130,5 +130,21 @@ test.describe( 'Price Benchmark Page', () => {
 			const tableRows = page.locator( 'table tbody tr' );
 			await expect( tableRows ).toHaveCount( 5 );
 		} );
+
+		test( 'Displays the product and action columns only in the table when screen is resized to 400px', async () => {
+			await priceBenchmarkPage.goto();
+
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarlSuggestionsData,
+			] );
+
+			await page.setViewportSize( { width: 400, height: 800 } );
+
+			const tableHeaderColumns = page.locator( 'table thead tr th' );
+			await expect( tableHeaderColumns ).toHaveCount( 2 );
+
+			await expect( tableHeaderColumns.nth( 0 ) ).toHaveText( 'Product' );
+			await expect( tableHeaderColumns.nth( 1 ) ).toHaveText( 'Action' );
+		} );
 	} );
 } );
