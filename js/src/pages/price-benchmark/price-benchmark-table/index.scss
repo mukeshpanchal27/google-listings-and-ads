@@ -1,9 +1,9 @@
 .gla-price-benchmark-table {
 
 	.dataviews-view-table-header-button {
-		font-size: $gla-font-base;
+		font-size: $gla-font-smallest;
 		font-weight: 600;
-		line-height: $gla-line-height-smaller;
+		line-height: $gla-line-height-medium;
 	}
 
 	.gla-tooltip__children-container {
@@ -16,6 +16,11 @@
 
 	td > .dataviews-view-table__cell-content-wrapper:not(:has(.gla-badge)) {
 		justify-content: flex-end;
+	}
+
+	.dataviews-view-table tr td:first-child,
+	.dataviews-view-table tr th:first-child {
+		overflow: hidden;
 	}
 
 	.woocommerce-table__table.is-loading {
