@@ -2,10 +2,10 @@
 Contributors: automattic, google, woocommerce
 Tags: woocommerce, google, product feed, ads, listings
 Requires at least: 6.1
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
 Requires PHP Architecture: 64 Bits
-Stable tag: 2.9.10
+Stable tag: 2.9.11
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -140,6 +140,12 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
+= 2.9.11 - 2025-04-15 =
+* Fix - Ads merchant linking failure display issue & improve retry mechanism.
+* Fix - Compatibility issue with WordPress 6.8 and WooCommerce 9.8, which may cause all pages not to display properly.
+* Tweak - WC 9.8 compatibility.
+* Tweak - WP 6.8 compatibility.
+
 = 2.9.10 - 2025-03-18 =
 * Dev - Add the conversion action details to the connection test page.
 * Fix - It may be unable to connect to the auto-selected Google Ads account after disconnecting during onboarding.
@@ -149,8 +155,5 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Tweak - Opt-in to URL expansion.
 * Tweak - Supplement the implementation of API Pull for the Settings page.
 * Tweak - WC 9.7 compatibility.
-
-= 2.9.8 - 2025-02-04 =
-* Tweak - Replace WooCommerce logo with Woo 2.0 Brand.
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
