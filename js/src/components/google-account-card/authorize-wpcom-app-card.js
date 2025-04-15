@@ -51,8 +51,15 @@ function getDetail( status ) {
  * - The directory where it is located
  * - The data source for its grant status
  * - The presenation on UI
+ *
+ * @param {Object} props React props.
+ * @param {Object} props.eventPropsOfEnableButton Event tracking properties for the enable button.
+ * @param {boolean} [props.hideAccountSwitch=false] Whether to hide the account switch button.
  */
-export default function AuthorizeWPComAppCard() {
+export default function AuthorizeWPComAppCard( {
+	eventPropsOfEnableButton,
+	hideAccountSwitch = false,
+} ) {
 	const { google } = useGoogleAccount();
 	const { googleMCAccount, hasFinishedResolution } = useGoogleMCAccount();
 
@@ -63,8 +70,7 @@ export default function AuthorizeWPComAppCard() {
 
 		return (
 			<EnableNewProductSyncButton
-				text={ __( 'Grant access', 'google-listings-and-ads' ) }
-				eventProps={ { page: 'setup-mc' } }
+				eventProps={ eventPropsOfEnableButton }
 			/>
 		);
 	};
@@ -92,7 +98,7 @@ export default function AuthorizeWPComAppCard() {
 			expandedDetail={ Boolean( detail ) }
 			indicator={ getIndicator() }
 			detail={ detail }
-			actions={ <SwitchAccountButton /> }
+			actions={ ! hideAccountSwitch && <SwitchAccountButton /> }
 		/>
 	);
 }
