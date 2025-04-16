@@ -11,6 +11,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\SiteVerification;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\WP\NotificationsService;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\WP\OAuthService;
 use Automattic\WooCommerce\GoogleListingsAndAds\DB\Table\MerchantIssueTable;
+use Automattic\WooCommerce\GoogleListingsAndAds\DB\Table\MerchantPriceBenchmarksTable;
 use Automattic\WooCommerce\GoogleListingsAndAds\DB\Table\ShippingRateTable;
 use Automattic\WooCommerce\GoogleListingsAndAds\DB\Table\ShippingTimeTable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Exception\ApiNotReady;
@@ -42,6 +43,7 @@ defined( 'ABSPATH' ) || exit;
  * - Merchant
  * - MerchantCenterService
  * - MerchantIssueTable
+ * - MerchantPriceBenchmarksTable
  * - MerchantStatuses
  * - Middleware
  * - SiteVerification
@@ -272,6 +274,7 @@ class AccountService implements ContainerAwareInterface, OptionsAwareInterface, 
 		$this->container->get( MerchantStatuses::class )->delete();
 
 		$this->container->get( MerchantIssueTable::class )->truncate();
+		$this->container->get( MerchantPriceBenchmarksTable::class )->truncate();
 		$this->container->get( ShippingRateTable::class )->truncate();
 		$this->container->get( ShippingTimeTable::class )->truncate();
 

@@ -39,6 +39,19 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				'schema' => $this->get_api_response_schema_callback(),
 			]
 		);
+
+		// Route for price benchmarks summary.
+		$this->register_route(
+			'mc/price-benchmarks/summary',
+			[
+				[
+					'methods'             => TransportMethods::READABLE,
+					'callback'            => $this->get_price_benchmarks_summary_callback(),
+					//'permission_callback' => $this->get_permission_callback(),
+				],
+				'schema' => $this->get_summary_response_schema_callback(),
+			]
+		);
 	}
 
 	/**
@@ -77,6 +90,31 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				$response_data = $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
 
 				return new Response( $response_data );
+			} catch ( Exception $e ) {
+				return $this->response_from_exception( $e );
+			}
+		};
+	}
+
+	/**
+	 * Callback for the price benchmarks summary endpoint.
+	 *
+	 * @return callable
+	 */
+	protected function get_price_benchmarks_summary_callback(): callable {
+		return function ( Request $request ) {
+			try {
+				/** @var MerchantPriceBenchmarks $merchant */
+				$merchant = $this->container->get( MerchantPriceBenchmarks::class );
+
+				// Fetch benchmark and price insights data.
+				$benchmark_data      = $merchant->get_benchmark_data( $this->prepare_query_arguments( $request ) );
+				$price_insights_data = $merchant->get_price_insights( $this->prepare_query_arguments( $request ) );
+
+				// Generate summary data.
+				$summary_data = $this->get_price_benchmarks_summary( $benchmark_data, $price_insights_data );
+
+				return new Response( $summary_data );
 			} catch ( Exception $e ) {
 				return $this->response_from_exception( $e );
 			}
@@ -154,6 +192,23 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	}
 
 	/**
+	 * Gets the price benchmark summart.
+	 *
+	 * @param array $benchmark_data Raw benchmark data.
+	 * @param array $price_insights_data Raw price insights data.
+	 * @return array Mapped response data.
+	 */
+	protected function get_price_benchmarks_summary( array $benchmark_data, array $price_insights_data ): array {
+		$mapped_data = [];
+
+		if ( empty( $benchmark_data['results'] ) || empty( $price_insights_data['results'] ) ) {
+			return $mapped_data;
+		}
+
+		return $mapped_data;
+	}
+
+	/**
 	 * Retrieves the product thumbnail URL.
 	 *
 	 * @param int $product_id WooCommerce product ID.
@@ -208,6 +263,24 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 			],
 			'suggested_price' => [
 				'description' => __( 'Suggested price for the product.', 'google-listings-and-ads' ),
+				'type'        => 'number',
+			],
+		];
+	}
+
+	/**
+	 * Get the schema for the summary endpoint.
+	 *
+	 * @return array
+	 */
+	protected function get_summary_response_schema_callback(): array {
+		return [
+			'total_products'    => [
+				'description' => __( 'Total number of products.', 'google-listings-and-ads' ),
+				'type'        => 'integer',
+			],
+			'average_price_gap' => [
+				'description' => __( 'Average price gap across all products.', 'google-listings-and-ads' ),
 				'type'        => 'number',
 			],
 		];
