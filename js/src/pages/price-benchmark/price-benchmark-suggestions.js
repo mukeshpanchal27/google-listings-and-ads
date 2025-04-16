@@ -9,13 +9,14 @@ import Label from './label';
 import Price from './price';
 import {
 	LABELS,
-	LABEL_PRICE_CHANGE_EFFECTIVENESS,
-	LABEL_PRICE_ON_GOOGLE,
-	LABEL_PRICE_GAP,
+	LABEL_CHANGE_EFFECTIVENESS,
+	LABEL_AVG_PRICE_ON_GOOGLE,
+	LABEL_PRICE_GAP_PERCENT,
 	LABEL_SUGGESTED_PRICE,
 	LABEL_REGULAR_PRICE,
 	LABEL_ACTION,
 } from './constants';
+import suggestions from '../../../../tests/e2e/utils/__fixtures__/price-benchmark-suggestions.json';
 
 const TABLE_FIELDS = [
 	{
@@ -23,10 +24,8 @@ const TABLE_FIELDS = [
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
-		header: (
-			<Label labelKey={ LABEL_PRICE_CHANGE_EFFECTIVENESS } alignLeft />
-		),
-		label: LABELS[ LABEL_PRICE_CHANGE_EFFECTIVENESS ].title,
+		header: <Label labelKey={ LABEL_CHANGE_EFFECTIVENESS } alignLeft />,
+		label: LABELS[ LABEL_CHANGE_EFFECTIVENESS ].title,
 		render: ( { item } ) => {
 			return (
 				<EffectivenessIndicator
@@ -50,8 +49,8 @@ const TABLE_FIELDS = [
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
-		header: <Label labelKey={ LABEL_PRICE_ON_GOOGLE } />,
-		label: LABELS[ LABEL_PRICE_ON_GOOGLE ].title,
+		header: <Label labelKey={ LABEL_AVG_PRICE_ON_GOOGLE } />,
+		label: LABELS[ LABEL_AVG_PRICE_ON_GOOGLE ].title,
 		render: ( { item } ) => {
 			return <Price amount={ item[ 'price-on-google' ] } />;
 		},
@@ -61,8 +60,8 @@ const TABLE_FIELDS = [
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
-		header: <Label labelKey={ LABEL_PRICE_GAP } />,
-		label: LABELS[ LABEL_PRICE_GAP ].title,
+		header: <Label labelKey={ LABEL_PRICE_GAP_PERCENT } />,
+		label: LABELS[ LABEL_PRICE_GAP_PERCENT ].title,
 		render: ( { item } ) => {
 			return `${ item[ 'price-gap' ] }%`;
 		},
@@ -85,7 +84,7 @@ const TABLE_FIELDS = [
 		enableGlobalSearch: false,
 		label: LABELS[ LABEL_ACTION ].title,
 		render: ( { item } ) => {
-			return <ChangePrice id={ item.id } />;
+			return <ChangePrice productID={ item.id } />;
 		},
 	},
 ];
@@ -103,8 +102,8 @@ const TABLE_FIELDS_MOBILE = [ 'action' ];
  * @return {JSX.Element} A div containing the PriceBenchmarkTable component.
  */
 const PriceBenchmarkSuggestions = () => {
-	const { suggestions, hasFinishedResolution } =
-		usePriceBenchmarkSuggestions();
+	// const { suggestions, hasFinishedResolution } =
+	// 	usePriceBenchmarkSuggestions();
 
 	return (
 		<div className="gla-price-benchmark-suggestions">
@@ -112,7 +111,7 @@ const PriceBenchmarkSuggestions = () => {
 				data={ suggestions }
 				fields={ TABLE_FIELDS }
 				fieldsMobile={ TABLE_FIELDS_MOBILE }
-				isReady={ hasFinishedResolution }
+				isReady={ true }
 			/>
 		</div>
 	);

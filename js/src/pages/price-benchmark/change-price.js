@@ -2,11 +2,13 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import AppButton from '~/components/app-button';
+import ChangePriceModal from './change-price-modal';
 
 /**
  * ChangePrice component.
@@ -22,7 +24,29 @@ const ChangePrice = ( {
 	productID,
 	label = __( 'Change price', 'google-listings-and-ads' ),
 } ) => {
-	return <AppButton id={ productID }>{ label }</AppButton>;
+	const [ isOpen, setIsOpen ] = useState( true );
+	const openModal = () => {
+		setIsOpen( true );
+	};
+
+	const closeModal = () => {
+		setIsOpen( false );
+	};
+
+	return (
+		<>
+			<AppButton id={ productID } onClick={ openModal }>
+				{ label }
+			</AppButton>
+
+			{ isOpen && (
+				<ChangePriceModal
+					productID={ productID }
+					onRequestClose={ closeModal }
+				/>
+			) }
+		</>
+	);
 };
 
 export default ChangePrice;

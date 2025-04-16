@@ -6,10 +6,9 @@ import { __ } from '@wordpress/i18n';
 export const TABLE_TYPE_SUGGESTIONS = 'suggestions';
 export const TABLE_TYPE_ADJUSTMENTS = 'adjustments';
 
-export const LABEL_PRICE_CHANGE_EFFECTIVENESS =
-	'LABEL_PRICE_CHANGE_EFFECTIVENESS';
-export const LABEL_PRICE_ON_GOOGLE = 'LABEL_PRICE_ON_GOOGLE';
-export const LABEL_PRICE_GAP = 'LABEL_PRICE_GAP';
+export const LABEL_CHANGE_EFFECTIVENESS = 'LABEL_CHANGE_EFFECTIVENESS';
+export const LABEL_AVG_PRICE_ON_GOOGLE = 'LABEL_AVG_PRICE_ON_GOOGLE';
+export const LABEL_PRICE_GAP_PERCENT = 'LABEL_PRICE_GAP_PERCENT';
 export const LABEL_SUGGESTED_PRICE = 'LABEL_SUGGESTED_PRICE';
 export const LABEL_REGULAR_PRICE = 'LABEL_REGULAR_PRICE';
 export const LABEL_ACTION = 'LABEL_ACTION';
@@ -19,21 +18,21 @@ export const EFFECTIVENESS_MEDIUM = 2;
 export const EFFECTIVENESS_HIGH = 3;
 
 export const LABELS = {
-	[ LABEL_PRICE_CHANGE_EFFECTIVENESS ]: {
+	[ LABEL_CHANGE_EFFECTIVENESS ]: {
 		title: __( 'Change Effectiveness', 'google-listings-and-ads' ),
 		tooltip: __(
 			'Effectiveness tells you which products would benefit most from price changes. This rating takes into consideration the performance boost predicted by adjusting the sale price and the difference between your current price and the suggested price. Price suggestions with “High” effectiveness are predicted to drive the largest increase in performance. Keep in mind that predictions do not guarantee improvements in future performance.',
 			'google-listings-and-ads'
 		),
 	},
-	[ LABEL_PRICE_ON_GOOGLE ]: {
+	[ LABEL_AVG_PRICE_ON_GOOGLE ]: {
 		title: __( 'Avg. Price on Google', 'google-listings-and-ads' ),
 		tooltip: __(
 			'The effective price for a product across all retailers selling the same product weighted by customer clicks. Products are matched based on the GTIN you provide in the product details.',
 			'google-listings-and-ads'
 		),
 	},
-	[ LABEL_PRICE_GAP ]: {
+	[ LABEL_PRICE_GAP_PERCENT ]: {
 		title: __( 'Price Gap %', 'google-listings-and-ads' ),
 		tooltip: __(
 			'The percentage difference between your price and the price on Google for this product.',
