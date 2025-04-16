@@ -47,7 +47,7 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				[
 					'methods'             => TransportMethods::READABLE,
 					'callback'            => $this->get_price_benchmarks_summary_callback(),
-					//'permission_callback' => $this->get_permission_callback(),
+					'permission_callback' => $this->get_permission_callback(),
 				],
 				'schema' => $this->get_summary_response_schema_callback(),
 			]
