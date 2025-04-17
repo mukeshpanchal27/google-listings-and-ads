@@ -23,8 +23,8 @@ const BASE_FIELDS = [
 		render: ( { item } ) => {
 			return (
 				<img
-					src={ item.image }
-					alt={ item.title }
+					src={ item.product.thumbnail }
+					alt={ item.product.title }
 					className="gla-price-benchmark-table__image"
 				/>
 			);
@@ -36,6 +36,9 @@ const BASE_FIELDS = [
 		enableSorting: false,
 		enableGlobalSearch: true,
 		label: __( 'Product', 'google-listings-and-ads' ),
+		render: ( { item } ) => {
+			return item.product.title;
+		},
 	},
 	{
 		id: 'description',
@@ -44,7 +47,7 @@ const BASE_FIELDS = [
 		enableGlobalSearch: true,
 		label: __( 'Description', 'google-listings-and-ads' ),
 		render: ( { item } ) => {
-			return <span>{ item.description }</span>;
+			return <span>{ item.product.id }</span>;
 		},
 	},
 ];

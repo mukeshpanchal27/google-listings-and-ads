@@ -29,9 +29,7 @@ const TABLE_FIELDS = [
 		label: LABELS[ LABEL_PRICE_CHANGE_EFFECTIVENESS ].title,
 		render: ( { item } ) => {
 			return (
-				<EffectivenessIndicator
-					effectiveness={ item[ 'price-change-effectiveness' ] }
-				/>
+				<EffectivenessIndicator effectiveness={ item.effectiveness } />
 			);
 		},
 	},
@@ -42,7 +40,7 @@ const TABLE_FIELDS = [
 		enableGlobalSearch: false,
 		label: <Label labelKey={ LABEL_REGULAR_PRICE } />,
 		render: ( { item } ) => {
-			return <Price amount={ item[ 'regular-price' ] } highlight />;
+			return <Price amount={ item.regular_price } highlight />;
 		},
 	},
 	{
@@ -53,7 +51,7 @@ const TABLE_FIELDS = [
 		header: <Label labelKey={ LABEL_PRICE_ON_GOOGLE } />,
 		label: LABELS[ LABEL_PRICE_ON_GOOGLE ].title,
 		render: ( { item } ) => {
-			return <Price amount={ item[ 'price-on-google' ] } />;
+			return <Price amount={ item.price_on_google } />;
 		},
 	},
 	{
@@ -64,7 +62,7 @@ const TABLE_FIELDS = [
 		header: <Label labelKey={ LABEL_PRICE_GAP } />,
 		label: LABELS[ LABEL_PRICE_GAP ].title,
 		render: ( { item } ) => {
-			return `${ item[ 'price-gap' ] }%`;
+			return `${ item.price_gap }%`;
 		},
 	},
 	{
@@ -75,7 +73,7 @@ const TABLE_FIELDS = [
 		header: <Label labelKey={ LABEL_SUGGESTED_PRICE } />,
 		label: LABELS[ LABEL_SUGGESTED_PRICE ].title,
 		render: ( { item } ) => {
-			return <Price amount={ item[ 'suggested-price' ] } />;
+			return <Price amount={ item.suggested_price } />;
 		},
 	},
 	{

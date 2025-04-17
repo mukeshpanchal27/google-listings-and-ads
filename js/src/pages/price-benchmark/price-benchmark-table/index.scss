@@ -6,8 +6,19 @@
 		line-height: $gla-line-height-medium;
 	}
 
+	.dataviews-view-table__cell-content-wrapper.dataviews-title-field {
+		min-height: auto;
+	}
+
 	.gla-tooltip__children-container {
 		border-bottom: 1px dashed currentcolor;
+	}
+
+	.gla-price-benchmark-table__image {
+		border-radius: 2px;
+		height: 32px;
+		object-fit: cover;
+		width: 32px;
 	}
 
 	th:not(:first-child):not(:has(.gla-price-benchmark__label--align-left)) {
