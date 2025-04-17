@@ -1,7 +1,11 @@
 /**
+ * External dependencies
+ */
+import { lazy } from '@wordpress/element';
+
+/**
  * Internal dependencies
  */
-import PriceBenchmarkTable from './price-benchmark-table';
 import usePriceBenchmarkSuggestions from '~/hooks/usePriceBenchmarkSuggestions';
 import ChangePrice from './change-price';
 import EffectivenessIndicator from './effectiveness-indicator';
@@ -16,6 +20,12 @@ import {
 	LABEL_REGULAR_PRICE,
 	LABEL_ACTION,
 } from './constants';
+
+const PriceBenchmarkTable = lazy( () =>
+	import(
+		/* webpackChunkName: "price-benchmark-table" */ './price-benchmark-table'
+	)
+);
 
 const TABLE_FIELDS = [
 	{
