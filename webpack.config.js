@@ -72,12 +72,9 @@ const webpackConfig = {
 			externalizedReport:
 				! hasReactFastRefresh && '../../.externalized.json',
 			requestToExternal: ( request ) => {
-				if ( request === '@wordpress/dataviews/wp' ) {
-					return false;
+				if ( request.startsWith( '@wordpress/dataviews' ) ) {
+					return null;
 				}
-
-				// Keep existing external mapping logic
-				return undefined;
 			},
 		} ),
 		new MiniCSSExtractPlugin( {
@@ -118,24 +115,13 @@ const webpackConfig = {
 				...defaultConfig.optimization.splitChunks.cacheGroups,
 				wordpressDataviews: {
 					name: 'wp-dataviews',
-					test: /[\\/]node_modules[\\/]@wordpress[\\/]dataviews/,
-					chunks: 'all',
+					priority: 20,
+					test: /[\\/]node_modules[\\/](@wordpress[\\/]dataviews)[\\/]/,
 				},
 				vendors: {
 					name: 'vendors',
-					test: ( module ) => {
-						// Check if it's from node_modules
-						const isFromNodeModules = /([\\/])node_modules\1/.test(
-							module.resource || ''
-						);
-
-						// Exclude @wordpress/dataviews modules
-						const isWpDataviews = module.resource?.includes(
-							'@wordpress/dataviews'
-						);
-
-						return isFromNodeModules && ! isWpDataviews;
-					},
+					test: /([\\/])node_modules\1/,
+					priority: 10,
 				},
 				commons: {
 					name: 'commons',
