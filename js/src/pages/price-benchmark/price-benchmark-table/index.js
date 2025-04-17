@@ -50,19 +50,19 @@ const BASE_FIELDS = [
 ];
 
 /**
- * PriceBenchmarkTable component renders a table or other data views for price benchmarking.
+ * PriceBenchmarkTable component renders a table for price benchmarking.
  *
  * @param {Object} props - The component props.
- * @param {Array} props.data - The data to be displayed in the table.
+ * @param {Array} [props.data=[]] - The data to be displayed in the table.
  * @param {Array} props.fields - The fields to be displayed in the table for desktop view.
  * @param {Array} props.fieldsMobile - The fields to be displayed in the table for mobile view.
- * @param {boolean} props.isViewportMobile - Indicates if the viewport is in mobile mode.
+ * @param {boolean} props.isViewportMobile - Indicates if the viewport is in mobile size.
  * @param {boolean} props.isReady - Indicates if the data is ready to be displayed.
  *
  * @return {JSX.Element} The rendered PriceBenchmarkTable component.
  */
 const PriceBenchmarkTable = ( {
-	data,
+	data = [],
 	fields,
 	fieldsMobile,
 	isViewportMobile,

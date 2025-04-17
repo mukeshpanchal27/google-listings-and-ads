@@ -7,7 +7,7 @@ import { expect, test } from '@playwright/test';
  * Internal dependencies
  */
 import { clearOnboardedMerchant } from '../../utils/api';
-import priceBenchmarlSuggestionsData from '../../utils/__fixtures__/price-benchmark-suggestions.json';
+import priceBenchmarkSuggestionsData from '../../utils/__fixtures__/price-benchmark-suggestions.json';
 import PriceBenchmarkPage from '../../utils/pages/price-benchmark';
 
 test.use( { storageState: process.env.ADMINSTATE } );
@@ -109,7 +109,7 @@ test.describe( 'Price Benchmark Page', () => {
 			await priceBenchmarkPage.goto();
 
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-				...priceBenchmarlSuggestionsData,
+				...priceBenchmarkSuggestionsData,
 			] );
 
 			const tableRows = page.locator( 'table tbody tr' );
@@ -120,7 +120,7 @@ test.describe( 'Price Benchmark Page', () => {
 			await priceBenchmarkPage.goto();
 
 			priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-				...priceBenchmarlSuggestionsData,
+				...priceBenchmarkSuggestionsData,
 			] );
 
 			const nextPageButton = page.locator( '[aria-label="Next page"]' );
@@ -135,7 +135,7 @@ test.describe( 'Price Benchmark Page', () => {
 			await priceBenchmarkPage.goto();
 
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-				...priceBenchmarlSuggestionsData,
+				...priceBenchmarkSuggestionsData,
 			] );
 
 			await page.setViewportSize( { width: 400, height: 800 } );
