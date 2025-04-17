@@ -1,5 +1,22 @@
-.gla-price-benchmark__card .app-tab-nav:first-child {
-	padding: 0 $grid-unit-40;
+.gla-price-benchmark__card {
+
+	& .app-tab-nav:first-child {
+		padding: 0 $grid-unit-40;
+	}
+
+	& .woocommerce-table.is-empty {
+		background: #fff;
+
+		.gla-price-benchmark__empty-metrics {
+			color: #757575;
+			max-width: 454px;
+			text-align: center;
+
+			p {
+				font-size: $grid-unit-20;
+			}
+		}
+	}
 }
 
 .gla-price-benchmark__comparison-chart {

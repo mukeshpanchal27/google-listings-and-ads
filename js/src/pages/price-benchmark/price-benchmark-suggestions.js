@@ -1,9 +1,15 @@
 /**
  * External dependencies
  */
-import { TablePlaceholder } from '@woocommerce/components';
+import { EmptyTable, TablePlaceholder } from '@woocommerce/components';
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Internal dependencies
+ */
+import EmptyMetricsNotice from './empty-metrics-notice';
+
+const suggestions = [];
 const TABLE_DATA_HEADERS = [
 	{
 		key: 'product',
@@ -50,13 +56,18 @@ const TABLE_DATA_HEADERS = [
 ];
 
 const PriceBenchmarkSuggestions = () => {
+	if ( suggestions.length === 0 ) {
+		return <EmptyTable emptyState={ <EmptyMetricsNotice /> } />;
+	}
+
 	return (
 		<TablePlaceholder
-			headers={ TABLE_DATA_HEADERS }
-			caption={ __(
-				'Loading the product data…',
-				'google-listings-and-ads'
-			) }
+			columns={ TABLE_DATA_HEADERS }
+			rows={ suggestions }
+			emptyState={ <EmptyMetricsNotice /> }
+			isLoading={ false }
+			loadingState={ <EmptyMetricsNotice /> }
+			tableType="suggestions"
 		/>
 	);
 };

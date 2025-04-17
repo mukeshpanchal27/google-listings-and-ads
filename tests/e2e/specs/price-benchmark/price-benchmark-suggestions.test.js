@@ -94,4 +94,23 @@ test.describe( 'Price Benchmark Page', () => {
 			);
 		} );
 	} );
+
+	test.describe( 'Has table', () => {
+		test( 'Shows the empty state notice when there are no suggestions', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchMarkSuggestions();
+			await priceBenchmarkPage.goto();
+
+			const emptyStateNotice = page.locator(
+				'.gla-price-benchmark__empty-metrics'
+			);
+
+			await expect( emptyStateNotice ).toBeVisible();
+			await expect( emptyStateNotice ).toHaveText(
+				'You do not have any sale price suggestions at this moment.'
+			);
+			await expect( emptyStateNotice ).toContainText(
+				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
+			);
+		} );
+	} );
 } );
