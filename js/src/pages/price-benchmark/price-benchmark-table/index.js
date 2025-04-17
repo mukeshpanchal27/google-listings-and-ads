@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { withViewportMatch } from '@wordpress/viewport';
 import { TablePlaceholder } from '@woocommerce/components';
-import { useState, useMemo, useEffect } from '@wordpress/element';
+import { useState, useMemo, useEffect, useCallback } from '@wordpress/element';
 import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews/wp';
 
 /**
@@ -90,9 +90,9 @@ const PriceBenchmarkTable = ( {
 		return updatedData;
 	}, [ view, data, fields ] );
 
-	const handleOnChangeView = ( newView ) => {
+	const handleOnChangeView = useCallback( ( newView ) => {
 		setView( newView );
-	};
+	}, [] );
 
 	// Determine the fields to be displayed based on the viewport size.
 	const viewportFields = useMemo( () => {
