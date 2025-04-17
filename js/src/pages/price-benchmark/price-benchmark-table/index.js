@@ -5,12 +5,13 @@ import { __ } from '@wordpress/i18n';
 import { withViewportMatch } from '@wordpress/viewport';
 import { TablePlaceholder } from '@woocommerce/components';
 import { useState, useMemo, useEffect } from '@wordpress/element';
-import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews/wp';
+// import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews';
 
 /**
  * Internal dependencies
  */
 import './index.scss';
+const { DataViews, filterSortAndPaginate } = wp.dataviews;
 
 // Defines the base fields (image, title, description) that are consistently used across all tables.
 const BASE_FIELDS = [
