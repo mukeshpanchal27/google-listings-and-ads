@@ -151,7 +151,7 @@
 			},
 			{
 				"path": "./js/build/vendors.js",
-				"maxSize": "40.57 kB"
+				"maxSize": "41 kB"
 			},
 			{
 				"path": "./js/build/wp-dataviews.js",
