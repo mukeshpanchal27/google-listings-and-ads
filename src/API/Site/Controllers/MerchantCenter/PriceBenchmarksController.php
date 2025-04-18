@@ -9,6 +9,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceSu
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
+use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\PriceBenchmarks;
 use Exception;
 use WP_REST_Request as Request;
 use WP_REST_Response as Response;
@@ -45,9 +46,9 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 			'mc/price-benchmarks/summary',
 			[
 				[
-					'methods'             => TransportMethods::READABLE,
-					'callback'            => $this->get_price_benchmarks_summary_callback(),
-					'permission_callback' => $this->get_permission_callback(),
+					'methods'  => TransportMethods::READABLE,
+					'callback' => $this->get_price_benchmarks_summary_callback(),
+					// TODO: Add permission callback.
 				],
 				'schema' => $this->get_summary_response_schema_callback(),
 			]
@@ -104,15 +105,10 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	protected function get_price_benchmarks_summary_callback(): callable {
 		return function ( Request $request ) {
 			try {
-				/** @var MerchantPriceBenchmarks $merchant */
-				$merchant = $this->container->get( MerchantPriceBenchmarks::class );
+				/** @var PriceBenchmarks $price_benchmarks */
+				$price_benchmarks = $this->container->get( PriceBenchmarks::class );
 
-				// Fetch benchmark and price insights data.
-				$benchmark_data      = $merchant->get_benchmark_data( $this->prepare_query_arguments( $request ) );
-				$price_insights_data = $merchant->get_price_insights( $this->prepare_query_arguments( $request ) );
-
-				// Generate summary data.
-				$summary_data = $this->get_price_benchmarks_summary( $benchmark_data, $price_insights_data );
+				$summary_data = $price_benchmarks->get_summary();
 
 				return new Response( $summary_data );
 			} catch ( Exception $e ) {
@@ -275,13 +271,25 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	 */
 	protected function get_summary_response_schema_callback(): array {
 		return [
-			'total_products'    => [
-				'description' => __( 'Total number of products.', 'google-listings-and-ads' ),
+			'total_products' => [
+				'description' => __( 'Total number of products represented in the Google report.', 'google-listings-and-ads' ),
 				'type'        => 'integer',
 			],
-			'average_price_gap' => [
-				'description' => __( 'Average price gap across all products.', 'google-listings-and-ads' ),
-				'type'        => 'number',
+			'price_similar'  => [
+				'description' => __( 'Total number of products with similar prices to benchmark data.', 'google-listings-and-ads' ),
+				'type'        => 'integer',
+			],
+			'price_higher'   => [
+				'description' => __( 'Total number of products with higher prices to benchmark data.', 'google-listings-and-ads' ),
+				'type'        => 'integer',
+			],
+			'price_lower'    => [
+				'description' => __( 'Total number of products with lower prices to benchmark data.', 'google-listings-and-ads' ),
+				'type'        => 'integer',
+			],
+			'price_unknown'  => [
+				'description' => __( 'Total number of products without price benchmark data.', 'google-listings-and-ads' ),
+				'type'        => 'integer',
 			],
 		];
 	}
