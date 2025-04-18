@@ -19,6 +19,7 @@ import './index.scss';
  */
 const Price = ( { amount, highlight = false } ) => {
 	const { formatAmount } = useAdsCurrency();
+	const valueToFormat = isNaN( amount ) ? 0 : amount;
 
 	return (
 		<span
@@ -26,7 +27,7 @@ const Price = ( { amount, highlight = false } ) => {
 				'gla-price-benchmark-table__price--highlight': highlight,
 			} ) }
 		>
-			{ formatAmount( amount ) }
+			{ formatAmount( valueToFormat ) }
 		</span>
 	);
 };

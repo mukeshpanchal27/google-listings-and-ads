@@ -1,7 +1,11 @@
 /**
+ * External dependencies
+ */
+import { lazy } from '@wordpress/element';
+
+/**
  * Internal dependencies
  */
-import PriceBenchmarkTable from './price-benchmark-table';
 import usePriceBenchmarkSuggestions from '~/hooks/usePriceBenchmarkSuggestions';
 import ChangePrice from './change-price';
 import EffectivenessIndicator from './effectiveness-indicator';
@@ -18,63 +22,75 @@ import {
 } from './constants';
 import suggestions from '../../../../tests/e2e/utils/__fixtures__/price-benchmark-suggestions.json';
 
+const PriceBenchmarkTable = lazy( () =>
+	import(
+		/* webpackChunkName: "price-benchmark-table" */ './price-benchmark-table'
+	)
+);
+
 const TABLE_FIELDS = [
 	{
-		id: 'price-change-effectiveness',
+		id: 'effectiveness',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
 		header: <Label labelKey={ LABEL_CHANGE_EFFECTIVENESS } alignLeft />,
 		label: LABELS[ LABEL_CHANGE_EFFECTIVENESS ].title,
 		render: ( { item } ) => {
+			if ( item.effectiveness === undefined ) {
+				return null;
+			}
+
 			return (
-				<EffectivenessIndicator
-					effectiveness={ item[ 'price-change-effectiveness' ] }
-				/>
+				<EffectivenessIndicator effectiveness={ item.effectiveness } />
 			);
 		},
 	},
 	{
-		id: 'regular-price',
+		id: 'regular_price',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
 		label: <Label labelKey={ LABEL_REGULAR_PRICE } />,
 		render: ( { item } ) => {
-			return <Price amount={ item[ 'regular-price' ] } highlight />;
+			return <Price amount={ item.regular_price } highlight />;
 		},
 	},
 	{
-		id: 'price-on-google',
+		id: 'price_on_google',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
 		header: <Label labelKey={ LABEL_AVG_PRICE_ON_GOOGLE } />,
 		label: LABELS[ LABEL_AVG_PRICE_ON_GOOGLE ].title,
 		render: ( { item } ) => {
-			return <Price amount={ item[ 'price-on-google' ] } />;
+			return <Price amount={ item.price_on_google } />;
 		},
 	},
 	{
-		id: 'price-gap',
+		id: 'price_gap',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
 		header: <Label labelKey={ LABEL_PRICE_GAP_PERCENT } />,
 		label: LABELS[ LABEL_PRICE_GAP_PERCENT ].title,
 		render: ( { item } ) => {
-			return `${ item[ 'price-gap' ] }%`;
+			if ( ! item.price_gap ) {
+				return null;
+			}
+
+			return `${ item.price_gap }%`;
 		},
 	},
 	{
-		id: 'suggested-price',
+		id: 'suggested_price',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
 		header: <Label labelKey={ LABEL_SUGGESTED_PRICE } />,
 		label: LABELS[ LABEL_SUGGESTED_PRICE ].title,
 		render: ( { item } ) => {
-			return <Price amount={ item[ 'suggested-price' ] } />;
+			return <Price amount={ item.suggested_price } />;
 		},
 	},
 	{

@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { withViewportMatch } from '@wordpress/viewport';
 import { TablePlaceholder } from '@woocommerce/components';
-import { useState, useMemo, useEffect } from '@wordpress/element';
+import { useState, useMemo, useEffect, useCallback } from '@wordpress/element';
 import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews/wp';
 
 /**
@@ -20,11 +20,18 @@ const BASE_FIELDS = [
 		enableSorting: false,
 		enableGlobalSearch: false,
 		label: __( 'Image', 'google-listings-and-ads' ),
+		getValue: ( { item } ) => {
+			return item?.product?.thumbnail || null;
+		},
 		render: ( { item } ) => {
+			if ( ! item?.product?.thumbnail ) {
+				return null;
+			}
+
 			return (
 				<img
-					src={ item.image }
-					alt={ item.title }
+					src={ item.product.thumbnail }
+					alt={ item.product.title }
 					className="gla-price-benchmark-table__image"
 				/>
 			);
@@ -36,6 +43,9 @@ const BASE_FIELDS = [
 		enableSorting: false,
 		enableGlobalSearch: true,
 		label: __( 'Product', 'google-listings-and-ads' ),
+		getValue: ( { item } ) => {
+			return item?.product?.title || null;
+		},
 	},
 	{
 		id: 'description',
@@ -43,26 +53,26 @@ const BASE_FIELDS = [
 		enableSorting: false,
 		enableGlobalSearch: true,
 		label: __( 'Description', 'google-listings-and-ads' ),
-		render: ( { item } ) => {
-			return <span>{ item.description }</span>;
+		getValue: ( { item } ) => {
+			return item?.product?.id || null;
 		},
 	},
 ];
 
 /**
- * PriceBenchmarkTable component renders a table or other data views for price benchmarking.
+ * PriceBenchmarkTable component renders a table for price benchmarking.
  *
  * @param {Object} props - The component props.
- * @param {Array} props.data - The data to be displayed in the table.
+ * @param {Array} [props.data=[]] - The data to be displayed in the table.
  * @param {Array} props.fields - The fields to be displayed in the table for desktop view.
  * @param {Array} props.fieldsMobile - The fields to be displayed in the table for mobile view.
- * @param {boolean} props.isViewportMobile - Indicates if the viewport is in mobile mode.
+ * @param {boolean} props.isViewportMobile - Indicates if the viewport is in mobile size.
  * @param {boolean} props.isReady - Indicates if the data is ready to be displayed.
  *
  * @return {JSX.Element} The rendered PriceBenchmarkTable component.
  */
 const PriceBenchmarkTable = ( {
-	data,
+	data = [],
 	fields,
 	fieldsMobile,
 	isViewportMobile,
@@ -82,14 +92,16 @@ const PriceBenchmarkTable = ( {
 	} );
 
 	const { data: shownData, paginationInfo } = useMemo( () => {
-		const updatedData = filterSortAndPaginate( data, view, fields );
-
+		const updatedData = filterSortAndPaginate( data, view, [
+			...BASE_FIELDS,
+			...fields,
+		] );
 		return updatedData;
 	}, [ view, data, fields ] );
 
-	const handleOnChangeView = ( newView ) => {
+	const handleOnChangeView = useCallback( ( newView ) => {
 		setView( newView );
-	};
+	}, [] );
 
 	// Determine the fields to be displayed based on the viewport size.
 	const viewportFields = useMemo( () => {
@@ -133,7 +145,7 @@ const PriceBenchmarkTable = ( {
 
 			{ isReady && (
 				<DataViews
-					getItemId={ ( item ) => item.id }
+					getItemId={ ( item ) => item?.product?.id }
 					fields={ [ ...BASE_FIELDS, ...fields ] }
 					data={ shownData }
 					view={ view }
