@@ -29,7 +29,7 @@ const PriceBenchmarkTable = lazy( () =>
 
 const TABLE_FIELDS = [
 	{
-		id: 'price-change-effectiveness',
+		id: 'effectiveness',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
@@ -38,13 +38,17 @@ const TABLE_FIELDS = [
 		),
 		label: LABELS[ LABEL_PRICE_CHANGE_EFFECTIVENESS ].title,
 		render: ( { item } ) => {
+			if ( item.effectiveness === undefined ) {
+				return null;
+			}
+
 			return (
 				<EffectivenessIndicator effectiveness={ item.effectiveness } />
 			);
 		},
 	},
 	{
-		id: 'regular-price',
+		id: 'regular_price',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
@@ -54,7 +58,7 @@ const TABLE_FIELDS = [
 		},
 	},
 	{
-		id: 'price-on-google',
+		id: 'price_on_google',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
@@ -65,18 +69,22 @@ const TABLE_FIELDS = [
 		},
 	},
 	{
-		id: 'price-gap',
+		id: 'price_gap',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
 		header: <Label labelKey={ LABEL_PRICE_GAP } />,
 		label: LABELS[ LABEL_PRICE_GAP ].title,
 		render: ( { item } ) => {
+			if ( ! item.price_gap ) {
+				return null;
+			}
+
 			return `${ item.price_gap }%`;
 		},
 	},
 	{
-		id: 'suggested-price',
+		id: 'suggested_price',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
@@ -93,7 +101,7 @@ const TABLE_FIELDS = [
 		enableGlobalSearch: false,
 		label: LABELS[ LABEL_ACTION ].title,
 		render: ( { item } ) => {
-			return <ChangePrice id={ item.id } />;
+			return <ChangePrice productID={ item.id } />;
 		},
 	},
 ];

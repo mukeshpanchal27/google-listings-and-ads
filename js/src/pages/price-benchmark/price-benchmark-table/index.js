@@ -20,7 +20,14 @@ const BASE_FIELDS = [
 		enableSorting: false,
 		enableGlobalSearch: false,
 		label: __( 'Image', 'google-listings-and-ads' ),
+		getValue: ( { item } ) => {
+			return item?.product?.thumbnail || null;
+		},
 		render: ( { item } ) => {
+			if ( ! item?.product?.thumbnail ) {
+				return null;
+			}
+
 			return (
 				<img
 					src={ item.product.thumbnail }
@@ -36,8 +43,8 @@ const BASE_FIELDS = [
 		enableSorting: false,
 		enableGlobalSearch: true,
 		label: __( 'Product', 'google-listings-and-ads' ),
-		render: ( { item } ) => {
-			return item.product.title;
+		getValue: ( { item } ) => {
+			return item?.product?.title || null;
 		},
 	},
 	{
@@ -46,8 +53,8 @@ const BASE_FIELDS = [
 		enableSorting: false,
 		enableGlobalSearch: true,
 		label: __( 'Description', 'google-listings-and-ads' ),
-		render: ( { item } ) => {
-			return <span>{ item.product.id }</span>;
+		getValue: ( { item } ) => {
+			return item?.product?.id || null;
 		},
 	},
 ];
@@ -85,8 +92,10 @@ const PriceBenchmarkTable = ( {
 	} );
 
 	const { data: shownData, paginationInfo } = useMemo( () => {
-		const updatedData = filterSortAndPaginate( data, view, fields );
-
+		const updatedData = filterSortAndPaginate( data, view, [
+			...BASE_FIELDS,
+			...fields,
+		] );
 		return updatedData;
 	}, [ view, data, fields ] );
 
@@ -136,7 +145,7 @@ const PriceBenchmarkTable = ( {
 
 			{ isReady && (
 				<DataViews
-					getItemId={ ( item ) => item.id }
+					getItemId={ ( item ) => item?.product?.id }
 					fields={ [ ...BASE_FIELDS, ...fields ] }
 					data={ shownData }
 					view={ view }
