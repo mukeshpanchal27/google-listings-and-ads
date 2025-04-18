@@ -65,7 +65,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\JobRepository;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\ProductSyncStats;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\AccountService as MerchantAccountService;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\MerchantStatuses;
-use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\PriceBenchmarks;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\ContactInformation;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\PhoneVerification;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\PolicyComplianceCheck;
@@ -146,7 +145,6 @@ class RESTServiceProvider extends AbstractServiceProvider {
 		$this->share( RestAPIAuthController::class, OAuthService::class, MerchantAccountService::class );
 		$this->share( GTINMigrationController::class, JobRepository::class );
 		$this->share( PriceBenchmarksController::class );
-		$this->share( PriceBenchmarks::class );
 	}
 
 	/**
