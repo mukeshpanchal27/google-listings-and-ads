@@ -40,7 +40,7 @@ const BASE_FIELDS = [
 	{
 		id: 'title',
 		enableHiding: false,
-		enableSorting: false,
+		enableSorting: true,
 		enableGlobalSearch: true,
 		label: __( 'Product', 'google-listings-and-ads' ),
 		getValue: ( { item } ) => {
