@@ -21,9 +21,9 @@ class MerchantPriceBenchmarksQuery extends Query {
 	 * MerchantPriceBenchmarksQuery constructor.
 	 *
 	 * @param wpdb                         $wpdb
-	 * @param MerchantPriceBenchmarksQuery $table
+	 * @param MerchantPriceBenchmarksTable $table
 	 */
-	public function __construct( wpdb $wpdb, MerchantPriceBenchmarksQuery $table ) {
+	public function __construct( wpdb $wpdb, MerchantPriceBenchmarksTable $table ) {
 		parent::__construct( $wpdb, $table );
 	}
 

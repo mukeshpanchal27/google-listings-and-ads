@@ -188,23 +188,6 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	}
 
 	/**
-	 * Gets the price benchmark summart.
-	 *
-	 * @param array $benchmark_data Raw benchmark data.
-	 * @param array $price_insights_data Raw price insights data.
-	 * @return array Mapped response data.
-	 */
-	protected function get_price_benchmarks_summary( array $benchmark_data, array $price_insights_data ): array {
-		$mapped_data = [];
-
-		if ( empty( $benchmark_data['results'] ) || empty( $price_insights_data['results'] ) ) {
-			return $mapped_data;
-		}
-
-		return $mapped_data;
-	}
-
-	/**
 	 * Retrieves the product thumbnail URL.
 	 *
 	 * @param int $product_id WooCommerce product ID.

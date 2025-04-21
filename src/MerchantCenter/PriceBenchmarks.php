@@ -8,6 +8,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\DB\Table\MerchantPriceBenchmarks
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
+use Automattic\WooCommerce\GoogleListingsAndAds\DB\Query\MerchantPriceBenchmarksQuery;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -78,10 +79,10 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	 * @return array
 	 */
 	public function get_summary(): array {
-		/** @var MerchantPriceBenchmarksTable $table */
-		$table = $this->container->get( MerchantPriceBenchmarksTable::class );
+		/** @var MerchantPriceBenchmarksQuery $query */
+		$query = $this->container->get( MerchantPriceBenchmarksQuery::class );
 
-		$results = $table->get_results();
+		$results = $query->get_results();
 
 		$total_products  = count( $results );
 		$total_price_gap = 0;
@@ -93,6 +94,17 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		return [
 			'total_products'    => $total_products,
 			'average_price_gap' => $total_products > 0 ? round( $total_price_gap / $total_products / 1000000, 2 ) : 0,
+			'details'           => array_map(
+				static function ( $result ) {
+					return [
+						'product_id'                    => $result['product_id'],
+						'price_micros'                  => (int) $result['price_micros'],
+						'benchmark_price_micros'        => (int) $result['benchmark_price_micros'],
+						'price_compared_with_benchmark' => (int) $result['price_compared_with_benchmark'],
+					];
+				},
+				$results
+			),
 		];
 	}
 
