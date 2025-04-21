@@ -47,8 +47,8 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		try {
 			$benchmarks = $api->get_benchmarks();
 
-			/** @var MerchantPriceBenchmarksTable $table */
-			$table = $this->container->get( MerchantPriceBenchmarksTable::class );
+			/** @var MerchantPriceBenchmarksQuery $table */
+			$table = $this->container->get( MerchantPriceBenchmarksQuery::class );
 
 			// Clear existing data before updating.
 			$table->truncate();
@@ -115,8 +115,8 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	 * @return array|null
 	 */
 	public function get_benchmark_by_product_id( string $product_id ): ?array {
-		/** @var MerchantPriceBenchmarksTable $table */
-		$table = $this->container->get( MerchantPriceBenchmarksTable::class );
+		/** @var MerchantPriceBenchmarksQuery $table */
+		$table = $this->container->get( MerchantPriceBenchmarksQuery::class );
 
 		return $table->get_row( [ 'product_id' => $product_id ] );
 	}
@@ -127,8 +127,8 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	 * @return array
 	 */
 	public function get_all_benchmarks(): array {
-		/** @var MerchantPriceBenchmarksTable $table */
-		$table = $this->container->get( MerchantPriceBenchmarksTable::class );
+		/** @var MerchantPriceBenchmarksQuery $table */
+		$table = $this->container->get( MerchantPriceBenchmarksQuery::class );
 
 		return $table->get_results();
 	}
