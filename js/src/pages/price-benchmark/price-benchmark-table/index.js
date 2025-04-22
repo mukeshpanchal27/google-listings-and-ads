@@ -40,7 +40,7 @@ const BASE_FIELDS = [
 	{
 		id: 'title',
 		enableHiding: false,
-		enableSorting: false,
+		enableSorting: true,
 		enableGlobalSearch: true,
 		label: __( 'Product', 'google-listings-and-ads' ),
 		getValue: ( { item } ) => {
@@ -54,7 +54,8 @@ const BASE_FIELDS = [
 		enableGlobalSearch: true,
 		label: __( 'Description', 'google-listings-and-ads' ),
 		getValue: ( { item } ) => {
-			return item?.product?.id || null;
+			// Cast the id to string for search functionality to work properly.
+			return String( item?.product?.id || '' );
 		},
 	},
 ];
