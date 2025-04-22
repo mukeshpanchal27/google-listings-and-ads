@@ -63,8 +63,11 @@
 		margin: $grid-unit-30 0;
 	}
 
-	.app-modal__footer {
+	.gla-change-price-modal-price-input-footer {
 		align-items: flex-end;
+		display: flex;
+		flex-wrap: nowrap;
+		gap: calc($grid-unit-15 * 2);
 
 		label.components-input-control__label {
 			color: $gray-900 !important;
@@ -78,11 +81,11 @@
 		}
 	}
 
-	.gla-change-price-modal__input-price {
+	.gla-change-price-modal-price-input-footer__price {
 		max-width: 180px;
 	}
 
-	.gla-change-price-modal__input-price--error {
+	.gla-change-price-modal-price-input-footer__price--error {
 		div.components-input-control__backdrop {
 			border-color: $gla-color-red;
 		}

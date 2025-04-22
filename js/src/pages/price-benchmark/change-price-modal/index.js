@@ -2,9 +2,7 @@
  * External dependencies
  */
 import { noop } from 'lodash';
-import { __, sprintf } from '@wordpress/i18n';
-import { useState, useEffect, useCallback } from '@wordpress/element';
-import classnames from 'classnames';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -23,16 +21,33 @@ import {
 import Price from '../price';
 import MetricValue from './metric-value';
 import AppModal from '~/components/app-modal';
-import AppButton from '~/components/app-button';
 import DeltaValue from '~/components/delta-value';
-import AppInputPriceControl from '~/components/app-input-price-control';
 import EffectivenessIndicator from '../effectiveness-indicator';
-import useProduct from '~/hooks/useProduct';
-import useAdsCurrency from '~/hooks/useAdsCurrency';
-import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
-import useDispatchProduct from '~/hooks/useDispatchProduct';
+import PriceInputFooter from './price-input-footer';
 import './index.scss';
 
+/**
+ * ChangePriceModal component.
+ *
+ * This component renders a modal for changing the price of a product. It displays
+ * product details, pricing metrics, and predicted changes in clicks and conversions.
+ * The modal also includes a footer with a price input field for updating the price.
+ *
+ * @param {Object} props - Component properties.
+ * @param {Object} props.product - The product object containing details such as `id`, `title`, and `thumbnail`.
+ * @param {string} props.effectiveness - The effectiveness rating of the price change.
+ * @param {number} props.regularPrice - The regular price of the product.
+ * @param {number} props.priceOnGoogle - The average price of the product on Google.
+ * @param {string} props.priceGap - The percentage gap between the regular price and the price on Google.
+ * @param {number} props.suggestedPrice - The suggested price for the product.
+ * @param {number} props.clicks - The current number of clicks for the product.
+ * @param {number} props.conversions - The current number of conversions for the product.
+ * @param {number} props.predictedClicksChange - The predicted percentage change in clicks.
+ * @param {number} props.predictedConversionsChange - The predicted percentage change in conversions.
+ * @param {Function} [props.onPriceChange=noop] - Callback function triggered when the price is changed. Defaults to a no-operation function (`noop`) if not provided.
+ * @param {Function} props.onRequestClose - Callback function triggered when the modal is requested to close.
+ * @return {JSX.Element|null} The rendered ChangePriceModal component or `null` if no product is provided.
+ */
 const ChangePriceModal = ( {
 	product,
 	effectiveness,
@@ -47,106 +62,19 @@ const ChangePriceModal = ( {
 	onPriceChange = noop,
 	onRequestClose,
 } ) => {
-	const { formatAmount } = useAdsCurrency();
-	const { updateProduct } = useDispatchProduct();
-	const [ newPriceError, setNewPriceError ] = useState();
-	const [ newPrice, setNewPrice ] = useState( 0 );
-	const { googleAdsAccount } = useGoogleAdsAccount();
-	const { product: productDetails, hasFinishedResolution } = useProduct(
-		product?.id
-	);
-
-	useEffect( () => {
-		setNewPrice( suggestedPrice );
-	}, [ suggestedPrice ] );
-
-	const validatePrice = useCallback( () => {
-		const updatedPrice = Number.parseFloat( newPrice );
-		setNewPriceError( null );
-
-		if ( updatedPrice < 0 ) {
-			setNewPriceError(
-				__(
-					'New price must be greater than or equals to zero.',
-					'google-listings-and-ads'
-				)
-			);
-
-			return false;
-		}
-
-		const salePrice = Number.parseFloat( productDetails?.sale_price );
-		if ( salePrice && updatedPrice <= salePrice ) {
-			setNewPriceError(
-				sprintf(
-					// Translators: %s is replaced with the sale price.
-					__(
-						'New price must be greater than the sale price (%s).',
-						'google-listings-and-ads'
-					),
-					formatAmount( salePrice )
-				)
-			);
-
-			return false;
-		}
-
-		return true;
-	}, [ newPrice, productDetails?.sale_price, formatAmount ] );
-
-	const handleOnPriceChange = useCallback( async () => {
-		if ( ! validatePrice() ) {
-			return;
-		}
-
-		try {
-			const response = await updateProduct( product.id, {
-				regular_price: `${ newPrice }`,
-			} );
-
-			if ( response ) {
-				// update local store
-			}
-		} catch ( error ) {
-			setNewPriceError( error?.message );
-			return;
-		}
-		onPriceChange( product, newPrice );
-	}, [ newPrice, product, onPriceChange, updateProduct, validatePrice ] );
-
 	if ( ! product ) {
 		return null;
 	}
 
-	const currency = googleAdsAccount?.currency;
-
 	return (
 		<AppModal
 			buttons={ [
-				<AppInputPriceControl
-					label={ __( 'New price', 'google-listings-and-ads' ) }
-					suffix={ currency }
-					value={ newPrice }
-					onChange={ setNewPrice }
-					onBlur={ validatePrice }
-					className={ classnames(
-						'gla-change-price-modal__input-price',
-						{
-							'gla-change-price-modal__input-price--error':
-								newPriceError,
-						}
-					) }
-					key="new-price"
-					help={ newPriceError }
+				<PriceInputFooter
+					onPriceChange={ onPriceChange }
+					productId={ product?.id }
+					key="price-input-footer"
+					suggestedPrice={ suggestedPrice }
 				/>,
-				<AppButton
-					key="change-price"
-					isPrimary
-					onClick={ handleOnPriceChange }
-					disabled={ ! hasFinishedResolution || ! productDetails }
-				>
-					{ __( 'Change Price', 'google-listings-and-ads' ) }
-				</AppButton>,
 			] }
 			title={ __( 'Change Price', 'google-listings-and-ads' ) }
 			onRequestClose={ onRequestClose }
@@ -156,7 +84,14 @@ const ChangePriceModal = ( {
 				<div className="gla-change-price-modal__product">
 					{ product.thumbnail && (
 						<div className="gla-change-price-modal__product-image">
-							<img src={ product.thumbnail } alt="" width="180" />
+							<img
+								src={ product.thumbnail }
+								alt={ __(
+									'Product thumbnail',
+									'google-listings-and-ads'
+								) }
+								width="180"
+							/>
 						</div>
 					) }
 
@@ -195,7 +130,7 @@ const ChangePriceModal = ( {
 
 						<MetricValue
 							labelKey={ LABEL_PRICE_GAP_PERCENT }
-							value={ priceGap }
+							value={ `${ priceGap }%` }
 						/>
 
 						<MetricValue
@@ -221,7 +156,9 @@ const ChangePriceModal = ( {
 							labelKey={ LABEL_EXPECTED_UPLIFT_IN_CLICKS }
 							value={
 								<DeltaValue
-									amount={ predictedClicksChange * 100 }
+									amount={
+										( predictedClicksChange ?? 0 ) * 100
+									}
 									suffix="%"
 								/>
 							}
@@ -231,7 +168,10 @@ const ChangePriceModal = ( {
 							labelKey={ LABEL_EXPECTED_UPLIFT_IN_CONVERSIONS }
 							value={
 								<DeltaValue
-									amount={ predictedConversionsChange * 100 }
+									amount={
+										( predictedConversionsChange ?? 0 ) *
+										100
+									}
 									suffix="%"
 								/>
 							}
