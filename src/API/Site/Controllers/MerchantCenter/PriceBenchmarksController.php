@@ -50,7 +50,6 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 					'callback' => $this->get_price_benchmarks_summary_callback(),
 					// TODO: Add permission callback.
 				],
-				'schema' => $this->get_summary_response_schema_callback(),
 			]
 		);
 	}
@@ -243,36 +242,6 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 			'suggested_price' => [
 				'description' => __( 'Suggested price for the product.', 'google-listings-and-ads' ),
 				'type'        => 'number',
-			],
-		];
-	}
-
-	/**
-	 * Get the schema for the summary endpoint.
-	 *
-	 * @return array
-	 */
-	protected function get_summary_response_schema_callback(): array {
-		return [
-			'total_products' => [
-				'description' => __( 'Total number of products represented in the Google report.', 'google-listings-and-ads' ),
-				'type'        => 'integer',
-			],
-			'price_similar'  => [
-				'description' => __( 'Total number of products with similar prices to benchmark data.', 'google-listings-and-ads' ),
-				'type'        => 'integer',
-			],
-			'price_higher'   => [
-				'description' => __( 'Total number of products with higher prices to benchmark data.', 'google-listings-and-ads' ),
-				'type'        => 'integer',
-			],
-			'price_lower'    => [
-				'description' => __( 'Total number of products with lower prices to benchmark data.', 'google-listings-and-ads' ),
-				'type'        => 'integer',
-			],
-			'price_unknown'  => [
-				'description' => __( 'Total number of products without price benchmark data.', 'google-listings-and-ads' ),
-				'type'        => 'integer',
 			],
 		];
 	}
