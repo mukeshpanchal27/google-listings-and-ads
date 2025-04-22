@@ -51,7 +51,7 @@ class UpdateMerchantPriceBenchmarks extends AbstractActionSchedulerJob {
 		ActionSchedulerInterface $action_scheduler,
 		ActionSchedulerJobMonitor $monitor,
 		MerchantCenterService $merchant_center,
-		PriceBenchmarks $price_benchmarks,
+		PriceBenchmarks $price_benchmarks
 	) {
 		parent::__construct( $action_scheduler, $monitor );
 		$this->merchant_center  = $merchant_center;
