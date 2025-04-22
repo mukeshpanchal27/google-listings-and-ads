@@ -23,7 +23,7 @@ const ChangePrice = ( {
 	predictedConversionsChange,
 	label = __( 'Change price', 'google-listings-and-ads' ),
 } ) => {
-	const [ isOpen, setIsOpen ] = useState( true );
+	const [ isOpen, setIsOpen ] = useState( false );
 
 	if ( ! product?.id ) {
 		return null;
@@ -34,7 +34,7 @@ const ChangePrice = ( {
 	};
 
 	const closeModal = () => {
-		setIsOpen( false );
+		// setIsOpen( false );
 	};
 
 	return (

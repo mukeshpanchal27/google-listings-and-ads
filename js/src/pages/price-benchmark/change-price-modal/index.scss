@@ -77,4 +77,18 @@
 			min-height: 36px;
 		}
 	}
+
+	.gla-change-price-modal__input-price {
+		max-width: 180px;
+	}
+
+	.gla-change-price-modal__input-price--error {
+		div.components-input-control__backdrop {
+			border-color: $gla-color-red;
+		}
+
+		.components-base-control__help {
+			color: $gla-color-red;
+		}
+	}
 }
