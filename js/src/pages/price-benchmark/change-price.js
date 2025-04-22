@@ -10,21 +10,25 @@ import { useState } from '@wordpress/element';
 import AppButton from '~/components/app-button';
 import ChangePriceModal from './change-price-modal';
 
-/**
- * ChangePrice component.
- *
- * Placeholder component.
- *
- * @param {Object} props - Component properties.
- * @param {number} props.productID - The ID of the product for which the price is being changed.
- * @param {string} [props.label='Change price'] - The label text for the button. Defaults to 'Change price'.
- * @return {JSX.Element} The rendered AppButton component.
- */
 const ChangePrice = ( {
-	productID,
+	product,
+	effectiveness,
+	regularPrice,
+	priceOnGoogle,
+	priceGap,
+	suggestedPrice,
+	clicks,
+	conversions,
+	predictedClicksChange,
+	predictedConversionsChange,
 	label = __( 'Change price', 'google-listings-and-ads' ),
 } ) => {
 	const [ isOpen, setIsOpen ] = useState( true );
+
+	if ( ! product?.id ) {
+		return null;
+	}
+
 	const openModal = () => {
 		setIsOpen( true );
 	};
@@ -35,13 +39,21 @@ const ChangePrice = ( {
 
 	return (
 		<>
-			<AppButton id={ productID } onClick={ openModal }>
-				{ label }
-			</AppButton>
+			<AppButton onClick={ openModal }>{ label }</AppButton>
 
 			{ isOpen && (
 				<ChangePriceModal
-					productID={ productID }
+					product={ product }
+					effectiveness={ effectiveness }
+					regularPrice={ regularPrice }
+					priceOnGoogle={ priceOnGoogle }
+					priceGap={ priceGap }
+					suggestedPrice={ suggestedPrice }
+					clicks={ clicks }
+					conversions={ conversions }
+					predictedClicksChange={ predictedClicksChange }
+					predictedConversionsChange={ predictedConversionsChange }
+					onPriceChange={ closeModal }
 					onRequestClose={ closeModal }
 				/>
 			) }
