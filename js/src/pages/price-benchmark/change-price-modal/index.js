@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Flex, FlexItem } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -11,9 +10,23 @@ import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
 import AppButton from '~/components/app-button';
 import AppModal from '~/components/app-modal';
 import AppInputPriceControl from '~/components/app-input-price-control';
+import DeltaValue from '~/components/delta-value';
 import EffectivenessIndicator from '../effectiveness-indicator';
 import Price from '../price';
 import './index.scss';
+import Label from '../label';
+import {
+	LABEL_AVG_PRICE_ON_GOOGLE,
+	LABEL_CHANGE_EFFECTIVENESS,
+	LABEL_CURRENT_CLICKS,
+	LABEL_CURRENT_CONVERSIONS,
+	LABEL_EXPECTED_UPLIFT_IN_CLICKS,
+	LABEL_EXPECTED_UPLIFT_IN_CONVERSIONS,
+	LABEL_PRICE_GAP_PERCENT,
+	LABEL_REGULAR_PRICE,
+	LABEL_SUGGESTED_PRICE,
+} from '../constants';
+import MetricValue from './metric-value';
 
 const ChangePriceModal = ( { productID, onPriceChange, onRequestClose } ) => {
 	const { googleAdsAccount } = useGoogleAdsAccount();
@@ -22,9 +35,12 @@ const ChangePriceModal = ( { productID, onPriceChange, onRequestClose } ) => {
 	return (
 		<AppModal
 			buttons={ [
-				<AppButton key="cancel">
-					{ __( 'Cancel', 'google-listings-and-ads' ) }
-				</AppButton>,
+				<AppInputPriceControl
+					label={ __( 'New price', 'google-listings-and-ads' ) }
+					suffix={ currency }
+					value={ 20 }
+					key="new-price"
+				/>,
 				<AppButton
 					key="change-price"
 					isPrimary
@@ -35,95 +51,83 @@ const ChangePriceModal = ( { productID, onPriceChange, onRequestClose } ) => {
 			] }
 			title={ __( 'Change Price', 'google-listings-and-ads' ) }
 			onRequestClose={ onRequestClose }
+			className="gla-change-price-modal"
 		>
-			<Flex justify="space-between" gap="10" expanded align="start">
-				<FlexItem>
-					<img
-						src="https://live.staticflickr.com/5725/21726228300_51333bd62c_b.jpg"
-						alt=""
-						width="172"
-					/>
-					<p className="gla-change-price-modal__product-id">259252</p>
-					<p className="gla-change-price-modal__product-name">
-						Abstract Geometric Poster
-					</p>
-				</FlexItem>
+			<div className="gla-change-price-modal__content">
+				<div className="gla-change-price-modal__product">
+					<div className="gla-change-price-modal__product-image">
+						<img
+							src="https://live.staticflickr.com/5725/21726228300_51333bd62c_b.jpg"
+							alt=""
+							width="180"
+						/>
+					</div>
 
-				<FlexItem style={ { flex: 1 } }>
-					<Flex direction={ 'column' } gap="4">
-						<FlexItem>
-							<Flex justify="space-between" gap="4" expanded>
-								<FlexItem>Price Change Effectiveness</FlexItem>
-								<FlexItem>
-									<EffectivenessIndicator
-										effectiveness={ 1 }
-									/>
-								</FlexItem>
-							</Flex>
-						</FlexItem>
-						<FlexItem>
-							<Flex justify="space-between" gap="4" expanded>
-								<FlexItem>Regular Price</FlexItem>
-								<FlexItem>
-									<Price amount={ 25 } />
-								</FlexItem>
-							</Flex>
-						</FlexItem>
-						<FlexItem>
-							<Flex justify="space-between" gap="4" expanded>
-								<FlexItem>Average Price on Google</FlexItem>
-								<FlexItem>
-									<Price amount={ 20 } />
-								</FlexItem>
-							</Flex>
-						</FlexItem>
-						<FlexItem>
-							<Flex justify="space-between" gap="4" expanded>
-								<FlexItem>Price Gap</FlexItem>
-								<FlexItem>20%</FlexItem>
-							</Flex>
-						</FlexItem>
-						<FlexItem>
-							<Flex justify="space-between" gap="4" expanded>
-								<FlexItem>Suggested Price</FlexItem>
-								<FlexItem>
-									<Price amount={ 20 } />
-								</FlexItem>
-							</Flex>
-						</FlexItem>
-						<FlexItem>
-							<Flex justify="space-between" gap="4" expanded>
-								<FlexItem>Current Clicks</FlexItem>
-								<FlexItem>400</FlexItem>
-							</Flex>
-						</FlexItem>
-						<FlexItem>
-							<Flex justify="space-between" gap="4" expanded>
-								<FlexItem>Current Conversions</FlexItem>
-								<FlexItem>16</FlexItem>
-							</Flex>
-						</FlexItem>
-						<FlexItem>
-							<Flex justify="space-between" gap="4" expanded>
-								<FlexItem>Expected % Uplift in Clicks</FlexItem>
-								<FlexItem>+43%</FlexItem>
-							</Flex>
-						</FlexItem>
-						<FlexItem>
-							<Flex justify="space-between" gap="4" expanded>
-								<FlexItem>Expected % Uplift in Conv.</FlexItem>
-								<FlexItem>+45%</FlexItem>
-							</Flex>
-						</FlexItem>
-					</Flex>
+					<div className="gla-change-price-modal__product-details">
+						<p>
+							<span>259252</span>
+						</p>
+						<p className="gla-change-price-modal__product-title">
+							Abstract Geometric Poster
+						</p>
+					</div>
+				</div>
 
-					<AppInputPriceControl
-						label={ __( 'New price', 'google-listings-and-ads' ) }
-						suffix={ currency }
-						value={ 20 }
+				<div className="gla-change-price-modal__metrics">
+					<MetricValue
+						labelKey={ LABEL_CHANGE_EFFECTIVENESS }
+						value={ <EffectivenessIndicator effectiveness={ 1 } /> }
 					/>
-				</FlexItem>
-			</Flex>
+
+					<hr className="gla-change-price-modal__separator" />
+
+					<div className="gla-change-price-modal__metrics-grid">
+						<MetricValue
+							labelKey={ LABEL_REGULAR_PRICE }
+							value={ <Price amount={ 25 } /> }
+						/>
+
+						<MetricValue
+							labelKey={ LABEL_AVG_PRICE_ON_GOOGLE }
+							value={ <Price amount={ 20 } /> }
+						/>
+
+						<MetricValue
+							labelKey={ LABEL_PRICE_GAP_PERCENT }
+							value="25%"
+						/>
+
+						<MetricValue
+							labelKey={ LABEL_SUGGESTED_PRICE }
+							value={ <Price amount={ 20 } /> }
+						/>
+					</div>
+
+					<hr className="gla-change-price-modal__separator" />
+
+					<div className="gla-change-price-modal__metrics-grid">
+						<MetricValue
+							labelKey={ LABEL_CURRENT_CLICKS }
+							value={ 400 }
+						/>
+
+						<MetricValue
+							labelKey={ LABEL_CURRENT_CONVERSIONS }
+							value={ 16 }
+						/>
+
+						<MetricValue
+							labelKey={ LABEL_EXPECTED_UPLIFT_IN_CLICKS }
+							value={ <DeltaValue amount={ 43 } suffix="%" /> }
+						/>
+
+						<MetricValue
+							labelKey={ LABEL_EXPECTED_UPLIFT_IN_CONVERSIONS }
+							value={ <DeltaValue amount={ 45 } suffix="%" /> }
+						/>
+					</div>
+				</div>
+			</div>
 		</AppModal>
 	);
 };
