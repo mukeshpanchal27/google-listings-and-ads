@@ -13,8 +13,7 @@ import AppInputPriceControl from '~/components/app-input-price-control';
 import DeltaValue from '~/components/delta-value';
 import EffectivenessIndicator from '../effectiveness-indicator';
 import Price from '../price';
-import './index.scss';
-import Label from '../label';
+import MetricValue from './metric-value';
 import {
 	LABEL_AVG_PRICE_ON_GOOGLE,
 	LABEL_CHANGE_EFFECTIVENESS,
@@ -26,10 +25,28 @@ import {
 	LABEL_REGULAR_PRICE,
 	LABEL_SUGGESTED_PRICE,
 } from '../constants';
-import MetricValue from './metric-value';
+import './index.scss';
 
-const ChangePriceModal = ( { productID, onPriceChange, onRequestClose } ) => {
+const ChangePriceModal = ( {
+	product,
+	effectiveness,
+	regularPrice,
+	priceOnGoogle,
+	priceGap,
+	suggestedPrice,
+	clicks,
+	conversions,
+	predictedClicksChange,
+	predictedConversionsChange,
+	onPriceChange,
+	onRequestClose,
+} ) => {
 	const { googleAdsAccount } = useGoogleAdsAccount();
+
+	if ( ! product ) {
+		return null;
+	}
+
 	const currency = googleAdsAccount?.currency;
 
 	return (
@@ -55,20 +72,22 @@ const ChangePriceModal = ( { productID, onPriceChange, onRequestClose } ) => {
 		>
 			<div className="gla-change-price-modal__content">
 				<div className="gla-change-price-modal__product">
-					<div className="gla-change-price-modal__product-image">
-						<img
-							src="https://live.staticflickr.com/5725/21726228300_51333bd62c_b.jpg"
-							alt=""
-							width="180"
-						/>
-					</div>
+					{ product.thumbnail && (
+						<div className="gla-change-price-modal__product-image">
+							<img
+								src="https://live.staticflickr.com/5725/21726228300_51333bd62c_b.jpg"
+								alt=""
+								width="180"
+							/>
+						</div>
+					) }
 
 					<div className="gla-change-price-modal__product-details">
 						<p>
-							<span>259252</span>
+							<span>{ product.id }</span>
 						</p>
 						<p className="gla-change-price-modal__product-title">
-							Abstract Geometric Poster
+							{ product.title }
 						</p>
 					</div>
 				</div>
@@ -76,7 +95,11 @@ const ChangePriceModal = ( { productID, onPriceChange, onRequestClose } ) => {
 				<div className="gla-change-price-modal__metrics">
 					<MetricValue
 						labelKey={ LABEL_CHANGE_EFFECTIVENESS }
-						value={ <EffectivenessIndicator effectiveness={ 1 } /> }
+						value={
+							<EffectivenessIndicator
+								effectiveness={ effectiveness }
+							/>
+						}
 					/>
 
 					<hr className="gla-change-price-modal__separator" />
@@ -84,22 +107,22 @@ const ChangePriceModal = ( { productID, onPriceChange, onRequestClose } ) => {
 					<div className="gla-change-price-modal__metrics-grid">
 						<MetricValue
 							labelKey={ LABEL_REGULAR_PRICE }
-							value={ <Price amount={ 25 } /> }
+							value={ <Price amount={ regularPrice } /> }
 						/>
 
 						<MetricValue
 							labelKey={ LABEL_AVG_PRICE_ON_GOOGLE }
-							value={ <Price amount={ 20 } /> }
+							value={ <Price amount={ priceOnGoogle } /> }
 						/>
 
 						<MetricValue
 							labelKey={ LABEL_PRICE_GAP_PERCENT }
-							value="25%"
+							value={ priceGap }
 						/>
 
 						<MetricValue
 							labelKey={ LABEL_SUGGESTED_PRICE }
-							value={ <Price amount={ 20 } /> }
+							value={ <Price amount={ suggestedPrice } /> }
 						/>
 					</div>
 
@@ -108,22 +131,32 @@ const ChangePriceModal = ( { productID, onPriceChange, onRequestClose } ) => {
 					<div className="gla-change-price-modal__metrics-grid">
 						<MetricValue
 							labelKey={ LABEL_CURRENT_CLICKS }
-							value={ 400 }
+							value={ clicks }
 						/>
 
 						<MetricValue
 							labelKey={ LABEL_CURRENT_CONVERSIONS }
-							value={ 16 }
+							value={ conversions }
 						/>
 
 						<MetricValue
 							labelKey={ LABEL_EXPECTED_UPLIFT_IN_CLICKS }
-							value={ <DeltaValue amount={ 43 } suffix="%" /> }
+							value={
+								<DeltaValue
+									amount={ predictedClicksChange }
+									suffix="%"
+								/>
+							}
 						/>
 
 						<MetricValue
 							labelKey={ LABEL_EXPECTED_UPLIFT_IN_CONVERSIONS }
-							value={ <DeltaValue amount={ 45 } suffix="%" /> }
+							value={
+								<DeltaValue
+									amount={ predictedConversionsChange }
+									suffix="%"
+								/>
+							}
 						/>
 					</div>
 				</div>

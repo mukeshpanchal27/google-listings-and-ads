@@ -20,7 +20,6 @@ import {
 	LABEL_REGULAR_PRICE,
 	LABEL_ACTION,
 } from './constants';
-import suggestions from '../../../../tests/e2e/utils/__fixtures__/price-benchmark-suggestions.json';
 
 const PriceBenchmarkTable = lazy( () =>
 	import(
@@ -118,8 +117,8 @@ const TABLE_FIELDS_MOBILE = [ 'action' ];
  * @return {JSX.Element} A div containing the PriceBenchmarkTable component.
  */
 const PriceBenchmarkSuggestions = () => {
-	// const { suggestions, hasFinishedResolution } =
-	// 	usePriceBenchmarkSuggestions();
+	const { suggestions, hasFinishedResolution } =
+		usePriceBenchmarkSuggestions();
 
 	return (
 		<div className="gla-price-benchmark-suggestions">
@@ -127,7 +126,7 @@ const PriceBenchmarkSuggestions = () => {
 				data={ suggestions }
 				fields={ TABLE_FIELDS }
 				fieldsMobile={ TABLE_FIELDS_MOBILE }
-				isReady={ true }
+				isReady={ hasFinishedResolution }
 			/>
 		</div>
 	);
