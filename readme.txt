@@ -150,10 +150,4 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Dev - Add the conversion action details to the connection test page.
 * Fix - It may be unable to connect to the auto-selected Google Ads account after disconnecting during onboarding.
 
-= 2.9.9 - 2025-02-18 =
-* Fix - Error displayed when accessing campaign assets editing page without attached asset groups.
-* Tweak - Opt-in to URL expansion.
-* Tweak - Supplement the implementation of API Pull for the Settings page.
-* Tweak - WC 9.7 compatibility.
-
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
