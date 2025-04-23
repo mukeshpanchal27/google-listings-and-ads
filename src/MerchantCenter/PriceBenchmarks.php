@@ -82,29 +82,18 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		/** @var MerchantPriceBenchmarksQuery $query */
 		$query = $this->container->get( MerchantPriceBenchmarksQuery::class );
 
-		$results = $query->get_results();
-
-		$total_products  = count( $results );
-		$total_price_gap = 0;
-
-		foreach ( $results as $result ) {
-			$total_price_gap += (int) $result['price_micros'] - (int) $result['benchmark_price_micros'];
-		}
+		$total_products                                   = $query->get_count();
+		$get_unknown_products_priced_than_benchmark_count = $query->get_unknown_products_priced_than_benchmark_count();
+		$get_products_priced_lower_than_benchmark_count   = $query->get_products_priced_lower_than_benchmark_count();
+		$get_products_priced_similar_than_benchmark_count = $query->get_products_priced_similar_than_benchmark_count();
+		$get_products_priced_higher_than_benchmark_count  = $query->get_products_priced_higher_than_benchmark_count();
 
 		return [
-			'total_products'    => $total_products,
-			'average_price_gap' => $total_products > 0 ? round( $total_price_gap / $total_products / 1000000, 2 ) : 0,
-			'details'           => array_map(
-				static function ( $result ) {
-					return [
-						'product_id'                    => $result['product_id'],
-						'price_micros'                  => (int) $result['price_micros'],
-						'benchmark_price_micros'        => (int) $result['benchmark_price_micros'],
-						'price_compared_with_benchmark' => (int) $result['price_compared_with_benchmark'],
-					];
-				},
-				$results
-			),
+			'total_products' => $total_products,
+			'price_similar'  => $get_products_priced_similar_than_benchmark_count,
+			'price_lower'    => $get_products_priced_lower_than_benchmark_count,
+			'price_higher'   => $get_products_priced_higher_than_benchmark_count,
+			'price_unknown'  => $get_unknown_products_priced_than_benchmark_count,
 		];
 	}
 
