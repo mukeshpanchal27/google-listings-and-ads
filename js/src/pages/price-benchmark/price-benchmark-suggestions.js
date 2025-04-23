@@ -57,7 +57,11 @@ const TABLE_DATA_HEADERS = [
 
 const PriceBenchmarkSuggestions = () => {
 	if ( suggestions.length === 0 ) {
-		return <EmptyTable emptyState={ <EmptyMetricsNotice /> } />;
+		return (
+			<EmptyTable>
+				<EmptyMetricsNotice />
+			</EmptyTable>
+		);
 	}
 
 	return (
