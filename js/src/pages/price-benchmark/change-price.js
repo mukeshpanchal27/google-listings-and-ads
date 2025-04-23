@@ -2,11 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useCallback, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { useAppDispatch } from '~/data';
 import AppButton from '~/components/app-button';
 import ChangePriceModal from './change-price-modal';
 
@@ -45,7 +46,21 @@ const ChangePrice = ( {
 	predictedClicksChange,
 	predictedConversionsChange,
 } ) => {
+	const { receivePriceBenchmarkSuggestionsRegularPrice } = useAppDispatch();
 	const [ isOpen, setIsOpen ] = useState( false );
+
+	const handleOnRequestClose = () => {
+		setIsOpen( false );
+	};
+
+	const handleOnPriceChange = useCallback(
+		( productId, newPrice ) => {
+			receivePriceBenchmarkSuggestionsRegularPrice( productId, newPrice );
+
+			handleOnRequestClose();
+		},
+		[ receivePriceBenchmarkSuggestionsRegularPrice ]
+	);
 
 	if ( ! product?.id ) {
 		return null;
@@ -53,10 +68,6 @@ const ChangePrice = ( {
 
 	const openModal = () => {
 		setIsOpen( true );
-	};
-
-	const closeModal = () => {
-		setIsOpen( false );
 	};
 
 	return (
@@ -77,8 +88,8 @@ const ChangePrice = ( {
 					conversions={ conversions }
 					predictedClicksChange={ predictedClicksChange }
 					predictedConversionsChange={ predictedConversionsChange }
-					onPriceChange={ closeModal }
-					onRequestClose={ closeModal }
+					onPriceChange={ handleOnPriceChange }
+					onRequestClose={ handleOnRequestClose }
 				/>
 			) }
 		</>

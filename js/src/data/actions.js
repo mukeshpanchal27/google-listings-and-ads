@@ -1249,3 +1249,16 @@ export function* fetchPriceBenchmarkSuggestions() {
 		);
 	}
 }
+
+export function* receivePriceBenchmarkSuggestionsRegularPrice(
+	productId,
+	regularPrice
+) {
+	return {
+		type: TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS_REGULAR_PRICE,
+		data: {
+			productId,
+			regularPrice,
+		},
+	};
+}
