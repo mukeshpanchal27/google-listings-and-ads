@@ -27,6 +27,10 @@ import PriceInputFooter from './price-input-footer';
 import './index.scss';
 
 /**
+ * @typedef { import("../change-price").Product } Product
+ */
+
+/**
  * ChangePriceModal component.
  *
  * This component renders a modal for changing the price of a product. It displays
@@ -34,7 +38,7 @@ import './index.scss';
  * The modal also includes a footer with a price input field for updating the price.
  *
  * @param {Object} props - Component properties.
- * @param {Object} props.product - The product object containing details such as `id`, `title`, and `thumbnail`.
+ * @param {Product} props.product - The product object containing details such as `id`, `title`, and `thumbnail`.
  * @param {string} props.effectiveness - The effectiveness rating of the price change.
  * @param {number} props.regularPrice - The regular price of the product.
  * @param {number} props.priceOnGoogle - The average price of the product on Google.
@@ -44,8 +48,8 @@ import './index.scss';
  * @param {number} props.conversions - The current number of conversions for the product.
  * @param {number} props.predictedClicksChange - The predicted percentage change in clicks.
  * @param {number} props.predictedConversionsChange - The predicted percentage change in conversions.
- * @param {Function} [props.onPriceChange=noop] - Callback function triggered when the price is changed. Defaults to a no-operation function (`noop`) if not provided.
  * @param {Function} props.onRequestClose - Callback function triggered when the modal is requested to close.
+ * @param {Function} [props.onPriceChange=noop] - Callback function triggered when the price is changed. Defaults to a no-operation function (`noop`) if not provided.
  * @return {JSX.Element|null} The rendered ChangePriceModal component or `null` if no product is provided.
  */
 const ChangePriceModal = ( {
@@ -59,8 +63,8 @@ const ChangePriceModal = ( {
 	conversions,
 	predictedClicksChange,
 	predictedConversionsChange,
-	onPriceChange = noop,
 	onRequestClose,
+	onPriceChange = noop,
 } ) => {
 	if ( ! product ) {
 		return null;

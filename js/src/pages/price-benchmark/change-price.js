@@ -10,6 +10,29 @@ import { useState } from '@wordpress/element';
 import AppButton from '~/components/app-button';
 import ChangePriceModal from './change-price-modal';
 
+/**
+ * @typedef {Object} Product
+ * @property {string} id - Product identifier
+ * @property {string} title - Product title
+ * @property {string} thumbnail - URL to product thumbnail image
+ */
+
+/**
+ * Component for changing the price of a product.
+ *
+ * @param {Object} props - Component properties.
+ * @param {Product} props.product - The product object containing details about the product. Properties include id, title, and thumbnail.
+ * @param {number} props.effectiveness - The effectiveness of the price change.
+ * @param {number} props.regularPrice - The regular price of the product.
+ * @param {number} props.priceOnGoogle - The current price of the product on Google.
+ * @param {number} props.priceGap - The price gap between the regular price and the price on Google.
+ * @param {number} props.suggestedPrice - The suggested price for the product.
+ * @param {number} props.clicks - The number of clicks the product has received.
+ * @param {number} props.conversions - The number of conversions the product has achieved.
+ * @param {number} props.predictedClicksChange - The predicted change in clicks if the price is updated.
+ * @param {number} props.predictedConversionsChange - The predicted change in conversions if the price is updated.
+ * @return {JSX.Element|null} The rendered component or null if the product ID is not available.
+ */
 const ChangePrice = ( {
 	product,
 	effectiveness,
@@ -21,7 +44,6 @@ const ChangePrice = ( {
 	conversions,
 	predictedClicksChange,
 	predictedConversionsChange,
-	label = __( 'Change price', 'google-listings-and-ads' ),
 } ) => {
 	const [ isOpen, setIsOpen ] = useState( false );
 
@@ -34,12 +56,14 @@ const ChangePrice = ( {
 	};
 
 	const closeModal = () => {
-		// setIsOpen( false );
+		setIsOpen( false );
 	};
 
 	return (
 		<>
-			<AppButton onClick={ openModal }>{ label }</AppButton>
+			<AppButton onClick={ openModal } variant="link">
+				{ __( 'Change price', 'google-listings-and-ads' ) }
+			</AppButton>
 
 			{ isOpen && (
 				<ChangePriceModal
