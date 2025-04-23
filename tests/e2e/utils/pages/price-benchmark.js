@@ -70,4 +70,76 @@ export default class PriceBenchmarkPage extends MockRequests {
 			.locator( '../..' )
 			.locator( '.woocommerce-summary__item-value span' );
 	}
+
+	/**
+	 * Retrieves the locator for the "Change Price" modal element on the page.
+	 *
+	 * @return {import('@playwright/test').Locator} The "Change Price" modal element.
+	 */
+	getChangePriceModal() {
+		return this.page.locator( '.gla-change-price-modal' );
+	}
+
+	/**
+	 * Retrieves the price input field within the "Change Price" modal.
+	 *
+	 * @return {import('@playwright/test').Locator} The element handle for the "New Price" input field.
+	 */
+	getPriceInputModal() {
+		return this.getChangePriceModal().getByLabel( 'New Price' );
+	}
+
+	/**
+	 * Retrieves the "Change Price" button element within the change price modal.
+	 *
+	 * @return {import('@playwright/test').Locator} The "Change Price" button element within the modal.
+	 */
+	getChangePriceButtonModal() {
+		return this.getChangePriceModal().getByRole( 'button', {
+			name: 'Change Price',
+		} );
+	}
+
+	/**
+	 * Retrieves the "Close" button element from the change price modal.
+	 *
+	 * @return {import('@playwright/test').Locator} The "Close" button element.
+	 */
+	getCloseModalButton() {
+		return this.getChangePriceModal().getByRole( 'button', {
+			name: 'Close',
+		} );
+	}
+
+	/**
+	 * Retrieves the error message element for the price input field
+	 * within the "Change Price" modal.
+	 *
+	 * @return {import('@playwright/test').Locator} The error message element.
+	 */
+	getPriceInputError() {
+		return this.getChangePriceModal().locator(
+			'.components-base-control__help'
+		);
+	}
+
+	/**
+	 * Retrieves the first product row element from the table on the page.
+	 *
+	 * @return {import('@playwright/test').Locator} The first row in the table body.
+	 */
+	getFirstProductRow() {
+		return this.page.locator( 'table tbody tr:first-child' );
+	}
+
+	/**
+	 * Retrieves the "Change Price" button element from the first product row.
+	 *
+	 * @return {import('@playwright/test').Locator} The "Change Price" button element.
+	 */
+	getFirstProductChangePriceLink() {
+		return this.getFirstProductRow().getByRole( 'button', {
+			name: 'Change Price',
+		} );
+	}
 }

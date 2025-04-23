@@ -42,39 +42,37 @@ const PriceInputFooter = ( { productId, suggestedPrice, onPriceChange } ) => {
 		setNewPrice( suggestedPrice );
 	}, [ suggestedPrice ] );
 
-	const validatePrice = useCallback( () => {
+	const getInputError = useCallback( () => {
 		const updatedPrice = Number.parseFloat( newPrice );
-		setNewPriceError( null );
 
 		if ( updatedPrice < 0 ) {
-			setNewPriceError(
-				__(
-					'New price must be greater than or equals to zero.',
-					'google-listings-and-ads'
-				)
+			return __(
+				'New price must be greater than or equals to zero.',
+				'google-listings-and-ads'
 			);
-
-			return false;
 		}
 
 		const salePrice = Number.parseFloat( productDetails?.sale_price );
 		if ( salePrice && updatedPrice <= salePrice ) {
-			setNewPriceError(
-				sprintf(
-					// Translators: %s is replaced with the sale price.
-					__(
-						'New price must be greater than the sale price (%s).',
-						'google-listings-and-ads'
-					),
-					formatAmount( salePrice )
-				)
+			return sprintf(
+				// Translators: %s is replaced with the sale price.
+				__(
+					'New price must be greater than the sale price (%s).',
+					'google-listings-and-ads'
+				),
+				formatAmount( salePrice )
 			);
-
-			return false;
 		}
 
-		return true;
+		return null;
 	}, [ newPrice, productDetails?.sale_price, formatAmount ] );
+
+	const validatePrice = useCallback( () => {
+		const error = getInputError();
+		setNewPriceError( error );
+
+		return error === null;
+	}, [ getInputError ] );
 
 	const handleOnPriceChange = useCallback( async () => {
 		if ( ! validatePrice() ) {
@@ -101,6 +99,7 @@ const PriceInputFooter = ( { productId, suggestedPrice, onPriceChange } ) => {
 	}
 
 	const currency = googleAdsAccount?.currency;
+	const hasError = getInputError();
 
 	return (
 		<div className="gla-change-price-modal-price-input-footer">
@@ -125,7 +124,11 @@ const PriceInputFooter = ( { productId, suggestedPrice, onPriceChange } ) => {
 				key="change-price"
 				isPrimary
 				onClick={ handleOnPriceChange }
-				disabled={ ! hasFinishedResolution || ! productDetails }
+				disabled={
+					! hasFinishedResolution ||
+					! productDetails ||
+					hasError !== null
+				}
 				loading={ loading }
 			>
 				{ __( 'Change Price', 'google-listings-and-ads' ) }

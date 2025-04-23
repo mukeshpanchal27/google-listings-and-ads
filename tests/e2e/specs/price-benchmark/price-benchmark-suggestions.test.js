@@ -37,9 +37,7 @@ test.describe( 'Price Benchmark Page', () => {
 	} );
 
 	test.describe( 'Has navigation', () => {
-		// Corrected: Added a function here
 		test( 'Goes to the Price Benchmark page', async () => {
-			// Added a test case
 			await priceBenchmarkPage.goto();
 
 			const expectedTabs = [
@@ -117,12 +115,6 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Navigates to the next page and shows 5 results', async () => {
-			await priceBenchmarkPage.goto();
-
-			priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-				...priceBenchmarkSuggestionsData,
-			] );
-
 			const nextPageButton = page.locator( '[aria-label="Next page"]' );
 			await nextPageButton.click();
 
@@ -132,12 +124,6 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Displays the product and action columns only in the table when screen is resized to 400px', async () => {
-			await priceBenchmarkPage.goto();
-
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-				...priceBenchmarkSuggestionsData,
-			] );
-
 			await page.setViewportSize( { width: 400, height: 800 } );
 
 			const tableHeaderColumns = page.locator( 'table thead tr th' );
@@ -145,6 +131,110 @@ test.describe( 'Price Benchmark Page', () => {
 
 			await expect( tableHeaderColumns.nth( 0 ) ).toHaveText( 'Product' );
 			await expect( tableHeaderColumns.nth( 1 ) ).toHaveText( 'Action' );
+
+			await page.setViewportSize( { width: 1280, height: 720 } );
+		} );
+	} );
+
+	test.describe( 'Change Price Modal Functionality', () => {
+		test( 'Clicking "Change Price" link renders the modal', async () => {
+			await priceBenchmarkPage.goto();
+
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarkSuggestionsData,
+			] );
+
+			await priceBenchmarkPage.fulfillWCProduct(
+				{
+					regular_price: '100.00',
+					sale_price: '90.00',
+				},
+				[ 'GET' ]
+			);
+
+			await priceBenchmarkPage.fulfillWCProduct(
+				{
+					regular_price: '120.00',
+				},
+				[ 'POST' ]
+			);
+
+			const changePriceLink =
+				await priceBenchmarkPage.getFirstProductChangePriceLink();
+			await changePriceLink.click();
+
+			const changePriceModal =
+				await priceBenchmarkPage.getChangePriceModal();
+			await expect( changePriceModal ).toBeVisible();
+		} );
+
+		test( 'Clicking the close button closes the modal', async () => {
+			const closeButton = await priceBenchmarkPage.getCloseModalButton();
+			await closeButton.click();
+
+			const changePriceModal =
+				await priceBenchmarkPage.getChangePriceModal();
+			await expect( changePriceModal ).not.toBeVisible();
+		} );
+
+		test( 'Displays error message when user inputs a negative price', async () => {
+			// Open the modal again
+			const changePriceLink =
+				await priceBenchmarkPage.getFirstProductChangePriceLink();
+			await changePriceLink.click();
+
+			const priceInput = await priceBenchmarkPage.getPriceInputModal();
+			await priceInput.fill( '-5' );
+			await priceInput.blur();
+
+			const error = priceBenchmarkPage.getPriceInputError();
+			await expect( error ).toHaveText(
+				'New price must be greater than or equals to zero.'
+			);
+
+			const changePriceButton =
+				await priceBenchmarkPage.getChangePriceButtonModal();
+			await expect( changePriceButton ).toBeDisabled();
+		} );
+
+		test( 'Displays error message when user inputs a price lower than the sale price', async () => {
+			const priceInput = await priceBenchmarkPage.getPriceInputModal();
+			await priceInput.fill( '80' );
+			await priceInput.blur();
+
+			const error = priceBenchmarkPage.getPriceInputError();
+			await expect( error ).toHaveText(
+				'New price must be greater than the sale price (NT$90.00).'
+			);
+
+			const changePriceButton =
+				await priceBenchmarkPage.getChangePriceButtonModal();
+			await expect( changePriceButton ).toBeDisabled();
+		} );
+
+		test( 'Clicking "Change Price" button with a valid price closes the modal and updates the table', async () => {
+			const priceInput = await priceBenchmarkPage.getPriceInputModal();
+			await priceInput.fill( '120' );
+			priceInput.blur();
+
+			const error = priceBenchmarkPage.getPriceInputError();
+			await expect( error ).not.toBeVisible();
+
+			const changePriceButton =
+				await priceBenchmarkPage.getChangePriceButtonModal();
+			await expect( changePriceButton ).toBeEnabled();
+			await changePriceButton.click();
+
+			const changePriceModal =
+				await priceBenchmarkPage.getChangePriceModal();
+			await expect( changePriceModal ).not.toBeVisible();
+
+			const firstProductCells = await priceBenchmarkPage
+				.getFirstProductRow()
+				.locator( 'td' );
+			await expect( firstProductCells.nth( 2 ) ).toHaveText(
+				'NT$120.00'
+			);
 		} );
 	} );
 } );
