@@ -172,11 +172,8 @@ const ChangePriceModal = ( {
 							labelKey={ LABEL_EXPECTED_UPLIFT_IN_CONVERSIONS }
 							value={
 								<DeltaValue
-									amount={
-										( predictedConversionsChange ?? 0 ) *
-										100
-									}
-									suffix="%"
+									amount={ -5 }
+									// suffix="%"
 								/>
 							}
 						/>
