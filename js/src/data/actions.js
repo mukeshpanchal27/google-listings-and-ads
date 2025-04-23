@@ -1240,6 +1240,14 @@ export function* fetchPriceBenchmarkSuggestions() {
 			data,
 		};
 	} catch ( error ) {
+		// Fail silently and return an empty array if the user is not authorized to view the price benchmark suggestions.
+		if ( error.code === 403 ) {
+			return {
+				type: TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS,
+				data: [],
+			};
+		}
+
 		handleApiError(
 			error,
 			__(
