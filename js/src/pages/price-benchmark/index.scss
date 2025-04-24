@@ -7,16 +7,15 @@
 	}
 
 	& .woocommerce-table.is-empty {
-		background: #fff;
+		background: $white;
+	}
 
-		.gla-price-benchmark__empty-metrics {
-			color: #757575;
-			max-width: 454px;
-			text-align: center;
+	.gla-price-benchmark__empty-metrics {
+		max-width: 454px;
+		text-align: center;
 
-			p {
-				font-size: $grid-unit-20;
-			}
+		p {
+			font-size: 16px;
 		}
 	}
 }

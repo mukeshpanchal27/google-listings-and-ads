@@ -29,15 +29,12 @@ test.describe( 'Price Benchmark Page', () => {
 		page = await browser.newPage();
 		priceBenchmarkPage = new PriceBenchmarkPage( page );
 		await Promise.all( [ priceBenchmarkPage.mockRequests() ] );
+		await priceBenchmarkPage.goto();
 	} );
 
 	test.afterAll( async () => {
 		await clearOnboardedMerchant();
 		await page.close();
-	} );
-
-	test.beforeEach( async () => {
-		await priceBenchmarkPage.goto();
 	} );
 
 	test.describe( 'Has navigation', () => {
@@ -94,6 +91,10 @@ test.describe( 'Price Benchmark Page', () => {
 	} );
 
 	test.describe( 'Price Benchmark Suggestions Functionality', () => {
+		test.beforeEach( async () => {
+			await priceBenchmarkPage.goto();
+		} );
+
 		test( 'Shows no results if there is no data', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
 

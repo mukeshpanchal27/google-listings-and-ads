@@ -867,17 +867,4 @@ export default class MockRequests {
 			methods
 		);
 	}
-
-	/**
-	 * Fulfills a mock GET request for the price benchmarks suggestions.
-	 *
-	 * @param {Object} payload - The payload to be returned in the mock response.
-	 * @return {Promise<void>} Resolves when the mock request is fulfilled.
-	 */
-	async fulfillPriceBenchMarkSuggestions( payload = [] ) {
-		await this.fulfillRequest(
-			/\/wc\/gla\/mc\/price-benchmarks\b/,
-			payload
-		);
-	}
 }

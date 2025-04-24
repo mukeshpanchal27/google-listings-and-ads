@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { EmptyTable } from '@woocommerce/components';
 import { lazy } from '@wordpress/element';
 
 /**
@@ -124,12 +123,8 @@ const PriceBenchmarkSuggestions = () => {
 	const { suggestions, hasFinishedResolution } =
 		usePriceBenchmarkSuggestions();
 
-	if ( suggestions.length === 0 ) {
-		return (
-			<EmptyTable>
-				<EmptyMetricsNotice />
-			</EmptyTable>
-		);
+	if ( hasFinishedResolution && suggestions.length === 0 ) {
+		return <EmptyMetricsNotice />;
 	}
 
 	return (
