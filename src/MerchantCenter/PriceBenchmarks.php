@@ -41,35 +41,63 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	 * Update price benchmarks by querying the Google Content API and saving the data locally.
 	 */
 	public function update_price_benchmarks(): void {
-		/** @var MerchantPriceBenchmarks $api */
-		$api = $this->container->get( MerchantPriceBenchmarks::class );
-
 		try {
-			$benchmarks = $api->get_benchmarks();
+			/** @var MerchantPriceBenchmarks $merchant */
+			$merchant = $this->container->get( MerchantPriceBenchmarks::class );
+
+			$benchmarks = $merchant->get_benchmark_data( [] );
+
+			if ( empty( $benchmarks ) || empty( $benchmarks['results'] ) ) {
+				return;
+			}
 
 			/** @var MerchantPriceBenchmarksQuery $query */
 			$query = $this->container->get( MerchantPriceBenchmarksQuery::class );
 
 			// Clear existing data before updating.
-			$query->truncate();
+			$query->reload_data();
 
 			// Insert new benchmark data.
-			foreach ( $benchmarks as $benchmark ) {
-				$table->insert(
+			foreach ( $benchmarks['results'] as $benchmark ) {
+
+				$price_compared_with_benchmark = $this->price_compared_with_benchmark( $benchmark['price_micros'], $benchmark['benchmark_price_micros'] );
+				$query->insert(
 					[
-						'product_id'                    => $benchmark['product_id'],
+						'product_id'                    => $benchmark['offer_id'],
 						'id'                            => $benchmark['id'],
 						'price_micros'                  => $benchmark['price_micros'],
 						'currency_code'                 => $benchmark['currency_code'],
-						'country_code'                  => $benchmark['country_code'],
+						'country_code'                  => $benchmark['benchmark_price_country_code'],
 						'benchmark_price_micros'        => $benchmark['benchmark_price_micros'],
 						'benchmark_price_currency_code' => $benchmark['benchmark_price_currency_code'],
-						'price_compared_with_benchmark' => $benchmark['price_compared_with_benchmark'],
+						'price_compared_with_benchmark' => $price_compared_with_benchmark,
 					]
 				);
 			}
 		} catch ( \Exception $e ) {
 			do_action( 'woocommerce_gla_debug_message', $e->getMessage(), __METHOD__ );
+		}
+	}
+
+	/**
+	 * Compares a given price with a benchmark price.
+	 *
+	 * This function takes two prices in micros (1,000,000 micros = 1 unit of currency)
+	 * and performs a comparison to determine their relationship.
+	 *
+	 * @param int $price_micros           The price to compare, in micros.
+	 * @param int $benchmark_price_micros The benchmark price to compare against, in micros.
+	 * @return bool Returns specific price compare group if the price meets the comparison criteria with the benchmark.
+	 */
+	private function price_compared_with_benchmark( $price_micros, $benchmark_price_micros ) {
+		if ( empty( $price_micros ) || empty( $benchmark_price_micros ) ) {
+			return 0;
+		} elseif ( abs( $price_micros - $benchmark_price_micros ) <= ( $benchmark_price_micros * 0.01 ) ) {
+			return 2;
+		} elseif ( $price_micros < $benchmark_price_micros ) {
+			return 1;
+		} elseif ( $price_micros > $benchmark_price_micros ) {
+			return 3;
 		}
 	}
 
