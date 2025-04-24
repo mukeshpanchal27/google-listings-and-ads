@@ -25,6 +25,7 @@ class MerchantPriceBenchmarksQuery extends Query {
 	 */
 	public function __construct( wpdb $wpdb, MerchantPriceBenchmarksTable $table ) {
 		parent::__construct( $wpdb, $table );
+		$this->table = $table;
 	}
 
 	/**
@@ -93,5 +94,16 @@ class MerchantPriceBenchmarksQuery extends Query {
 		);
 
 		return (int) $this->wpdb->get_var( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	}
+
+	/**
+	 * Reload merchant price benchmarks data.
+	 *
+	 * @return void
+	 */
+	public function reload_data(): void {
+		if ( $this->table->exists() ) {
+			$this->table->truncate();
+		}
 	}
 }

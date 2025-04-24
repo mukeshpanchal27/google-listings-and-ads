@@ -47,11 +47,11 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		try {
 			$benchmarks = $api->get_benchmarks();
 
-			/** @var MerchantPriceBenchmarksQuery $table */
-			$table = $this->container->get( MerchantPriceBenchmarksQuery::class );
+			/** @var MerchantPriceBenchmarksQuery $query */
+			$query = $this->container->get( MerchantPriceBenchmarksQuery::class );
 
 			// Clear existing data before updating.
-			$table->truncate();
+			$query->truncate();
 
 			// Insert new benchmark data.
 			foreach ( $benchmarks as $benchmark ) {
@@ -98,21 +98,9 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	 * @return array|null
 	 */
 	public function get_benchmark_by_product_id( string $product_id ): ?array {
-		/** @var MerchantPriceBenchmarksQuery $table */
-		$table = $this->container->get( MerchantPriceBenchmarksQuery::class );
+		/** @var MerchantPriceBenchmarksQuery $query */
+		$query = $this->container->get( MerchantPriceBenchmarksQuery::class );
 
-		return $table->get_row( [ 'product_id' => $product_id ] );
-	}
-
-	/**
-	 * Get a list of all price benchmarks.
-	 *
-	 * @return array
-	 */
-	public function get_all_benchmarks(): array {
-		/** @var MerchantPriceBenchmarksQuery $table */
-		$table = $this->container->get( MerchantPriceBenchmarksQuery::class );
-
-		return $table->get_results();
+		return $query->get_row( [ 'product_id' => $product_id ] );
 	}
 }
