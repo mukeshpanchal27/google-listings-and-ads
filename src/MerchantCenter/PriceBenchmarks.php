@@ -82,18 +82,12 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		/** @var MerchantPriceBenchmarksQuery $query */
 		$query = $this->container->get( MerchantPriceBenchmarksQuery::class );
 
-		$total_products                                   = $query->get_count();
-		$get_unknown_products_priced_than_benchmark_count = $query->get_unknown_products_priced_than_benchmark_count();
-		$get_products_priced_lower_than_benchmark_count   = $query->get_products_priced_lower_than_benchmark_count();
-		$get_products_priced_similar_than_benchmark_count = $query->get_products_priced_similar_than_benchmark_count();
-		$get_products_priced_higher_than_benchmark_count  = $query->get_products_priced_higher_than_benchmark_count();
-
 		return [
-			'total_products' => $total_products,
-			'price_similar'  => $get_products_priced_similar_than_benchmark_count,
-			'price_lower'    => $get_products_priced_lower_than_benchmark_count,
-			'price_higher'   => $get_products_priced_higher_than_benchmark_count,
-			'price_unknown'  => $get_unknown_products_priced_than_benchmark_count,
+			'total_products' => $query->get_count(),
+			'price_similar'  => $query->get_products_priced_similar_than_benchmark_count(),
+			'price_higher'   => $query->get_products_priced_higher_than_benchmark_count(),
+			'price_lower'    => $query->get_products_priced_lower_than_benchmark_count(),
+			'price_unknown'  => $query->get_unknown_products_priced_than_benchmark_count(),
 		];
 	}
 
