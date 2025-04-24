@@ -67,7 +67,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 						'id'                            => $benchmark['id'],
 						'price_micros'                  => $benchmark['price_micros'],
 						'currency_code'                 => $benchmark['currency_code'],
-						'country_code'                  => $benchmark['benchmark_price_country_code'],
+						'country_code'                  => $benchmark['country_code'],
 						'benchmark_price_micros'        => $benchmark['benchmark_price_micros'],
 						'benchmark_price_currency_code' => $benchmark['benchmark_price_currency_code'],
 						'price_compared_with_benchmark' => $price_compared_with_benchmark,

@@ -88,7 +88,7 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				$price_insights_data = $merchant->get_price_insights( $this->prepare_query_arguments( $request ) );
 
 				// Map the data to the required format.
-				$response_data = $merchant->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
+				$response_data = $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
 
 				return new Response( $response_data );
 			} catch ( Exception $e ) {
@@ -115,6 +115,76 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				return $this->response_from_exception( $e );
 			}
 		};
+	}
+
+	/**
+	 * Maps the benchmark and price insights data to the required API response format.
+	 *
+	 * @param array $benchmark_data Raw benchmark data.
+	 * @param array $price_insights_data Raw price insights data.
+	 * @return array Mapped response data.
+	 */
+	public function map_price_benchmarks_response( array $benchmark_data, array $price_insights_data ): array {
+		$mapped_data = [];
+
+		if ( empty( $benchmark_data['results'] ) || empty( $price_insights_data['results'] ) ) {
+			return $mapped_data;
+		}
+
+		// Process benchmark data and add it to $mapped_data keyed by product ID.
+		foreach ( $benchmark_data['results'] as $benchmark_result ) {
+			$product_id = $benchmark_result['offer_id'];
+
+			$mapped_data[ $product_id ] = [
+				'price_competitiveness' => $benchmark_result ?? [],
+				'price_insights'        => [], // Placeholder for price insights data.
+			];
+		}
+
+		// Process price insights data and merge it into $mapped_data.
+		foreach ( $price_insights_data['results'] as $price_insights_result ) {
+			$product_id = $price_insights_result['offer_id'];
+
+			if ( isset( $mapped_data[ $product_id ] ) ) {
+				$mapped_data[ $product_id ]['price_insights'] = $price_insights_result ?? [];
+			}
+		}
+
+		// Transform $mapped_data into the desired response format using array_map.
+		$response_data = array_map(
+			function ( $data ) {
+				$price_competitiveness = $data['price_competitiveness'];
+				$price_insights        = $data['price_insights'];
+
+				// Calculate the price gap.
+				$regular_price   = (int) $price_competitiveness['price_micros'];
+				$price_on_google = (int) $price_competitiveness['benchmark_price_micros'];
+				$price_gap       = $regular_price - $price_on_google;
+
+				// Get the WooCommerce product ID and thumbnail.
+				$wc_product_id = (int) $price_competitiveness['offer_id'];
+				$thumbnail     = $this->get_product_thumbnail( $wc_product_id );
+
+				// Map the data to the required format.
+				return [
+					'product'         => [
+						'id'        => $wc_product_id,
+						'thumbnail' => $thumbnail,
+						'title'     => $price_competitiveness['title'],
+					],
+					'effectiveness'   => $price_insights['effectiveness'] ?? '',
+					'regular_price'   => round( $regular_price / 1000000, 2 ),
+					'price_on_google' => round( $price_on_google / 1000000, 2 ),
+					'price_gap'       => round( $price_gap / 1000000, 2 ),
+					'suggested_price' => isset( $price_insights['suggested_price_micros'] )
+						? round( $price_insights['suggested_price_micros'] / 1000000, 2 )
+						: '',
+				];
+			},
+			$mapped_data
+		);
+
+		return $response_data;
 	}
 
 	/**
