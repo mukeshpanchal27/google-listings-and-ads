@@ -9,10 +9,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AppDocumentationLink from '~/components/app-documentation-link';
-
-/**
- * Internal dependencies
- */
 import EmptyMetricsGraphic from '~/images/price-benchmark/empty-metrics.svg';
 
 const EmptyMetricsNotice = () => {
