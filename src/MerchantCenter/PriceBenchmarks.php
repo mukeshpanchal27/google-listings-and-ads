@@ -9,6 +9,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\DB\Query\MerchantPriceBenchmarksQuery;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\UpdateMerchantPriceBenchmarks;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -20,22 +21,6 @@ defined( 'ABSPATH' ) || exit;
 class PriceBenchmarks implements ContainerAwareInterface, Service {
 
 	use ContainerAwareTrait;
-
-	/**
-	 * Hook name for the scheduled task.
-	 */
-	public const SCHEDULED_TASK_HOOK = 'woocommerce_gla_update_price_benchmarks';
-
-	/**
-	 * Set up the scheduled task for updating price benchmarks.
-	 */
-	public function setup_scheduled_task(): void {
-		if ( ! wp_next_scheduled( self::SCHEDULED_TASK_HOOK ) ) {
-			wp_schedule_event( time(), 'hourly', self::SCHEDULED_TASK_HOOK );
-		}
-
-		add_action( self::SCHEDULED_TASK_HOOK, [ $this, 'update_price_benchmarks' ] );
-	}
 
 	/**
 	 * Update price benchmarks by querying the Google Content API and saving the data locally.
@@ -109,6 +94,14 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	public function get_summary(): array {
 		/** @var MerchantPriceBenchmarksQuery $query */
 		$query = $this->container->get( MerchantPriceBenchmarksQuery::class );
+
+		$job = $this->container->get( UpdateMerchantPriceBenchmarks::class );
+
+		// If force_refresh is true or if not transient, return empty array and scheduled the job to update the statuses.
+		if ( ! $job->is_scheduled() ) {
+			// Schedule job to update the statuses. If the failure rate is too high, the job will not be scheduled.
+			$job->schedule();
+		}
 
 		return [
 			'total_products' => $query->get_count(),
