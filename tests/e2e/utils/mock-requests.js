@@ -450,11 +450,11 @@ export default class MockRequests {
 	 * @param {Object} payload
 	 * @return {Promise<void>}
 	 */
-	async fulfillPriceBenchmarkSuggestions( payload ) {
+	async fulfillPriceBenchmarkSuggestions( payload, status = 200 ) {
 		await this.fulfillRequest(
 			/\/wc\/gla\/mc\/price-benchmarks\b/,
 			payload,
-			200,
+			status,
 			[ 'GET' ]
 		);
 	}

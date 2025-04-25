@@ -111,6 +111,23 @@ test.describe( 'Price Benchmark Page', () => {
 			);
 		} );
 
+		test.only( 'Shows empty state notice when Market Insights is not enabled for the account.', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				[],
+				403
+			);
+			const emptyStateNotice = page.locator(
+				'.gla-price-benchmark__empty-metrics'
+			);
+			await expect( emptyStateNotice ).toBeVisible();
+			await expect( emptyStateNotice ).toContainText(
+				'You do not have any sale price suggestions at this moment.'
+			);
+			await expect( emptyStateNotice ).toContainText(
+				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
+			);
+		} );
+
 		test( 'Shows 10 results per page by default', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
 				...priceBenchmarkSuggestionsData,
