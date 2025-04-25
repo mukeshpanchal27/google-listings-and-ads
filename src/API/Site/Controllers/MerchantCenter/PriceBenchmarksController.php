@@ -49,8 +49,8 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 					'methods'  => TransportMethods::READABLE,
 					'callback' => $this->get_price_benchmarks_summary_callback(),
 					// TODO: Add permission callback.
-					'args'     => $this->get_summary_response_schema_callback(),
 				],
+				'schema' => $this->get_summary_response_schema_callback(),
 			]
 		);
 	}
@@ -247,12 +247,26 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 		];
 	}
 
+
 	/**
 	 * Get the schema for the summary endpoint.
 	 *
+	 * @see BaseController::get_api_response_schema_callback
+	 *
 	 * @return array
 	 */
-	protected function get_summary_response_schema_callback(): array {
+	protected function get_summary_response_schema_callback(): callable {
+		return function () {
+			return $this->prepare_item_schema( $this->get_summary_schema_properties(), $this->get_summary_schema_title() );
+		};
+	}
+
+	/**
+	 * Get the schema properties for the summary endpoint.
+	 *
+	 * @return array
+	 */
+	protected function get_summary_schema_properties(): array {
 		return [
 			'total_products' => [
 				'description' => __( 'Total number of products represented in the Google report.', 'google-listings-and-ads' ),
@@ -286,5 +300,16 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	 */
 	protected function get_schema_title(): string {
 		return 'price_benchmarks';
+	}
+
+	/**
+	 * Get the item schema name for the controller.
+	 *
+	 * Used for building the API response schema.
+	 *
+	 * @return string
+	 */
+	protected function get_summary_schema_title(): string {
+		return 'price_benchmarks_summary';
 	}
 }
