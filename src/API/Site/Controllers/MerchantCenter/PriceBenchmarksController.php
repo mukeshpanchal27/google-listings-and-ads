@@ -103,7 +103,7 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	 * @return callable
 	 */
 	protected function get_price_benchmarks_summary_callback(): callable {
-		return function ( Request $request ) {
+		return function () {
 			try {
 				/** @var PriceBenchmarks $price_benchmarks */
 				$price_benchmarks = $this->container->get( PriceBenchmarks::class );
