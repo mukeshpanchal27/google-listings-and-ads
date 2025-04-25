@@ -124,7 +124,7 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	 * @param array $price_insights_data Raw price insights data.
 	 * @return array Mapped response data.
 	 */
-	public function map_price_benchmarks_response( array $benchmark_data, array $price_insights_data ): array {
+	protected function map_price_benchmarks_response( array $benchmark_data, array $price_insights_data ): array {
 		$mapped_data = [];
 
 		if ( empty( $benchmark_data['results'] ) || empty( $price_insights_data['results'] ) ) {
