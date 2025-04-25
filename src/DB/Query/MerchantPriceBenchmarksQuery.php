@@ -41,59 +41,42 @@ class MerchantPriceBenchmarksQuery extends Query {
 	}
 
 	/**
-	 * Get the count of unknown products priced than the benchmark.
+	 * Get count of products grouped by price_compared_with_benchmark value.
 	 *
-	 * @return int
+	 * @return array Returns an array with counts for each price comparison group.
 	 */
-	public function get_unknown_products_priced_than_benchmark_count() {
-		$query = $this->wpdb->prepare(
-			"SELECT COUNT(*) FROM {$this->table->get_name()} WHERE price_compared_with_benchmark = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			0
+	public function get_price_benchmark_counts(): array {
+		// Get the raw SQL query with GROUP BY
+		$column = 'price_compared_with_benchmark';
+		$this->validate_column( $column );
+
+		$query = "SELECT `{$column}`, COUNT(*) as count FROM `{$this->table->get_name()}` GROUP BY `{$column}`";
+
+		$results = $this->wpdb->get_results(
+			$query, // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, No user input.
+			ARRAY_A
 		);
 
-		return (int) $this->wpdb->get_var( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	}
+		// Convert the results to a more usable format
+		$counts = [];
+		$total  = 0;
+		foreach ( $results as $row ) {
+			$price_compared_value            = (int) $row['price_compared_with_benchmark'];
+			$counts[ $price_compared_value ] = (int) $row['count'];
+			$total                          += $counts[ $price_compared_value ];
+		}
 
-	/**
-	 * Get the count of products priced lower than the benchmark.
-	 *
-	 * @return int
-	 */
-	public function get_products_priced_lower_than_benchmark_count() {
-		$query = $this->wpdb->prepare(
-			"SELECT COUNT(*) FROM {$this->table->get_name()} WHERE price_compared_with_benchmark = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			1
-		);
+		// Make sure all possible values are represented (0, 1, 2, 3)
+		$all_values = [ 0, 1, 2, 3 ];
+		foreach ( $all_values as $value ) {
+			if ( ! isset( $counts[ $value ] ) ) {
+				$counts[ $value ] = 0;
+			}
+		}
 
-		return (int) $this->wpdb->get_var( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	}
+		$counts['total'] = $total;
 
-	/**
-	 * Get the count of products priced similar than the benchmark.
-	 *
-	 * @return int
-	 */
-	public function get_products_priced_similar_than_benchmark_count() {
-		$query = $this->wpdb->prepare(
-			"SELECT COUNT(*) FROM {$this->table->get_name()} WHERE price_compared_with_benchmark = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			2
-		);
-
-		return (int) $this->wpdb->get_var( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	}
-
-	/**
-	 * Get the count of products priced higher than the benchmark.
-	 *
-	 * @return int
-	 */
-	public function get_products_priced_higher_than_benchmark_count() {
-		$query = $this->wpdb->prepare(
-			"SELECT COUNT(*) FROM {$this->table->get_name()} WHERE price_compared_with_benchmark = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			3
-		);
-
-		return (int) $this->wpdb->get_var( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		return $counts;
 	}
 
 	/**

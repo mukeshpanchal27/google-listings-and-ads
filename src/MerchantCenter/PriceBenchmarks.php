@@ -103,12 +103,15 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 			$job->schedule();
 		}
 
+		// Get counts for all benchmark comparison groups in one query
+		$price_comparison_counts = $query->get_price_benchmark_counts();
+
 		return [
-			'total_products' => $query->get_count(),
-			'price_similar'  => $query->get_products_priced_similar_than_benchmark_count(),
-			'price_higher'   => $query->get_products_priced_higher_than_benchmark_count(),
-			'price_lower'    => $query->get_products_priced_lower_than_benchmark_count(),
-			'price_unknown'  => $query->get_unknown_products_priced_than_benchmark_count(),
+			'total_products' => $price_comparison_counts['total'] ?? 0, // Total products
+			'price_unknown'  => $price_comparison_counts[0] ?? 0, // Unknown/missing
+			'price_lower'    => $price_comparison_counts[1] ?? 0, // Lower price
+			'price_similar'  => $price_comparison_counts[2] ?? 0, // Similar price
+			'price_higher'   => $price_comparison_counts[3] ?? 0, // Higher price
 		];
 	}
 
