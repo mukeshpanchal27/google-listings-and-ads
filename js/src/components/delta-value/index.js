@@ -28,11 +28,9 @@ const DeltaValue = ( { amount = 0, suffix = '' } ) => {
 	const isNegative = value < 0;
 	const isPositive = value > 0;
 
-	let formattedValue = parseInt( value, 10 );
+	let formattedValue = `${ parseInt( value, 10 ) }${ suffix }`;
 	if ( isPositive ) {
-		formattedValue = `+${ parseInt( value, 10 ) }${ suffix }`;
-	} else if ( isNegative ) {
-		formattedValue = `${ parseInt( value, 10 ) }${ suffix }`;
+		formattedValue = `+${ formattedValue }`;
 	}
 
 	return (

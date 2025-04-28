@@ -58,6 +58,10 @@
 		row-gap: $grid-unit-30;
 	}
 
+	.gla-change-price-modal__metrics {
+		flex: 1;
+	}
+
 	.gla-change-price-modal__separator {
 		border: 1px solid $gray-100;
 		margin: $grid-unit-30 0;

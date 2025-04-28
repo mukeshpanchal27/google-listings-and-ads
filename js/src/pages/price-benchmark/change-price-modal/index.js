@@ -66,7 +66,7 @@ const ChangePriceModal = ( {
 	onRequestClose,
 	onPriceChange = noop,
 } ) => {
-	if ( ! product ) {
+	if ( ! product?.id ) {
 		return null;
 	}
 
@@ -75,7 +75,7 @@ const ChangePriceModal = ( {
 			buttons={ [
 				<PriceInputFooter
 					onPriceChange={ onPriceChange }
-					productId={ product?.id }
+					productId={ product.id }
 					key="price-input-footer"
 					suggestedPrice={ suggestedPrice }
 				/>,

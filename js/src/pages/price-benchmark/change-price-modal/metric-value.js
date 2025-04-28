@@ -13,7 +13,7 @@ import './metric-value.scss';
  * @return {JSX.Element} The rendered Metric component.
  */
 const MetricValue = ( { labelKey, value } ) => {
-	if ( value === undefined || value === null ) {
+	if ( value === undefined || value === null || value === '' ) {
 		return null;
 	}
 
