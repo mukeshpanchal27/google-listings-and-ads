@@ -97,7 +97,6 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 
 		$job = $this->container->get( UpdateMerchantPriceBenchmarks::class );
 
-		// If force_refresh is true or if not transient, return empty array and scheduled the job to update the statuses.
 		if ( ! $job->is_scheduled() ) {
 			// Schedule job to update the statuses. If the failure rate is too high, the job will not be scheduled.
 			$job->schedule();
