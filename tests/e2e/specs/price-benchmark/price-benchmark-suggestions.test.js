@@ -149,7 +149,7 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 	} );
 
-	test.describe.only( 'Price Benchmark Suggestions Banner', () => {
+	test.describe( 'Price Benchmark Suggestions Banner', () => {
 		test( 'Shows the banner when the user is not onboarded', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
 				...priceBenchmarkSuggestionsData,
@@ -163,6 +163,7 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Hides the banner when dismissed', async () => {
+			await priceBenchmarkPage.fulfillUsersPreferences();
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
 				...priceBenchmarkSuggestionsData,
 			] );
