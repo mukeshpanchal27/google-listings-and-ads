@@ -94,7 +94,7 @@ export default class PriceBenchmarkPage extends MockRequests {
 	 *
 	 * @return {import('@playwright/test').Locator} The "Change Price" button element within the modal.
 	 */
-	getChangePriceButtonModal() {
+	getChangePriceModalButton() {
 		return this.getChangePriceModal().getByRole( 'button', {
 			name: 'Change Price',
 		} );

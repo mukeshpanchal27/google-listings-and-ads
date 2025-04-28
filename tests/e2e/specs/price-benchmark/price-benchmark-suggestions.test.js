@@ -186,7 +186,7 @@ test.describe( 'Price Benchmark Page', () => {
 			);
 
 			const changePriceButton =
-				await priceBenchmarkPage.getChangePriceButtonModal();
+				await priceBenchmarkPage.getChangePriceModalButton();
 			await expect( changePriceButton ).toBeDisabled();
 		} );
 
@@ -201,7 +201,7 @@ test.describe( 'Price Benchmark Page', () => {
 			);
 
 			const changePriceButton =
-				await priceBenchmarkPage.getChangePriceButtonModal();
+				await priceBenchmarkPage.getChangePriceModalButton();
 			await expect( changePriceButton ).toBeDisabled();
 		} );
 
@@ -239,7 +239,7 @@ test.describe( 'Price Benchmark Page', () => {
 			await expect( error ).not.toBeVisible();
 
 			const changePriceButton =
-				await priceBenchmarkPage.getChangePriceButtonModal();
+				await priceBenchmarkPage.getChangePriceModalButton();
 			await expect( changePriceButton ).toBeEnabled();
 			await changePriceButton.click();
 
