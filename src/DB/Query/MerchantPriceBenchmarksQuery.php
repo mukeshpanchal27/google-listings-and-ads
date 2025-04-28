@@ -5,7 +5,6 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\DB\Query;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\DB\Query;
 use Automattic\WooCommerce\GoogleListingsAndAds\DB\Table\MerchantPriceBenchmarksTable;
-use Automattic\WooCommerce\GoogleListingsAndAds\Exception\InvalidQuery;
 use wpdb;
 
 defined( 'ABSPATH' ) || exit;
