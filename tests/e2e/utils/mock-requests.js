@@ -867,4 +867,10 @@ export default class MockRequests {
 			methods
 		);
 	}
+
+	async fulfillUsersPreferences( payload = {} ) {
+		await this.fulfillRequest( /\/wp\/v2\/users\/me(\?|$)/, payload, 200, [
+			'POST',
+		] );
+	}
 }

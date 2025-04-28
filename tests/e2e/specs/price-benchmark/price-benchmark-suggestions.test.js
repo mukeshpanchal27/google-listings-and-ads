@@ -29,6 +29,7 @@ test.describe( 'Price Benchmark Page', () => {
 		page = await browser.newPage();
 		priceBenchmarkPage = new PriceBenchmarkPage( page );
 		await Promise.all( [ priceBenchmarkPage.mockRequests() ] );
+		await priceBenchmarkPage.goto();
 	} );
 
 	test.afterAll( async () => {
@@ -145,6 +146,37 @@ test.describe( 'Price Benchmark Page', () => {
 
 			await expect( tableHeaderColumns.nth( 0 ) ).toHaveText( 'Product' );
 			await expect( tableHeaderColumns.nth( 1 ) ).toHaveText( 'Action' );
+		} );
+	} );
+
+	test.describe.only( 'Price Benchmark Suggestions Banner', () => {
+		test( 'Shows the banner when the user is not onboarded', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarkSuggestionsData,
+			] );
+
+			const banner = page.locator(
+				'.gla-price-benchmark-suggestions-banner'
+			);
+
+			await expect( banner ).toBeVisible();
+		} );
+
+		test( 'Hides the banner when dismissed', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarkSuggestionsData,
+			] );
+
+			const banner = page.locator(
+				'.gla-price-benchmark-suggestions-banner'
+			);
+			const dismissButton = banner.locator(
+				'button:has-text("Dismiss")'
+			);
+
+			await dismissButton.click();
+
+			await expect( banner ).not.toBeVisible();
 		} );
 	} );
 } );
