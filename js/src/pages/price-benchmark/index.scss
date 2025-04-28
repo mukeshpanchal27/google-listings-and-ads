@@ -5,22 +5,8 @@
 	& .app-tab-nav:first-child {
 		padding: 0 $grid-unit-40;
 	}
-
-	& .woocommerce-table.is-empty {
-		background: $white;
-	}
-
-	.gla-price-benchmark__empty-metrics {
-		max-width: 454px;
-		text-align: center;
-
-		p {
-			font-size: 16px;
-		}
-	}
 }
 
 .gla-price-benchmark__comparison-chart {
 	margin: $grid-unit-40 0;
 }
-

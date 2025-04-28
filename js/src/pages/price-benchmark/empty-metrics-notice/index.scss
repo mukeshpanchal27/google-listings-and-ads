@@ -1,0 +1,15 @@
+.gla-price-benchmark__card {
+
+	& .woocommerce-table.is-empty {
+		background: $white;
+	}
+
+	.gla-price-benchmark__empty-metrics-columns {
+		max-width: 454px;
+		text-align: center;
+
+		p {
+			font-size: 16px;
+		}
+	}
+}
