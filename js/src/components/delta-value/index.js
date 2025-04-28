@@ -25,7 +25,6 @@ const DeltaValue = ( { amount = 0, suffix = '' } ) => {
 		value = 0;
 	}
 
-	const isNegative = value < 0;
 	const isPositive = value > 0;
 
 	let formattedValue = `${ parseInt( value, 10 ) }${ suffix }`;
@@ -33,6 +32,7 @@ const DeltaValue = ( { amount = 0, suffix = '' } ) => {
 		formattedValue = `+${ formattedValue }`;
 	}
 
+	const isNegative = value < 0;
 	return (
 		<span
 			className={ classnames( 'gla-delta-value', {

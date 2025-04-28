@@ -94,7 +94,7 @@ const PriceInputFooter = ( { productId, suggestedPrice, onPriceChange } ) => {
 		onPriceChange( productId, newPrice );
 	}, [ newPrice, productId, onPriceChange, updateProduct, validatePrice ] );
 
-	if ( ! productId ) {
+	if ( ! productDetails ) {
 		return null;
 	}
 

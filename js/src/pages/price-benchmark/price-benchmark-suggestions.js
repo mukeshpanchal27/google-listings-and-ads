@@ -99,22 +99,7 @@ const TABLE_FIELDS = [
 		enableGlobalSearch: false,
 		label: LABELS[ LABEL_ACTION ].title,
 		render: ( { item } ) => {
-			return (
-				<ChangePrice
-					product={ item.product }
-					effectiveness={ item.effectiveness }
-					regularPrice={ item.regular_price }
-					priceOnGoogle={ item.price_on_google }
-					priceGap={ item.price_gap }
-					suggestedPrice={ item.suggested_price }
-					clicks={ item.clicks }
-					conversions={ item.conversions }
-					predictedClicksChange={ item.predicted_clicks_change }
-					predictedConversionsChange={
-						item.predicted_conversions_change
-					}
-				/>
-			);
+			return <ChangePrice productId={ item?.product?.id } />;
 		},
 	},
 ];

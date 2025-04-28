@@ -12,40 +12,14 @@ import AppButton from '~/components/app-button';
 import ChangePriceModal from './change-price-modal';
 
 /**
- * @typedef {Object} Product
- * @property {string} id - Product identifier
- * @property {string} title - Product title
- * @property {string} thumbnail - URL to product thumbnail image
- */
-
-/**
- * Component for changing the price of a product.
+ * ChangePrice component allows users to update the price of a product.
+ * It provides a button to open a modal where the price can be changed.
  *
  * @param {Object} props - Component properties.
- * @param {Product} props.product - The product object containing details about the product. Properties include id, title, and thumbnail.
- * @param {number} props.effectiveness - The effectiveness of the price change.
- * @param {number} props.regularPrice - The regular price of the product.
- * @param {number} props.priceOnGoogle - The current price of the product on Google.
- * @param {number} props.priceGap - The price gap between the regular price and the price on Google.
- * @param {number} props.suggestedPrice - The suggested price for the product.
- * @param {number} props.clicks - The number of clicks the product has received.
- * @param {number} props.conversions - The number of conversions the product has achieved.
- * @param {number} props.predictedClicksChange - The predicted change in clicks if the price is updated.
- * @param {number} props.predictedConversionsChange - The predicted change in conversions if the price is updated.
- * @return {JSX.Element|null} The rendered component or null if the product ID is not available.
+ * @param {number} props.productId - The ID of the product whose price is to be changed.
+ * @return {JSX.Element|null} The rendered component or null if no productId is provided.
  */
-const ChangePrice = ( {
-	product,
-	effectiveness,
-	regularPrice,
-	priceOnGoogle,
-	priceGap,
-	suggestedPrice,
-	clicks,
-	conversions,
-	predictedClicksChange,
-	predictedConversionsChange,
-} ) => {
+const ChangePrice = ( { productId } ) => {
 	const { receivePriceBenchmarkSuggestionsRegularPrice } = useAppDispatch();
 	const [ isOpen, setIsOpen ] = useState( false );
 
@@ -54,15 +28,18 @@ const ChangePrice = ( {
 	};
 
 	const handleOnPriceChange = useCallback(
-		( productId, newPrice ) => {
-			receivePriceBenchmarkSuggestionsRegularPrice( productId, newPrice );
+		( updatedProductId, newPrice ) => {
+			receivePriceBenchmarkSuggestionsRegularPrice(
+				updatedProductId,
+				newPrice
+			);
 
 			handleOnRequestClose();
 		},
 		[ receivePriceBenchmarkSuggestionsRegularPrice ]
 	);
 
-	if ( ! product?.id ) {
+	if ( ! productId ) {
 		return null;
 	}
 
@@ -78,16 +55,7 @@ const ChangePrice = ( {
 
 			{ isOpen && (
 				<ChangePriceModal
-					product={ product }
-					effectiveness={ effectiveness }
-					regularPrice={ regularPrice }
-					priceOnGoogle={ priceOnGoogle }
-					priceGap={ priceGap }
-					suggestedPrice={ suggestedPrice }
-					clicks={ clicks }
-					conversions={ conversions }
-					predictedClicksChange={ predictedClicksChange }
-					predictedConversionsChange={ predictedConversionsChange }
+					productId={ productId }
 					onPriceChange={ handleOnPriceChange }
 					onRequestClose={ handleOnRequestClose }
 				/>
