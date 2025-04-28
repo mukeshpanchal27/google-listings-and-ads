@@ -113,17 +113,4 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 			'price_higher'   => $price_comparison_counts[3] ?? 0, // Higher price
 		];
 	}
-
-	/**
-	 * Get individual benchmark data for a specific product ID.
-	 *
-	 * @param string $product_id
-	 * @return array|null
-	 */
-	public function get_benchmark_by_product_id( string $product_id ): ?array {
-		/** @var MerchantPriceBenchmarksQuery $query */
-		$query = $this->container->get( MerchantPriceBenchmarksQuery::class );
-
-		return $query->get_row( [ 'product_id' => $product_id ] );
-	}
 }
