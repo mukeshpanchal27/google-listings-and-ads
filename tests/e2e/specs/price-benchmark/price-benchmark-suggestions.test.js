@@ -160,6 +160,18 @@ test.describe( 'Price Benchmark Page', () => {
 			);
 
 			await expect( banner ).toBeVisible();
+
+			const title = banner.locator(
+				'.gla-price-benchmark-suggestions-banner__title'
+			);
+			await expect( title ).toHaveText( 'Price Benchmark & Suggestions' );
+
+			// "New" badge
+			const badge = banner.locator(
+				'.gla-price-benchmark-suggestions-banner__badge'
+			);
+
+			await expect( badge ).toHaveText( 'New' );
 		} );
 
 		test( 'Hides the banner when dismissed', async () => {
