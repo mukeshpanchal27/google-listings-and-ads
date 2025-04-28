@@ -152,13 +152,6 @@ test.describe( 'Price Benchmark Page', () => {
 				[ 'GET' ]
 			);
 
-			await priceBenchmarkPage.fulfillWCProduct(
-				{
-					regular_price: '120.00',
-				},
-				[ 'POST' ]
-			);
-
 			const changePriceLink =
 				await priceBenchmarkPage.getFirstProductChangePriceLink();
 			await changePriceLink.click();
@@ -213,6 +206,31 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Clicking "Change Price" button with a valid price closes the modal and updates the table', async () => {
+			await priceBenchmarkPage.goto();
+
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarkSuggestionsData,
+			] );
+
+			await priceBenchmarkPage.fulfillWCProduct(
+				{
+					regular_price: '100.00',
+					sale_price: '90.00',
+				},
+				[ 'GET' ]
+			);
+
+			await priceBenchmarkPage.fulfillWCProduct(
+				{
+					regular_price: '120.00',
+				},
+				[ 'POST' ]
+			);
+
+			const changePriceLink =
+				await priceBenchmarkPage.getFirstProductChangePriceLink();
+			await changePriceLink.click();
+
 			const priceInput = await priceBenchmarkPage.getPriceInputModal();
 			await priceInput.fill( '120' );
 			priceInput.blur();

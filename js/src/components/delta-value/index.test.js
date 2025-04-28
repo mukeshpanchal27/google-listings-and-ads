@@ -63,4 +63,10 @@ describe( 'DeltaValue Component', () => {
 		const spanElement = screen.getByText( '0' );
 		expect( spanElement ).toBeInTheDocument();
 	} );
+
+	it( 'handles non-string suffix by converting it to a string', () => {
+		render( <DeltaValue amount={ 10 } suffix={ 123 } /> );
+		const spanElement = screen.getByText( '+10123' );
+		expect( spanElement ).toBeInTheDocument();
+	} );
 } );
