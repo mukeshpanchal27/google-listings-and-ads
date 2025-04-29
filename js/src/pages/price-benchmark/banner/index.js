@@ -40,7 +40,7 @@ const Banner = () => {
 				<div className="gla-price-benchmark-suggestions-banner__image_container">
 					<img src={ bannerImage } alt="" />
 				</div>
-				<div className="gla-price-benchmark-suggestions-banner__description_container">
+				<div className="gla-price-benchmark-suggestions-banner__header">
 					<Pill className="gla-price-benchmark-suggestions-banner__badge">
 						{ __( 'New', 'google-listings-and-ads' ) }
 					</Pill>
@@ -50,29 +50,27 @@ const Banner = () => {
 							'google-listings-and-ads'
 						) }
 					</h3>
-					<p className="gla-price-benchmark-suggestions-banner__description">
-						{ createInterpolateElement(
-							__(
-								'<upper>This report includes a competitive pricing analysis, price recommendations, and insights like <strong>Effectiveness</strong></upper> <lower>to help you identify opportunities, compare against competitors, and accelerate your sales growth.</lower>',
-								'google-listings-and-ads'
-							),
-							{
-								strong: <strong />,
-								upper: (
-									<span className="upper-description-text" />
-								),
-								lower: (
-									<span className="lower-description-text" />
-								),
-							}
-						) }
-					</p>
-					<div>
-						<Button variant="secondary" onClick={ handleDismiss }>
-							{ __( 'Dismiss', 'google-listings-and-ads' ) }
-						</Button>
-					</div>
 				</div>
+				<p className="gla-price-benchmark-suggestions-banner__description">
+					{ createInterpolateElement(
+						__(
+							'<upper>This report includes a competitive pricing analysis, price recommendations, and insights like <strong>Effectiveness</strong></upper> <lower>to help you identify opportunities, compare against competitors, and accelerate your sales growth.</lower>',
+							'google-listings-and-ads'
+						),
+						{
+							strong: <strong />,
+							upper: <span className="upper-description-text" />,
+							lower: <span className="lower-description-text" />,
+						}
+					) }
+				</p>
+				<Button
+					className="gla-price-benchmark-suggestions-banner__dismiss-button"
+					variant="secondary"
+					onClick={ handleDismiss }
+				>
+					{ __( 'Dismiss', 'google-listings-and-ads' ) }
+				</Button>
 			</CardBody>
 		</Card>
 	);

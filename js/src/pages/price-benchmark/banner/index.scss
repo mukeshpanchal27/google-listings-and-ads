@@ -1,7 +1,14 @@
 .gla-price-benchmark-suggestions-banner__body {
-	display: flex;
-	gap: $grid-unit-30;
+	align-items: start;
+	display: grid;
+	grid-template-columns: 164px 1fr;
+	gap: $grid-unit-20;
 	padding: $grid-unit-40 $grid-unit-30;
+
+	.gla-price-benchmark-suggestions-banner__image_container {
+		grid-row: span 3;
+		place-self: center center;
+	}
 
 	.gla-price-benchmark-suggestions-banner__badge {
 		background-color: #f6f7f7;
@@ -9,9 +16,51 @@
 		border-radius: 2px;
 	}
 
+	.gla-price-benchmark-suggestions-banner__title {
+		margin: $grid-unit-15 0 0 0;
+	}
+
+	.gla-price-benchmark-suggestions-banner__description {
+		grid-column: 2 / -1;
+		margin: 0;
+	}
+
+	.gla-price-benchmark-suggestions-banner__dismiss-button {
+		grid-column: 2 / -1;
+		justify-self: start;
+	}
+
 	@media (min-width: $break-medium + 1px) {
 		.lower-description-text {
 			display: block;
+		}
+	}
+}
+
+@media (max-width: $break-medium) {
+	.gla-price-benchmark-suggestions-banner__body {
+		grid-template-columns: 1fr 2fr;
+		grid-template-areas:
+			"icon header"
+			"desc desc"
+			"dismiss dismiss";
+
+		.gla-price-benchmark-suggestions-banner__image_container {
+			grid-area: icon;
+			grid-row: span 1;
+		}
+
+		.gla-price-benchmark-suggestions-banner__header {
+			grid-area: header;
+		}
+
+		.gla-price-benchmark-suggestions-banner__description {
+			grid-area: desc;
+			grid-column: 1 / -1;
+		}
+
+		.gla-price-benchmark-suggestions-banner__dismiss-button {
+			grid-area: dismiss;
 		}
 	}
 }
