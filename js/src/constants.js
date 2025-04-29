@@ -126,8 +126,8 @@ export const GOOGLE_WPCOM_APP_CONNECTED_STATUS = {
 };
 
 export const PRICE_BENCHMARK_CHART_COLORS = {
-	LOWER: '#4AB866',
-	SIMILAR: '#F0B849',
-	HIGHER: '#CC1818',
-	UNKNOWN: '#3858E9',
+	LOWER: '#42b1af',
+	SIMILAR: '#6d89d3',
+	HIGHER: '#caa76f',
+	UNKNOWN: '#e0e0e0',
 };
