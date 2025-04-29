@@ -1,76 +1,70 @@
 /**
  * External dependencies
  */
-import { Button, Card, CardBody } from '@wordpress/components';
-import { createInterpolateElement, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Pill } from '@woocommerce/components';
+import { Card, CardBody } from '@wordpress/components';
+import { createInterpolateElement } from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
+import { store as preferencesStore } from '@wordpress/preferences';
 
 /**
  * Internal dependencies
  */
-import { usePreferences } from '~/hooks/usePreferences';
-import bannerImage from '~/images/price-benchmark/price-benchmark-banner-icon.svg';
+import Badge from '~/components/badge';
+import AppButton from '~/components/app-button';
+import usePreference from '~/hooks/usePreference';
+import bannerImageURL from '~/images/price-benchmark/price-benchmark-banner-icon.svg';
+import { PREFERENCES_STORE_NAMESPACE } from '~/constants';
 import './index.scss';
 
 const BANNER_DISMISSED_KEY = 'price-benchmark-banner-dismissed';
 
 const Banner = () => {
-	const [ visible, setIsVisible ] = useState( true );
-	const { get, set } = usePreferences();
-	const isDismissed = get( BANNER_DISMISSED_KEY );
+	const { set } = useDispatch( preferencesStore );
+	const isDismissed = usePreference( BANNER_DISMISSED_KEY );
 
 	const handleDismiss = () => {
-		set( BANNER_DISMISSED_KEY, true );
-		setIsVisible( false );
+		set( PREFERENCES_STORE_NAMESPACE, BANNER_DISMISSED_KEY, true );
 	};
 
-	if ( ! visible || isDismissed ) {
+	if ( isDismissed ) {
 		return null;
 	}
 
 	return (
-		<Card
-			size="medium"
-			className={ `gla-price-benchmark-suggestions-banner` }
-		>
-			<CardBody
-				className={ `gla-price-benchmark-suggestions-banner__body` }
-			>
-				<div className="gla-price-benchmark-suggestions-banner__image_container">
-					<img src={ bannerImage } alt="" />
+		<Card size="large" className="gla-price-benchmark-suggestions-banner">
+			<CardBody className="gla-price-benchmark-suggestions-banner__body">
+				<div className="gla-price-benchmark-suggestions-banner__graphic">
+					<img src={ bannerImageURL } alt="" width={ 164 } />
 				</div>
-				<div className="gla-price-benchmark-suggestions-banner__header">
-					<Pill className="gla-price-benchmark-suggestions-banner__badge">
-						{ __( 'New', 'google-listings-and-ads' ) }
-					</Pill>
-					<h3 className="gla-price-benchmark-suggestions-banner__title">
+
+				<div className="gla-price-benchmark-suggestions-banner__text">
+					<Badge>{ __( 'New', 'google-listings-and-ads' ) }</Badge>
+
+					<h3>
 						{ __(
 							'Price Benchmark & Suggestions',
 							'google-listings-and-ads'
 						) }
 					</h3>
 				</div>
-				<p className="gla-price-benchmark-suggestions-banner__description">
-					{ createInterpolateElement(
-						__(
-							'<upper>This report includes a competitive pricing analysis, price recommendations, and insights like <strong>Effectiveness</strong></upper> <lower>to help you identify opportunities, compare against competitors, and accelerate your sales growth.</lower>',
-							'google-listings-and-ads'
-						),
-						{
-							strong: <strong />,
-							upper: <span className="upper-description-text" />,
-							lower: <span className="lower-description-text" />,
-						}
-					) }
-				</p>
-				<Button
-					className="gla-price-benchmark-suggestions-banner__dismiss-button"
-					variant="secondary"
-					onClick={ handleDismiss }
-				>
-					{ __( 'Dismiss', 'google-listings-and-ads' ) }
-				</Button>
+
+				<div className="gla-price-benchmark-suggestions-banner__footer">
+					<p>
+						{ createInterpolateElement(
+							__(
+								'This report includes a competitive pricing analysis, price recommendations, and insights like <strong>Effectiveness</strong> to help you identify opportunities, compare against competitors, and accelerate your sales growth.',
+								'google-listings-and-ads'
+							),
+							{
+								strong: <strong />,
+							}
+						) }
+					</p>
+					<AppButton variant="secondary" onClick={ handleDismiss }>
+						{ __( 'Dismiss', 'google-listings-and-ads' ) }
+					</AppButton>
+				</div>
 			</CardBody>
 		</Card>
 	);
