@@ -545,6 +545,29 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 			return setIn( state, 'price_benchmark.suggestions', data );
 		}
 
+		case TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS_REGULAR_PRICE: {
+			const {
+				data: { productId, regularPrice },
+			} = action;
+
+			const newSuggestionsState = [
+				...state.price_benchmark.suggestions,
+			];
+			const productIndex = newSuggestionsState.findIndex(
+				( { product } ) => product.id === productId
+			);
+
+			if ( productIndex >= 0 ) {
+				newSuggestionsState[ productIndex ].regular_price =
+					regularPrice;
+			}
+			return setIn(
+				state,
+				'price_benchmark.suggestions',
+				newSuggestionsState
+			);
+		}
+
 		// Page will be reloaded after all accounts have been disconnected, so no need to mutate state.
 		case TYPES.DISCONNECT_ACCOUNTS_ALL:
 		default:
