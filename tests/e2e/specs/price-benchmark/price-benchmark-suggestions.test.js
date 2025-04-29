@@ -29,6 +29,7 @@ test.describe( 'Price Benchmark Page', () => {
 		page = await browser.newPage();
 		priceBenchmarkPage = new PriceBenchmarkPage( page );
 		await Promise.all( [ priceBenchmarkPage.mockRequests() ] );
+		await priceBenchmarkPage.goto();
 	} );
 
 	test.afterAll( async () => {
@@ -39,9 +40,6 @@ test.describe( 'Price Benchmark Page', () => {
 	test.describe( 'Has navigation', () => {
 		// Corrected: Added a function here
 		test( 'Goes to the Price Benchmark page', async () => {
-			// Added a test case
-			await priceBenchmarkPage.goto();
-
 			const expectedTabs = [
 				'Price Benchmark & Suggestions',
 				'Price Adjustments',
@@ -56,8 +54,6 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Click on "Price Adjustments" should update the URL', async () => {
-			await priceBenchmarkPage.goto();
-
 			const priceAdjustmentsTab = page.locator(
 				'a[role="tab"]:has-text("Price Adjustments")'
 			);
@@ -69,8 +65,6 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Click on "Price Benchmark & Suggestions" should update the URL', async () => {
-			await priceBenchmarkPage.goto();
-
 			const priceBenchmarkTab = page.locator(
 				'a[role="tab"]:has-text("Price Benchmark & Suggestions")'
 			);
@@ -97,17 +91,69 @@ test.describe( 'Price Benchmark Page', () => {
 	} );
 
 	test.describe( 'Price Benchmark Suggestions Functionality', () => {
-		test( 'Shows no results if there is no data', async () => {
+		test.beforeEach( async () => {
 			await priceBenchmarkPage.goto();
+		} );
 
+		test( 'Shows no results if there is no data', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
 
-			await expect( page.getByText( 'No results' ) ).toBeVisible();
+			const emptyStateNotice = page.locator(
+				'.gla-price-benchmark__empty-metrics'
+			);
+
+			await expect( emptyStateNotice ).toBeVisible();
+			await expect( emptyStateNotice ).toContainText(
+				'You do not have any sale price suggestions at this moment.'
+			);
+			await expect( emptyStateNotice ).toContainText(
+				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
+			);
+		} );
+
+		test( 'Shows empty state notice when Market Insights is not enabled for the account.', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				{
+					message: {
+						error: {
+							code: 403,
+							message:
+								'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
+							errors: [
+								{
+									message:
+										'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
+									domain: 'global',
+									reason: 'forbidden',
+								},
+							],
+							status: 'PERMISSION_DENIED',
+							details: [
+								{
+									'@type':
+										'type.googleapis.com/google.rpc.ErrorInfo',
+									reason: 'forbidden',
+									domain: 'global',
+								},
+							],
+						},
+					},
+				},
+				403
+			);
+			const emptyStateNotice = page.locator(
+				'.gla-price-benchmark__empty-metrics'
+			);
+			await expect( emptyStateNotice ).toBeVisible();
+			await expect( emptyStateNotice ).toContainText(
+				'You do not have any sale price suggestions at this moment.'
+			);
+			await expect( emptyStateNotice ).toContainText(
+				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
+			);
 		} );
 
 		test( 'Shows 10 results per page by default', async () => {
-			await priceBenchmarkPage.goto();
-
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
 				...priceBenchmarkSuggestionsData,
 			] );
@@ -117,8 +163,6 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Navigates to the next page and shows 5 results', async () => {
-			await priceBenchmarkPage.goto();
-
 			priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
 				...priceBenchmarkSuggestionsData,
 			] );
@@ -132,8 +176,6 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Displays the product and action columns only in the table when screen is resized to 400px', async () => {
-			await priceBenchmarkPage.goto();
-
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
 				...priceBenchmarkSuggestionsData,
 			] );
