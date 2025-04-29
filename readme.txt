@@ -154,8 +154,4 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Tweak - WC 9.8 compatibility.
 * Tweak - WP 6.8 compatibility.
 
-= 2.9.10 - 2025-03-18 =
-* Dev - Add the conversion action details to the connection test page.
-* Fix - It may be unable to connect to the auto-selected Google Ads account after disconnecting during onboarding.
-
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
