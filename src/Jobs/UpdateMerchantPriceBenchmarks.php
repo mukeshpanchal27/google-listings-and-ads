@@ -29,15 +29,9 @@ class UpdateMerchantPriceBenchmarks extends AbstractActionSchedulerJob {
 	protected $merchant_center;
 
 	/**
-	 * @var MerchantReport
+	 * @var PriceBenchmarks
 	 */
-	protected $merchant_report;
-
-	/**
-	 * @var MerchantStatuses
-	 */
-
-	protected $merchant_statuses;
+	protected $price_benchmarks;
 
 	/**
 	 * UpdateMerchantPriceBenchmarks constructor.
