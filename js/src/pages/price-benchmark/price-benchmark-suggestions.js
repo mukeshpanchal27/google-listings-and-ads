@@ -6,6 +6,7 @@ import { lazy } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import EmptyMetricsNotice from './empty-metrics-notice';
 import usePriceBenchmarkSuggestions from '~/hooks/usePriceBenchmarkSuggestions';
 import ChangePrice from './change-price';
 import EffectivenessIndicator from './effectiveness-indicator';
@@ -119,6 +120,10 @@ const TABLE_FIELDS_MOBILE = [ 'action' ];
 const PriceBenchmarkSuggestions = () => {
 	const { suggestions, hasFinishedResolution } =
 		usePriceBenchmarkSuggestions();
+
+	if ( hasFinishedResolution && suggestions.length === 0 ) {
+		return <EmptyMetricsNotice />;
+	}
 
 	return (
 		<div className="gla-price-benchmark-suggestions">
