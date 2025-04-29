@@ -14,9 +14,9 @@ import Label from './label';
 import Price from './price';
 import {
 	LABELS,
-	LABEL_PRICE_CHANGE_EFFECTIVENESS,
-	LABEL_PRICE_ON_GOOGLE,
-	LABEL_PRICE_GAP,
+	LABEL_CHANGE_EFFECTIVENESS,
+	LABEL_AVG_PRICE_ON_GOOGLE,
+	LABEL_PRICE_GAP_PERCENT,
 	LABEL_SUGGESTED_PRICE,
 	LABEL_REGULAR_PRICE,
 	LABEL_ACTION,
@@ -34,10 +34,8 @@ const TABLE_FIELDS = [
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
-		header: (
-			<Label labelKey={ LABEL_PRICE_CHANGE_EFFECTIVENESS } alignLeft />
-		),
-		label: LABELS[ LABEL_PRICE_CHANGE_EFFECTIVENESS ].title,
+		header: <Label labelKey={ LABEL_CHANGE_EFFECTIVENESS } alignLeft />,
+		label: LABELS[ LABEL_CHANGE_EFFECTIVENESS ].title,
 		render: ( { item } ) => {
 			if ( item.effectiveness === undefined ) {
 				return null;
@@ -63,8 +61,8 @@ const TABLE_FIELDS = [
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
-		header: <Label labelKey={ LABEL_PRICE_ON_GOOGLE } />,
-		label: LABELS[ LABEL_PRICE_ON_GOOGLE ].title,
+		header: <Label labelKey={ LABEL_AVG_PRICE_ON_GOOGLE } />,
+		label: LABELS[ LABEL_AVG_PRICE_ON_GOOGLE ].title,
 		render: ( { item } ) => {
 			return <Price amount={ item.price_on_google } />;
 		},
@@ -74,8 +72,8 @@ const TABLE_FIELDS = [
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
-		header: <Label labelKey={ LABEL_PRICE_GAP } />,
-		label: LABELS[ LABEL_PRICE_GAP ].title,
+		header: <Label labelKey={ LABEL_PRICE_GAP_PERCENT } />,
+		label: LABELS[ LABEL_PRICE_GAP_PERCENT ].title,
 		render: ( { item } ) => {
 			if ( ! item.price_gap ) {
 				return null;
@@ -102,7 +100,7 @@ const TABLE_FIELDS = [
 		enableGlobalSearch: false,
 		label: LABELS[ LABEL_ACTION ].title,
 		render: ( { item } ) => {
-			return <ChangePrice productID={ item.id } />;
+			return <ChangePrice productId={ item?.product?.id } />;
 		},
 	},
 ];

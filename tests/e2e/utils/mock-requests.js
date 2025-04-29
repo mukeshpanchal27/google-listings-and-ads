@@ -867,4 +867,20 @@ export default class MockRequests {
 			methods
 		);
 	}
+
+	/**
+	 * Mocks the fulfillment of requests to the WooCommerce products API endpoint.
+	 *
+	 * @param {Object} payload - The mock response payload to return for the request.
+	 * @param {Array<string>} [methods=[]] - Optional array of HTTP methods to mock. Defaults to an empty array.
+	 * @return {Promise<void>} A promise that resolves when the request is fulfilled.
+	 */
+	async fulfillWCProduct( payload, methods = [] ) {
+		await this.fulfillRequest(
+			/\/wc\/v3\/products(\/.*)?\b/,
+			payload,
+			200,
+			methods
+		);
+	}
 }
