@@ -197,7 +197,7 @@ test.describe( 'Price Benchmark Page', () => {
 
 			const error = priceBenchmarkPage.getPriceInputError();
 			await expect( error ).toHaveText(
-				'New price must be greater than the sale price (NT$90.00).'
+				'New price must be greater than the sales price (NT$90.00).'
 			);
 
 			const changePriceButton =

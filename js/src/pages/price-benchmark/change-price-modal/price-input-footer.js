@@ -10,7 +10,6 @@ import classnames from 'classnames';
  */
 import AppButton from '~/components/app-button';
 import AppInputPriceControl from '~/components/app-input-price-control';
-import useProduct from '~/hooks/useProduct';
 import useAdsCurrency from '~/hooks/useAdsCurrency';
 import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
 import useDispatchProduct from '~/hooks/useDispatchProduct';
@@ -18,25 +17,30 @@ import useDispatchProduct from '~/hooks/useDispatchProduct';
 /**
  * PriceInputFooter component.
  *
- * This component renders a footer section for a price input modal, allowing users to update the price of a product.
- * It validates the new price, handles price updates, and displays any relevant errors.
+ * This component renders a footer for the price input modal, allowing users to
+ * update the price of a product. It includes validation for the new price and
+ * handles the update process.
  *
  * @param {Object} props - Component properties.
- * @param {number} props.productId - The ID of the product whose price is being updated.
- * @param {number} props.suggestedPrice - The suggested price to prefill in the input field.
- * @param {Function} props.onPriceChange - Callback function triggered when the price is successfully updated.
+ * @param {number} props.productId - The ID of the product being updated.
+ * @param {number} props.suggestedPrice - The suggested price for the product.
+ * @param {number} [props.salesPrice] - The current sales price of the product (if any).
+ * @param {Function} props.onPriceChange - Callback function triggered after the price is successfully updated.
  *
- * @return {JSX.Element|null} The rendered component or null if no productId is provided.
+ * @return {JSX.Element} The rendered PriceInputFooter component.
  */
-const PriceInputFooter = ( { productId, suggestedPrice, onPriceChange } ) => {
+const PriceInputFooter = ( {
+	productId,
+	suggestedPrice,
+	salesPrice,
+	onPriceChange,
+} ) => {
 	const { formatAmount } = useAdsCurrency();
 	const { updateProduct } = useDispatchProduct();
 	const [ newPriceError, setNewPriceError ] = useState();
 	const [ loading, setLoading ] = useState( false );
 	const [ newPrice, setNewPrice ] = useState( 0 );
 	const { googleAdsAccount } = useGoogleAdsAccount();
-	const { product: productDetails, hasFinishedResolution } =
-		useProduct( productId );
 
 	useEffect( () => {
 		setNewPrice( suggestedPrice );
@@ -52,20 +56,24 @@ const PriceInputFooter = ( { productId, suggestedPrice, onPriceChange } ) => {
 			);
 		}
 
-		const salePrice = Number.parseFloat( productDetails?.sale_price );
-		if ( salePrice && updatedPrice <= salePrice ) {
+		const formattedSalesPrice = Number.parseFloat( salesPrice );
+		if (
+			! isNaN( formattedSalesPrice ) &&
+			formattedSalesPrice &&
+			updatedPrice <= formattedSalesPrice
+		) {
 			return sprintf(
-				// Translators: %s is replaced with the sale price.
+				// Translators: %s is replaced with the sales price.
 				__(
-					'New price must be greater than the sale price (%s).',
+					'New price must be greater than the sales price (%s).',
 					'google-listings-and-ads'
 				),
-				formatAmount( salePrice )
+				formatAmount( formattedSalesPrice )
 			);
 		}
 
 		return null;
-	}, [ newPrice, productDetails?.sale_price, formatAmount ] );
+	}, [ newPrice, salesPrice, formatAmount ] );
 
 	const validatePrice = useCallback( () => {
 		const error = getInputError();
@@ -94,10 +102,6 @@ const PriceInputFooter = ( { productId, suggestedPrice, onPriceChange } ) => {
 		onPriceChange( productId, newPrice );
 	}, [ newPrice, productId, onPriceChange, updateProduct, validatePrice ] );
 
-	if ( ! productDetails ) {
-		return null;
-	}
-
 	const currency = googleAdsAccount?.currency;
 	const hasError = getInputError();
 
@@ -124,11 +128,7 @@ const PriceInputFooter = ( { productId, suggestedPrice, onPriceChange } ) => {
 				key="change-price"
 				isPrimary
 				onClick={ handleOnPriceChange }
-				disabled={
-					! hasFinishedResolution ||
-					! productDetails ||
-					hasError !== null
-				}
+				disabled={ hasError !== null }
 				loading={ loading }
 			>
 				{ __( 'Change Price', 'google-listings-and-ads' ) }

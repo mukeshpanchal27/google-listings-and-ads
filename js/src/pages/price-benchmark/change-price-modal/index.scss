@@ -6,6 +6,7 @@
 
 		@include break-large {
 			flex-direction: row;
+			gap: $grid-unit-50;
 		}
 
 		.gla-tooltip__children-container {
@@ -20,7 +21,7 @@
 
 		@include break-large {
 			flex-direction: column;
-			width: 180px;
+			width: 156px;
 		}
 
 		p {
@@ -64,7 +65,9 @@
 
 	.gla-change-price-modal__separator {
 		border: 1px solid $gray-100;
-		margin: $grid-unit-30 0;
+		grid-column: -1 / 1;
+		margin: 0;
+		width: 100%;
 	}
 
 	.gla-change-price-modal-price-input-footer {
