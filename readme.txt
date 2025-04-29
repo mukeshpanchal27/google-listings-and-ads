@@ -5,7 +5,7 @@ Requires at least: 6.1
 Tested up to: 6.8
 Requires PHP: 7.4
 Requires PHP Architecture: 64 Bits
-Stable tag: 2.9.12
+Stable tag: 2.9.13
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -140,6 +140,9 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
+= 2.9.13 - 2025-04-29 =
+* Update - Revert the changes related to the Grant API Pull Access in Onboarding feature made in version 2.9.12.
+
 = 2.9.12 - 2025-04-22 =
 * Add - During onboarding, it requires granting access to Google's WordPress.com application to synchronize product data with Google.
 * Add - Event tracking of how users process the WPCOM app authorization for the API Pull feature.
@@ -153,9 +156,5 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Fix - Compatibility issue with WordPress 6.8 and WooCommerce 9.8, which may cause all pages not to display properly.
 * Tweak - WC 9.8 compatibility.
 * Tweak - WP 6.8 compatibility.
-
-= 2.9.10 - 2025-03-18 =
-* Dev - Add the conversion action details to the connection test page.
-* Fix - It may be unable to connect to the auto-selected Google Ads account after disconnecting during onboarding.
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
