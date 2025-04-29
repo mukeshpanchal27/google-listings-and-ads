@@ -140,6 +140,9 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
+= 2.9.13 - 2025-04-29 =
+* Update - Revert the changes related to the Grant API Pull Access in Onboarding feature made in version 2.9.12.
+
 = 2.9.12 - 2025-04-22 =
 * Add - During onboarding, it requires granting access to Google's WordPress.com application to synchronize product data with Google.
 * Add - Event tracking of how users process the WPCOM app authorization for the API Pull feature.
