@@ -6,6 +6,7 @@ import { lazy } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import EmptyMetricsNotice from './empty-metrics-notice';
 import usePriceBenchmarkSuggestions from '~/hooks/usePriceBenchmarkSuggestions';
 import ChangePrice from './change-price';
 import EffectivenessIndicator from './effectiveness-indicator';
@@ -13,9 +14,9 @@ import Label from './label';
 import Price from './price';
 import {
 	LABELS,
-	LABEL_PRICE_CHANGE_EFFECTIVENESS,
-	LABEL_PRICE_ON_GOOGLE,
-	LABEL_PRICE_GAP,
+	LABEL_CHANGE_EFFECTIVENESS,
+	LABEL_AVG_PRICE_ON_GOOGLE,
+	LABEL_PRICE_GAP_PERCENT,
 	LABEL_SUGGESTED_PRICE,
 	LABEL_REGULAR_PRICE,
 	LABEL_ACTION,
@@ -29,22 +30,24 @@ const PriceBenchmarkTable = lazy( () =>
 
 const TABLE_FIELDS = [
 	{
-		id: 'price-change-effectiveness',
+		id: 'effectiveness',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
-		header: (
-			<Label labelKey={ LABEL_PRICE_CHANGE_EFFECTIVENESS } alignLeft />
-		),
-		label: LABELS[ LABEL_PRICE_CHANGE_EFFECTIVENESS ].title,
+		header: <Label labelKey={ LABEL_CHANGE_EFFECTIVENESS } alignLeft />,
+		label: LABELS[ LABEL_CHANGE_EFFECTIVENESS ].title,
 		render: ( { item } ) => {
+			if ( item.effectiveness === undefined ) {
+				return null;
+			}
+
 			return (
 				<EffectivenessIndicator effectiveness={ item.effectiveness } />
 			);
 		},
 	},
 	{
-		id: 'regular-price',
+		id: 'regular_price',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
@@ -54,29 +57,33 @@ const TABLE_FIELDS = [
 		},
 	},
 	{
-		id: 'price-on-google',
+		id: 'price_on_google',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
-		header: <Label labelKey={ LABEL_PRICE_ON_GOOGLE } />,
-		label: LABELS[ LABEL_PRICE_ON_GOOGLE ].title,
+		header: <Label labelKey={ LABEL_AVG_PRICE_ON_GOOGLE } />,
+		label: LABELS[ LABEL_AVG_PRICE_ON_GOOGLE ].title,
 		render: ( { item } ) => {
 			return <Price amount={ item.price_on_google } />;
 		},
 	},
 	{
-		id: 'price-gap',
+		id: 'price_gap',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
-		header: <Label labelKey={ LABEL_PRICE_GAP } />,
-		label: LABELS[ LABEL_PRICE_GAP ].title,
+		header: <Label labelKey={ LABEL_PRICE_GAP_PERCENT } />,
+		label: LABELS[ LABEL_PRICE_GAP_PERCENT ].title,
 		render: ( { item } ) => {
+			if ( ! item.price_gap ) {
+				return null;
+			}
+
 			return `${ item.price_gap }%`;
 		},
 	},
 	{
-		id: 'suggested-price',
+		id: 'suggested_price',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
@@ -93,7 +100,7 @@ const TABLE_FIELDS = [
 		enableGlobalSearch: false,
 		label: LABELS[ LABEL_ACTION ].title,
 		render: ( { item } ) => {
-			return <ChangePrice id={ item.id } />;
+			return <ChangePrice productId={ item?.product?.id } />;
 		},
 	},
 ];
@@ -113,6 +120,10 @@ const TABLE_FIELDS_MOBILE = [ 'action' ];
 const PriceBenchmarkSuggestions = () => {
 	const { suggestions, hasFinishedResolution } =
 		usePriceBenchmarkSuggestions();
+
+	if ( hasFinishedResolution && suggestions.length === 0 ) {
+		return <EmptyMetricsNotice />;
+	}
 
 	return (
 		<div className="gla-price-benchmark-suggestions">

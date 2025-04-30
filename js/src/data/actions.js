@@ -1240,6 +1240,24 @@ export function* fetchPriceBenchmarkSuggestions() {
 			data,
 		};
 	} catch ( error ) {
+		const errorMessage = error.message;
+
+		if ( errorMessage ) {
+			try {
+				const message = JSON.parse( errorMessage );
+
+				// Fail silently and return an empty array if the user is not authorized to view the price benchmark suggestions.
+				if ( message?.error?.code === 403 ) {
+					return {
+						type: TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS,
+						data: [],
+					};
+				}
+			} catch ( e ) {
+				// Ignore JSON parse error.
+			}
+		}
+
 		handleApiError(
 			error,
 			__(
@@ -1248,4 +1266,17 @@ export function* fetchPriceBenchmarkSuggestions() {
 			)
 		);
 	}
+}
+
+export function* receivePriceBenchmarkSuggestionsRegularPrice(
+	productId,
+	regularPrice
+) {
+	return {
+		type: TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS_REGULAR_PRICE,
+		data: {
+			productId,
+			regularPrice,
+		},
+	};
 }

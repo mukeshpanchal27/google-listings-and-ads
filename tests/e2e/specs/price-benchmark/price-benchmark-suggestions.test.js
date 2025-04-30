@@ -29,6 +29,7 @@ test.describe( 'Price Benchmark Page', () => {
 		page = await browser.newPage();
 		priceBenchmarkPage = new PriceBenchmarkPage( page );
 		await Promise.all( [ priceBenchmarkPage.mockRequests() ] );
+		await priceBenchmarkPage.goto();
 	} );
 
 	test.afterAll( async () => {
@@ -37,11 +38,7 @@ test.describe( 'Price Benchmark Page', () => {
 	} );
 
 	test.describe( 'Has navigation', () => {
-		// Corrected: Added a function here
 		test( 'Goes to the Price Benchmark page', async () => {
-			// Added a test case
-			await priceBenchmarkPage.goto();
-
 			const expectedTabs = [
 				'Price Benchmark & Suggestions',
 				'Price Adjustments',
@@ -56,8 +53,6 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Click on "Price Adjustments" should update the URL', async () => {
-			await priceBenchmarkPage.goto();
-
 			const priceAdjustmentsTab = page.locator(
 				'a[role="tab"]:has-text("Price Adjustments")'
 			);
@@ -69,8 +64,6 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Click on "Price Benchmark & Suggestions" should update the URL', async () => {
-			await priceBenchmarkPage.goto();
-
 			const priceBenchmarkTab = page.locator(
 				'a[role="tab"]:has-text("Price Benchmark & Suggestions")'
 			);
@@ -97,17 +90,69 @@ test.describe( 'Price Benchmark Page', () => {
 	} );
 
 	test.describe( 'Price Benchmark Suggestions Functionality', () => {
-		test( 'Shows no results if there is no data', async () => {
+		test.beforeEach( async () => {
 			await priceBenchmarkPage.goto();
+		} );
 
+		test( 'Shows no results if there is no data', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
 
-			await expect( page.getByText( 'No results' ) ).toBeVisible();
+			const emptyStateNotice = page.locator(
+				'.gla-price-benchmark__empty-metrics'
+			);
+
+			await expect( emptyStateNotice ).toBeVisible();
+			await expect( emptyStateNotice ).toContainText(
+				'You do not have any sale price suggestions at this moment.'
+			);
+			await expect( emptyStateNotice ).toContainText(
+				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
+			);
+		} );
+
+		test( 'Shows empty state notice when Market Insights is not enabled for the account.', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				{
+					message: {
+						error: {
+							code: 403,
+							message:
+								'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
+							errors: [
+								{
+									message:
+										'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
+									domain: 'global',
+									reason: 'forbidden',
+								},
+							],
+							status: 'PERMISSION_DENIED',
+							details: [
+								{
+									'@type':
+										'type.googleapis.com/google.rpc.ErrorInfo',
+									reason: 'forbidden',
+									domain: 'global',
+								},
+							],
+						},
+					},
+				},
+				403
+			);
+			const emptyStateNotice = page.locator(
+				'.gla-price-benchmark__empty-metrics'
+			);
+			await expect( emptyStateNotice ).toBeVisible();
+			await expect( emptyStateNotice ).toContainText(
+				'You do not have any sale price suggestions at this moment.'
+			);
+			await expect( emptyStateNotice ).toContainText(
+				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
+			);
 		} );
 
 		test( 'Shows 10 results per page by default', async () => {
-			await priceBenchmarkPage.goto();
-
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
 				...priceBenchmarkSuggestionsData,
 			] );
@@ -117,12 +162,6 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Navigates to the next page and shows 5 results', async () => {
-			await priceBenchmarkPage.goto();
-
-			priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-				...priceBenchmarkSuggestionsData,
-			] );
-
 			const nextPageButton = page.locator( '[aria-label="Next page"]' );
 			await nextPageButton.click();
 
@@ -132,12 +171,6 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Displays the product and action columns only in the table when screen is resized to 400px', async () => {
-			await priceBenchmarkPage.goto();
-
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-				...priceBenchmarkSuggestionsData,
-			] );
-
 			await page.setViewportSize( { width: 400, height: 800 } );
 
 			const tableHeaderColumns = page.locator( 'table thead tr th' );
@@ -145,6 +178,128 @@ test.describe( 'Price Benchmark Page', () => {
 
 			await expect( tableHeaderColumns.nth( 0 ) ).toHaveText( 'Product' );
 			await expect( tableHeaderColumns.nth( 1 ) ).toHaveText( 'Action' );
+
+			await page.setViewportSize( { width: 1280, height: 720 } );
+		} );
+	} );
+
+	test.describe( 'Change Price Modal Functionality', () => {
+		test( 'Clicking "Change Price" link renders the modal', async () => {
+			await priceBenchmarkPage.goto();
+
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarkSuggestionsData,
+			] );
+
+			await priceBenchmarkPage.fulfillWCProduct(
+				{
+					regular_price: '100.00',
+					sale_price: '90.00',
+				},
+				[ 'GET' ]
+			);
+
+			const changePriceLink =
+				await priceBenchmarkPage.getFirstProductChangePriceLink();
+			await changePriceLink.click();
+
+			const changePriceModal =
+				await priceBenchmarkPage.getChangePriceModal();
+			await expect( changePriceModal ).toBeVisible();
+		} );
+
+		test( 'Clicking the close button closes the modal', async () => {
+			const closeButton = await priceBenchmarkPage.getCloseModalButton();
+			await closeButton.click();
+
+			const changePriceModal =
+				await priceBenchmarkPage.getChangePriceModal();
+			await expect( changePriceModal ).not.toBeVisible();
+		} );
+
+		test( 'Displays error message when user inputs a negative price', async () => {
+			// Open the modal again
+			const changePriceLink =
+				await priceBenchmarkPage.getFirstProductChangePriceLink();
+			await changePriceLink.click();
+
+			const priceInput = await priceBenchmarkPage.getPriceInputModal();
+			await priceInput.fill( '-5' );
+			await priceInput.blur();
+
+			const error = priceBenchmarkPage.getPriceInputError();
+			await expect( error ).toHaveText(
+				'New price must be greater than or equals to zero.'
+			);
+
+			const changePriceButton =
+				await priceBenchmarkPage.getChangePriceModalButton();
+			await expect( changePriceButton ).toBeDisabled();
+		} );
+
+		test( 'Displays error message when user inputs a price lower than the sale price', async () => {
+			const priceInput = await priceBenchmarkPage.getPriceInputModal();
+			await priceInput.fill( '80' );
+			await priceInput.blur();
+
+			const error = priceBenchmarkPage.getPriceInputError();
+			await expect( error ).toHaveText(
+				'New price must be greater than the sales price (NT$90.00).'
+			);
+
+			const changePriceButton =
+				await priceBenchmarkPage.getChangePriceModalButton();
+			await expect( changePriceButton ).toBeDisabled();
+		} );
+
+		test( 'Clicking "Change Price" button with a valid price closes the modal and updates the table', async () => {
+			await priceBenchmarkPage.goto();
+
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarkSuggestionsData,
+			] );
+
+			await priceBenchmarkPage.fulfillWCProduct(
+				{
+					regular_price: '100.00',
+					sale_price: '90.00',
+				},
+				[ 'GET' ]
+			);
+
+			await priceBenchmarkPage.fulfillWCProduct(
+				{
+					regular_price: '120.00',
+				},
+				[ 'POST' ]
+			);
+
+			const changePriceLink =
+				await priceBenchmarkPage.getFirstProductChangePriceLink();
+			await changePriceLink.click();
+
+			const priceInput = await priceBenchmarkPage.getPriceInputModal();
+			await priceInput.fill( '120' );
+			priceInput.blur();
+
+			const error = priceBenchmarkPage.getPriceInputError();
+			await expect( error ).not.toBeVisible();
+
+			const changePriceButton =
+				await priceBenchmarkPage.getChangePriceModalButton();
+			await expect( changePriceButton ).toBeEnabled();
+			await changePriceButton.click();
+
+			const changePriceModal =
+				await priceBenchmarkPage.getChangePriceModal();
+			await expect( changePriceModal ).not.toBeVisible();
+
+			const firstProductCells = await priceBenchmarkPage
+				.getFirstProductRow()
+				.locator( 'td' );
+			await expect( firstProductCells.nth( 2 ) ).toHaveText(
+				'NT$120.00'
+			);
 		} );
 	} );
 } );

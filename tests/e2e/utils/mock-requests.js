@@ -450,11 +450,11 @@ export default class MockRequests {
 	 * @param {Object} payload
 	 * @return {Promise<void>}
 	 */
-	async fulfillPriceBenchmarkSuggestions( payload ) {
+	async fulfillPriceBenchmarkSuggestions( payload, status = 200 ) {
 		await this.fulfillRequest(
 			/\/wc\/gla\/mc\/price-benchmarks\b/,
 			payload,
-			200,
+			status,
 			[ 'GET' ]
 		);
 	}
@@ -862,6 +862,22 @@ export default class MockRequests {
 	async fulfillRESTApiAuthorize( payload, methods = [] ) {
 		await this.fulfillRequest(
 			/\/wc\/gla\/rest-api\/authorize\b/,
+			payload,
+			200,
+			methods
+		);
+	}
+
+	/**
+	 * Mocks the fulfillment of requests to the WooCommerce products API endpoint.
+	 *
+	 * @param {Object} payload - The mock response payload to return for the request.
+	 * @param {Array<string>} [methods=[]] - Optional array of HTTP methods to mock. Defaults to an empty array.
+	 * @return {Promise<void>} A promise that resolves when the request is fulfilled.
+	 */
+	async fulfillWCProduct( payload, methods = [] ) {
+		await this.fulfillRequest(
+			/\/wc\/v3\/products(\/.*)?\b/,
 			payload,
 			200,
 			methods

@@ -4,8 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { withViewportMatch } from '@wordpress/viewport';
 import { TablePlaceholder } from '@woocommerce/components';
-import { useState, useMemo, useEffect } from '@wordpress/element';
-// import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews';
+import { useState, useMemo, useEffect, useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -21,7 +20,14 @@ const BASE_FIELDS = [
 		enableSorting: false,
 		enableGlobalSearch: false,
 		label: __( 'Image', 'google-listings-and-ads' ),
+		getValue: ( { item } ) => {
+			return item?.product?.thumbnail || null;
+		},
 		render: ( { item } ) => {
+			if ( ! item?.product?.thumbnail ) {
+				return null;
+			}
+
 			return (
 				<img
 					src={ item.product.thumbnail }
@@ -34,11 +40,11 @@ const BASE_FIELDS = [
 	{
 		id: 'title',
 		enableHiding: false,
-		enableSorting: false,
+		enableSorting: true,
 		enableGlobalSearch: true,
 		label: __( 'Product', 'google-listings-and-ads' ),
-		render: ( { item } ) => {
-			return item.product.title;
+		getValue: ( { item } ) => {
+			return item?.product?.title || null;
 		},
 	},
 	{
@@ -47,8 +53,9 @@ const BASE_FIELDS = [
 		enableSorting: false,
 		enableGlobalSearch: true,
 		label: __( 'Description', 'google-listings-and-ads' ),
-		render: ( { item } ) => {
-			return <span>{ item.product.id }</span>;
+		getValue: ( { item } ) => {
+			// Cast the id to string for search functionality to work properly.
+			return String( item?.product?.id || '' );
 		},
 	},
 ];
@@ -86,14 +93,16 @@ const PriceBenchmarkTable = ( {
 	} );
 
 	const { data: shownData, paginationInfo } = useMemo( () => {
-		const updatedData = filterSortAndPaginate( data, view, fields );
-
+		const updatedData = filterSortAndPaginate( data, view, [
+			...BASE_FIELDS,
+			...fields,
+		] );
 		return updatedData;
 	}, [ view, data, fields ] );
 
-	const handleOnChangeView = ( newView ) => {
+	const handleOnChangeView = useCallback( ( newView ) => {
 		setView( newView );
-	};
+	}, [] );
 
 	// Determine the fields to be displayed based on the viewport size.
 	const viewportFields = useMemo( () => {
@@ -137,7 +146,7 @@ const PriceBenchmarkTable = ( {
 
 			{ isReady && (
 				<DataViews
-					getItemId={ ( item ) => item.id }
+					getItemId={ ( item ) => item?.product?.id }
 					fields={ [ ...BASE_FIELDS, ...fields ] }
 					data={ shownData }
 					view={ view }
