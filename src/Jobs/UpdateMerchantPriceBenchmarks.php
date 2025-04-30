@@ -19,8 +19,6 @@ defined( 'ABSPATH' ) || exit;
  * Note: The job will not start if it is already running or if the Google Merchant Center account is not connected.
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Jobs
- *
- * @since 2.6.4
  */
 class UpdateMerchantPriceBenchmarks extends AbstractActionSchedulerJob {
 	/**
