@@ -116,12 +116,12 @@ class Admin implements OptionsAwareInterface, Registerable, Service {
 
 		$assets[] = ( new AdminScriptWithBuiltDependenciesAsset(
 			'data-views',
-			'/js/build/wp.dataviews.js',
-			"{$this->get_root_dir()}/js/build/wp.dataviews.asset.php",
+			'/js/build/wp-dataviews.js',
+			"{$this->get_root_dir()}/js/build/wp-dataviews.asset.php",
 			new BuiltScriptDependencyArray(
 				[
 					'dependencies' => [],
-					'version'      => (string) filemtime( "{$this->get_root_dir()}/js/build/wp.dataviews.js" ),
+					'version'      => (string) filemtime( "{$this->get_root_dir()}/js/build/wp-dataviews.js" ),
 				]
 			),
 			$wc_admin_condition
