@@ -3,7 +3,6 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { useState, useEffect, useCallback } from '@wordpress/element';
-import classnames from 'classnames';
 
 /**
  * Internal dependencies
