@@ -107,22 +107,21 @@ const PriceInputFooter = ( {
 
 	return (
 		<div className="gla-change-price-modal-price-input-footer">
-			<AppInputPriceControl
-				label={ __( 'New price', 'google-listings-and-ads' ) }
-				suffix={ currency }
-				value={ newPrice }
-				onChange={ setNewPrice }
-				onBlur={ validatePrice }
-				className={ classnames(
-					'gla-change-price-modal-price-input-footer__price',
-					{
-						'gla-change-price-modal-price-input-footer__price--error':
-							newPriceError,
-					}
+			<div className="gla-change-price-modal-price-input-footer__price">
+				{ newPriceError && (
+					<p className="gla-change-price-modal-price-input-footer__error">
+						{ newPriceError }
+					</p>
 				) }
-				key="new-price"
-				help={ newPriceError }
-			/>
+
+				<AppInputPriceControl
+					label={ __( 'New price', 'google-listings-and-ads' ) }
+					suffix={ currency }
+					value={ newPrice }
+					onChange={ setNewPrice }
+					onBlur={ validatePrice }
+				/>
+			</div>
 
 			<AppButton
 				key="change-price"
