@@ -3,9 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 
-export const TABLE_TYPE_SUGGESTIONS = 'suggestions';
-export const TABLE_TYPE_ADJUSTMENTS = 'adjustments';
-
 export const LABEL_CHANGE_EFFECTIVENESS = 'LABEL_CHANGE_EFFECTIVENESS';
 export const LABEL_AVG_PRICE_ON_GOOGLE = 'LABEL_AVG_PRICE_ON_GOOGLE';
 export const LABEL_PRICE_GAP_PERCENT = 'LABEL_PRICE_GAP_PERCENT';
