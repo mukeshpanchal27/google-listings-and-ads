@@ -49,13 +49,6 @@ const PriceInputFooter = ( {
 	const getInputError = useCallback( () => {
 		const updatedPrice = Number.parseFloat( newPrice );
 
-		if ( updatedPrice < 0 ) {
-			return __(
-				'New price must be greater than or equals to zero.',
-				'google-listings-and-ads'
-			);
-		}
-
 		const formattedSalesPrice = Number.parseFloat( salesPrice );
 		if (
 			! isNaN( formattedSalesPrice ) &&
@@ -69,6 +62,13 @@ const PriceInputFooter = ( {
 					'google-listings-and-ads'
 				),
 				formatAmount( formattedSalesPrice )
+			);
+		}
+
+		if ( updatedPrice < 0 ) {
+			return __(
+				'New price must be greater than or equals to zero.',
+				'google-listings-and-ads'
 			);
 		}
 
@@ -102,6 +102,10 @@ const PriceInputFooter = ( {
 		onPriceChange( productId, newPrice );
 	}, [ newPrice, productId, onPriceChange, updateProduct, validatePrice ] );
 
+	useEffect( () => {
+		validatePrice();
+	}, [ newPrice, validatePrice ] );
+
 	const currency = googleAdsAccount?.currency;
 	const hasError = getInputError();
 
@@ -112,7 +116,6 @@ const PriceInputFooter = ( {
 				suffix={ currency }
 				value={ newPrice }
 				onChange={ setNewPrice }
-				onBlur={ validatePrice }
 				className={ classnames(
 					'gla-change-price-modal-price-input-footer__price',
 					{
