@@ -1,6 +1,7 @@
 <?php
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\MerchantCenter\PriceBenchmarksController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
+use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\PriceBenchmarks;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductHelper;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\RESTControllerUnitTest;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\Container\Container;
@@ -20,10 +21,15 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 	/** @var MockObject|MerchantPriceBenchmarks */
 	protected $merchant_price_benchmarks;
 
+	/** @var MockObject|PriceBenchmarks */
+	protected $price_benchmarks;
+
 	/** @var Container */
 	protected $container;
 
 	protected const ROUTE_PRICE_BENCHMARKS = '/wc/gla/mc/price-benchmarks';
+
+	protected const ROUTE_PRICE_BENCHMARKS_SUMMARY = '/wc/gla/mc/price-benchmarks/summary';
 
 	public function setUp(): void {
 		parent::setUp();
@@ -33,6 +39,9 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 		// Mock the container to return the mocked MerchantPriceBenchmarks.
 		$this->container = new Container();
 		$this->container->addShared( MerchantPriceBenchmarks::class, $this->merchant_price_benchmarks );
+
+		$this->price_benchmarks = $this->createMock( PriceBenchmarks::class );
+		$this->container->addShared( PriceBenchmarks::class, $this->price_benchmarks );
 
 		// Initialize the controller.
 		$this->controller = new PriceBenchmarksController( $this->server );
@@ -113,5 +122,30 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 
 		// The expected shape should pass once the implementation is updated.
 		$this->assertSameSets( $expected, $response->get_data(), 'The response data should match the expected structure.' );
+	}
+
+	public function test_get_price_benchmarks_summary() {
+		// Mock the benchmark data.
+		$mock_benchmark_data = [
+			'total_products' => 0,
+			'price_unknown'  => 0,
+			'price_lower'    => 0,
+			'price_similar'  => 0,
+			'price_higher'   => 0,
+		];
+
+		// Configure the mocked methods.
+		$this->price_benchmarks->expects( $this->once() )
+			->method( 'get_summary' )
+			->willReturn( $mock_benchmark_data );
+
+		// Simulate a GET request.
+		$response = $this->do_request( self::ROUTE_PRICE_BENCHMARKS_SUMMARY, 'GET' );
+
+		// Assert the response status.
+		$this->assertEquals( 200, $response->get_status() );
+
+		// Verify that the response data matches the expected structure.
+		$this->assertSameSets( $mock_benchmark_data, $response->get_data(), 'The response data should match the expected structure.' );
 	}
 }

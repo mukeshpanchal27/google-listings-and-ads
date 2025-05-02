@@ -9,6 +9,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceSu
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
+use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\PriceBenchmarks;
 use Exception;
 use WP_REST_Request as Request;
 use WP_REST_Response as Response;
@@ -37,6 +38,19 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 					'permission_callback' => $this->get_permission_callback(),
 				],
 				'schema' => $this->get_api_response_schema_callback(),
+			]
+		);
+
+		// Route for price benchmarks summary.
+		$this->register_route(
+			'mc/price-benchmarks/summary',
+			[
+				[
+					'methods'             => TransportMethods::READABLE,
+					'callback'            => $this->get_price_benchmarks_summary_callback(),
+					'permission_callback' => $this->get_permission_callback(),
+				],
+				'schema' => $this->get_summary_response_schema_callback(),
 			]
 		);
 	}
@@ -77,6 +91,26 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				$response_data = $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
 
 				return new Response( $response_data );
+			} catch ( Exception $e ) {
+				return $this->response_from_exception( $e );
+			}
+		};
+	}
+
+	/**
+	 * Callback for the price benchmarks summary endpoint.
+	 *
+	 * @return callable
+	 */
+	protected function get_price_benchmarks_summary_callback(): callable {
+		return function () {
+			try {
+				/** @var PriceBenchmarks $price_benchmarks */
+				$price_benchmarks = $this->container->get( PriceBenchmarks::class );
+
+				$summary_data = $price_benchmarks->get_summary();
+
+				return new Response( $summary_data );
 			} catch ( Exception $e ) {
 				return $this->response_from_exception( $e );
 			}
@@ -213,6 +247,50 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 		];
 	}
 
+
+	/**
+	 * Get the schema for the summary endpoint.
+	 *
+	 * @see BaseController::get_api_response_schema_callback
+	 *
+	 * @return array
+	 */
+	protected function get_summary_response_schema_callback(): callable {
+		return function () {
+			return $this->prepare_item_schema( $this->get_summary_schema_properties(), $this->get_summary_schema_title() );
+		};
+	}
+
+	/**
+	 * Get the schema properties for the summary endpoint.
+	 *
+	 * @return array
+	 */
+	protected function get_summary_schema_properties(): array {
+		return [
+			'total_products' => [
+				'description' => __( 'Total number of products represented in the Google report.', 'google-listings-and-ads' ),
+				'type'        => 'integer',
+			],
+			'price_similar'  => [
+				'description' => __( 'Total number of products with similar prices to benchmark data.', 'google-listings-and-ads' ),
+				'type'        => 'integer',
+			],
+			'price_higher'   => [
+				'description' => __( 'Total number of products with higher prices to benchmark data.', 'google-listings-and-ads' ),
+				'type'        => 'integer',
+			],
+			'price_lower'    => [
+				'description' => __( 'Total number of products with lower prices to benchmark data.', 'google-listings-and-ads' ),
+				'type'        => 'integer',
+			],
+			'price_unknown'  => [
+				'description' => __( 'Total number of products without price benchmark data.', 'google-listings-and-ads' ),
+				'type'        => 'integer',
+			],
+		];
+	}
+
 	/**
 	 * Get the item schema name for the controller.
 	 *
@@ -222,5 +300,16 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	 */
 	protected function get_schema_title(): string {
 		return 'price_benchmarks';
+	}
+
+	/**
+	 * Get the item schema name for the controller.
+	 *
+	 * Used for building the API response schema.
+	 *
+	 * @return string
+	 */
+	protected function get_summary_schema_title(): string {
+		return 'price_benchmarks_summary';
 	}
 }
