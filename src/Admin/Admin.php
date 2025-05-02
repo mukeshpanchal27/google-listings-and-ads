@@ -21,6 +21,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsInterface;
 use Automattic\WooCommerce\Admin\PageController;
+use Automattic\WooCommerce\GoogleListingsAndAds\Assets\ScriptAsset;
 
 /**
  * Class Admin
@@ -115,25 +116,12 @@ class Admin implements OptionsAwareInterface, Registerable, Service {
 		};
 
 		$assets[] = ( new AdminScriptWithBuiltDependenciesAsset(
-			'data-views',
-			'/js/build/wp-dataviews.js',
-			"{$this->get_root_dir()}/js/build/wp-dataviews.asset.php",
-			new BuiltScriptDependencyArray(
-				[
-					'dependencies' => [],
-					'version'      => (string) filemtime( "{$this->get_root_dir()}/js/build/wp-dataviews.js" ),
-				]
-			),
-			$wc_admin_condition
-		) );
-
-		$assets[] = ( new AdminScriptWithBuiltDependenciesAsset(
 			'google-listings-and-ads',
 			'js/build/index',
 			"{$this->get_root_dir()}/js/build/index.asset.php",
 			new BuiltScriptDependencyArray(
 				[
-					'dependencies' => [ 'data-views' ],
+					'dependencies' => [],
 					'version'      => (string) filemtime( "{$this->get_root_dir()}/js/build/index.js" ),
 				]
 			),
@@ -156,6 +144,14 @@ class Admin implements OptionsAwareInterface, Registerable, Service {
 					'mcId'    => $this->options->get_merchant_id() ?: null,
 					'adsId'   => $this->options->get_ads_id() ?: null,
 				],
+				'dataViews' => (
+					new ScriptAsset(
+						'gla-data-views',
+						'js/build/wp-dataviews',
+						[],
+						(string) filemtime( "{$this->get_root_dir()}/js/build/wp-dataviews.js" ),
+					)
+				)->get_uri()
 			]
 		);
 

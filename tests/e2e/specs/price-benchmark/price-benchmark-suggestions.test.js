@@ -89,100 +89,6 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 	} );
 
-	test.describe( 'Price Benchmark Suggestions Functionality', () => {
-		test.beforeEach( async () => {
-			await priceBenchmarkPage.goto();
-		} );
-
-		test( 'Shows no results if there is no data', async () => {
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
-
-			const emptyStateNotice = page.locator(
-				'.gla-price-benchmark__empty-metrics'
-			);
-
-			await expect( emptyStateNotice ).toBeVisible();
-			await expect( emptyStateNotice ).toContainText(
-				'You do not have any sale price suggestions at this moment.'
-			);
-			await expect( emptyStateNotice ).toContainText(
-				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
-			);
-		} );
-
-		test( 'Shows empty state notice when Market Insights is not enabled for the account.', async () => {
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
-				{
-					message: {
-						error: {
-							code: 403,
-							message:
-								'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
-							errors: [
-								{
-									message:
-										'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
-									domain: 'global',
-									reason: 'forbidden',
-								},
-							],
-							status: 'PERMISSION_DENIED',
-							details: [
-								{
-									'@type':
-										'type.googleapis.com/google.rpc.ErrorInfo',
-									reason: 'forbidden',
-									domain: 'global',
-								},
-							],
-						},
-					},
-				},
-				403
-			);
-			const emptyStateNotice = page.locator(
-				'.gla-price-benchmark__empty-metrics'
-			);
-			await expect( emptyStateNotice ).toBeVisible();
-			await expect( emptyStateNotice ).toContainText(
-				'You do not have any sale price suggestions at this moment.'
-			);
-			await expect( emptyStateNotice ).toContainText(
-				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
-			);
-		} );
-
-		test( 'Shows 10 results per page by default', async () => {
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-				...priceBenchmarkSuggestionsData,
-			] );
-
-			const tableRows = page.locator( 'table tbody tr' );
-			await expect( tableRows ).toHaveCount( 10 );
-		} );
-
-		test( 'Navigates to the next page and shows 5 results', async () => {
-			const nextPageButton = page.locator( '[aria-label="Next page"]' );
-			await nextPageButton.click();
-
-			// Ensure the table displays 5 rows on the second page
-			const tableRows = page.locator( 'table tbody tr' );
-			await expect( tableRows ).toHaveCount( 5 );
-		} );
-
-		test( 'Displays the product and action columns only in the table when screen is resized to 400px', async () => {
-			await page.setViewportSize( { width: 400, height: 800 } );
-
-			const tableHeaderColumns = page.locator( 'table thead tr th' );
-			await expect( tableHeaderColumns ).toHaveCount( 2 );
-
-			await expect( tableHeaderColumns.nth( 0 ) ).toHaveText( 'Product' );
-			await expect( tableHeaderColumns.nth( 1 ) ).toHaveText( 'Action' );
-
-			await page.setViewportSize( { width: 1280, height: 720 } );
-		} );
-	} );
-
 	test.describe( 'Change Price Modal Functionality', () => {
 		test( 'Clicking "Change Price" link renders the modal', async () => {
 			await priceBenchmarkPage.goto();
@@ -299,6 +205,113 @@ test.describe( 'Price Benchmark Page', () => {
 				.locator( 'td' );
 			await expect( firstProductCells.nth( 2 ) ).toHaveText(
 				'NT$120.00'
+			);
+		} );
+	} );
+
+	test.describe( 'Price Benchmark Suggestions Functionality', () => {
+		test.beforeEach( async () => {
+			await priceBenchmarkPage.goto();
+		} );
+
+		test( 'Shows no results if there is no data', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
+
+			const emptyStateNotice = page.locator(
+				'.gla-price-benchmark__empty-metrics'
+			);
+
+			await expect( emptyStateNotice ).toBeVisible();
+			await expect( emptyStateNotice ).toContainText(
+				'You do not have any sale price suggestions at this moment.'
+			);
+			await expect( emptyStateNotice ).toContainText(
+				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
+			);
+		} );
+
+		test( 'Shows empty state notice when Market Insights is not enabled for the account.', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				{
+					message: {
+						error: {
+							code: 403,
+							message:
+								'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
+							errors: [
+								{
+									message:
+										'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
+									domain: 'global',
+									reason: 'forbidden',
+								},
+							],
+							status: 'PERMISSION_DENIED',
+							details: [
+								{
+									'@type':
+										'type.googleapis.com/google.rpc.ErrorInfo',
+									reason: 'forbidden',
+									domain: 'global',
+								},
+							],
+						},
+					},
+				},
+				403
+			);
+			const emptyStateNotice = page.locator(
+				'.gla-price-benchmark__empty-metrics'
+			);
+			await expect( emptyStateNotice ).toBeVisible();
+			await expect( emptyStateNotice ).toContainText(
+				'You do not have any sale price suggestions at this moment.'
+			);
+			await expect( emptyStateNotice ).toContainText(
+				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
+			);
+		} );
+
+		test( 'Shows 10 results per page by default', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarkSuggestionsData,
+			] );
+
+			const tableRows = page.locator( 'table tbody tr' );
+			await expect( tableRows ).toHaveCount( 10 );
+		} );
+
+		test( 'Navigates to the next page and shows 5 results', async () => {
+			const nextPageButton = page.locator( '[aria-label="Next page"]' );
+			await nextPageButton.click();
+
+			// Ensure the table displays 5 rows on the second page
+			const tableRows = page.locator( 'table tbody tr' );
+			await expect( tableRows ).toHaveCount( 5 );
+		} );
+
+		test( 'Displays the product and action columns only in the table when screen is resized to 400px', async () => {
+			await page.setViewportSize( { width: 400, height: 800 } );
+
+			const tableHeaderColumns = page.locator( 'table thead tr th' );
+			await expect( tableHeaderColumns ).toHaveCount( 2 );
+
+			await expect( tableHeaderColumns.nth( 0 ) ).toHaveText( 'Product' );
+			await expect( tableHeaderColumns.nth( 1 ) ).toHaveText( 'Action' );
+
+			await page.setViewportSize( { width: 1280, height: 720 } );
+		} );
+
+		test( 'Displays error message when data view fails to load', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
+			await priceBenchmarkPage.fulfillDataViewScript( {}, 500 );
+
+			const errorMessage = page.locator(
+				'.gla-price-benchmark__error-message'
+			);
+			await expect( errorMessage ).toBeVisible();
+			await expect( errorMessage ).toContainText(
+				'There was an error loading the price benchmark suggestions.'
 			);
 		} );
 	} );

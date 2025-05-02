@@ -1,7 +1,10 @@
+/* global glaData */
+
 /**
  * External dependencies
  */
-import { lazy } from '@wordpress/element';
+import { lazy, useEffect, useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -21,6 +24,8 @@ import {
 	LABEL_REGULAR_PRICE,
 	LABEL_ACTION,
 } from './constants';
+import LoadingLabel from '~/components/loading-label';
+import Wrapper from './empty-metrics-notice/wrapper';
 
 const PriceBenchmarkTable = lazy( () =>
 	import(
@@ -118,8 +123,50 @@ const TABLE_FIELDS_MOBILE = [ 'action' ];
  * @return {JSX.Element} A div containing the PriceBenchmarkTable component.
  */
 const PriceBenchmarkSuggestions = () => {
+	const [ dataViewLoaded, setDataViewLoaded ] = useState();
 	const { suggestions, hasFinishedResolution } =
 		usePriceBenchmarkSuggestions();
+
+	useEffect( () => {
+		if ( ! dataViewLoaded ) {
+			const script = document.createElement( 'script' );
+			script.src = glaData.dataViews;
+			script.async = true;
+
+			script.onload = () => {
+				setDataViewLoaded( true );
+			};
+
+			script.onerror = () => {
+				setDataViewLoaded( false );
+			};
+
+			document.head.appendChild( script );
+		}
+	}, [ dataViewLoaded ] );
+
+	if ( undefined === dataViewLoaded ) {
+		return (
+			<Wrapper>
+				<LoadingLabel
+					text={ __( 'Loading…', 'google-listings-and-ads' ) }
+				/>
+			</Wrapper>
+		);
+	}
+
+	if ( dataViewLoaded === false ) {
+		return (
+			<Wrapper>
+				<p className="gla-price-benchmark__error-message">
+					{ __(
+						'There was an error loading the price benchmark suggestions.',
+						'google-listings-and-ads'
+					) }
+				</p>
+			</Wrapper>
+		);
+	}
 
 	if ( hasFinishedResolution && suggestions.length === 0 ) {
 		return <EmptyMetricsNotice />;

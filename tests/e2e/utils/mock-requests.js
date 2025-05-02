@@ -883,4 +883,13 @@ export default class MockRequests {
 			methods
 		);
 	}
+
+	async fulfillDataViewScript( payload, status = 200 ) {
+		await this.fulfillRequest(
+			/\/js\/build\/wp-dataviews.js(\/.*)?\b/,
+			payload,
+			status,
+			[ 'GET' ]
+		);
+	}
 }
