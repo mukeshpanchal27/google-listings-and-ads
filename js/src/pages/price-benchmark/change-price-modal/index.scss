@@ -71,7 +71,7 @@
 	}
 
 	.gla-change-price-modal-price-input-footer {
-		align-items: flex-end;
+		align-items: flex-start;
 		display: flex;
 		flex-wrap: nowrap;
 		gap: calc($grid-unit-15 * 2);
@@ -90,20 +90,24 @@
 		.components-input-control {
 			margin: 0;
 		}
+
+		.app-button {
+			// To align with the input
+			margin-top: 28px;
+		}
 	}
 
 	.gla-change-price-modal-price-input-footer__price {
 		max-width: 180px;
 	}
 
-	.gla-change-price-modal-price-input-footer__error {
-		color: $gla-color-red;
-		font-size: $gla-font-smaller;
+	.gla-change-price-modal-price-input-footer__price--error {
+		div.components-input-control__backdrop {
+			border-color: $gla-color-red;
+		}
 
-		+ .app-input-control {
-			.components-input-control__backdrop {
-				border-color: $gla-color-red;
-			}
+		.components-base-control__help {
+			color: $gla-color-red;
 		}
 	}
 }

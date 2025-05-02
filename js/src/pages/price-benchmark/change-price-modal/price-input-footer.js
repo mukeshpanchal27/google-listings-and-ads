@@ -3,6 +3,7 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { useState, useEffect, useCallback } from '@wordpress/element';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -106,24 +107,23 @@ const PriceInputFooter = ( {
 
 	return (
 		<div className="gla-change-price-modal-price-input-footer">
-			<div className="gla-change-price-modal-price-input-footer__price">
-				{ newPriceError && (
-					<p className="gla-change-price-modal-price-input-footer__error">
-						{ newPriceError }
-					</p>
+			<AppInputPriceControl
+				label={ __( 'New price', 'google-listings-and-ads' ) }
+				suffix={ currency }
+				value={ newPrice }
+				onChange={ setNewPrice }
+				onBlur={ validatePrice }
+				className={ classnames(
+					'gla-change-price-modal-price-input-footer__price',
+					{
+						'gla-change-price-modal-price-input-footer__price--error':
+							newPriceError,
+					}
 				) }
-
-				<AppInputPriceControl
-					label={ __( 'New price', 'google-listings-and-ads' ) }
-					suffix={ currency }
-					value={ newPrice }
-					onChange={ setNewPrice }
-					onBlur={ validatePrice }
-				/>
-			</div>
+				help={ newPriceError }
+			/>
 
 			<AppButton
-				key="change-price"
 				isPrimary
 				onClick={ handleOnPriceChange }
 				disabled={ hasError !== null }
