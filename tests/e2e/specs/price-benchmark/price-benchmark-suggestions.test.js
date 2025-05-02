@@ -37,58 +37,6 @@ test.describe( 'Price Benchmark Page', () => {
 		await page.close();
 	} );
 
-	test.describe( 'Has navigation', () => {
-		test( 'Goes to the Price Benchmark page', async () => {
-			const expectedTabs = [
-				'Price Benchmark & Suggestions',
-				'Price Adjustments',
-			];
-
-			for ( const tabText of expectedTabs ) {
-				const tabLocator = page.locator(
-					`a[role="tab"]:has-text("${ tabText }")`
-				);
-				await expect( tabLocator ).toBeVisible();
-			}
-		} );
-
-		test( 'Click on "Price Adjustments" should update the URL', async () => {
-			const priceAdjustmentsTab = page.locator(
-				'a[role="tab"]:has-text("Price Adjustments")'
-			);
-			await priceAdjustmentsTab.click();
-
-			await expect( page ).toHaveURL(
-				'/wp-admin/admin.php?page=wc-admin&tableType=adjustments&path=%2Fgoogle%2Fprice-benchmark'
-			);
-		} );
-
-		test( 'Click on "Price Benchmark & Suggestions" should update the URL', async () => {
-			const priceBenchmarkTab = page.locator(
-				'a[role="tab"]:has-text("Price Benchmark & Suggestions")'
-			);
-			await priceBenchmarkTab.click();
-
-			await expect( page ).toHaveURL(
-				'/wp-admin/admin.php?page=wc-admin&tableType=suggestions&path=%2Fgoogle%2Fprice-benchmark'
-			);
-		} );
-
-		test( 'Visiting the adjustments URL should show the "Price Adjustments" tab by default', async () => {
-			await priceBenchmarkPage.goto(
-				'/wp-admin/admin.php?page=wc-admin&tableType=adjustments&path=%2Fgoogle%2Fprice-benchmark'
-			);
-
-			const priceAdjustmentsTab = page.locator(
-				'a[role="tab"]:has-text("Price Adjustments")'
-			);
-			await expect( priceAdjustmentsTab ).toHaveAttribute(
-				'aria-selected',
-				'true'
-			);
-		} );
-	} );
-
 	test.describe( 'Price Benchmark Suggestions Functionality', () => {
 		test.beforeEach( async () => {
 			await priceBenchmarkPage.goto();
@@ -300,6 +248,45 @@ test.describe( 'Price Benchmark Page', () => {
 			await expect( firstProductCells.nth( 2 ) ).toHaveText(
 				'NT$120.00'
 			);
+		} );
+	} );
+
+	test.describe( 'Price Benchmark Suggestions Banner', () => {
+		test( 'Shows the banner when the user is not onboarded', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarkSuggestionsData,
+			] );
+
+			const banner = page.locator(
+				'.gla-price-benchmark-suggestions-banner'
+			);
+
+			await expect( banner ).toBeVisible();
+
+			const title = banner.locator(
+				'.gla-price-benchmark-suggestions-banner__text h3'
+			);
+			await expect( title ).toContainText(
+				'Price Benchmark & Suggestions'
+			);
+		} );
+
+		test( 'Hides the banner when dismissed', async () => {
+			await priceBenchmarkPage.fulfillUsersPreferences();
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarkSuggestionsData,
+			] );
+
+			const banner = page.locator(
+				'.gla-price-benchmark-suggestions-banner'
+			);
+			const dismissButton = banner.locator(
+				'button:has-text("Dismiss")'
+			);
+
+			await dismissButton.click();
+
+			await expect( banner ).not.toBeVisible();
 		} );
 	} );
 } );

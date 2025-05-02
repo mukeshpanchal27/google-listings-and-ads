@@ -60,18 +60,6 @@ export default class PriceBenchmarkPage extends MockRequests {
 	}
 
 	/**
-	 * Get the active product value element.
-	 *
-	 * @return {import('@playwright/test').Locator} The active product value element.
-	 */
-	getActiveProductValueElement() {
-		return this.page
-			.locator( '.woocommerce-summary__item-label span >> text=Active' )
-			.locator( '../..' )
-			.locator( '.woocommerce-summary__item-value span' );
-	}
-
-	/**
 	 * Retrieves the locator for the "Change Price" modal element on the page.
 	 *
 	 * @return {import('@playwright/test').Locator} The "Change Price" modal element.
