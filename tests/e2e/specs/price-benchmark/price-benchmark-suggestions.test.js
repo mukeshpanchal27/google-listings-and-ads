@@ -250,4 +250,43 @@ test.describe( 'Price Benchmark Page', () => {
 			);
 		} );
 	} );
+
+	test.describe( 'Price Benchmark Suggestions Banner', () => {
+		test( 'Shows the banner when the user is not onboarded', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarkSuggestionsData,
+			] );
+
+			const banner = page.locator(
+				'.gla-price-benchmark-suggestions-banner'
+			);
+
+			await expect( banner ).toBeVisible();
+
+			const title = banner.locator(
+				'.gla-price-benchmark-suggestions-banner__text h3'
+			);
+			await expect( title ).toContainText(
+				'Price Benchmark & Suggestions'
+			);
+		} );
+
+		test( 'Hides the banner when dismissed', async () => {
+			await priceBenchmarkPage.fulfillUsersPreferences();
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarkSuggestionsData,
+			] );
+
+			const banner = page.locator(
+				'.gla-price-benchmark-suggestions-banner'
+			);
+			const dismissButton = banner.locator(
+				'button:has-text("Dismiss")'
+			);
+
+			await dismissButton.click();
+
+			await expect( banner ).not.toBeVisible();
+		} );
+	} );
 } );

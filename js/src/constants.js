@@ -131,3 +131,7 @@ export const PRICE_BENCHMARK_CHART_COLORS = {
 	HIGHER: '#caa76f',
 	UNKNOWN: '#e0e0e0',
 };
+
+// @wordpress/preferences namespace
+export const PREFERENCES_STORE_NAMESPACE =
+	'woocommerce/google-listings-and-ads';
