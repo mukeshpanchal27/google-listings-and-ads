@@ -868,6 +868,12 @@ export default class MockRequests {
 		);
 	}
 
+	async fulfillUsersPreferences( payload = {} ) {
+		await this.fulfillRequest( /\/wp\/v2\/users\/me(\?|$)/, payload, 200, [
+			'POST',
+		] );
+	}
+
 	/**
 	 * Mocks the fulfillment of requests to the WooCommerce products API endpoint.
 	 *

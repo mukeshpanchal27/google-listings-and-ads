@@ -9,6 +9,7 @@ import { Card } from '@wordpress/components';
 import MainTabNav from '~/components/main-tab-nav';
 import PriceBenchmarkSuggestions from './price-benchmark-suggestions';
 import ProductComparisonChart from './product-comparison-chart';
+import Banner from './banner';
 import './index.scss';
 
 const PriceBenchmark = () => {
@@ -16,6 +17,7 @@ const PriceBenchmark = () => {
 		<div className="gla-price-benchmark">
 			<MainTabNav />
 
+			<Banner />
 			<ProductComparisonChart />
 
 			<Card className="gla-price-benchmark__card">
