@@ -12,4 +12,18 @@
 	.gla-price-benchmark-suggestions__image {
 		width: 100%;
 	}
+
+	th:has(.gla-price-benchmark-suggestions__action) {
+		text-align: right;
+	}
+
+	td:has(.gla-price-benchmark-suggestions__action) {
+		.dataviews-view-table__cell-content-wrapper {
+			justify-content: flex-end;
+		}
+
+		.app-button {
+			padding: $grid-unit-05 $grid-unit-10;
+		}
+	}
 }
