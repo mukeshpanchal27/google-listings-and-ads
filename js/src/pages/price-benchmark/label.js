@@ -32,7 +32,14 @@ const Label = ( { labelKey, alignLeft = false } ) => {
 		>
 			{ ! tooltip && title }
 
-			{ tooltip && <AppTooltip text={ tooltip }>{ title }</AppTooltip> }
+			{ tooltip && (
+				<AppTooltip
+					text={ tooltip }
+					className="gla-price-benchmark__tooltip"
+				>
+					{ title }
+				</AppTooltip>
+			) }
 		</span>
 	);
 };

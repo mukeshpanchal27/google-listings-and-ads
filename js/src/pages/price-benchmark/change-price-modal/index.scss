@@ -71,7 +71,7 @@
 	}
 
 	.gla-change-price-modal-price-input-footer {
-		align-items: flex-end;
+		align-items: flex-start;
 		display: flex;
 		flex-wrap: nowrap;
 		gap: calc($grid-unit-15 * 2);
@@ -89,6 +89,11 @@
 
 		.components-input-control {
 			margin: 0;
+		}
+
+		.app-button {
+			// To align with the input
+			margin-top: 28px;
 		}
 	}
 

@@ -3,3 +3,10 @@
 .gla-price-benchmark__comparison-chart {
 	margin: $grid-unit-40 0;
 }
+
+.gla-price-benchmark__tooltip {
+
+	&.components-tooltip {
+		max-width: 224px;
+	}
+}
