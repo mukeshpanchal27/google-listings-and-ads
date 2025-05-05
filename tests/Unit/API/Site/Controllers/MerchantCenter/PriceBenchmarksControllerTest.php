@@ -201,21 +201,16 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 			'next_page_token' => 'next_page_token',
 		];
 
-		$report_type = 'products';
-		$report_args = [
-			'interval' => 'week',
-			'fields'   => [ 'clicks', 'conversions' ],
-		];
 		$report_data = [
-			[
-				'metrics'  => [
-					'clicks'      => 734,
-					'conversions' => 4,
-				],
-				'segments' => [
-					'week'          => '2021-12-12',
-					'productItemId' => 'gla_' . $product_id,
-					'productTitle'  => $product_title,
+			'results' => [
+				[
+					'segments' => [
+						'date' => '2023-10-01',
+					],
+					'metrics'  => [
+						'clicks'      => 734,
+						'conversions' => 4,
+					],
 				],
 			],
 		];
@@ -231,6 +226,14 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 
 		$this->merchant_report->expects( $this->once() )
 			->method( 'get_report_data' )
+			->with(
+				'products',
+				[
+					'ids'      => [ self::TEST_PRODUCT_ID ],
+					'fields'   => [ 'clicks', 'conversions' ],
+					'interval' => 'week',
+				]
+			)
 			->willReturn( $report_data );
 
 		// Simulate a GET request.

@@ -89,9 +89,8 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				$merchant = $this->container->get( MerchantPriceBenchmarks::class );
 
 				$merchant_report_data = $this->get_products_report_data( $request );
-
-				$benchmark_data      = $merchant->get_benchmark_data( $this->prepare_query_arguments( $request ) );
-				$price_insights_data = $merchant->get_price_insights( $this->prepare_query_arguments( $request ) );
+				$benchmark_data       = $merchant->get_benchmark_data( $this->prepare_query_arguments( $request ) );
+				$price_insights_data  = $merchant->get_price_insights( $this->prepare_query_arguments( $request ) );
 
 				// Map the data to the required format.
 				$response_data = $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data, $merchant_report_data );
@@ -111,24 +110,21 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	protected function get_products_report_data( Request $request ): array {
 		try {
 			/** @var MerchantReport $merchant_report */
-			$merchant_report         = $this->container->get( MerchantReport::class );
-			$prepare_query_arguments = $this->prepare_query_arguments( $request );
-			$product_id              = $request->get_param( 'id' );
+			$merchant_report = $this->container->get( MerchantReport::class );
+			$product_id      = $request->get_param( 'id' );
 
-			// If a product ID is provided, set it in the query arguments.
-			if ( $product_id ) {
-				$prepare_query_arguments['ids']      = [ $product_id ];
-				$prepare_query_arguments['fields']   = [ 'clicks', 'conversions' ];
-				$prepare_query_arguments['interval'] = 'week';
-			}
-
-			$report_data = $merchant_report->get_report_data( 'products', $prepare_query_arguments );
-			// Ensure the response is always an array.
-			if ( is_wp_error( $report_data ) ) {
+			// If no product ID is provided, bail early.
+			if ( ! $product_id ) {
 				return [];
 			}
 
-			return $report_data;
+			$report_args = [
+				'ids'      => [ $product_id ],
+				'fields'   => [ 'clicks', 'conversions' ],
+				'interval' => 'week',
+			];
+
+			return $merchant_report->get_report_data( 'products', $report_args );
 		} catch ( Exception $exception ) {
 			// Log the exception and return an empty array.
 			return [];
@@ -189,7 +185,13 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 			}
 		}
 
-		foreach ( $merchant_report_data as $merchant_report_result ) {
+		foreach ( $merchant_report_data['results'] as $merchant_report_result ) {
+			$product_id = $merchant_report_result['segments']['offer_id'] ?? null;
+
+			if ( ! $product_id ) {
+				continue;
+			}
+
 			$mapped_data[ $product_id ]['merchant_report'] = $merchant_report_result['metrics'];
 		}
 
