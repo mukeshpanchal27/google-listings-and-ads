@@ -123,7 +123,6 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 			}
 
 			$report_data = $merchant_report->get_report_data( 'products', $prepare_query_arguments );
-
 			// Ensure the response is always an array.
 			if ( is_wp_error( $report_data ) ) {
 				return [];
@@ -190,11 +189,16 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 			}
 		}
 
+		foreach ( $merchant_report_data as $merchant_report_result ) {
+			$mapped_data[ $product_id ]['merchant_report'] = $merchant_report_result['metrics'];
+		}
+
 		// Transform $mapped_data into the desired response format using array_map.
 		$response_data = array_map(
 			function ( $data ) {
 				$price_competitiveness = $data['price_competitiveness'];
 				$price_insights        = $data['price_insights'];
+				$merchant_report       = $data['merchant_report'] ?? [];
 
 				// Calculate the price gap.
 				$regular_price   = (int) $price_competitiveness['price_micros'];
@@ -206,26 +210,31 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				$thumbnail     = $this->get_product_thumbnail( $wc_product_id );
 
 				// Map the data to the required format.
-				return [
-					'product'         => [
-						'id'        => $wc_product_id,
-						'thumbnail' => $thumbnail,
-						'title'     => $price_competitiveness['title'],
+
+				return array_merge(
+					[
+						'product'         => [
+							'id'        => $wc_product_id,
+							'thumbnail' => $thumbnail,
+							'title'     => $price_competitiveness['title'],
+						],
+						'effectiveness'   => $price_insights['effectiveness'] ?? '',
+						'regular_price'   => round( $regular_price / 1000000, 2 ),
+						'price_on_google' => round( $price_on_google / 1000000, 2 ),
+						'price_gap'       => round( $price_gap / 1000000, 2 ),
+						'suggested_price' => isset( $price_insights['suggested_price_micros'] )
+							? round( $price_insights['suggested_price_micros'] / 1000000, 2 )
+							: '',
 					],
-					'effectiveness'   => $price_insights['effectiveness'] ?? '',
-					'regular_price'   => round( $regular_price / 1000000, 2 ),
-					'price_on_google' => round( $price_on_google / 1000000, 2 ),
-					'price_gap'       => round( $price_gap / 1000000, 2 ),
-					'suggested_price' => isset( $price_insights['suggested_price_micros'] )
-						? round( $price_insights['suggested_price_micros'] / 1000000, 2 )
-						: '',
-					...( ! empty( $merchant_report_data ) ? [
-						'clicks'                       => 30,
-						'conversions'                  => 3,
-						'predicted_clicks_change'      => $price_insights['predicted_clicks_change_fraction'] ?? null,
-						'predicted_conversions_change' => $price_insights['predicted_conversions_change_fraction'] ?? null,
-					] : [] ),
-				];
+					! empty( $merchant_report )
+						? [
+							'clicks'                       => $merchant_report['clicks'] ?? '',
+							'conversions'                  => $merchant_report['conversions'] ?? '',
+							'predicted_clicks_change'      => $price_insights['predicted_clicks_change_fraction'] ?? '',
+							'predicted_conversions_change' => $price_insights['predicted_conversions_change_fraction'] ?? '',
+						]
+						: []
+				);
 			},
 			$mapped_data
 		);
