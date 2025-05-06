@@ -21,7 +21,7 @@ const PriceBenchmark = () => {
 	useEffect( () => {
 		if ( dataViewLoaded === undefined ) {
 			const script = document.createElement( 'script' );
-			script.src = glaData.dataViews;
+			script.src = glaData.dataViewsScriptUrl;
 			script.async = true;
 
 			script.onload = () => {

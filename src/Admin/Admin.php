@@ -144,14 +144,19 @@ class Admin implements OptionsAwareInterface, Registerable, Service {
 					'mcId'    => $this->options->get_merchant_id() ?: null,
 					'adsId'   => $this->options->get_ads_id() ?: null,
 				],
-				'dataViews' => (
-					new ScriptAsset(
-						'gla-data-views',
-						'js/build/wp-dataviews',
-						[],
-						(string) filemtime( "{$this->get_root_dir()}/js/build/wp-dataviews.js" ),
-					)
-				)->get_uri()
+				'dataViewsScriptUrl' => add_query_arg(
+					[
+						'vesrion' => (string) filemtime( "{$this->get_root_dir()}/js/build/wp-dataviews.js" ),
+					],
+					(
+						new ScriptAsset(
+							'gla-data-views',
+							'js/build/wp-dataviews',
+							[],
+							(string) filemtime( "{$this->get_root_dir()}/js/build/wp-dataviews.js" ),
+						)
+					)->get_uri(),
+				)
 			]
 		);
 
