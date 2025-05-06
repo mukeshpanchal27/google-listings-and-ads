@@ -127,6 +127,7 @@ const webpackConfig = {
 	externals: {
 		...( defaultConfig.externals || {} ),
 		'@wordpress/dataviews': [ 'wp', 'dataviews' ],
+		'@wordpress/dataviews/build-wp': [ 'wp', 'dataviews' ],
 	},
 };
 
