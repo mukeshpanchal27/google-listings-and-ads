@@ -19,13 +19,21 @@ const PriceBenchmark = () => {
 	const [ dataViewLoaded, setDataViewLoaded ] = useState();
 
 	useEffect( () => {
-		if ( ! dataViewLoaded ) {
+		if ( dataViewLoaded === undefined ) {
 			const script = document.createElement( 'script' );
 			script.src = glaData.dataViews;
 			script.async = true;
 
 			script.onload = () => {
-				setDataViewLoaded( true );
+				if (
+					window.wp.dataviews &&
+					typeof window.wp.dataviews?.filterSortAndPaginate ===
+						'function'
+				) {
+					setDataViewLoaded( true );
+				} else {
+					setDataViewLoaded( false );
+				}
 			};
 
 			script.onerror = () => {
