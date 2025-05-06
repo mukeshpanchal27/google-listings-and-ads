@@ -205,7 +205,8 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 			'results' => [
 				[
 					'segments' => [
-						'date' => '2023-10-01',
+						'date'     => '2023-10-01',
+						'offer_id' => $product_id,
 					],
 					'metrics'  => [
 						'clicks'      => 734,

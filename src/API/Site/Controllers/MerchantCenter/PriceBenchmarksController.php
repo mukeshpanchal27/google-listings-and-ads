@@ -185,14 +185,16 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 			}
 		}
 
-		foreach ( $merchant_report_data['results'] as $merchant_report_result ) {
-			$product_id = $merchant_report_result['segments']['offer_id'] ?? null;
+		if ( ! empty( $merchant_report_data ) ) {
+			foreach ( $merchant_report_data['results'] as $merchant_report_result ) {
+				$product_id = $merchant_report_result['segments']['offer_id'] ?? null;
 
-			if ( ! $product_id ) {
-				continue;
+				if ( ! $product_id ) {
+					continue;
+				}
+
+				$mapped_data[ $product_id ]['merchant_report'] = $merchant_report_result['metrics'];
 			}
-
-			$mapped_data[ $product_id ]['merchant_report'] = $merchant_report_result['metrics'];
 		}
 
 		// Transform $mapped_data into the desired response format using array_map.
