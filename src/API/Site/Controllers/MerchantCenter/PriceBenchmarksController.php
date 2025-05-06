@@ -329,36 +329,17 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	 */
 	public function get_price_benchmarks_params(): array {
 		return [
-			'ids'      => [
-				'description'       => __( 'Limit result to items with specified ids.', 'google-listings-and-ads' ),
-				'type'              => 'array',
-				'sanitize_callback' => 'wp_parse_slug_list',
-				'validate_callback' => 'rest_validate_request_arg',
-				'items'             => [
-					'type' => 'string',
-				],
+			'id'     => [
+				'description' => __( 'The Id of the product.', 'google-listings-and-ads' ),
+				'type'        => 'integer',
 			],
-			'fields'   => [
+			'fields' => [
 				'description' => __( 'Comma-separated list of fields to include in the response.', 'google-listings-and-ads' ),
 				'type'        => 'array',
 				'required'    => false,
 			],
-			'interval' => [
-				'description'       => __( 'Time interval to use for segments in the returned data.', 'google-listings-and-ads' ),
-				'type'              => 'string',
-				'required'          => false,
-				'enum'              => [
-					'day',
-					'week',
-					'month',
-					'quarter',
-					'year',
-				],
-				'validate_callback' => 'rest_validate_request_arg',
-			],
 		];
 	}
-
 
 	/**
 	 * Get the schema for the summary endpoint.
