@@ -6,8 +6,6 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\Merch
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\BaseController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\TransportMethods;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
-use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantReport;
-use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceSuggestionsQuery;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\ReportQueryTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
@@ -69,7 +67,7 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 		$args = wp_parse_args(
 			array_intersect_key(
 				$request->get_query_params(),
-				$this->get_collection_params()
+				$this->get_collection_params() // Inherited from `WP_REST_Controller`.
 			),
 			$request->get_default_params()
 		);
