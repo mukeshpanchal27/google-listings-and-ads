@@ -203,7 +203,7 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 
 						<hr className="gla-change-price-modal__separator" />
 
-						{ salesPrice && (
+						{ ! isNaN( salesPrice ) && (
 							<Badge intent="warning">
 								{ __(
 									'Product is currently on sale',

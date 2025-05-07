@@ -39,6 +39,10 @@ const MetricValue = ( { labelKey, value, type, className } ) => {
 		return null;
 	}
 
+	if ( type === METRIC_TYPE_PRICE && isNaN( value ) ) {
+		return null;
+	}
+
 	let formattedValue = value;
 
 	switch ( type ) {
