@@ -160,38 +160,33 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	protected function map_price_benchmarks_response( array $benchmark_data, array $price_insights_data, array $merchant_report_data ): array {
 		$mapped_data = [];
 
-		if ( empty( $benchmark_data['results'] ) ) {
-			return $mapped_data;
-		}
-
-		// Process benchmark data and add it to $mapped_data keyed by product ID.
-		foreach ( $benchmark_data['results'] as $benchmark_result ) {
-			$product_id = $benchmark_result['offer_id'];
-
+		// Combine all data sets into $mapped_data keyed by product ID.
+		foreach ( $benchmark_data['results'] ?? [] as $benchmark_result ) {
+			$product_id                 = $benchmark_result['offer_id'];
 			$mapped_data[ $product_id ] = [
-				'price_competitiveness' => $benchmark_result ?? [],
-				'price_insights'        => [], // Placeholder for price insights data.
+				'price_competitiveness' => $benchmark_result,
+				'price_insights'        => [],
+				'merchant_report'       => [],
 			];
 		}
 
-		// Process price insights data and merge it into $mapped_data.
-		foreach ( $price_insights_data['results'] as $price_insights_result ) {
-			$product_id = $price_insights_result['offer_id'];
-
-			if ( isset( $mapped_data[ $product_id ] ) ) {
-				$mapped_data[ $product_id ]['price_insights'] = $price_insights_result ?? [];
+		// Map price insights data to benchmarks data.
+		if ( ! empty( $price_insights_data['results'] ) ) {
+			foreach ( $price_insights_data['results'] as $price_insights_result ) {
+				$product_id = $price_insights_result['offer_id'];
+				if ( isset( $mapped_data[ $product_id ] ) ) {
+					$mapped_data[ $product_id ]['price_insights'] = $price_insights_result;
+				}
 			}
 		}
 
-		if ( ! empty( $merchant_report_data ) ) {
+		// Map merchant report data to benchmarks data.
+		if ( ! empty( $merchant_report_data['results'] ) ) {
 			foreach ( $merchant_report_data['results'] as $merchant_report_result ) {
 				$product_id = $merchant_report_result['id'] ?? null;
-
-				if ( ! $product_id ) {
-					continue;
+				if ( $product_id && isset( $mapped_data[ $product_id ] ) ) {
+					$mapped_data[ $product_id ]['merchant_report'] = $merchant_report_result;
 				}
-
-				$mapped_data[ $product_id ]['merchant_report'] = $merchant_report_result;
 			}
 		}
 
