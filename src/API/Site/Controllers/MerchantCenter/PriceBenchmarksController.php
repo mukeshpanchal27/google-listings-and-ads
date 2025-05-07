@@ -185,13 +185,13 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 
 		if ( ! empty( $merchant_report_data ) ) {
 			foreach ( $merchant_report_data['results'] as $merchant_report_result ) {
-				$product_id = $merchant_report_result['segments']['offer_id'] ?? null;
+				$product_id = $merchant_report_result['id'] ?? null;
 
 				if ( ! $product_id ) {
 					continue;
 				}
 
-				$mapped_data[ $product_id ]['merchant_report'] = $merchant_report_result['metrics'];
+				$mapped_data[ $product_id ]['merchant_report'] = $merchant_report_result;
 			}
 		}
 
@@ -215,25 +215,25 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 
 				return array_merge(
 					[
-						'product'         => [
+						'product'                      => [
 							'id'        => $wc_product_id,
 							'thumbnail' => $thumbnail,
 							'title'     => $price_competitiveness['title'],
 						],
-						'effectiveness'   => $price_insights['effectiveness'] ?? '',
-						'regular_price'   => round( $regular_price / 1000000, 2 ),
-						'price_on_google' => round( $price_on_google / 1000000, 2 ),
-						'price_gap'       => round( $price_gap / 1000000, 2 ),
-						'suggested_price' => isset( $price_insights['suggested_price_micros'] )
+						'effectiveness'                => $price_insights['effectiveness'] ?? '',
+						'regular_price'                => round( $regular_price / 1000000, 2 ),
+						'price_on_google'              => round( $price_on_google / 1000000, 2 ),
+						'price_gap'                    => round( $price_gap / 1000000, 2 ),
+						'suggested_price'              => isset( $price_insights['suggested_price_micros'] )
 							? round( $price_insights['suggested_price_micros'] / 1000000, 2 )
 							: '',
+						'predicted_clicks_change'      => $price_insights['predicted_clicks_change_fraction'] ?? '',
+						'predicted_conversions_change' => $price_insights['predicted_conversions_change_fraction'] ?? '',
 					],
 					! empty( $merchant_report )
 						? [
-							'clicks'                       => $merchant_report['clicks'] ?? '',
-							'conversions'                  => $merchant_report['conversions'] ?? '',
-							'predicted_clicks_change'      => $price_insights['predicted_clicks_change_fraction'] ?? '',
-							'predicted_conversions_change' => $price_insights['predicted_conversions_change_fraction'] ?? '',
+							'clicks'      => $merchant_report['clicks'] ?? '',
+							'conversions' => $merchant_report['conversions'] ?? '',
 						]
 						: []
 				);

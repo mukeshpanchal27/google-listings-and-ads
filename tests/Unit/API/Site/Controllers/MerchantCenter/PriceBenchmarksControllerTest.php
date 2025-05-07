@@ -155,15 +155,14 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 	}
 
 	public function test_get_price_benchmarks_uplift_data() {
-		$product_id    = '123456';
 		$product_title = "UGG Women's s Classic Mini";
 
 		// Mock the benchmark data.
 		$mock_benchmark_data = [
 			'results'         => [
 				[
-					'id'                            => 'online:en:US:gla_' . $product_id,
-					'offer_id'                      => $product_id,
+					'id'                            => 'online:en:US:gla_' . self::TEST_PRODUCT_ID,
+					'offer_id'                      => self::TEST_PRODUCT_ID,
 					'title'                         => $product_title,
 					'price_micros'                  => '124990000',
 					'currency_code'                 => 'USD',
@@ -179,8 +178,8 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 			'results'         => [
 				[
 
-					'id'                               => 'online:en:US:gla_' . $product_id,
-					'offer_id'                         => $product_id,
+					'id'                               => 'online:en:US:gla_' . self::TEST_PRODUCT_ID,
+					'offer_id'                         => self::TEST_PRODUCT_ID,
 					'price_micros'                     => '124990000',
 					'currency_code'                    => 'USD',
 					'suggested_price_micros'           => '118990000',
@@ -197,13 +196,9 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 		$report_data = [
 			'results' => [
 				[
-					'segments' => [
-						'offer_id' => $product_id,
-					],
-					'metrics'  => [
-						'clicks'      => 734,
-						'conversions' => 4,
-					],
+					'id'          => self::TEST_PRODUCT_ID,
+					'clicks'      => 734,
+					'conversions' => 4,
 				],
 			],
 		];
@@ -233,7 +228,7 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 		$expected = [
 			[
 				'product'                      => [
-					'id'        => (int) $product_id,
+					'id'        => (int) self::TEST_PRODUCT_ID,
 					'thumbnail' => '', // The thumbnail URL of the ID.
 					'title'     => $product_title,
 				],
@@ -242,10 +237,10 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 				'price_on_google'              => 119.92, // Converted from micros.
 				'price_gap'                    => 5.07, // Reg price - Price on Google, Converted from micros.
 				'suggested_price'              => 118.99, // Converted from micros.
-				'clicks'                       => 734,
-				'conversions'                  => 4,
 				'predicted_clicks_change'      => '0.508745014667511',
 				'predicted_conversions_change' => '2.3431060314178467',
+				'clicks'                       => 734,
+				'conversions'                  => 4,
 			],
 		];
 

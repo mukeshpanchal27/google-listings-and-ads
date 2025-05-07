@@ -105,9 +105,14 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	 */
 	public function get_specific_product_report( array $args ): array {
 		try {
+			// Ensure we set the default date range for the query if not provided.
+			$args = wp_parse_args(
+				$args,
+				$this->get_default_between_dates()
+			);
+
 			$response = ( new MerchantPriceBenchmarksProductReportQuery( $args ) )
 			->set_client( $this->service, $this->options->get_merchant_id() )
-			->where_date_between( $this->get_today(), $this->get_weed_day() )
 			->get_results();
 
 			$results = $response->getResults() ?? [];
@@ -120,20 +125,21 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	}
 
 	/**
-	 * Get today's date to ensure we include any metrics from the current day.
+	 * Get start and end dates for the previous week from Monday to Sunday.
 	 *
-	 * @return string
+	 * @return array An associative array of price benchmark data.
 	 */
-	protected function get_today(): string {
-		return ( new DateTime( 'today', $this->wp->wp_timezone() ) )->format( 'Y-m-d' );
-	}
+	protected function get_default_between_dates(): array {
+		$today       = new DateTime( 'today' );
+		$day_of_week = (int) $today->format( 'N' ); // 1 (Monday) to 7 (Sunday).
 
-	/**
-	 * Get week's date to ensure we include any metrics from the current day.
-	 *
-	 * @return string
-	 */
-	protected function get_weed_day(): string {
-		return ( new DateTime( '+1 week', $this->wp->wp_timezone() ) )->format( 'Y-m-d' );
+		// Calculate the start and end dates for the last Monday to Sunday period.
+		$end_date   = ( clone $today )->modify( '-' . $day_of_week . ' days' ); // Last Sunday
+		$start_date = ( clone $end_date )->modify( '-6 days' ); // Last Monday
+
+		return [
+			'after'  => $start_date->format( 'Y-m-d' ),
+			'before' => $end_date->format( 'Y-m-d' ),
+		];
 	}
 }
