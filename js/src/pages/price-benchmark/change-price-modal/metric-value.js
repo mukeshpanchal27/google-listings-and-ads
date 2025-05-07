@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Internal dependencies
  */
 import {
@@ -25,10 +30,11 @@ import './metric-value.scss';
  *                              - METRIC_TYPE_DELTA: Formats the value as a percentage delta using the <DeltaValue> component.
  *                              - METRIC_TYPE_EFFECTIVENESS: Displays an effectiveness indicator using the <EffectivenessIndicator> component.
  *                              - METRIC_TYPE_PERCENTAGE: Formats the value as a percentage string.
+ * @param {string} [props.className] - Optional additional class name for the component.
  *
  * @return {JSX.Element|null} A JSX element displaying the metric value with its label, or null if the value is invalid.
  */
-const MetricValue = ( { labelKey, value, type } ) => {
+const MetricValue = ( { labelKey, value, type, className } ) => {
 	if ( value === undefined || value === null || value === '' ) {
 		return null;
 	}
@@ -51,7 +57,12 @@ const MetricValue = ( { labelKey, value, type } ) => {
 	}
 
 	return (
-		<div className="gla-change-price-modal__metric-value">
+		<div
+			className={ classnames(
+				'gla-change-price-modal__metric-value',
+				className
+			) }
+		>
 			<div className="gla-change-price-modal__metric-value-title">
 				<Label labelKey={ labelKey } />
 			</div>

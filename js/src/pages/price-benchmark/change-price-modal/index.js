@@ -27,6 +27,7 @@ import AppButton from '~/components/app-button';
 import AppModal from '~/components/app-modal';
 import PriceInputFooter from './price-input-footer';
 import AppSpinner from '~/components/app-spinner';
+import Badge from '~/components/badge';
 import usePriceBenchmarkSuggestionsProduct from '~/hooks/usePriceBenchmarkSuggestionsProduct';
 import useProduct from '~/hooks/useProduct';
 import './index.scss';
@@ -167,6 +168,7 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 							labelKey={ LABEL_SALES_PRICE }
 							value={ salesPrice }
 							type={ METRIC_TYPE_PRICE }
+							className="gla-change-price-modal__sales-price"
 						/>
 
 						<MetricValue
@@ -198,6 +200,17 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 							value={ predictedConversionsChange }
 							type={ METRIC_TYPE_DELTA }
 						/>
+
+						<hr className="gla-change-price-modal__separator" />
+
+						{ salesPrice && (
+							<Badge intent="warning">
+								{ __(
+									'Product is currently on sale',
+									'google-listings-and-ads'
+								) }
+							</Badge>
+						) }
 					</div>
 				</div>
 			</div>
