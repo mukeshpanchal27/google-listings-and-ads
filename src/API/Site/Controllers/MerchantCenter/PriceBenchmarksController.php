@@ -160,7 +160,7 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	protected function map_price_benchmarks_response( array $benchmark_data, array $price_insights_data, array $merchant_report_data ): array {
 		$mapped_data = [];
 
-		if ( empty( $benchmark_data['results'] ) || empty( $price_insights_data['results'] ) ) {
+		if ( empty( $benchmark_data['results'] ) ) {
 			return $mapped_data;
 		}
 
