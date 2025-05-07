@@ -31,19 +31,12 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	protected $service;
 
 	/**
-	 * @var WP
-	 */
-	protected $wp;
-
-	/**
 	 * Merchant Report constructor.
 	 *
 	 * @param ShoppingContent $service
-	 * @param WP              $wp
 	 */
-	public function __construct( ShoppingContent $service, WP $wp ) {
+	public function __construct( ShoppingContent $service ) {
 		$this->service = $service;
-		$this->wp      = $wp;
 	}
 
 	/**
