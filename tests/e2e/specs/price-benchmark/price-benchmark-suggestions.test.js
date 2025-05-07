@@ -213,7 +213,6 @@ test.describe( 'Price Benchmark Page', () => {
 			await priceBenchmarkPage.fulfillWCProduct(
 				{
 					regular_price: '100.00',
-					sale_price: '90.00',
 				},
 				[ 'GET' ]
 			);
@@ -256,21 +255,6 @@ test.describe( 'Price Benchmark Page', () => {
 			await expect( changePriceButton ).toBeDisabled();
 		} );
 
-		test( 'Displays error message when user inputs a price lower than the sale price', async () => {
-			const priceInput = await priceBenchmarkPage.getPriceInputModal();
-			await priceInput.fill( '80' );
-			await priceInput.blur();
-
-			const error = priceBenchmarkPage.getPriceInputError();
-			await expect( error ).toHaveText(
-				'New price must be greater than the sales price (NT$90.00).'
-			);
-
-			const changePriceButton =
-				await priceBenchmarkPage.getChangePriceModalButton();
-			await expect( changePriceButton ).toBeDisabled();
-		} );
-
 		test( 'Clicking "Change Price" button with a valid price closes the modal and updates the table', async () => {
 			await priceBenchmarkPage.goto();
 
@@ -281,7 +265,6 @@ test.describe( 'Price Benchmark Page', () => {
 			await priceBenchmarkPage.fulfillWCProduct(
 				{
 					regular_price: '100.00',
-					sale_price: '90.00',
 				},
 				[ 'GET' ]
 			);
@@ -320,10 +303,107 @@ test.describe( 'Price Benchmark Page', () => {
 				'NT$120.00'
 			);
 		} );
+
+		test.describe( 'Sales Price Functionality', () => {
+			test( 'Displays "Product is currently on sale" text when there is a sale price', async () => {
+				await priceBenchmarkPage.goto();
+
+				await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+					...priceBenchmarkSuggestionsData,
+				] );
+
+				await priceBenchmarkPage.fulfillWCProduct(
+					{
+						regular_price: '100.00',
+						sale_price: '90.00',
+					},
+					[ 'GET' ]
+				);
+
+				const changePriceLink =
+					await priceBenchmarkPage.getFirstProductChangePriceLink();
+				await changePriceLink.click();
+
+				const changePriceModal =
+					await priceBenchmarkPage.getChangePriceModal();
+
+				const saleText = changePriceModal.locator(
+					'span.gla-badge__content:has-text("Product is currently on sale")'
+				);
+				await expect( saleText ).toBeVisible();
+			} );
+
+			test( 'Displays error message when user inputs a price lower than the sale price', async () => {
+				const priceInput =
+					await priceBenchmarkPage.getPriceInputModal();
+				await priceInput.fill( '80' );
+				await priceInput.blur();
+
+				const error = priceBenchmarkPage.getPriceInputError();
+				await expect( error ).toHaveText(
+					'New price must be greater than the sales price (NT$90.00).'
+				);
+
+				const changePriceButton =
+					await priceBenchmarkPage.getChangePriceModalButton();
+				await expect( changePriceButton ).toBeDisabled();
+			} );
+
+			test( 'Allows changing the price to a value higher than the sales price', async () => {
+				const priceInput =
+					await priceBenchmarkPage.getPriceInputModal();
+				await priceInput.fill( '91' );
+				await priceInput.blur();
+
+				const changePriceButton =
+					await priceBenchmarkPage.getChangePriceModalButton();
+				await expect( changePriceButton ).toBeEnabled();
+				await changePriceButton.click();
+
+				const changePriceModal =
+					await priceBenchmarkPage.getChangePriceModal();
+				await expect( changePriceModal ).not.toBeVisible();
+
+				const firstProductCells = await priceBenchmarkPage
+					.getFirstProductRow()
+					.locator( 'td' );
+				await expect( firstProductCells.nth( 2 ) ).toHaveText(
+					'NT$91.00'
+				);
+			} );
+
+			test( 'Does not display "Product is currently on sale" text when there is no sale price', async () => {
+				await priceBenchmarkPage.goto();
+
+				await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+					...priceBenchmarkSuggestionsData,
+				] );
+
+				await priceBenchmarkPage.fulfillWCProduct(
+					{
+						regular_price: '100.00',
+					},
+					[ 'GET' ]
+				);
+
+				const changePriceLink =
+					await priceBenchmarkPage.getFirstProductChangePriceLink();
+				await changePriceLink.click();
+
+				const changePriceModal =
+					await priceBenchmarkPage.getChangePriceModal();
+
+				const saleText = changePriceModal.locator(
+					'span.gla-badge__content:has-text("Product is currently on sale")'
+				);
+				await expect( saleText ).not.toBeVisible();
+			} );
+		} );
 	} );
 
 	test.describe( 'Price Benchmark Suggestions Banner', () => {
 		test( 'Shows the banner when the user is not onboarded', async () => {
+			await priceBenchmarkPage.goto();
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
 				...priceBenchmarkSuggestionsData,
 			] );
