@@ -37,7 +37,7 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 					'methods'             => TransportMethods::READABLE,
 					'callback'            => $this->get_price_benchmarks_callback(),
 					'permission_callback' => $this->get_permission_callback(),
-					'args'                => $this->get_price_benchmarks_params(),
+					'args'                => $this->get_collection_params(),
 				],
 				'schema' => $this->get_api_response_schema_callback(),
 			]
@@ -67,7 +67,7 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 		$args = wp_parse_args(
 			array_intersect_key(
 				$request->get_query_params(),
-				$this->get_collection_params() // Inherited from `WP_REST_Controller`.
+				$this->get_collection_params()
 			),
 			$request->get_default_params()
 		);
@@ -97,6 +97,22 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				return $this->response_from_exception( $e );
 			}
 		};
+	}
+
+	/**
+	 * Get the query params for collections.
+	 *
+	 * @return array
+	 */
+	public function get_collection_params(): array {
+		$params = parent::get_collection_params();
+
+		$params['id'] = [
+			'description' => __( 'The Id of the product.', 'google-listings-and-ads' ),
+			'type'        => 'integer',
+		];
+
+		return $params;
 	}
 
 	/**
@@ -309,25 +325,6 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 			'predicted_conversions_change' => [
 				'description' => __( 'Expected uplift in conversions (fraction).', 'google-listings-and-ads' ),
 				'type'        => [ 'string', 'null' ],
-			],
-		];
-	}
-
-	/**
-	 * Retrieves the parameters for price benchmarks.
-	 *
-	 * @return array An associative array of parameters for price benchmarks.
-	 */
-	public function get_price_benchmarks_params(): array {
-		return [
-			'id'     => [
-				'description' => __( 'The Id of the product.', 'google-listings-and-ads' ),
-				'type'        => 'integer',
-			],
-			'fields' => [
-				'description' => __( 'Comma-separated list of fields to include in the response.', 'google-listings-and-ads' ),
-				'type'        => 'array',
-				'required'    => false,
 			],
 		];
 	}
