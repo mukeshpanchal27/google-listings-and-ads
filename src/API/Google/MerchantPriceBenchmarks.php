@@ -5,10 +5,13 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Google;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceBenchmarksQuery;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceSuggestionsQuery;
+use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceBenchmarksProductReportQuery;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
+use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\WP;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Exception as GoogleException;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Service\ShoppingContent;
+use DateTime;
 use Exception;
 
 /**
@@ -28,12 +31,19 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	protected $service;
 
 	/**
+	 * @var WP
+	 */
+	protected $wp;
+
+	/**
 	 * Merchant Report constructor.
 	 *
 	 * @param ShoppingContent $service
+	 * @param WP              $wp
 	 */
-	public function __construct( ShoppingContent $service ) {
+	public function __construct( ShoppingContent $service, WP $wp ) {
 		$this->service = $service;
+		$this->wp      = $wp;
 	}
 
 	/**
@@ -82,5 +92,48 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 			do_action( 'woocommerce_gla_mc_client_exception', $e, __METHOD__ );
 			throw new Exception( __( 'Unable to retrieve Merchant Price Benchmarks.', 'google-listings-and-ads' ) . $e->getMessage(), $e->getCode() );
 		}
+	}
+
+	/**
+	 * Retrieves a specific product report based on the provided arguments.
+	 *
+	 * @param array $args An associative array of arguments used to filter or identify the product report.
+	 *
+	 * @return array The specific product report data as an associative array.
+	 *
+	 * @throws Exception If there is an error retrieving the product report.
+	 */
+	public function get_specific_product_report( array $args ): array {
+		try {
+			$response = ( new MerchantPriceBenchmarksProductReportQuery( $args ) )
+			->set_client( $this->service, $this->options->get_merchant_id() )
+			->where_date_between( $this->get_today(), $this->get_weed_day() )
+			->get_results();
+
+			$results = $response->getResults() ?? [];
+
+			return $results;
+		} catch ( GoogleException $e ) {
+			do_action( 'woocommerce_gla_mc_client_exception', $e, __METHOD__ );
+			throw new Exception( __( 'Unable to retrieve performance data for requested product.', 'google-listings-and-ads' ) . $e->getMessage(), $e->getCode() );
+		}
+	}
+
+	/**
+	 * Get today's date to ensure we include any metrics from the current day.
+	 *
+	 * @return string
+	 */
+	protected function get_today(): string {
+		return ( new DateTime( 'today', $this->wp->wp_timezone() ) )->format( 'Y-m-d' );
+	}
+
+	/**
+	 * Get week's date to ensure we include any metrics from the current day.
+	 *
+	 * @return string
+	 */
+	protected function get_weed_day(): string {
+		return ( new DateTime( '+1 week', $this->wp->wp_timezone() ) )->format( 'Y-m-d' );
 	}
 }

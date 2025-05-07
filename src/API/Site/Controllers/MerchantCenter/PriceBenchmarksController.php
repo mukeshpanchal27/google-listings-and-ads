@@ -109,9 +109,9 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	 */
 	protected function get_products_report_data( Request $request ): array {
 		try {
-			/** @var MerchantReport $merchant_report */
-			$merchant_report = $this->container->get( MerchantReport::class );
-			$product_id      = $request->get_param( 'id' );
+			/** @var MerchantPriceBenchmarks $merchant */
+			$merchant   = $this->container->get( MerchantPriceBenchmarks::class );
+			$product_id = $request->get_param( 'id' );
 
 			// If no product ID is provided, bail early.
 			if ( ! $product_id ) {
@@ -119,12 +119,10 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 			}
 
 			$report_args = [
-				'ids'      => [ $product_id ],
-				'fields'   => [ 'clicks', 'conversions' ],
-				'interval' => 'week',
+				'ids' => [ $product_id ],
 			];
 
-			return $merchant_report->get_report_data( 'products', $report_args );
+			return $merchant->get_specific_product_report( $report_args );
 		} catch ( Exception $exception ) {
 			// Log the exception and return an empty array.
 			return [];

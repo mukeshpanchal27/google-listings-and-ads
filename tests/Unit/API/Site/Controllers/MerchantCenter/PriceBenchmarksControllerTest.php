@@ -1,7 +1,6 @@
 <?php
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\MerchantCenter\PriceBenchmarksController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
-use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantReport;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\PriceBenchmarks;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductHelper;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Tools\HelperTrait\GoogleAdsClientTrait;
@@ -28,9 +27,6 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 	/** @var MockObject|PriceBenchmarks */
 	protected $price_benchmarks;
 
-	/** @var MockObject|MerchantReport $merchant_report */
-	protected $merchant_report;
-
 	/** @var Container */
 	protected $container;
 
@@ -51,9 +47,6 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 
 		$this->price_benchmarks = $this->createMock( PriceBenchmarks::class );
 		$this->container->addShared( PriceBenchmarks::class, $this->price_benchmarks );
-
-		$this->merchant_report = $this->createMock( MerchantReport::class );
-		$this->container->addShared( MerchantReport::class, $this->merchant_report );
 
 		// Initialize the controller.
 		$this->controller = new PriceBenchmarksController( $this->server );
@@ -205,7 +198,6 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 			'results' => [
 				[
 					'segments' => [
-						'date'     => '2023-10-01',
 						'offer_id' => $product_id,
 					],
 					'metrics'  => [
@@ -225,14 +217,11 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 			->method( 'get_price_insights' )
 			->willReturn( $mock_price_insights_data );
 
-		$this->merchant_report->expects( $this->once() )
-			->method( 'get_report_data' )
+		$this->merchant_price_benchmarks->expects( $this->once() )
+			->method( 'get_specific_product_report' )
 			->with(
-				'products',
 				[
-					'ids'      => [ self::TEST_PRODUCT_ID ],
-					'fields'   => [ 'clicks', 'conversions' ],
-					'interval' => 'week',
+					'ids' => [ self::TEST_PRODUCT_ID ],
 				]
 			)
 			->willReturn( $report_data );
