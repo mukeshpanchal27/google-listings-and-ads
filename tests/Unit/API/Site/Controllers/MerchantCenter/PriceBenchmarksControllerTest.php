@@ -109,16 +109,18 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 		// Expected shape once data from the two queries are stitched together.
 		$expected = [
 			[
-				'product'         => [
+				'product'                      => [
 					'id'        => (int) $product_id,
 					'thumbnail' => '', // The thumbnail URL of the ID.
 					'title'     => $product_title,
 				],
-				'effectiveness'   => 3,
-				'regular_price'   => 124.99,
-				'price_on_google' => 119.92, // Converted from micros.
-				'price_gap'       => 5.07, // Reg price - Price on Google, Converted from micros.
-				'suggested_price' => 118.99, // Converted from micros.
+				'effectiveness'                => 3,
+				'regular_price'                => 124.99,
+				'price_on_google'              => 119.92, // Converted from micros.
+				'price_gap'                    => 5.07, // Reg price - Price on Google, Converted from micros.
+				'suggested_price'              => 118.99, // Converted from micros.
+				'predicted_clicks_change'      => '0.508745014667511',
+				'predicted_conversions_change' => '2.3431060314178467',
 			],
 		];
 
