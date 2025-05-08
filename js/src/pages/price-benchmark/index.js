@@ -17,7 +17,9 @@ import Banner from './banner';
 import './index.scss';
 
 const PriceBenchmark = () => {
-	const [ dataViewLoaded, setDataViewLoaded ] = useState();
+	const [ dataViewLoaded, setDataViewLoaded ] = useState(
+		window.wp?.dataviews
+	);
 	const { dataViewsScriptUrl } = glaData;
 
 	useEffect( () => {
