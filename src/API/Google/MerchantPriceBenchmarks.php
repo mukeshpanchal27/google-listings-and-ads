@@ -95,7 +95,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	 *
 	 * @throws Exception If there is an error retrieving the product report.
 	 */
-	public function get_specific_product_report( array $args ): array {
+	public function get_merchant_performance_data( array $args ): array {
 		try {
 			// Ensure we set the default date range for the query if not provided.
 			$args = wp_parse_args(
