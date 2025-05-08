@@ -84,10 +84,10 @@ const webpackConfig = {
 	],
 	entry: () => ( {
 		...defaultConfig.entry(),
-		'wp-dataviews': path.resolve(
+		'wp-dataviews-shim': path.resolve(
 			process.cwd(),
 			'js/src/shims',
-			'wp-dataviews'
+			'wp-dataviews.js'
 		),
 		index: path.resolve( process.cwd(), 'js/src', 'index.js' ),
 		'product-attributes': path.resolve(

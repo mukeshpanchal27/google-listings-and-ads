@@ -8,35 +8,30 @@ import { Card } from '@wordpress/components';
 /**
  * Internal dependencies
  */
+import { glaData } from '~/constants';
 import AppSpinner from '~/components/app-spinner';
 import MainTabNav from '~/components/main-tab-nav';
 import PriceBenchmarkSuggestions from './price-benchmark-suggestions';
 import ProductComparisonChart from './product-comparison-chart';
 import Banner from './banner';
-import { glaData } from '~/constants';
 import './index.scss';
 
 const PriceBenchmark = () => {
-	const [ dataViewLoaded, setDataViewLoaded ] = useState(
-		window.wp.dataviews
-	);
+	const [ dataViewLoaded, setDataViewLoaded ] = useState();
+	const { dataViewsScriptUrl } = glaData;
 
 	useEffect( () => {
-		if ( dataViewLoaded === undefined ) {
+		if ( dataViewLoaded === undefined && dataViewsScriptUrl ) {
 			const script = document.createElement( 'script' );
-			script.src = glaData.dataViewsScriptUrl;
+			script.src = dataViewsScriptUrl;
 			script.async = true;
 
 			script.onload = () => {
-				if (
+				setDataViewLoaded(
 					window.wp.dataviews &&
-					typeof window.wp.dataviews?.filterSortAndPaginate ===
-						'function'
-				) {
-					setDataViewLoaded( true );
-				} else {
-					setDataViewLoaded( false );
-				}
+						typeof window.wp.dataviews?.filterSortAndPaginate ===
+							'function'
+				);
 			};
 
 			script.onerror = () => {
@@ -51,7 +46,7 @@ const PriceBenchmark = () => {
 				setDataViewLoaded( undefined );
 			}
 		};
-	}, [ dataViewLoaded ] );
+	}, [ dataViewLoaded, dataViewsScriptUrl ] );
 
 	return (
 		<div className="gla-price-benchmark">

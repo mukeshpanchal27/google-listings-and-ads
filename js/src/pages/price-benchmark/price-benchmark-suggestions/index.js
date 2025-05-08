@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { withViewportMatch } from '@wordpress/viewport';
 import { TablePlaceholder } from '@woocommerce/components';
 import { useState, useMemo, useEffect, useCallback } from '@wordpress/element';
-import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews/wp';
 
 /**
  * Internal dependencies
@@ -175,6 +174,7 @@ const TABLE_FIELDS_MOBILE = [ 'action' ];
  * @return {JSX.Element} A div containing the DataViews component.
  */
 const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
+	const { DataViews, filterSortAndPaginate } = window.wp.dataviews;
 	const { suggestions, hasFinishedResolution } =
 		usePriceBenchmarkSuggestions();
 
