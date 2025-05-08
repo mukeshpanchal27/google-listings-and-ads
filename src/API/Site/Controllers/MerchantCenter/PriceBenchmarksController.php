@@ -99,8 +99,10 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				/** @var MerchantPriceBenchmarks $merchant */
 				$merchant = $this->container->get( MerchantPriceBenchmarks::class );
 
-				$benchmark_data      = $merchant->get_benchmark_data( $this->prepare_query_arguments( $request ) );
-				$price_insights_data = $merchant->get_price_insights( $this->prepare_query_arguments( $request ) );
+				$query_args = $this->prepare_query_arguments( $request );
+
+				$benchmark_data      = $merchant->get_benchmark_data( $query_args );
+				$price_insights_data = $merchant->get_price_insights( $query_args );
 
 				// Map the data to the required format.
 				$response_data = $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
@@ -122,14 +124,19 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				/** @var MerchantPriceBenchmarks $merchant */
 				$merchant = $this->container->get( MerchantPriceBenchmarks::class );
 
-				$benchmark_data      = $merchant->get_benchmark_data( $this->prepare_query_arguments( $request ) );
-				$price_insights_data = $merchant->get_price_insights( $this->prepare_query_arguments( $request ) );
+				// Pass the product ID to the query.
+				$query_args = [
+					'ids' => [ $request->get_param( 'id' ) ],
+				];
+
+				$benchmark_data      = $merchant->get_benchmark_data( $query_args );
+				$price_insights_data = $merchant->get_price_insights( $query_args );
 
 				// Map the data to the required format.
 				$response_data = $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
 
 				if ( ! empty( $response_data ) ) {
-					$metrics_data = $this->get_products_report_data( $request );
+					$metrics_data = $this->get_products_report_data( $query_args );
 					if ( isset( $metrics_data['id'] ) ) {
 						$id = $this->get_product_id( (string) $metrics_data['id'] );
 						// Combine metrics data into the response for the specific product.
@@ -206,46 +213,28 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	 * @return array
 	 */
 	public function get_item_params(): array {
-		$params = parent::get_collection_params();
-
 		$item_params = [
-			'id'        => [
+			'id' => [
 				'description' => __( 'The Id of the product.', 'google-listings-and-ads' ),
 				'type'        => 'integer',
 			],
-			'next_page' => [
-				'description'       => __( 'Token to retrieve the next page.', 'google-listings-and-ads' ),
-				'type'              => 'string',
-				'validate_callback' => 'rest_validate_request_arg',
-			],
 		];
 
-		return array_merge( $params, $item_params );
+		return $item_params;
 	}
 
 	/**
 	 * Retrieves the products report data for the given request.
 	 *
-	 * @param Request $request REST Request.
+	 * @param array $args Query arguments.
 	 * @return array|WP_Error Prepared response data or error.
 	 */
-	protected function get_products_report_data( $request ): array {
+	protected function get_products_report_data( $args ): array {
 		try {
 			/** @var MerchantPriceBenchmarks $merchant */
 			$merchant = $this->container->get( MerchantPriceBenchmarks::class );
 
-			$product_id = $request->get_param( 'id' );
-
-			// If no product ID is provided, bail early.
-			if ( ! $product_id ) {
-				return [];
-			}
-
-			$report_args = [
-				'ids' => [ $product_id ],
-			];
-
-			$reports = $merchant->get_specific_product_report( $report_args );
+			$reports = $merchant->get_specific_product_report( $args );
 
 			return $reports['results'][0] ?? [];
 		} catch ( Exception $exception ) {
