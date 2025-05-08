@@ -110,7 +110,7 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	}
 
 	/**
-	 * Get the callback function for the price benchmarks request.
+	 * Get the callback function for a specific price benchmark request.
 	 *
 	 * @return callable
 	 */
@@ -165,7 +165,7 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	}
 
 	/**
-	 * Get the query params for collections.
+	 * Get the query params for a single product.
 	 *
 	 * @return array
 	 */
