@@ -9,6 +9,7 @@ import { Card } from '@wordpress/components';
  * Internal dependencies
  */
 import { glaData } from '~/constants';
+import AppNotice from '~/components/app-notice';
 import AppSpinner from '~/components/app-spinner';
 import MainTabNav from '~/components/main-tab-nav';
 import PriceBenchmarkSuggestions from './price-benchmark-suggestions';
@@ -56,26 +57,26 @@ const PriceBenchmark = () => {
 			<Banner />
 			<ProductComparisonChart />
 
-			<Card className="gla-price-benchmark__card">
-				{ dataViewLoaded === undefined && (
-					<div className="gla-price-benchmark__loading">
-						<AppSpinner />
-					</div>
-				) }
+			{ dataViewLoaded === false && (
+				<AppNotice
+					status="warning"
+					isDismissible={ false }
+					className="gla-price-benchmark__error-message"
+				>
+					{ __(
+						'There was an error loading the price benchmark suggestions.',
+						'google-listings-and-ads'
+					) }
+				</AppNotice>
+			) }
 
-				{ dataViewLoaded === false && (
-					<div className="gla-price-benchmark__empty-metrics">
-						<p className="gla-price-benchmark__error-message">
-							{ __(
-								'There was an error loading the price benchmark suggestions.',
-								'google-listings-and-ads'
-							) }
-						</p>
-					</div>
-				) }
+			{ ( dataViewLoaded || dataViewLoaded === undefined ) && (
+				<Card className="gla-price-benchmark__card">
+					{ dataViewLoaded === undefined && <AppSpinner /> }
 
-				{ dataViewLoaded && <PriceBenchmarkSuggestions /> }
-			</Card>
+					{ dataViewLoaded && <PriceBenchmarkSuggestions /> }
+				</Card>
+			) }
 		</div>
 	);
 };
