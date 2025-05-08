@@ -154,7 +154,7 @@
 				"maxSize": "8.3 kB"
 			},
 			{
-				"path": "./js/build/wp-dataviews.js",
+				"path": "./js/build/wp-dataviews-shim.js",
 				"maxSize": "277.00 kB"
 			},
 			{
