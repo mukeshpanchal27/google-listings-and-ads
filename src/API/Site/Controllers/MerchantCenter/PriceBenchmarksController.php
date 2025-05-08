@@ -128,7 +128,16 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 
 				if ( ! empty( $response_data ) ) {
 					$metrics_data = $this->get_products_report_data( $request );
-					// @todo combine metrics data into the response for the specific product.
+					// Combine metrics data into the response for the specific product.
+					if ( isset( $response_data[ $metrics_data['id'] ] ) ) {
+						$response_data[ $metrics_data['id'] ] = array_merge(
+							$response_data[ $metrics_data['id'] ],
+							[
+								'clicks'      => $metrics_data['clicks'],
+								'conversions' => $metrics_data['conversions'],
+							],
+						);
+					}
 				}
 
 				return new Response( $response_data );
