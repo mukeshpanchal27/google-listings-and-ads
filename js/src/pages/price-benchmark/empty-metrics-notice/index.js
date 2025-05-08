@@ -9,12 +9,11 @@ import { __ } from '@wordpress/i18n';
  */
 import AppDocumentationLink from '~/components/app-documentation-link';
 import EmptyMetricsGraphic from '~/images/price-benchmark/empty-metrics.svg';
-import Wrapper from './wrapper';
 import './index.scss';
 
 const EmptyMetricsNotice = () => {
 	return (
-		<Wrapper>
+		<div className="gla-price-benchmark__empty-metrics">
 			<div className="gla-price-benchmark__empty-metrics-graphic">
 				<img
 					src={ EmptyMetricsGraphic }
@@ -52,7 +51,7 @@ const EmptyMetricsNotice = () => {
 					) }
 				</p>
 			</div>
-		</Wrapper>
+		</div>
 	);
 };
 
