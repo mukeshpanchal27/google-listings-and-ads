@@ -9,6 +9,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\API\TransportMethods;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\PriceBenchmarks;
+use Automattic\WooCommerce\GoogleListingsAndAds\PluginHelper;
 use Exception;
 use WP_REST_Request as Request;
 use WP_REST_Response as Response;
@@ -23,6 +24,7 @@ defined( 'ABSPATH' ) || exit;
 class PriceBenchmarksController extends BaseController implements ContainerAwareInterface {
 
 	use ContainerAwareTrait;
+	use PluginHelper;
 
 	/**
 	 * Register rest routes with WordPress.
@@ -128,15 +130,18 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 
 				if ( ! empty( $response_data ) ) {
 					$metrics_data = $this->get_products_report_data( $request );
-					// Combine metrics data into the response for the specific product.
-					if ( isset( $response_data[ $metrics_data['id'] ] ) ) {
-						$response_data[ $metrics_data['id'] ] = array_merge(
-							$response_data[ $metrics_data['id'] ],
-							[
-								'clicks'      => $metrics_data['clicks'],
-								'conversions' => $metrics_data['conversions'],
-							],
-						);
+					if ( isset( $metrics_data['id'] ) ) {
+						$id = $this->get_product_id( (string) $metrics_data['id'] );
+						// Combine metrics data into the response for the specific product.
+						if ( isset( $response_data[ $id ] ) ) {
+							$response_data[ $id ] = array_merge(
+								$response_data[ $id ],
+								[
+									'clicks'      => $metrics_data['clicks'],
+									'conversions' => $metrics_data['conversions'],
+								],
+							);
+						}
 					}
 				}
 
@@ -145,6 +150,37 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				return $this->response_from_exception( $e );
 			}
 		};
+	}
+
+	/**
+	 * Gets the product ID from the Google product ID.
+	 *
+	 * @param string $mc_product_id Simple product ID (`merchant_center_id`) or
+	 *                              namespaced product ID (`online:en:GB:merchant_center_id`)
+	 *
+	 * @return int the ID for the WC product linked to the provided Google product ID (0 if not found)
+	 */
+	public function get_product_id( string $mc_product_id ): int {
+		// Maybe remove everything before the last colon ':'
+		$mc_product_id_tokens = explode( ':', $mc_product_id );
+		$mc_product_id        = end( $mc_product_id_tokens );
+
+		// Support a fully numeric ID both with and without the `gla_` prefix.
+		$wc_product_id = 0;
+		$pattern       = '/^(' . preg_quote( $this->get_slug(), '/' ) . '_)?(\d+)$/';
+		$wc_pattern    = '/^(woocommerce_gpf_)?(\d+)$/';
+		if ( preg_match( $pattern, $mc_product_id, $matches ) ) {
+			$wc_product_id = (int) $matches[2];
+		} elseif ( preg_match( $wc_pattern, $mc_product_id, $matches ) ) {
+			$wc_product_id = (int) $matches[2];
+		}
+
+		/**
+		 * This filter is documented in ProductHelper::get_wc_product_id.
+		 *
+		 * @see ProductHelper::get_wc_product_id
+		 */
+		return (int) apply_filters( 'woocommerce_gla_get_wc_product_id', $wc_product_id, $mc_product_id );
 	}
 
 	/**

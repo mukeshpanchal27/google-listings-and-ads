@@ -155,7 +155,31 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 		$this->assertSameSets( $mock_benchmark_data, $response->get_data(), 'The response data should match the expected structure.' );
 	}
 
-	public function test_get_price_benchmarks_uplift_data() {
+	/**
+	 * Data provider for test cases involving the 'id' field.
+	 *
+	 * @return array
+	 */
+	public function data_provider_report_product_id(): array {
+		return [
+			'intiger'                         => [
+				'id' => self::TEST_PRODUCT_ID,
+			],
+			'With "gla_" prevfix'             => [
+				'id' => 'gla_' . self::TEST_PRODUCT_ID,
+			],
+			'With "woocommerce_gpf_" prevfix' => [
+				'id' => 'woocommerce_gpf_' . self::TEST_PRODUCT_ID,
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider data_provider_report_product_id
+	 *
+	 * @param mixed $report_product_id The ID to product with and without prefix.
+	 */
+	public function test_get_price_benchmarks_uplift_data( $report_product_id ) {
 		$product_title = "UGG Women's s Classic Mini";
 
 		// Mock the benchmark data.
@@ -197,7 +221,7 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 		$report_data = [
 			'results' => [
 				[
-					'id'          => self::TEST_PRODUCT_ID,
+					'id'          => $report_product_id,
 					'clicks'      => 734,
 					'conversions' => 4,
 				],
