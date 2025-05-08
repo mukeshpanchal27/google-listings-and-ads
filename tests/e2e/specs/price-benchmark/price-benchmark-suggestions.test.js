@@ -208,7 +208,7 @@ test.describe( 'Price Benchmark Page', () => {
 			// Mock 500 response for the data view script only once.
 			const once = priceBenchmarkPage.withFulfillTimes( 1 );
 			await once.fulfillRequest(
-				/\/js\/build\/wp-dataviews.js(\/.*)?\b/,
+				/\/js\/build\/wp-dataviews-shim.js(\/.*)?\b/,
 				{},
 				500,
 				[ 'GET' ]
