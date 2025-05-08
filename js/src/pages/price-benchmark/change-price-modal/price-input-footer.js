@@ -26,6 +26,7 @@ import useDispatchProduct from '~/hooks/useDispatchProduct';
  * @param {number} props.suggestedPrice - The suggested price for the product.
  * @param {number} [props.salesPrice] - The current sales price of the product (if any).
  * @param {Function} props.onPriceChange - Callback function triggered after the price is successfully updated.
+ * @param {boolean} props.onSale - Indicates if the product is currently on sale.
  *
  * @return {JSX.Element} The rendered PriceInputFooter component.
  */
@@ -33,6 +34,7 @@ const PriceInputFooter = ( {
 	productId,
 	suggestedPrice,
 	salesPrice,
+	onSale,
 	onPriceChange,
 } ) => {
 	const { formatAmount } = useAdsCurrency();
@@ -53,7 +55,8 @@ const PriceInputFooter = ( {
 		if (
 			! isNaN( formattedSalesPrice ) &&
 			formattedSalesPrice &&
-			updatedPrice <= formattedSalesPrice
+			updatedPrice <= formattedSalesPrice &&
+			onSale
 		) {
 			return sprintf(
 				// Translators: %s is replaced with the sales price.
@@ -73,7 +76,7 @@ const PriceInputFooter = ( {
 		}
 
 		return null;
-	}, [ newPrice, salesPrice, formatAmount ] );
+	}, [ newPrice, salesPrice, formatAmount, onSale ] );
 
 	const validatePrice = useCallback( () => {
 		const error = getInputError();

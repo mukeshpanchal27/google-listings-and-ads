@@ -70,11 +70,19 @@
 		width: 100%;
 	}
 
+	.gla-badge.is-warning {
+		grid-column: -1 / 1;
+	}
+
 	.gla-change-price-modal-price-input-footer {
 		align-items: flex-start;
-		display: flex;
-		flex-wrap: nowrap;
-		gap: calc($grid-unit-15 * 2);
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: $grid-unit-20;
+
+		@include break-large {
+			width: calc(100% - 156px - $grid-unit-50);
+		}
 
 		label.components-input-control__label {
 			color: $gray-900 !important;
@@ -94,20 +102,31 @@
 		.app-button {
 			// To align with the input
 			margin-top: 28px;
+			width: 100%;
 		}
-	}
-
-	.gla-change-price-modal-price-input-footer__price {
-		max-width: 180px;
 	}
 
 	.gla-change-price-modal-price-input-footer__price--error {
 		div.components-input-control__backdrop {
-			border-color: $gla-color-red;
+			color: $alert-red;
 		}
 
 		.components-base-control__help {
-			color: $gla-color-red;
+			color: $alert-red;
+		}
+	}
+
+	.gla-change-price-modal__sales-price {
+
+		.gla-price-benchmark__label {
+			color: $alert-red;
+		}
+	}
+
+	.app-modal__footer {
+
+		@include break-small {
+			margin-top: $grid-unit;
 		}
 	}
 }

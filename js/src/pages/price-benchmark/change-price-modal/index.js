@@ -27,6 +27,7 @@ import AppButton from '~/components/app-button';
 import AppModal from '~/components/app-modal';
 import PriceInputFooter from './price-input-footer';
 import AppSpinner from '~/components/app-spinner';
+import Badge from '~/components/badge';
 import usePriceBenchmarkSuggestionsProduct from '~/hooks/usePriceBenchmarkSuggestionsProduct';
 import useProduct from '~/hooks/useProduct';
 import './index.scss';
@@ -95,7 +96,8 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 		);
 	}
 
-	const salesPrice = Number.parseFloat( productDetails?.sale_price );
+	const salesPrice = Number.parseFloat( productDetails.sale_price );
+	const isOnSale = productDetails.on_sale;
 
 	return (
 		<AppModal
@@ -106,6 +108,7 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 					productId={ id }
 					key="price-input-footer"
 					suggestedPrice={ suggestedPrice }
+					onSale={ isOnSale }
 					salesPrice={ salesPrice }
 				/>,
 			] }
@@ -163,11 +166,14 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 							type={ METRIC_TYPE_PRICE }
 						/>
 
-						<MetricValue
-							labelKey={ LABEL_SALES_PRICE }
-							value={ salesPrice }
-							type={ METRIC_TYPE_PRICE }
-						/>
+						{ isOnSale && (
+							<MetricValue
+								labelKey={ LABEL_SALES_PRICE }
+								value={ salesPrice }
+								type={ METRIC_TYPE_PRICE }
+								className="gla-change-price-modal__sales-price"
+							/>
+						) }
 
 						<MetricValue
 							labelKey={ LABEL_SUGGESTED_PRICE }
@@ -198,6 +204,17 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 							value={ predictedConversionsChange }
 							type={ METRIC_TYPE_DELTA }
 						/>
+
+						<hr className="gla-change-price-modal__separator" />
+
+						{ isOnSale && (
+							<Badge intent="warning">
+								{ __(
+									'Product is currently on sale',
+									'google-listings-and-ads'
+								) }
+							</Badge>
+						) }
 					</div>
 				</div>
 			</div>
