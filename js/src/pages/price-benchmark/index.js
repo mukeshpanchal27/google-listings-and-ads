@@ -28,9 +28,8 @@ const PriceBenchmark = () => {
 
 			script.onload = () => {
 				setDataViewLoaded(
-					window.wp.dataviews &&
-						typeof window.wp.dataviews?.filterSortAndPaginate ===
-							'function'
+					typeof window.wp?.dataviews?.filterSortAndPaginate ===
+						'function'
 				);
 			};
 

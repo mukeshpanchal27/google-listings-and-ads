@@ -178,6 +178,8 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 	const { suggestions, hasFinishedResolution } =
 		usePriceBenchmarkSuggestions();
 
+	const { DataViews, filterSortAndPaginate } = wp.dataviews;
+
 	const [ view, setView ] = useState( {
 		type: 'table',
 		search: '',
@@ -197,7 +199,7 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 			...METRICS_TABLE_FIELDS,
 		] );
 		return updatedData;
-	}, [ suggestions, view ] );
+	}, [ filterSortAndPaginate, suggestions, view ] );
 
 	const handleOnChangeView = useCallback( ( newView ) => {
 		setView( newView );
