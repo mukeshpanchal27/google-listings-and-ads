@@ -178,8 +178,6 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 	const { suggestions, hasFinishedResolution } =
 		usePriceBenchmarkSuggestions();
 
-	const { DataViews, filterSortAndPaginate } = wp.dataviews;
-
 	const [ view, setView ] = useState( {
 		type: 'table',
 		search: '',
