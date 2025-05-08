@@ -133,9 +133,6 @@ const webpackConfig = {
 			},
 		},
 	},
-	externals: {
-		...( defaultConfig.externals || {} ),
-	},
 };
 
 if ( hasReactFastRefresh ) {
