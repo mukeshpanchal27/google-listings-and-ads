@@ -223,7 +223,7 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 			->willReturn( $report_data );
 
 		// Simulate a GET request.
-		$response = $this->do_request( self::ROUTE_PRICE_BENCHMARKS, 'GET', [ 'id' => self::TEST_PRODUCT_ID ] );
+		$response = $this->do_request( self::ROUTE_PRICE_BENCHMARKS . '/' . self::TEST_PRODUCT_ID );
 
 		// Expected shape once data from the two queries are stitched together.
 		$expected = [

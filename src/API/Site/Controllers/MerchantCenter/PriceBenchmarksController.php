@@ -3,10 +3,9 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\MerchantCenter;
 
+use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\BaseController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\TransportMethods;
-use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
-use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\ReportQueryTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\PriceBenchmarks;
@@ -24,7 +23,6 @@ defined( 'ABSPATH' ) || exit;
 class PriceBenchmarksController extends BaseController implements ContainerAwareInterface {
 
 	use ContainerAwareTrait;
-	use ReportQueryTrait;
 
 	/**
 	 * Register rest routes with WordPress.
@@ -38,6 +36,19 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 					'callback'            => $this->get_price_benchmarks_callback(),
 					'permission_callback' => $this->get_permission_callback(),
 					'args'                => $this->get_collection_params(),
+				],
+				'schema' => $this->get_api_response_schema_callback(),
+			]
+		);
+
+		$this->register_route(
+			'mc/price-benchmarks/(?P<id>[\d]+)',
+			[
+				[
+					'methods'             => TransportMethods::READABLE,
+					'callback'            => $this->get_price_benchmarks_item_callback(),
+					'permission_callback' => $this->get_permission_callback(),
+					'args'                => $this->get_item_params(),
 				],
 				'schema' => $this->get_api_response_schema_callback(),
 			]
@@ -86,12 +97,40 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				/** @var MerchantPriceBenchmarks $merchant */
 				$merchant = $this->container->get( MerchantPriceBenchmarks::class );
 
-				$merchant_report_data = $this->get_products_report_data( $request );
-				$benchmark_data       = $merchant->get_benchmark_data( $this->prepare_query_arguments( $request ) );
-				$price_insights_data  = $merchant->get_price_insights( $this->prepare_query_arguments( $request ) );
+				$benchmark_data      = $merchant->get_benchmark_data( $this->prepare_query_arguments( $request ) );
+				$price_insights_data = $merchant->get_price_insights( $this->prepare_query_arguments( $request ) );
 
 				// Map the data to the required format.
-				$response_data = $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data, $merchant_report_data );
+				$response_data = $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
+				return new Response( $response_data );
+			} catch ( Exception $e ) {
+				return $this->response_from_exception( $e );
+			}
+		};
+	}
+
+	/**
+	 * Get the callback function for the price benchmarks request.
+	 *
+	 * @return callable
+	 */
+	protected function get_price_benchmarks_item_callback(): callable {
+		return function ( Request $request ) {
+			try {
+				/** @var MerchantPriceBenchmarks $merchant */
+				$merchant = $this->container->get( MerchantPriceBenchmarks::class );
+
+				$benchmark_data      = $merchant->get_benchmark_data( $this->prepare_query_arguments( $request ) );
+				$price_insights_data = $merchant->get_price_insights( $this->prepare_query_arguments( $request ) );
+
+				// Map the data to the required format.
+				$response_data = $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
+
+				if ( ! empty( $response_data ) ) {
+					$metrics_data = $this->get_products_report_data( $request );
+					// @todo combine metrics data into the response for the specific product.
+				}
+
 				return new Response( $response_data );
 			} catch ( Exception $e ) {
 				return $this->response_from_exception( $e );
@@ -105,14 +144,38 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	 * @return array
 	 */
 	public function get_collection_params(): array {
-		$params = parent::get_collection_params();
+		$params = parent::get_collection_params(); // Inherited from WP_REST_Controller.
 
-		$params['id'] = [
-			'description' => __( 'The Id of the product.', 'google-listings-and-ads' ),
-			'type'        => 'integer',
+		$params['next_page'] = [
+			'description'       => __( 'Token to retrieve the next page.', 'google-listings-and-ads' ),
+			'type'              => 'string',
+			'validate_callback' => 'rest_validate_request_arg',
 		];
 
 		return $params;
+	}
+
+	/**
+	 * Get the query params for collections.
+	 *
+	 * @return array
+	 */
+	public function get_item_params(): array {
+		$params = parent::get_collection_params();
+
+		$item_params = [
+			'id'        => [
+				'description' => __( 'The Id of the product.', 'google-listings-and-ads' ),
+				'type'        => 'integer',
+			],
+			'next_page' => [
+				'description'       => __( 'Token to retrieve the next page.', 'google-listings-and-ads' ),
+				'type'              => 'string',
+				'validate_callback' => 'rest_validate_request_arg',
+			],
+		];
+
+		return array_merge( $params, $item_params );
 	}
 
 	/**
@@ -121,10 +184,11 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	 * @param Request $request REST Request.
 	 * @return array|WP_Error Prepared response data or error.
 	 */
-	protected function get_products_report_data( Request $request ): array {
+	protected function get_products_report_data( $request ): array {
 		try {
 			/** @var MerchantPriceBenchmarks $merchant */
-			$merchant   = $this->container->get( MerchantPriceBenchmarks::class );
+			$merchant = $this->container->get( MerchantPriceBenchmarks::class );
+
 			$product_id = $request->get_param( 'id' );
 
 			// If no product ID is provided, bail early.
@@ -136,7 +200,9 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				'ids' => [ $product_id ],
 			];
 
-			return $merchant->get_specific_product_report( $report_args );
+			$reports = $merchant->get_specific_product_report( $report_args );
+
+			return $reports['results'][0] ?? [];
 		} catch ( Exception $exception ) {
 			// Log the exception and return an empty array.
 			return [];
@@ -168,10 +234,9 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	 *
 	 * @param array $benchmark_data       Raw benchmark data.
 	 * @param array $price_insights_data  Raw price insights data.
-	 * @param array $merchant_report_data Raw merchant report data.
 	 * @return array Mapped response data.
 	 */
-	protected function map_price_benchmarks_response( array $benchmark_data, array $price_insights_data, array $merchant_report_data ): array {
+	protected function map_price_benchmarks_response( array $benchmark_data, array $price_insights_data ): array {
 		$mapped_data = [];
 
 		// Combine all data sets into $mapped_data keyed by product ID.
@@ -180,7 +245,6 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 			$mapped_data[ $product_id ] = [
 				'price_competitiveness' => $benchmark_result,
 				'price_insights'        => [],
-				'merchant_report'       => [],
 			];
 		}
 
@@ -194,22 +258,11 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 			}
 		}
 
-		// Map merchant report data to benchmarks data.
-		if ( ! empty( $merchant_report_data['results'] ) ) {
-			foreach ( $merchant_report_data['results'] as $merchant_report_result ) {
-				$product_id = $merchant_report_result['id'] ?? null;
-				if ( $product_id && isset( $mapped_data[ $product_id ] ) ) {
-					$mapped_data[ $product_id ]['merchant_report'] = $merchant_report_result;
-				}
-			}
-		}
-
 		// Transform $mapped_data into the desired response format using array_map.
 		$response_data = array_map(
 			function ( $data ) {
 				$price_competitiveness = $data['price_competitiveness'];
 				$price_insights        = $data['price_insights'];
-				$merchant_report       = $data['merchant_report'] ?? [];
 
 				// Calculate the price gap.
 				$regular_price   = (int) $price_competitiveness['price_micros'];
@@ -222,30 +275,22 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 
 				// Map the data to the required format.
 
-				return array_merge(
-					[
-						'product'                      => [
-							'id'        => $wc_product_id,
-							'thumbnail' => $thumbnail,
-							'title'     => $price_competitiveness['title'],
-						],
-						'effectiveness'                => $price_insights['effectiveness'] ?? '',
-						'regular_price'                => round( $regular_price / 1000000, 2 ),
-						'price_on_google'              => round( $price_on_google / 1000000, 2 ),
-						'price_gap'                    => round( $price_gap / 1000000, 2 ),
-						'suggested_price'              => isset( $price_insights['suggested_price_micros'] )
-							? round( $price_insights['suggested_price_micros'] / 1000000, 2 )
-							: '',
-						'predicted_clicks_change'      => $price_insights['predicted_clicks_change_fraction'] ?? '',
-						'predicted_conversions_change' => $price_insights['predicted_conversions_change_fraction'] ?? '',
+				return [
+					'product'                      => [
+						'id'        => $wc_product_id,
+						'thumbnail' => $thumbnail,
+						'title'     => $price_competitiveness['title'],
 					],
-					! empty( $merchant_report )
-						? [
-							'clicks'      => $merchant_report['clicks'] ?? '',
-							'conversions' => $merchant_report['conversions'] ?? '',
-						]
-						: []
-				);
+					'effectiveness'                => $price_insights['effectiveness'] ?? '',
+					'regular_price'                => round( $regular_price / 1000000, 2 ),
+					'price_on_google'              => round( $price_on_google / 1000000, 2 ),
+					'price_gap'                    => round( $price_gap / 1000000, 2 ),
+					'suggested_price'              => isset( $price_insights['suggested_price_micros'] )
+						? round( $price_insights['suggested_price_micros'] / 1000000, 2 )
+						: '',
+					'predicted_clicks_change'      => $price_insights['predicted_clicks_change_fraction'] ?? '',
+					'predicted_conversions_change' => $price_insights['predicted_conversions_change_fraction'] ?? '',
+				];
 			},
 			$mapped_data
 		);
