@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { withViewportMatch } from '@wordpress/viewport';
 import { TablePlaceholder } from '@woocommerce/components';
 import { useState, useMemo, useEffect, useCallback } from '@wordpress/element';
+import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews/wp';
 
 /**
  * Internal dependencies
@@ -25,7 +26,6 @@ import {
 	LABEL_ACTION,
 } from '../constants';
 import './index.scss';
-import Wrapper from '../empty-metrics-notice/wrapper';
 
 const PRODUCT_TABLE_FIELDS = [
 	{
@@ -172,14 +172,11 @@ const TABLE_FIELDS_MOBILE = [ 'action' ];
  *
  * @param {Object} props - The component props.
  * @param {boolean} props.isViewportMobile - Indicates if the viewport is in mobile size.
- * @param {boolean} props.isDataViewReady - Indicates if the DataView component is ready.
  * @return {JSX.Element} A div containing the DataViews component.
  */
-const PriceBenchmarkSuggestions = ( { isViewportMobile, isDataViewReady } ) => {
+const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 	const { suggestions, hasFinishedResolution } =
 		usePriceBenchmarkSuggestions();
-
-	const { DataViews, filterSortAndPaginate } = wp.dataviews || {};
 
 	const [ view, setView ] = useState( {
 		type: 'table',
@@ -195,14 +192,12 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile, isDataViewReady } ) => {
 	} );
 
 	const { data: shownData, paginationInfo } = useMemo( () => {
-		const updatedData = isDataViewReady
-			? filterSortAndPaginate( suggestions, view, [
-					...PRODUCT_TABLE_FIELDS,
-					...METRICS_TABLE_FIELDS,
-			  ] )
-			: {};
+		const updatedData = filterSortAndPaginate( suggestions, view, [
+			...PRODUCT_TABLE_FIELDS,
+			...METRICS_TABLE_FIELDS,
+		] );
 		return updatedData;
-	}, [ isDataViewReady, filterSortAndPaginate, suggestions, view ] );
+	}, [ suggestions, view ] );
 
 	const handleOnChangeView = useCallback( ( newView ) => {
 		setView( newView );
@@ -232,26 +227,13 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile, isDataViewReady } ) => {
 		} ) );
 	}, [ viewportFields ] );
 
-	if ( isDataViewReady === false && hasFinishedResolution ) {
-		return (
-			<Wrapper>
-				<p className="gla-price-benchmark__error-message">
-					{ __(
-						'There was an error loading the price benchmark suggestions.',
-						'google-listings-and-ads'
-					) }
-				</p>
-			</Wrapper>
-		);
-	}
-
 	if ( hasFinishedResolution && suggestions.length === 0 ) {
 		return <EmptyMetricsNotice />;
 	}
 
 	return (
 		<div className="gla-price-benchmark-suggestions">
-			{ ! hasFinishedResolution && isDataViewReady && (
+			{ ! hasFinishedResolution && (
 				<TablePlaceholder
 					headers={ [
 						{
@@ -265,7 +247,7 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile, isDataViewReady } ) => {
 				/>
 			) }
 
-			{ hasFinishedResolution && isDataViewReady && (
+			{ hasFinishedResolution && (
 				<DataViews
 					getItemId={ ( item ) => item?.product?.id }
 					fields={ [

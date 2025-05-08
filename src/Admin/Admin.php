@@ -146,7 +146,7 @@ class Admin implements OptionsAwareInterface, Registerable, Service {
 				],
 				'dataViewsScriptUrl'       => add_query_arg(
 					[
-						'vesrion' => (string) filemtime( "{$this->get_root_dir()}/js/build/wp-dataviews.js" ),
+						'version' => (string) filemtime( "{$this->get_root_dir()}/js/build/wp-dataviews.js" ),
 					],
 					(
 						new ScriptAsset(
