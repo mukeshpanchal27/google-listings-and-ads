@@ -96,7 +96,8 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 		);
 	}
 
-	const salesPrice = Number.parseFloat( productDetails?.sale_price );
+	const salesPrice = Number.parseFloat( productDetails.sale_price );
+	const isOnSale = productDetails.on_sale;
 
 	return (
 		<AppModal
@@ -107,6 +108,7 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 					productId={ id }
 					key="price-input-footer"
 					suggestedPrice={ suggestedPrice }
+					onSale={ isOnSale }
 					salesPrice={ salesPrice }
 				/>,
 			] }
@@ -164,12 +166,14 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 							type={ METRIC_TYPE_PRICE }
 						/>
 
-						<MetricValue
-							labelKey={ LABEL_SALES_PRICE }
-							value={ salesPrice }
-							type={ METRIC_TYPE_PRICE }
-							className="gla-change-price-modal__sales-price"
-						/>
+						{ isOnSale && (
+							<MetricValue
+								labelKey={ LABEL_SALES_PRICE }
+								value={ salesPrice }
+								type={ METRIC_TYPE_PRICE }
+								className="gla-change-price-modal__sales-price"
+							/>
+						) }
 
 						<MetricValue
 							labelKey={ LABEL_SUGGESTED_PRICE }
@@ -203,7 +207,7 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 
 						<hr className="gla-change-price-modal__separator" />
 
-						{ ! isNaN( salesPrice ) && (
+						{ isOnSale && (
 							<Badge intent="warning">
 								{ __(
 									'Product is currently on sale',

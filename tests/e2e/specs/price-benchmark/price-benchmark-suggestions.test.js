@@ -316,6 +316,7 @@ test.describe( 'Price Benchmark Page', () => {
 					{
 						regular_price: '100.00',
 						sale_price: '90.00',
+						on_sale: true,
 					},
 					[ 'GET' ]
 				);
@@ -382,6 +383,35 @@ test.describe( 'Price Benchmark Page', () => {
 				await priceBenchmarkPage.fulfillWCProduct(
 					{
 						regular_price: '100.00',
+					},
+					[ 'GET' ]
+				);
+
+				const changePriceLink =
+					await priceBenchmarkPage.getFirstProductChangePriceLink();
+				await changePriceLink.click();
+
+				const changePriceModal =
+					await priceBenchmarkPage.getChangePriceModal();
+
+				const saleText = changePriceModal.locator(
+					'span.gla-badge__content:has-text("Product is currently on sale")'
+				);
+				await expect( saleText ).not.toBeVisible();
+			} );
+
+			test( 'Does not display "Product is currently on sale" text when the product is not on sale but has a sale price', async () => {
+				await priceBenchmarkPage.goto();
+
+				await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+					...priceBenchmarkSuggestionsData,
+				] );
+
+				await priceBenchmarkPage.fulfillWCProduct(
+					{
+						regular_price: '100.00',
+						sale_price: '90.00',
+						on_sale: false,
 					},
 					[ 'GET' ]
 				);
