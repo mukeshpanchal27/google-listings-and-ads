@@ -28,15 +28,10 @@ const PriceBenchmark = () => {
 			script.async = true;
 
 			script.onload = () => {
-				if (
-					window.wp.dataviews &&
-					typeof window.wp.dataviews?.filterSortAndPaginate ===
+				setDataViewLoaded(
+					typeof window.wp?.dataviews?.filterSortAndPaginate ===
 						'function'
-				) {
-					setDataViewLoaded( true );
-				} else {
-					setDataViewLoaded( false );
-				}
+				);
 			};
 
 			script.onerror = () => {
