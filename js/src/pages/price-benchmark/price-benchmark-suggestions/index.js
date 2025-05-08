@@ -197,7 +197,7 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 			...METRICS_TABLE_FIELDS,
 		] );
 		return updatedData;
-	}, [ filterSortAndPaginate, suggestions, view ] );
+	}, [ view, suggestions, filterSortAndPaginate ] );
 
 	const handleOnChangeView = useCallback( ( newView ) => {
 		setView( newView );
