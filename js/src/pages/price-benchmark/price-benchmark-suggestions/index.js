@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { withViewportMatch } from '@wordpress/viewport';
 import { TablePlaceholder } from '@woocommerce/components';
 import { useState, useMemo, useEffect, useCallback } from '@wordpress/element';
-import { DataViews, filterSortAndPaginate } from '@wordpress/dataviews/wp';
 
 /**
  * Internal dependencies
@@ -169,6 +168,8 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 	const { suggestions, hasFinishedResolution } =
 		usePriceBenchmarkSuggestions();
 
+	const { DataViews, filterSortAndPaginate } = wp.dataviews;
+
 	const [ view, setView ] = useState( {
 		type: 'table',
 		search: '',
@@ -188,7 +189,7 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 			...METRICS_TABLE_FIELDS,
 		] );
 		return updatedData;
-	}, [ suggestions, view ] );
+	}, [ filterSortAndPaginate, suggestions, view ] );
 
 	const handleOnChangeView = useCallback( ( newView ) => {
 		setView( newView );
