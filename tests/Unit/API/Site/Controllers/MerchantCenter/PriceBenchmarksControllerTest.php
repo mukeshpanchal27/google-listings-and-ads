@@ -143,17 +143,24 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 		// Mock the performance data.
 		$report_data = $this->get_mock_report_results( $report_product_id );
 
+		$method_args = [
+			'ids' => [ self::TEST_PRODUCT_ID ],
+		];
+
 		// Configure the mocked methods.
 		$this->merchant_price_benchmarks->expects( $this->once() )
 			->method( 'get_benchmark_data' )
+			->with( $method_args )
 			->willReturn( $mock_benchmark_data );
 
 		$this->merchant_price_benchmarks->expects( $this->once() )
 			->method( 'get_price_insights' )
+			->with( $method_args )
 			->willReturn( $mock_price_insights_data );
 
 		$this->merchant_price_benchmarks->expects( $this->once() )
 			->method( 'get_merchant_performance_data' )
+			->with( $method_args )
 			->willReturn( $report_data );
 
 		// Simulate a GET request.
