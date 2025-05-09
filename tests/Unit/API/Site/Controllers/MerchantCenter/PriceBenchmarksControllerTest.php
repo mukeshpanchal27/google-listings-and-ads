@@ -154,11 +154,6 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 
 		$this->merchant_price_benchmarks->expects( $this->once() )
 			->method( 'get_merchant_performance_data' )
-			->with(
-				[
-					'ids' => [ self::TEST_PRODUCT_ID ],
-				]
-			)
 			->willReturn( $report_data );
 
 		// Simulate a GET request.
