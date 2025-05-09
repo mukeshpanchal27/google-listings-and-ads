@@ -200,6 +200,28 @@ test.describe( 'Price Benchmark Page', () => {
 
 			await page.setViewportSize( { width: 1280, height: 720 } );
 		} );
+
+		test( 'Displays error message when data view fails to load', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
+			await priceBenchmarkPage.goto();
+
+			// Mock 500 response for the data view script only once.
+			const once = priceBenchmarkPage.withFulfillTimes( 1 );
+			await once.fulfillRequest(
+				/\/js\/build\/wp-dataviews-shim.js(\/.*)?\b/,
+				{},
+				500,
+				[ 'GET' ]
+			);
+
+			const errorMessage = page.locator(
+				'.gla-price-benchmark__error-message'
+			);
+			await expect( errorMessage ).toBeVisible();
+			await expect( errorMessage ).toContainText(
+				'There was an error loading the price benchmark suggestions.'
+			);
+		} );
 	} );
 
 	test.describe( 'Change Price Modal Functionality', () => {
@@ -247,7 +269,7 @@ test.describe( 'Price Benchmark Page', () => {
 
 			const error = priceBenchmarkPage.getPriceInputError();
 			await expect( error ).toHaveText(
-				'New price must be greater than or equals to zero.'
+				'New price must be greater than the sales price (NT$90.00).'
 			);
 
 			const changePriceButton =

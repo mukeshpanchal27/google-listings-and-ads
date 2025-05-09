@@ -84,6 +84,11 @@ const webpackConfig = {
 	],
 	entry: () => ( {
 		...defaultConfig.entry(),
+		'wp-dataviews-shim': path.resolve(
+			process.cwd(),
+			'js/src/shims',
+			'wp-dataviews.js'
+		),
 		index: path.resolve( process.cwd(), 'js/src', 'index.js' ),
 		'product-attributes': path.resolve(
 			process.cwd(),
@@ -113,15 +118,9 @@ const webpackConfig = {
 			...defaultConfig.optimization.splitChunks,
 			cacheGroups: {
 				...defaultConfig.optimization.splitChunks.cacheGroups,
-				wordpressDataviews: {
-					name: 'wp-dataviews',
-					priority: 20,
-					test: /[\\/]node_modules[\\/](@wordpress[\\/]dataviews)[\\/]/,
-				},
 				vendors: {
 					name: 'vendors',
 					test: /([\\/])node_modules\1/,
-					priority: 10,
 				},
 				commons: {
 					name: 'commons',

@@ -151,11 +151,11 @@
 			},
 			{
 				"path": "./js/build/vendors.js",
-				"maxSize": "41 kB"
+				"maxSize": "8.3 kB"
 			},
 			{
-				"path": "./js/build/wp-dataviews.js",
-				"maxSize": "242.57 kB"
+				"path": "./js/build/wp-dataviews-shim.js",
+				"maxSize": "277.00 kB"
 			},
 			{
 				"path": "./js/build/*.css",
