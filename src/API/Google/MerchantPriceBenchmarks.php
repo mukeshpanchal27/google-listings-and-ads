@@ -5,10 +5,12 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Google;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceBenchmarksQuery;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceSuggestionsQuery;
+use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceBenchmarksProductReportQuery;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Exception as GoogleException;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Service\ShoppingContent;
+use DateTime;
 use Exception;
 
 /**
@@ -82,5 +84,54 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 			do_action( 'woocommerce_gla_mc_client_exception', $e, __METHOD__ );
 			throw new Exception( __( 'Unable to retrieve Merchant Price Benchmarks.', 'google-listings-and-ads' ) . $e->getMessage(), $e->getCode() );
 		}
+	}
+
+	/**
+	 * Retrieves a specific product report based on the provided arguments.
+	 *
+	 * @param array $args An associative array of arguments used to filter or identify the product report.
+	 *
+	 * @return array The specific product report data as an associative array.
+	 *
+	 * @throws Exception If there is an error retrieving the product report.
+	 */
+	public function get_merchant_performance_data( array $args ): array {
+		try {
+			// Ensure we set the default date range for the query if not provided.
+			$args = wp_parse_args(
+				$args,
+				$this->get_default_between_dates()
+			);
+
+			$response = ( new MerchantPriceBenchmarksProductReportQuery( $args ) )
+			->set_client( $this->service, $this->options->get_merchant_id() )
+			->get_results();
+
+			$results = $response->getResults() ?? [];
+
+			return $results;
+		} catch ( GoogleException $e ) {
+			do_action( 'woocommerce_gla_mc_client_exception', $e, __METHOD__ );
+			throw new Exception( __( 'Unable to retrieve performance data for requested product.', 'google-listings-and-ads' ) . $e->getMessage(), $e->getCode() );
+		}
+	}
+
+	/**
+	 * Get start and end dates for the previous week from Monday to Sunday.
+	 *
+	 * @return array An associative array of price benchmark data.
+	 */
+	protected function get_default_between_dates(): array {
+		$today       = new DateTime( 'today' );
+		$day_of_week = (int) $today->format( 'N' ); // 1 (Monday) to 7 (Sunday).
+
+		// Calculate the start and end dates for the last Monday to Sunday period.
+		$end_date   = ( clone $today )->modify( '-' . $day_of_week . ' days' ); // Last Sunday
+		$start_date = ( clone $end_date )->modify( '-6 days' ); // Last Monday
+
+		return [
+			'after'  => $start_date->format( 'Y-m-d' ),
+			'before' => $end_date->format( 'Y-m-d' ),
+		];
 	}
 }

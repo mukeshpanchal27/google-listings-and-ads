@@ -3,13 +3,13 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\MerchantCenter;
 
+use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\BaseController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\TransportMethods;
-use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceSuggestionsQuery;
-use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\PriceBenchmarks;
+use Automattic\WooCommerce\GoogleListingsAndAds\PluginHelper;
 use Exception;
 use WP_REST_Request as Request;
 use WP_REST_Response as Response;
@@ -24,6 +24,7 @@ defined( 'ABSPATH' ) || exit;
 class PriceBenchmarksController extends BaseController implements ContainerAwareInterface {
 
 	use ContainerAwareTrait;
+	use PluginHelper;
 
 	/**
 	 * Register rest routes with WordPress.
@@ -36,6 +37,20 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 					'methods'             => TransportMethods::READABLE,
 					'callback'            => $this->get_price_benchmarks_callback(),
 					'permission_callback' => $this->get_permission_callback(),
+					'args'                => $this->get_collection_params(),
+				],
+				'schema' => $this->get_api_response_schema_callback(),
+			]
+		);
+
+		$this->register_route(
+			'mc/price-benchmarks/(?P<id>[\d]+)',
+			[
+				[
+					'methods'             => TransportMethods::READABLE,
+					'callback'            => $this->get_price_benchmarks_item_callback(),
+					'permission_callback' => $this->get_permission_callback(),
+					'args'                => $this->get_item_params(),
 				],
 				'schema' => $this->get_api_response_schema_callback(),
 			]
@@ -81,20 +96,144 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	protected function get_price_benchmarks_callback(): callable {
 		return function ( Request $request ) {
 			try {
-				/** @var MerchantPriceBenchmarks $merchant */
-				$merchant = $this->container->get( MerchantPriceBenchmarks::class );
+				$response_data = $this->get_price_benchmarks_base_data(
+					$this->prepare_query_arguments( $request )
+				);
 
-				$benchmark_data      = $merchant->get_benchmark_data( $this->prepare_query_arguments( $request ) );
-				$price_insights_data = $merchant->get_price_insights( $this->prepare_query_arguments( $request ) );
+				if ( empty( $response_data ) ) {
+					return new Response( [] );
+				}
 
-				// Map the data to the required format.
-				$response_data = $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
-
-				return new Response( $response_data );
+				return new Response( array_values( $response_data ) );
 			} catch ( Exception $e ) {
 				return $this->response_from_exception( $e );
 			}
 		};
+	}
+
+	/**
+	 * Get the callback function for a specific price benchmark request.
+	 *
+	 * @return callable
+	 */
+	protected function get_price_benchmarks_item_callback(): callable {
+		return function ( Request $request ) {
+			try {
+				$id = $request->get_param( 'id' );
+				// Pass the product ID to the query.
+				$query_args = [
+					'ids' => [ $id ],
+				];
+
+				$response_data = $this->get_price_benchmarks_base_data( $query_args )[ $id ] ?? [];
+
+				if ( ! empty( $response_data ) ) {
+					/** @var MerchantPriceBenchmarks $merchant */
+					$merchant = $this->container->get( MerchantPriceBenchmarks::class );
+
+					$metrics_data = $merchant->get_merchant_performance_data( $query_args )[0] ?? [];
+
+					if ( ! empty( $metrics_data ) ) {
+						// Combine metrics data into the response for the specific product.
+						$response_data = array_merge(
+							$response_data,
+							[
+								'clicks'      => $metrics_data['clicks'],
+								'conversions' => $metrics_data['conversions'],
+							],
+						);
+					}
+				}
+
+				if ( empty( $response_data ) ) {
+					return new Response( [] );
+				}
+
+				return $this->prepare_item_for_response( $response_data, $request );
+			} catch ( Exception $e ) {
+				return $this->response_from_exception( $e );
+			}
+		};
+	}
+
+	/**
+	 * Get the price benchmarks base data.
+	 *
+	 * @param array $args Query arguments.
+	 * @return array Mapped response data.
+	 */
+	private function get_price_benchmarks_base_data( $args ) {
+		/** @var MerchantPriceBenchmarks $merchant */
+		$merchant = $this->container->get( MerchantPriceBenchmarks::class );
+
+		$benchmark_data      = $merchant->get_benchmark_data( $args );
+		$price_insights_data = $merchant->get_price_insights( $args );
+
+		return $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
+	}
+
+	/**
+	 * Gets the product ID from the Google product ID.
+	 *
+	 * @param string $mc_product_id Simple product ID (`merchant_center_id`) or
+	 *                              namespaced product ID (`online:en:GB:merchant_center_id`)
+	 *
+	 * @return int the ID for the WC product linked to the provided Google product ID (0 if not found)
+	 */
+	public function get_product_id( string $mc_product_id ): int {
+		// Maybe remove everything before the last colon ':'
+		$mc_product_id_tokens = explode( ':', $mc_product_id );
+		$mc_product_id        = end( $mc_product_id_tokens );
+
+		// Support a fully numeric ID both with and without the `gla_` prefix.
+		$wc_product_id = 0;
+		$pattern       = '/^(' . preg_quote( $this->get_slug(), '/' ) . '_)?(\d+)$/';
+		$wc_pattern    = '/^(woocommerce_gpf_)?(\d+)$/';
+		if ( preg_match( $pattern, $mc_product_id, $matches ) ) {
+			$wc_product_id = (int) $matches[2];
+		} elseif ( preg_match( $wc_pattern, $mc_product_id, $matches ) ) {
+			$wc_product_id = (int) $matches[2];
+		}
+
+		/**
+		 * This filter is documented in ProductHelper::get_wc_product_id.
+		 *
+		 * @see ProductHelper::get_wc_product_id
+		 */
+		return (int) apply_filters( 'woocommerce_gla_get_wc_product_id', $wc_product_id, $mc_product_id );
+	}
+
+	/**
+	 * Get the query params for collections.
+	 *
+	 * @return array
+	 */
+	public function get_collection_params(): array {
+		$params = parent::get_collection_params(); // Inherited from WP_REST_Controller.
+
+		$params['next_page'] = [
+			'description'       => __( 'Token to retrieve the next page.', 'google-listings-and-ads' ),
+			'type'              => 'string',
+			'validate_callback' => 'rest_validate_request_arg',
+		];
+
+		return $params;
+	}
+
+	/**
+	 * Get the query params for a single product.
+	 *
+	 * @return array
+	 */
+	public function get_item_params(): array {
+		$item_params = [
+			'id' => [
+				'description' => __( 'The Id of the product.', 'google-listings-and-ads' ),
+				'type'        => 'integer',
+			],
+		];
+
+		return $item_params;
 	}
 
 	/**
@@ -120,33 +259,29 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	/**
 	 * Maps the benchmark and price insights data to the required API response format.
 	 *
-	 * @param array $benchmark_data Raw benchmark data.
+	 * @param array $benchmark_data      Raw benchmark data.
 	 * @param array $price_insights_data Raw price insights data.
 	 * @return array Mapped response data.
 	 */
 	protected function map_price_benchmarks_response( array $benchmark_data, array $price_insights_data ): array {
 		$mapped_data = [];
 
-		if ( empty( $benchmark_data['results'] ) || empty( $price_insights_data['results'] ) ) {
-			return $mapped_data;
-		}
-
-		// Process benchmark data and add it to $mapped_data keyed by product ID.
-		foreach ( $benchmark_data['results'] as $benchmark_result ) {
-			$product_id = $benchmark_result['offer_id'];
-
+		// Combine all data sets into $mapped_data keyed by product ID.
+		foreach ( $benchmark_data ?? [] as $benchmark_result ) {
+			$product_id                 = $this->get_product_id( (string) $benchmark_result['offer_id'] );
 			$mapped_data[ $product_id ] = [
-				'price_competitiveness' => $benchmark_result ?? [],
-				'price_insights'        => [], // Placeholder for price insights data.
+				'price_competitiveness' => $benchmark_result,
+				'price_insights'        => [],
 			];
 		}
 
-		// Process price insights data and merge it into $mapped_data.
-		foreach ( $price_insights_data['results'] as $price_insights_result ) {
-			$product_id = $price_insights_result['offer_id'];
-
-			if ( isset( $mapped_data[ $product_id ] ) ) {
-				$mapped_data[ $product_id ]['price_insights'] = $price_insights_result ?? [];
+		// Map price insights data to benchmarks data.
+		if ( ! empty( $price_insights_data ) ) {
+			foreach ( $price_insights_data as $price_insights_result ) {
+				$product_id = $this->get_product_id( (string) $price_insights_result['offer_id'] );
+				if ( isset( $mapped_data[ $product_id ] ) ) {
+					$mapped_data[ $product_id ]['price_insights'] = $price_insights_result;
+				}
 			}
 		}
 
@@ -162,23 +297,26 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				$price_gap       = $regular_price - $price_on_google;
 
 				// Get the WooCommerce product ID and thumbnail.
-				$wc_product_id = (int) $price_competitiveness['offer_id'];
+				$wc_product_id = $this->get_product_id( (string) $price_competitiveness['offer_id'] );
 				$thumbnail     = $this->get_product_thumbnail( $wc_product_id );
 
 				// Map the data to the required format.
+
 				return [
-					'product'         => [
+					'product'                      => [
 						'id'        => $wc_product_id,
 						'thumbnail' => $thumbnail,
 						'title'     => $price_competitiveness['title'],
 					],
-					'effectiveness'   => $price_insights['effectiveness'] ?? '',
-					'regular_price'   => round( $regular_price / 1000000, 2 ),
-					'price_on_google' => round( $price_on_google / 1000000, 2 ),
-					'price_gap'       => round( $price_gap / 1000000, 2 ),
-					'suggested_price' => isset( $price_insights['suggested_price_micros'] )
+					'effectiveness'                => $price_insights['effectiveness'] ?? '',
+					'regular_price'                => round( $regular_price / 1000000, 2 ),
+					'price_on_google'              => round( $price_on_google / 1000000, 2 ),
+					'price_gap'                    => round( $price_gap / 1000000, 2 ),
+					'suggested_price'              => isset( $price_insights['suggested_price_micros'] )
 						? round( $price_insights['suggested_price_micros'] / 1000000, 2 )
 						: '',
+					'predicted_clicks_change'      => $price_insights['predicted_clicks_change_fraction'] ?? '',
+					'predicted_conversions_change' => $price_insights['predicted_conversions_change_fraction'] ?? '',
 				];
 			},
 			$mapped_data
@@ -212,7 +350,7 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	 */
 	protected function get_schema_properties(): array {
 		return [
-			'product'         => [
+			'product'                      => [
 				'description' => __( 'Product details.', 'google-listings-and-ads' ),
 				'type'        => 'object',
 				'properties'  => [
@@ -224,29 +362,44 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 					'title'     => [ 'type' => 'string' ],
 				],
 			],
-			'effectiveness'   => [
+			'effectiveness'                => [
 				'description' => __( 'Effectiveness score.', 'google-listings-and-ads' ),
 				'type'        => 'number',
 			],
-			'regular_price'   => [
+			'regular_price'                => [
 				'description' => __( 'Regular price of the product.', 'google-listings-and-ads' ),
 				'type'        => 'number',
 			],
-			'price_on_google' => [
+			'price_on_google'              => [
 				'description' => __( 'Price of the product on Google.', 'google-listings-and-ads' ),
 				'type'        => 'number',
 			],
-			'price_gap'       => [
+			'price_gap'                    => [
 				'description' => __( 'Price gap between the regular price and the price on Google.', 'google-listings-and-ads' ),
 				'type'        => 'number',
 			],
-			'suggested_price' => [
+			'suggested_price'              => [
 				'description' => __( 'Suggested price for the product.', 'google-listings-and-ads' ),
 				'type'        => 'number',
 			],
+			'clicks'                       => [
+				'description' => __( 'Current clicks.', 'google-listings-and-ads' ),
+				'type'        => [ 'integer', 'null' ],
+			],
+			'conversions'                  => [
+				'description' => __( 'Current conversions.', 'google-listings-and-ads' ),
+				'type'        => [ 'integer', 'null' ],
+			],
+			'predicted_clicks_change'      => [
+				'description' => __( 'Expected uplift in clicks (fraction).', 'google-listings-and-ads' ),
+				'type'        => [ 'string', 'null' ],
+			],
+			'predicted_conversions_change' => [
+				'description' => __( 'Expected uplift in conversions (fraction).', 'google-listings-and-ads' ),
+				'type'        => [ 'string', 'null' ],
+			],
 		];
 	}
-
 
 	/**
 	 * Get the schema for the summary endpoint.
