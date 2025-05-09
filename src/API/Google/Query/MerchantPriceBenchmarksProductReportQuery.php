@@ -15,7 +15,7 @@ class MerchantPriceBenchmarksProductReportQuery extends MerchantQuery {
 	use ReportQueryTrait;
 
 	/**
-	 * MerchantReportQuery constructor.
+	 * MerchantPriceBenchmarksProductReportQuery constructor.
 	 *
 	 * @param array $args Query arguments.
 	 */

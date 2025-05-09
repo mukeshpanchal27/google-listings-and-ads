@@ -140,6 +140,7 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 		// Mock the price insights data.
 		$mock_price_insights_data = $this->get_mock_price_insights_results( $report_product_id );
 
+		// Mock the performance data.
 		$report_data = $this->get_mock_report_results( $report_product_id );
 
 		// Configure the mocked methods.
@@ -212,7 +213,7 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 	 * Get mock price competitiveness results.
 	 *
 	 * @param string $program_id The program ID.
-	 * @return array The mock insights results.
+	 * @return array The mock price competitiveness results.
 	 */
 	private function get_mock_price_competitiveness_results( $program_id = self::TEST_PRODUCT_ID ) {
 		return [
@@ -252,10 +253,10 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 	}
 
 	/**
-	 * Get mock merchant performance results.
+	 * Get mock performance results.
 	 *
 	 * @param string $program_id The program ID.
-	 * @return array The mock insights results.
+	 * @return array The mock performance results.
 	 */
 	private function get_mock_report_results( $program_id = self::TEST_PRODUCT_ID ) {
 		return [

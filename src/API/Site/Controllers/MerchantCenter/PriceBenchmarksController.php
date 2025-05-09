@@ -259,8 +259,8 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	/**
 	 * Maps the benchmark and price insights data to the required API response format.
 	 *
-	 * @param array $benchmark_data       Raw benchmark data.
-	 * @param array $price_insights_data  Raw price insights data.
+	 * @param array $benchmark_data      Raw benchmark data.
+	 * @param array $price_insights_data Raw price insights data.
 	 * @return array Mapped response data.
 	 */
 	protected function map_price_benchmarks_response( array $benchmark_data, array $price_insights_data ): array {
