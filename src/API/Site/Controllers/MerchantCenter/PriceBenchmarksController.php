@@ -96,17 +96,15 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	protected function get_price_benchmarks_callback(): callable {
 		return function ( Request $request ) {
 			try {
-				/** @var MerchantPriceBenchmarks $merchant */
-				$merchant = $this->container->get( MerchantPriceBenchmarks::class );
+				$response_data = $this->get_price_benchmarks_base_data(
+					$this->prepare_query_arguments( $request )
+				);
 
-				$query_args = $this->prepare_query_arguments( $request );
+				if ( empty( $response_data ) ) {
+					return new Response( [] );
+				}
 
-				$benchmark_data      = $merchant->get_benchmark_data( $query_args );
-				$price_insights_data = $merchant->get_price_insights( $query_args );
-
-				// Map the data to the required format.
-				$response_data = $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
-				return new Response( $response_data );
+				return new Response( array_values( $response_data ) );
 			} catch ( Exception $e ) {
 				return $this->response_from_exception( $e );
 			}
@@ -121,42 +119,57 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 	protected function get_price_benchmarks_item_callback(): callable {
 		return function ( Request $request ) {
 			try {
-				/** @var MerchantPriceBenchmarks $merchant */
-				$merchant = $this->container->get( MerchantPriceBenchmarks::class );
-
+				$id = $request->get_param( 'id' );
 				// Pass the product ID to the query.
 				$query_args = [
-					'ids' => [ $request->get_param( 'id' ) ],
+					'ids' => [ $id ],
 				];
 
-				$benchmark_data      = $merchant->get_benchmark_data( $query_args );
-				$price_insights_data = $merchant->get_price_insights( $query_args );
-
-				// Map the data to the required format.
-				$response_data = $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
+				$response_data = $this->get_price_benchmarks_base_data( $query_args )[ $id ] ?? [];
 
 				if ( ! empty( $response_data ) ) {
-					$metrics_data = $merchant->get_merchant_performance_data( $query_args );
-					if ( isset( $metrics_data['id'] ) ) {
-						$id = $this->get_product_id( (string) $metrics_data['id'] );
+					/** @var MerchantPriceBenchmarks $merchant */
+					$merchant = $this->container->get( MerchantPriceBenchmarks::class );
+
+					$metrics_data = $merchant->get_merchant_performance_data( $query_args )[0] ?? [];
+
+					if ( ! empty( $metrics_data ) ) {
 						// Combine metrics data into the response for the specific product.
-						if ( isset( $response_data[ $id ] ) ) {
-							$response_data[ $id ] = array_merge(
-								$response_data[ $id ],
-								[
-									'clicks'      => $metrics_data['clicks'],
-									'conversions' => $metrics_data['conversions'],
-								],
-							);
-						}
+						$response_data = array_merge(
+							$response_data,
+							[
+								'clicks'      => $metrics_data['clicks'],
+								'conversions' => $metrics_data['conversions'],
+							],
+						);
 					}
 				}
 
-				return new Response( $response_data );
+				if ( empty( $response_data ) ) {
+					return new Response();
+				}
+
+				return $this->prepare_item_for_response( $response_data, $request );
 			} catch ( Exception $e ) {
 				return $this->response_from_exception( $e );
 			}
 		};
+	}
+
+	/**
+	 * Get the price benchmarks base data.
+	 *
+	 * @param array $args Query arguments.
+	 * @return array Mapped response data.
+	 */
+	private function get_price_benchmarks_base_data( $args ) {
+		/** @var MerchantPriceBenchmarks $merchant */
+		$merchant = $this->container->get( MerchantPriceBenchmarks::class );
+
+		$benchmark_data      = $merchant->get_benchmark_data( $args );
+		$price_insights_data = $merchant->get_price_insights( $args );
+
+		return $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
 	}
 
 	/**
@@ -254,8 +267,8 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 		$mapped_data = [];
 
 		// Combine all data sets into $mapped_data keyed by product ID.
-		foreach ( $benchmark_data['results'] ?? [] as $benchmark_result ) {
-			$product_id                 = $benchmark_result['offer_id'];
+		foreach ( $benchmark_data ?? [] as $benchmark_result ) {
+			$product_id                 = $this->get_product_id( (string) $benchmark_result['offer_id'] );
 			$mapped_data[ $product_id ] = [
 				'price_competitiveness' => $benchmark_result,
 				'price_insights'        => [],
@@ -263,9 +276,9 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 		}
 
 		// Map price insights data to benchmarks data.
-		if ( ! empty( $price_insights_data['results'] ) ) {
-			foreach ( $price_insights_data['results'] as $price_insights_result ) {
-				$product_id = $price_insights_result['offer_id'];
+		if ( ! empty( $price_insights_data ) ) {
+			foreach ( $price_insights_data as $price_insights_result ) {
+				$product_id = $this->get_product_id( (string) $price_insights_result['offer_id'] );
 				if ( isset( $mapped_data[ $product_id ] ) ) {
 					$mapped_data[ $product_id ]['price_insights'] = $price_insights_result;
 				}
@@ -284,7 +297,7 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				$price_gap       = $regular_price - $price_on_google;
 
 				// Get the WooCommerce product ID and thumbnail.
-				$wc_product_id = (int) $price_competitiveness['offer_id'];
+				$wc_product_id = $this->get_product_id( (string) $price_competitiveness['offer_id'] );
 				$thumbnail     = $this->get_product_thumbnail( $wc_product_id );
 
 				// Map the data to the required format.

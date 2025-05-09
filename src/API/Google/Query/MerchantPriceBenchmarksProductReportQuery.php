@@ -32,7 +32,7 @@ class MerchantPriceBenchmarksProductReportQuery extends MerchantQuery {
 	protected function set_initial_columns() {
 		$this->columns(
 			[
-				'id'          => 'segments.offer_id',
+				'offer_id'    => 'segments.offer_id',
 				'clicks'      => 'metrics.clicks',
 				'conversions' => 'metrics.conversions',
 			]

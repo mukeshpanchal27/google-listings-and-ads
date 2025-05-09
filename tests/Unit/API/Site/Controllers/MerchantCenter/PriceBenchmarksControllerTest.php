@@ -5,9 +5,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\PriceBenchmarks;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Tools\HelperTrait\GoogleAdsClientTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Tests\Framework\RESTControllerUnitTest;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\League\Container\Container;
-use WP_REST_Request as Request;
-use WP_REST_Response as Response;
-
+use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Test class for PriceBenchmarksController.
  *
@@ -20,10 +18,10 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 	/** @var PriceBenchmarksController */
 	protected $controller;
 
-	/** @var MockObject|MerchantPriceBenchmarks */
+	/** @var MockObject MerchantPriceBenchmarks */
 	protected $merchant_price_benchmarks;
 
-	/** @var MockObject|PriceBenchmarks */
+	/** @var MockObject PriceBenchmarks */
 	protected $price_benchmarks;
 
 	/** @var Container */
@@ -84,7 +82,7 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 	/**
 	 * Tests the '/mc/price-benchmarks' endpoint.
 	 */
-	public function test_get_price_benchmarks() {
+	public function test_get_price_benchmarks_collection() {
 		// Mock the benchmark data.
 		$mock_benchmark_data = $this->get_mock_price_competitiveness_results();
 
@@ -166,7 +164,7 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 		$response = $this->do_request( self::ROUTE_PRICE_BENCHMARKS . '/' . self::TEST_PRODUCT_ID );
 
 		// Expected shape once data from the two queries are stitched together.
-		$expected = [
+		$expected =
 			[
 				'product'                      => [
 					'id'        => (int) self::TEST_PRODUCT_ID,
@@ -182,8 +180,7 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 				'predicted_conversions_change' => '2.3431060314178467',
 				'clicks'                       => 734,
 				'conversions'                  => 4,
-			],
-		];
+			];
 
 		// Assert the response status.
 		$this->assertEquals( 200, $response->get_status() );
@@ -263,7 +260,7 @@ class PriceBenchmarksControllerTest extends RESTControllerUnitTest {
 	private function get_mock_report_results( $program_id = self::TEST_PRODUCT_ID ) {
 		return [
 			[
-				'id'          => $program_id,
+				'offer_id'    => $program_id,
 				'clicks'      => 734,
 				'conversions' => 4,
 			],
