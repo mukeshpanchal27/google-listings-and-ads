@@ -1,0 +1,13 @@
+.gla-experience-rating-banner {
+	border-color: $gla-color-dark-blue;
+
+	.gla-experience-rating-banner__actions {
+		margin-top: $grid-unit-20;
+
+		.gla-experience-rating-banner__button {
+			margin-right: $grid-unit-15;
+			color: $gla-color-dark-blue;
+			box-shadow: 0 0 0 1px $gla-color-dark-blue;
+		}
+	}
+}
