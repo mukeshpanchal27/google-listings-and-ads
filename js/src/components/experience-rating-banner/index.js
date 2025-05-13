@@ -20,24 +20,19 @@ const ExperienceRatingBanner = () => {
 			status="info"
 			isDismissible={ true }
 		>
-			<div className="gla-experience-rating-banner__text">
+			<p className="gla-experience-rating-banner__text">
 				{ __(
 					'How was your experience with Google for WooCommerce?',
 					'google-listings-and-ads'
 				) }
-			</div>
+			</p>
 
 			<div className="gla-experience-rating-banner__actions">
-				<AppButton
-					className="gla-experience-rating-banner__button"
-					onClick={ handleClick }
-					isSecondary
-				>
+				<AppButton onClick={ handleClick } isSecondary>
 					{ __( 'Good', 'google-listings-and-ads' ) }
 				</AppButton>
 
 				<AppButton
-					className="gla-experience-rating-banner__button"
 					isSecondary
 					href="https://woocommerce.com"
 					target="_blank"
