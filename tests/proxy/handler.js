@@ -3,6 +3,11 @@
 const config = require( './config' );
 
 module.exports.checkRequest = ( request ) => {
+	if ( config.logResponses ) {
+		// eslint-disable-next-line no-console
+		console.log( 'Request path: ', '\n', request.params.path );
+	}
+
 	if ( request.params.path.includes( 'googleAds:search' ) ) {
 		const body = JSON.parse( request.payload );
 		if ( body.query.includes( 'shopping_performance_view' ) ) {
@@ -16,17 +21,39 @@ module.exports.checkRequest = ( request ) => {
 	}
 	if ( request.params.path.includes( 'reports/search' ) ) {
 		const body = JSON.parse( request.payload );
+		if ( config.logResponses ) {
+			// eslint-disable-next-line no-console
+			console.log( 'Request query: ', '\n', body.query );
+		}
 
-		if ( body.query.includes( 'ProductView' ) ) {
+		let mockPath = false;
+
+		if ( body.query.includes( 'FROM PriceCompetitivenessProductView' ) ) {
+			mockPath = './mocks/mc/price-benchmarks/price-competitiveness.json';
+		}
+
+		if ( body.query.includes( 'FROM PriceInsightsProductView' ) ) {
+			mockPath = './mocks/mc/price-benchmarks/price-insights.json';
+		}
+
+		if ( body.query.includes( 'FROM ProductView' ) ) {
 			return false;
 		}
 
-		const file = body.query.includes( 'segments.offer_id' )
-			? 'products'
-			: 'programs';
-		const page = body.pageToken ? '-' + body.pageToken : '';
+		if ( body.query.includes( 'FROM MerchantPerformanceView' ) ) {
+			if ( body.query.includes( 'WHERE segments.date BETWEEN' ) ) {
+				mockPath = './mocks/mc/price-benchmarks/merchant-report.json';
+			} else {
+				const file = body.query.includes( 'segments.offer_id' )
+					? 'products'
+					: 'programs';
+				const page = body.pageToken ? '-' + body.pageToken : '';
 
-		return require( `./mocks/mc/reports/${ file }${ page }.json` );
+				mockPath = `./mocks/mc/reports/${ file }${ page }.json`;
+			}
+		}
+
+		return mockPath ? require( mockPath ) : false;
 	}
 
 	if ( request.params.path.includes( 'products/batch' ) ) {
