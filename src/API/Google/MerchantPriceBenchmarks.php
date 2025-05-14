@@ -113,7 +113,13 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 					'predicted_impressions_change_fraction' => $price_insights_result->getPriceInsights()->getPredictedImpressionsChangeFraction(),
 					'predicted_clicks_change_fraction' => $price_insights_result->getPriceInsights()->getPredictedClicksChangeFraction(),
 					'predicted_conversions_change_fraction' => $price_insights_result->getPriceInsights()->getPredictedConversionsChangeFraction(),
-					'effectiveness'                    => '', // $price_insights_result->getPriceInsights()->getEffectiveness() is not returning error, returning null.
+
+					/*
+					 * The 'effectiveness' property wasn't added to the `PriceInsights` class until v0.354.0.
+					 * Until we upgrade, we can use the magic getter to access the property directly from modelData.
+					 * @see: https://github.com/googleapis/google-api-php-client-services/blob/v0.354.0/src/ShoppingContent/PriceInsights.php
+					 */
+					'effectiveness'                    => $price_insights_result->getPriceInsights()->effectiveness ?? 0,
 				];
 			}
 			return $results;
