@@ -17,7 +17,7 @@ import AppButton from '~/components/app-button';
 import ChangePriceModal from './change-price-modal';
 
 /**
- * @event gla_price_benchmarks_change-price_clicked
+ * @event gla_price_benchmarks_change_price_clicked
  * @property {string} context The context in which the event is triggered.
  * @property {number} productID The ID of the product whose price is being changed.
  */
@@ -26,7 +26,7 @@ import ChangePriceModal from './change-price-modal';
  * ChangePrice component allows users to update the price of a product.
  * It provides a button to open a modal where the price can be changed.
  *
- * @fires gla_price_benchmarks_change-price_clicked with `{ context: 'price-benchmark-change-price-modal' }` and the product ID.
+ * @fires gla_price_benchmarks_change_price_clicked with `{ context: 'price-benchmark-change-price-modal' }` and the product ID.
  * @fires gla_modal_closed with `{ context: 'price-benchmark-change-price-modal', action: 'change-price' }`
  *
  * @param {Object} props - Component properties.
@@ -72,7 +72,7 @@ const ChangePrice = ( { productId } ) => {
 				onClick={ handleOnClick }
 				variant="tertiary"
 				size="compact"
-				eventName="gla_price_benchmarks_change-price_clicked"
+				eventName="gla_price_benchmarks_change_price_clicked"
 				eventProps={ {
 					context: PRICE_BENCHMARK_SUGGESTIONS_CONTEXT,
 					productID: productId,
