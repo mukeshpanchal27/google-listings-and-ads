@@ -1,0 +1,18 @@
+{
+	"results": [
+		{
+			"productView": {
+				"offerId": "gla_103572",
+				"title": "Dr. Seuss The Grinch Stole Christmas Ugly Sweater xl",
+				"currencyCode": "USD",
+				"priceMicros": "34950000",
+				"id": "online:en:US:gla_103572"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "15131447"
+			}
+		}
+	]
+}
