@@ -19,6 +19,9 @@ module.exports.checkRequest = ( request ) => {
 			return require( `./mocks/ads/reports/${ file }${ page }.json` );
 		}
 	}
+
+	// Mock responses for the Merchant Center API reports search.
+	// https://developers.google.com/shopping-content/reference/rest/v2.1/reports/search
 	if ( request.params.path.includes( 'reports/search' ) ) {
 		const body = JSON.parse( request.payload );
 		if ( config.logResponses ) {
@@ -27,13 +30,22 @@ module.exports.checkRequest = ( request ) => {
 		}
 
 		let mockPath = false;
+		const isSingleProduct = body.query.includes(
+			'WHERE product_view.offer_id IN'
+		);
 
 		if ( body.query.includes( 'FROM PriceCompetitivenessProductView' ) ) {
-			mockPath = './mocks/mc/price-benchmarks/price-competitiveness.json';
+			const file = isSingleProduct
+				? 'price-competitiveness'
+				: 'price-competitiveness-item';
+			mockPath = `./mocks/mc/price-benchmarks/${ file }.json`;
 		}
 
 		if ( body.query.includes( 'FROM PriceInsightsProductView' ) ) {
-			mockPath = './mocks/mc/price-benchmarks/price-insights.json';
+			const file = isSingleProduct
+				? 'price-insights'
+				: 'price-insights-item';
+			mockPath = `./mocks/mc/price-benchmarks/${ file }.json`;
 		}
 
 		if ( body.query.includes( 'FROM ProductView' ) ) {
@@ -56,6 +68,8 @@ module.exports.checkRequest = ( request ) => {
 		return mockPath ? require( mockPath ) : false;
 	}
 
+	// Mock responses for the Merchant Center API products custom batch responses.
+	// https://developers.google.com/shopping-content/reference/rest/v2.1/products/custombatch
 	if ( request.params.path.includes( 'products/batch' ) ) {
 		const body = JSON.parse( request.payload );
 		if (
