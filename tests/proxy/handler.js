@@ -31,20 +31,20 @@ module.exports.checkRequest = ( request ) => {
 
 		let mockPath = false;
 		const isSingleProduct = body.query.includes(
-			'WHERE product_view.offer_id IN'
+			'WHERE product_view.id IN'
 		);
 
 		if ( body.query.includes( 'FROM PriceCompetitivenessProductView' ) ) {
 			const file = isSingleProduct
-				? 'price-competitiveness'
-				: 'price-competitiveness-item';
+				? 'price-competitiveness-item'
+				: 'price-competitiveness';
 			mockPath = `./mocks/mc/price-benchmarks/${ file }.json`;
 		}
 
 		if ( body.query.includes( 'FROM PriceInsightsProductView' ) ) {
 			const file = isSingleProduct
-				? 'price-insights'
-				: 'price-insights-item';
+				? 'price-insights-item'
+				: 'price-insights';
 			mockPath = `./mocks/mc/price-benchmarks/${ file }.json`;
 		}
 
