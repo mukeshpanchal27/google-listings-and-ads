@@ -8,12 +8,26 @@ import { useCallback, useState } from '@wordpress/element';
  * Internal dependencies
  */
 import { useAppDispatch } from '~/data';
+import { recordGlaEvent } from '~/utils/tracks';
+import {
+	PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT,
+	PRICE_BENCHMARK_SUGGESTIONS_CONTEXT,
+} from './constants';
 import AppButton from '~/components/app-button';
 import ChangePriceModal from './change-price-modal';
 
 /**
+ * @event gla_price_benchmarks_change-price_clicked
+ * @property {string} context The context in which the event is triggered.
+ * @property {number} productID The ID of the product whose price is being changed.
+ */
+
+/**
  * ChangePrice component allows users to update the price of a product.
  * It provides a button to open a modal where the price can be changed.
+ *
+ * @fires gla_price_benchmarks_change-price_clicked with `{ context: 'price-benchmark-change-price-modal' }` and the product ID.
+ * @fires gla_modal_closed with `{ context: 'price-benchmark-change-price-modal', action: 'change-price' }`
  *
  * @param {Object} props - Component properties.
  * @param {number} props.productId - The ID of the product whose price is to be changed.
@@ -34,6 +48,11 @@ const ChangePrice = ( { productId } ) => {
 				newPrice
 			);
 
+			recordGlaEvent( 'gla_modal_closed', {
+				context: PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT,
+				action: 'change-price',
+			} );
+
 			handleOnRequestClose();
 		},
 		[ receivePriceBenchmarkSuggestionsRegularPrice ]
@@ -43,13 +62,22 @@ const ChangePrice = ( { productId } ) => {
 		return null;
 	}
 
-	const openModal = () => {
+	const handleOnClick = () => {
 		setIsOpen( true );
 	};
 
 	return (
 		<>
-			<AppButton onClick={ openModal } variant="tertiary" size="compact">
+			<AppButton
+				onClick={ handleOnClick }
+				variant="tertiary"
+				size="compact"
+				eventName="gla_price_benchmarks_change-price_clicked"
+				eventProps={ {
+					context: PRICE_BENCHMARK_SUGGESTIONS_CONTEXT,
+					productID: productId,
+				} }
+			>
 				{ __( 'Change price', 'google-listings-and-ads' ) }
 			</AppButton>
 
