@@ -53,8 +53,25 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 			->set_client( $this->service, $this->options->get_merchant_id() )
 			->get_results();
 
-			$results = $response->getResults() ?? [];
+			$benchmark_data = $response->getResults() ?? [];
 
+			if ( empty( $benchmark_data ) ) {
+				return $benchmark_data;
+			}
+
+			// Map the benchmark data to a require format.
+			$results = [];
+			foreach ( $benchmark_data as $benchmark_result ) {
+				$results[] = [
+					'id'                            => $benchmark_result->getProductView()->getId(),
+					'offer_id'                      => $benchmark_result->getProductView()->getOfferId(),
+					'title'                         => $benchmark_result->getProductView()->getTitle(),
+					'price_micros'                  => $benchmark_result->getProductView()->getPriceMicros(),
+					'currency_code'                 => $benchmark_result->getProductView()->getCurrencyCode(),
+					'benchmark_price_micros'        => $benchmark_result->getPriceCompetitiveness()->getBenchmarkPriceMicros(),
+					'benchmark_price_currency_code' => $benchmark_result->getPriceCompetitiveness()->getBenchmarkPriceCurrencyCode(),
+				];
+			}
 			return $results;
 		} catch ( GoogleException $e ) {
 			do_action( 'woocommerce_gla_mc_client_exception', $e, __METHOD__ );
@@ -77,8 +94,28 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 			->set_client( $this->service, $this->options->get_merchant_id() )
 			->get_results();
 
-			$results = $response->getResults() ?? [];
+			$price_insights_data = $response->getResults() ?? [];
 
+			if ( empty( $price_insights_data ) ) {
+				return $price_insights_data;
+			}
+
+			// Map the benchmark data to a require format.
+			$results = [];
+			foreach ( $price_insights_data as $price_insights_result ) {
+				$results[] = [
+					'id'                               => $price_insights_result->getProductView()->getId(),
+					'offer_id'                         => $price_insights_result->getProductView()->getOfferId(),
+					'title'                            => $price_insights_result->getProductView()->getTitle(),
+					'price_micros'                     => $price_insights_result->getProductView()->getPriceMicros(),
+					'currency_code'                    => $price_insights_result->getProductView()->getCurrencyCode(),
+					'suggested_price_micros'           => $price_insights_result->getPriceInsights()->getSuggestedPriceMicros(),
+					'predicted_impressions_change_fraction' => $price_insights_result->getPriceInsights()->getPredictedImpressionsChangeFraction(),
+					'predicted_clicks_change_fraction' => $price_insights_result->getPriceInsights()->getPredictedClicksChangeFraction(),
+					'predicted_conversions_change_fraction' => $price_insights_result->getPriceInsights()->getPredictedConversionsChangeFraction(),
+					'effectiveness'                    => '', // $price_insights_result->getPriceInsights()->getEffectiveness() is not returning error, returning null.
+				];
+			}
 			return $results;
 		} catch ( GoogleException $e ) {
 			do_action( 'woocommerce_gla_mc_client_exception', $e, __METHOD__ );
@@ -107,8 +144,21 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 			->set_client( $this->service, $this->options->get_merchant_id() )
 			->get_results();
 
-			$results = $response->getResults() ?? [];
+			$performance_data = $response->getResults() ?? [];
 
+			if ( empty( $performance_data ) ) {
+				return $performance_data;
+			}
+
+			// Map the performance data to a require format.
+			$results = [];
+			foreach ( $performance_data as $performance_result ) {
+				$results[] = [
+					'offer_id'    => $performance_result->getSegments()->getOfferId(),
+					'clicks'      => $performance_result->getMetrics()->getClicks(),
+					'conversions' => $performance_result->getMetrics()->getConversions(),
+				];
+			}
 			return $results;
 		} catch ( GoogleException $e ) {
 			do_action( 'woocommerce_gla_mc_client_exception', $e, __METHOD__ );
