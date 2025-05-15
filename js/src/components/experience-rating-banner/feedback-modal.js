@@ -41,8 +41,8 @@ const FeedbackModal = ( { onRequestClose } ) => {
 					<Icon icon={ externalIcon } size={ 18 } />
 				</AppButton>,
 			] }
-			shouldCloseOnEsc={ true }
-			shouldCloseOnClickOutside={ true }
+			shouldCloseOnEsc
+			shouldCloseOnClickOutside
 			onRequestClose={ onRequestClose }
 		>
 			<p>

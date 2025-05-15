@@ -17,12 +17,10 @@ const ExperienceRatingBanner = () => {
 	const [ showModal, setShowModal ] = useState( false );
 
 	const handleClick = () => {
-		// Open the feedback modal
 		setShowModal( true );
 	};
 
 	const handleRequestClose = () => {
-		// Close the feedback modal
 		setShowModal( false );
 	};
 
