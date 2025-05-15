@@ -97,5 +97,18 @@ test.describe( 'App Ratings Banner', () => {
 				'_blank'
 			);
 		} );
+
+		test( 'Hides the banner when dismissed', async () => {
+			await appRatingsOverview.fulfillUsersPreferences();
+
+			const banner = page.locator( bannerClass );
+			const dismissButton = banner.getByRole( 'button', {
+				name: 'Close',
+			} );
+
+			await dismissButton.click();
+
+			await expect( banner ).not.toBeVisible();
+		} );
 	} );
 } );
