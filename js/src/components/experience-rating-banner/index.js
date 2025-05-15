@@ -26,22 +26,10 @@ const ExperienceRatingBanner = () => {
 		setShowModal( false );
 	};
 
-	const handleRequestRate = () => {
-		window.open(
-			'https://wordpress.org/support/plugin/google-listings-and-ads/reviews/#new-post',
-			'_blank'
-		);
-		// Close the feedback modal.
-		setShowModal( false );
-	};
-
 	return (
 		<div className="gla-experience-rating-banner__container">
 			{ showModal && (
-				<FeedbackModal
-					onRequestClose={ handleRequestClose }
-					onRequestRate={ handleRequestRate }
-				/>
+				<FeedbackModal onRequestClose={ handleRequestClose } />
 			) }
 			<Notice
 				className="gla-experience-rating-banner"

@@ -16,10 +16,9 @@ import AppButton from '../app-button';
  *
  * @param {Object} props - Component props.
  * @param {Function} props.onRequestClose - Function to call when the modal is closed.
- * @param {Function} props.onRequestRate - Function to call when the user requests to rate.
  * @return {JSX.Element} The FeedbackModal component.
  */
-const FeedbackModal = ( { onRequestClose, onRequestRate } ) => {
+const FeedbackModal = ( { onRequestClose } ) => {
 	return (
 		<AppModal
 			className="gla-experience-rating-feedback-modal"
@@ -31,7 +30,13 @@ const FeedbackModal = ( { onRequestClose, onRequestRate } ) => {
 				<AppButton key="cancel" onClick={ onRequestClose } isTertiary>
 					{ __( 'Cancel', 'google-listings-and-ads' ) }
 				</AppButton>,
-				<AppButton key="rate-us" onClick={ onRequestRate } isPrimary>
+				<AppButton
+					key="rate-us"
+					onClick={ onRequestClose }
+					isPrimary
+					target="_blank"
+					href="https://wordpress.org/support/plugin/google-listings-and-ads/reviews/#new-post"
+				>
 					{ __( 'Rate us', 'google-listings-and-ads' ) }
 					<Icon icon={ externalIcon } size={ 18 } />
 				</AppButton>,
