@@ -110,5 +110,12 @@ test.describe( 'App Ratings Banner', () => {
 
 			await expect( banner ).not.toBeVisible();
 		} );
+
+		test( 'Banner is not visible after reload once dismissed', async () => {
+			await appRatingsOverview.goto();
+
+			const banner = page.locator( bannerClass );
+			await expect( banner ).not.toBeVisible();
+		} );
 	} );
 } );
