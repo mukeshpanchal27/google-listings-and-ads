@@ -80,8 +80,13 @@ class UpdateMerchantPriceBenchmarksTest extends UnitTest {
 			->willReturn( true );
 
 		$this->action_scheduler->expects( $this->once() )
-			->method( 'schedule_immediate' )
-			->with( 'gla/jobs/' . self::JOB_NAME . '/process_item', [] );
+			->method( 'schedule_recurring' )
+			->with(
+				time(), // timestamp
+				HOUR_IN_SECONDS * 12, // interval
+				'gla/jobs/' . self::JOB_NAME . '/process_item',
+				[]
+			);
 
 		$this->job->schedule();
 	}
