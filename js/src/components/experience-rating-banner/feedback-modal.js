@@ -21,7 +21,6 @@ import AppButton from '../app-button';
 const FeedbackModal = ( { onRequestClose } ) => {
 	return (
 		<AppModal
-			className="gla-experience-rating-feedback-modal"
 			title={ __(
 				'Thanks for letting us know!',
 				'google-listings-and-ads'

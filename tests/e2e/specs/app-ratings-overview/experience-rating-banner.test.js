@@ -100,7 +100,7 @@ test.describe( 'App Ratings Banner', () => {
 	} );
 
 	test.describe( 'Feedback modal', () => {
-		const feedbackModalClass = '.gla-experience-rating-feedback-modal';
+		const feedbackModalClass = '.app-modal';
 
 		test.beforeAll( async () => {
 			appRatingsOverview.clickGoodButton();
