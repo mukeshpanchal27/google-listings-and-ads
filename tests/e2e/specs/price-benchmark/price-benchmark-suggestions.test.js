@@ -89,12 +89,9 @@ test.describe( 'Price Benchmark Page', () => {
 			await expect( comparisonChartElement ).not.toBeVisible();
 		} );
 
-		test( "Does not render the chart if Market Insights not enabled for the account.", async () => {
+		test( 'Does not render the chart if Market Insights not enabled for the account.', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
-			await priceBenchmarkPage.fulfillPriceBenchmarkSummary(
-				[],
-				403
-			);
+			await priceBenchmarkPage.fulfillPriceBenchmarkSummary( [], 403 );
 
 			const errorMessage = page.locator(
 				'.components-snackbar__content'
