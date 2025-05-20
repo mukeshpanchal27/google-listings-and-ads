@@ -89,6 +89,27 @@ test.describe( 'Price Benchmark Page', () => {
 			await expect( comparisonChartElement ).not.toBeVisible();
 		} );
 
+		test( "Does not render the chart if Market Insights not enabled for the account.", async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
+			await priceBenchmarkPage.fulfillPriceBenchmarkSummary(
+				[],
+				403
+			);
+
+			const errorMessage = page.locator(
+				'.components-snackbar__content'
+			);
+			await expect( errorMessage ).toBeVisible();
+			await expect( errorMessage ).toContainText(
+				'There was an error getting the price benchmark summary. Forbidden.'
+			);
+
+			const comparisonChartElement = page.locator(
+				'.gla-price-benchmark__comparison-chart'
+			);
+			await expect( comparisonChartElement ).not.toBeVisible();
+		} );
+
 		test( 'Render the chart if there are products', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
 				priceBenchmarkSuggestionsData

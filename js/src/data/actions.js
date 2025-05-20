@@ -1216,6 +1216,24 @@ export function* fetchPriceBenchmarkSummary() {
 			data,
 		};
 	} catch ( error ) {
+		const errorMessage = error.message;
+
+		if ( errorMessage ) {
+			try {
+				const message = JSON.parse( errorMessage );
+
+				// Fail silently and return an empty array if the user is not authorized to view the price benchmark summary.
+				if ( message?.error?.code === 403 ) {
+					return {
+						type: TYPES.RECEIVE_PRICE_BENCHMARK_SUMMARY,
+						data: [],
+					};
+				}
+			} catch ( e ) {
+				// Ignore JSON parse error.
+			}
+		}
+
 		handleApiError(
 			error,
 			__(
