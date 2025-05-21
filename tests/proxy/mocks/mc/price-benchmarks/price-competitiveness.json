@@ -1,0 +1,284 @@
+{
+	"results": [
+		{
+			"productView": {
+				"offerId": "gla_103572",
+				"title": "Dr. Seuss The Grinch Stole Christmas Ugly Sweater xl",
+				"currencyCode": "USD",
+				"priceMicros": "34950000",
+				"id": "online:en:US:gla_103572"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "15131447"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_103628",
+				"title": "Dr. Seuss The Grinch Stole Christmas Ugly Sweater xl",
+				"currencyCode": "USD",
+				"priceMicros": "27950000",
+				"id": "online:en:US:gla_103628"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "15131447"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_119547",
+				"title": "Black Panther Nano-T Unisex T-Shirt l",
+				"currencyCode": "USD",
+				"priceMicros": "24950000",
+				"id": "online:en:US:gla_119547"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "16609362"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_119553",
+				"title": "Black Panther Nano-T Unisex T-Shirt l",
+				"currencyCode": "USD",
+				"priceMicros": "25950000",
+				"id": "online:en:US:gla_119553"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "16609362"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_119577",
+				"title": "Black Panther Nano-T Unisex T-Shirt s",
+				"currencyCode": "USD",
+				"priceMicros": "24950000",
+				"id": "online:en:US:gla_119577"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "21065000"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_119622",
+				"title": "Black Panther Unisex T-Shirt l",
+				"currencyCode": "USD",
+				"priceMicros": "22950000",
+				"id": "online:en:US:gla_119622"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "16609362"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_119624",
+				"title": "Black Panther Unisex T-Shirt 2xl",
+				"currencyCode": "USD",
+				"priceMicros": "24450000",
+				"id": "online:en:US:gla_119624"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "20886623"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_119627",
+				"title": "Black Panther Unisex T-Shirt 5xl",
+				"currencyCode": "USD",
+				"priceMicros": "26450000",
+				"id": "online:en:US:gla_119627"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "23083000"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_119632",
+				"title": "Black Panther Unisex T-Shirt 2xl",
+				"currencyCode": "USD",
+				"priceMicros": "24450000",
+				"id": "online:en:US:gla_119632"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "20886623"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_119668",
+				"title": "Black Panther Unisex T-Shirt 2xl",
+				"currencyCode": "USD",
+				"priceMicros": "24450000",
+				"id": "online:en:US:gla_119668"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "12028852"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_1244613",
+				"title": "Star Wars Kylo Ren Ugly Christmas Sweater 2xl",
+				"currencyCode": "USD",
+				"priceMicros": "34950000",
+				"id": "online:en:US:gla_1244613"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "35605385"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_1244626",
+				"title": "Star Wars Kylo Ren Ugly Christmas Sweater m",
+				"currencyCode": "USD",
+				"priceMicros": "32950000",
+				"id": "online:en:US:gla_1244626"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "18566000"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_1244627",
+				"title": "Star Wars Kylo Ren Ugly Christmas Sweater l",
+				"currencyCode": "USD",
+				"priceMicros": "32950000",
+				"id": "online:en:US:gla_1244627"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "34256923"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_1279304",
+				"title": "Mom And Daughter Shirt | Premium Mom V-Neck T-Shirt | Best ing Partner In Crime 2xl",
+				"currencyCode": "USD",
+				"priceMicros": "26950000",
+				"id": "online:en:US:gla_1279304"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "17983333"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_1287790",
+				"title": "Science Shirt for Mom | Chemistry Mom T-shirt | Mother Periodic Table Shirt 3xl",
+				"currencyCode": "USD",
+				"priceMicros": "26950000",
+				"id": "online:en:US:gla_1287790"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "17812000"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_1287799",
+				"title": "Science Shirt for Mom | Chemistry Mom T-shirt | Mother Periodic Table Shirt 3xl",
+				"currencyCode": "USD",
+				"priceMicros": "26950000",
+				"id": "online:en:US:gla_1287799"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "17812000"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_1287830",
+				"title": "Science Shirt for Mom | Premium Chemistry Mom T-shirt | Mother Periodic Table Shirt m",
+				"currencyCode": "USD",
+				"priceMicros": "25950000",
+				"id": "online:en:US:gla_1287830"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "14484644"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_1287834",
+				"title": "Science Shirt for Mom | Premium Chemistry Mom T-shirt | Mother Periodic Table Shirt 3xl",
+				"currencyCode": "USD",
+				"priceMicros": "28550000",
+				"id": "online:en:US:gla_1287834"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "17812000"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_1287863",
+				"title": "Science Shirt for Mom | Premium Chemistry Mom T-shirt | Mother Periodic Table Shirt 3xl",
+				"currencyCode": "USD",
+				"priceMicros": "28550000",
+				"id": "online:en:US:gla_1287863"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "17812000"
+			}
+		},
+		{
+			"productView": {
+				"offerId": "gla_1287871",
+				"title": "Science Shirt for Mom | Premium Chemistry Mom T-shirt | Mother Periodic Table Shirt 3xl",
+				"currencyCode": "USD",
+				"priceMicros": "28550000",
+				"id": "online:en:US:gla_1287871"
+			},
+			"priceCompetitiveness": {
+				"countryCode": "US",
+				"benchmarkPriceCurrencyCode": "USD",
+				"benchmarkPriceMicros": "17812000"
+			}
+		}
+	]
+}

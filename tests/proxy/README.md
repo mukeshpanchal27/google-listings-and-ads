@@ -17,6 +17,13 @@ Or, if you want to use a local connect server:
 WOOCOMMERCE_CONNECT_SERVER=http://localhost:5500 npm run test-proxy
 ```
 
+### Define host for the proxy
+To run the proxy using a custom host you can start it as follows:
+
+```
+PROXY_HOST='127.0.0.1' npm run test-proxy
+```
+
 ### Define port for the proxy
 To run the proxy using a custom port you can start it as follows:
 
