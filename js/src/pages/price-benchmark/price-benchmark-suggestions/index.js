@@ -15,6 +15,7 @@ import ChangePrice from '../change-price';
 import EffectivenessIndicator from '../effectiveness-indicator';
 import Label from '../label';
 import Price from '../price';
+import FaqLink from '../faq-link';
 import {
 	LABELS,
 	LABEL_CHANGE_EFFECTIVENESS,
@@ -259,6 +260,7 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 					paginationInfo={ paginationInfo }
 					onChangeView={ handleOnChangeView }
 					defaultLayouts={ [] }
+					header={ <FaqLink /> }
 				/>
 			) }
 		</div>

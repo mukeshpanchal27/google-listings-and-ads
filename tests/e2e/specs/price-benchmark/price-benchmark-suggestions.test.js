@@ -222,6 +222,44 @@ test.describe( 'Price Benchmark Page', () => {
 				'There was an error loading the price benchmark suggestions.'
 			);
 		} );
+
+		test( 'FAQ link is present and clickable', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarkSuggestionsData,
+			] );
+			// Get the faq link by .dataviews__view-actions > .components-external-link by text.
+			const faqLink = page.locator(
+				'.dataviews__view-actions .components-external-link'
+			);
+			await expect( faqLink ).toBeVisible();
+			await expect( faqLink ).toContainText( 'FAQ' );
+		} );
+
+		test( 'Clicking the FAQ link opens the correct URL', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
+				...priceBenchmarkSuggestionsData,
+			] );
+
+			const faqLink = page.locator(
+				'.dataviews__view-actions .components-external-link'
+			);
+			await expect( faqLink ).toHaveAttribute(
+				'href',
+				'https://woocommerce.com/document/google-for-woocommerce/faq/'
+			);
+
+			await faqLink.click();
+
+			const [ newPage ] = await Promise.all( [
+				page.context().waitForEvent( 'page' ),
+				faqLink.click(),
+			] );
+
+			await newPage.waitForLoadState( 'domcontentloaded' );
+			await expect( newPage ).toHaveURL(
+				'https://woocommerce.com/document/google-for-woocommerce/faq/'
+			);
+		} );
 	} );
 
 	test.describe( 'Change Price Modal Functionality', () => {
@@ -269,7 +307,7 @@ test.describe( 'Price Benchmark Page', () => {
 
 			const error = priceBenchmarkPage.getPriceInputError();
 			await expect( error ).toHaveText(
-				'New price must be greater than the sales price (NT$90.00).'
+				'New price must be greater than or equals to zero.'
 			);
 
 			const changePriceButton =
