@@ -11,18 +11,23 @@ import { recordGlaEvent } from '~/utils/tracks';
 
 const URL = 'https://woocommerce.com/document/google-for-woocommerce/faq/';
 
+/**
+ * Renders an external FAQ link and tracks click events for analytics.
+ *
+ * @fires gla_documentation_link_click with `{ context: 'price-benchmark-suggestions', link_id: 'price-benchmark-suggestions-faq' }` and the URL.
+ * @return {JSX.Element} The rendered external FAQ link component.
+ */
 const FaqLink = () => {
+	const handleClick = () => {
+		recordGlaEvent( 'gla_documentation_link_click', {
+			context: 'price-benchmark-suggestions',
+			link_id: 'price-benchmark-suggestions-faq',
+			href: URL,
+		} );
+	};
+
 	return (
-		<ExternalLink
-			onClick={ () => {
-				recordGlaEvent( 'gla_price_benchmark_faq_link_clicked', {
-					context: 'price_benchmark',
-					link_id: 'faq_link',
-					href: URL,
-				} );
-			} }
-			href={ URL }
-		>
+		<ExternalLink onClick={ handleClick } href={ URL }>
 			{ __( 'FAQ', 'google-listings-and-ads' ) }
 		</ExternalLink>
 	);

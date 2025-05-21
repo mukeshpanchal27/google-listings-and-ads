@@ -296,6 +296,19 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Displays error message when user inputs a negative price', async () => {
+			await priceBenchmarkPage.goto();
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				priceBenchmarkSuggestionsData
+			);
+			await priceBenchmarkPage.fulfillWCProduct(
+				{
+					regular_price: '100.00',
+					sale_price: '90.00',
+					on_sale: true,
+				},
+				[ 'GET' ]
+			);
+
 			// Open the modal again
 			const changePriceLink =
 				await priceBenchmarkPage.getFirstProductChangePriceLink();
@@ -307,7 +320,7 @@ test.describe( 'Price Benchmark Page', () => {
 
 			const error = priceBenchmarkPage.getPriceInputError();
 			await expect( error ).toHaveText(
-				'New price must be greater than or equals to zero.'
+				'New price must be greater than the sales price (NT$90.00).'
 			);
 
 			const changePriceButton =
