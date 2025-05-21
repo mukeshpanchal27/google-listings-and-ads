@@ -4,6 +4,14 @@
 	margin: $grid-unit-40 0;
 }
 
+.gla-price-benchmark__comparison-chart__loading-skeleton {
+	min-height: 98px;
+
+	span {
+		@include placeholder;
+	}
+}
+
 .gla-price-benchmark__tooltip {
 
 	&.components-tooltip {
