@@ -42,6 +42,15 @@ test.describe( 'Price Benchmark Page', () => {
 			await priceBenchmarkPage.goto();
 		} );
 
+		test( 'Renders loading state while fetching data', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
+
+			const loadingElement = page.locator(
+				'.gla-horizontal-stacked-bar--loading'
+			);
+			await expect( loadingElement ).toBeVisible();
+		} );
+
 		test( 'Does not render the chart if there are no products', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
 			await priceBenchmarkPage.fulfillPriceBenchmarkSummary( {
@@ -258,6 +267,19 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Displays error message when user inputs a negative price', async () => {
+			await priceBenchmarkPage.goto();
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				priceBenchmarkSuggestionsData
+			);
+			await priceBenchmarkPage.fulfillWCProduct(
+				{
+					regular_price: '100.00',
+					sale_price: '90.00',
+					on_sale: true,
+				},
+				[ 'GET' ]
+			);
+
 			// Open the modal again
 			const changePriceLink =
 				await priceBenchmarkPage.getFirstProductChangePriceLink();
