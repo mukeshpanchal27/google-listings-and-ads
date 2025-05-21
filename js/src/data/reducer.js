@@ -6,6 +6,7 @@ import { setWith, clone } from 'lodash';
 /**
  * Internal dependencies
  */
+import { generateKeyFromObject } from '~/utils/generateKeyFromObject';
 import TYPES from './action-types';
 
 const DEFAULT_STATE = {
@@ -73,7 +74,7 @@ const DEFAULT_STATE = {
 	},
 	gtinMigrationStatus: null,
 	price_benchmark: {
-		suggestions: [],
+		suggestions: {},
 		summary: {},
 	},
 };
@@ -534,8 +535,14 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 		}
 
 		case TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS: {
-			const { data } = action;
-			return setIn( state, 'price_benchmark.suggestions', data );
+			const { data, args } = action;
+			const key = generateKeyFromObject( args );
+
+			return setIn(
+				state,
+				[ 'price_benchmark', 'suggestions', key ],
+				data
+			);
 		}
 
 		case TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS_REGULAR_PRICE: {

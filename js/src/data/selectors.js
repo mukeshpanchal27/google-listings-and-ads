@@ -8,6 +8,7 @@ import createSelector from 'rememo';
  * Internal dependencies
  */
 import { STORE_KEY } from './constants';
+import { generateKeyFromObject } from '~/utils/generateKeyFromObject';
 import {
 	getReportQuery,
 	getReportKey,
@@ -422,6 +423,8 @@ export const getPriceBenchmarkSummary = ( state ) => {
  * @param {Object} state - The state object containing price benchmark data.
  * @return {Array} The array of price benchmark suggestions.
  */
-export const getPriceBenchmarkSuggestions = ( state ) => {
-	return state.price_benchmark.suggestions;
+export const getPriceBenchmarkSuggestions = ( state, args ) => {
+	const key = generateKeyFromObject( args );
+
+	return state.price_benchmark.suggestions[ key ];
 };

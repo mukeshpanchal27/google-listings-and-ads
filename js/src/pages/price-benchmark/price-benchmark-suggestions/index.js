@@ -2,8 +2,8 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { isEqual } from 'lodash';
 import { withViewportMatch } from '@wordpress/viewport';
-import { TablePlaceholder } from '@woocommerce/components';
 import { useState, useMemo, useEffect, useCallback } from '@wordpress/element';
 
 /**
@@ -97,7 +97,7 @@ const METRICS_TABLE_FIELDS = [
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
-		label: <Label labelKey={ LABEL_REGULAR_PRICE } />,
+		label: LABELS[ LABEL_REGULAR_PRICE ].title,
 		render: ( { item } ) => {
 			return <Price amount={ item.regular_price } highlight />;
 		},
@@ -161,6 +161,16 @@ const METRICS_TABLE_FIELDS = [
 ];
 
 const TABLE_FIELDS_MOBILE = [ 'action' ];
+const DEFAULT_QUERY_PARAMS = {
+	search: '',
+	page: 1,
+	perPage: 10,
+	filters: [],
+	sort: {
+		direction: 'desc',
+		field: 'effectiveness',
+	},
+};
 
 /**
  * PriceBenchmarkSuggestions component.
@@ -176,21 +186,25 @@ const TABLE_FIELDS_MOBILE = [ 'action' ];
  */
 const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 	const { DataViews, filterSortAndPaginate } = window.wp.dataviews;
-	const { suggestions, hasFinishedResolution } =
-		usePriceBenchmarkSuggestions();
-
 	const [ view, setView ] = useState( {
 		type: 'table',
-		search: '',
-		page: 1,
-		perPage: 10,
 		layout: {},
-		filters: [],
 		fields: [],
 		titleField: 'title',
 		descriptionField: 'description',
 		mediaField: 'image',
+		...DEFAULT_QUERY_PARAMS,
 	} );
+
+	const updatedQueryParams = {
+		sort: view.sort,
+		search: view.search,
+		page: view.page,
+		perPage: view.perPage,
+		filters: view.filters,
+	};
+	const { suggestions, hasFinishedResolution } =
+		usePriceBenchmarkSuggestions( updatedQueryParams );
 
 	const { data: shownData, paginationInfo } = useMemo( () => {
 		const updatedData = filterSortAndPaginate( suggestions, view, [
@@ -212,15 +226,6 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 		return METRICS_TABLE_FIELDS.map( ( field ) => field.id );
 	}, [ isViewportMobile ] );
 
-	const placeholderTableHeaders = useMemo( () => {
-		return METRICS_TABLE_FIELDS.map( ( { id, label } ) => {
-			return {
-				key: id,
-				label,
-			};
-		} );
-	}, [] );
-
 	useEffect( () => {
 		setView( ( prevView ) => ( {
 			...prevView,
@@ -228,41 +233,28 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 		} ) );
 	}, [ viewportFields ] );
 
-	if ( hasFinishedResolution && suggestions.length === 0 ) {
+	// If there are no suggestions and the query params are default, which means we are loading the initial set of data, show an empty notice.
+	if (
+		hasFinishedResolution &&
+		! suggestions?.length &&
+		isEqual( updatedQueryParams, DEFAULT_QUERY_PARAMS )
+	) {
 		return <EmptyMetricsNotice />;
 	}
 
 	return (
 		<div className="gla-price-benchmark-suggestions">
-			{ ! hasFinishedResolution && (
-				<TablePlaceholder
-					headers={ [
-						{
-							key: 'product',
-							label: __( 'Product', 'google-listings-and-ads' ),
-						},
-						...placeholderTableHeaders,
-					] }
-					caption={ __( 'Loading data…', 'google-listings-and-ads' ) }
-					numberOfRows={ 10 }
-				/>
-			) }
-
-			{ hasFinishedResolution && (
-				<DataViews
-					getItemId={ ( item ) => item?.product?.id }
-					fields={ [
-						...PRODUCT_TABLE_FIELDS,
-						...METRICS_TABLE_FIELDS,
-					] }
-					data={ shownData }
-					view={ view }
-					paginationInfo={ paginationInfo }
-					onChangeView={ handleOnChangeView }
-					defaultLayouts={ [] }
-					header={ <FaqLink /> }
-				/>
-			) }
+			<DataViews
+				getItemId={ ( item ) => item?.product?.id }
+				fields={ [ ...PRODUCT_TABLE_FIELDS, ...METRICS_TABLE_FIELDS ] }
+				data={ shownData }
+				view={ view }
+				paginationInfo={ paginationInfo }
+				onChangeView={ handleOnChangeView }
+				defaultLayouts={ [] }
+				header={ <FaqLink /> }
+				isLoading={ ! hasFinishedResolution }
+			/>
 		</div>
 	);
 };

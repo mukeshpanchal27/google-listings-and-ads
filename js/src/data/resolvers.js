@@ -596,6 +596,6 @@ export function* getPriceBenchmarkSummary() {
 /**
  * Resolver for getting the Price Benchmark suggestions.
  */
-export function* getPriceBenchmarkSuggestions() {
-	yield fetchPriceBenchmarkSuggestions();
+export function* getPriceBenchmarkSuggestions( args ) {
+	yield fetchPriceBenchmarkSuggestions( args );
 }
