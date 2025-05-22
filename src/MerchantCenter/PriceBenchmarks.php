@@ -32,7 +32,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 
 			$benchmarks = $merchant->get_benchmark_data( [] );
 
-			if ( empty( $benchmarks ) || empty( $benchmarks['results'] ) ) {
+			if ( empty( $benchmarks ) ) {
 				return;
 			}
 
@@ -43,8 +43,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 			$query->reload_data();
 
 			// Insert new benchmark data.
-			foreach ( $benchmarks['results'] as $benchmark ) {
-
+			foreach ( $benchmarks as $benchmark ) {
 				$price_compared_with_benchmark = $this->price_compared_with_benchmark( $benchmark['price_micros'], $benchmark['benchmark_price_micros'] );
 				$query->insert(
 					[
