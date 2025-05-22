@@ -90,35 +90,20 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Does not render the chart if Market Insights not enabled for the account.', async () => {
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
+
+			await priceBenchmarkPage.fulfillPriceBenchmarkSummary(
 				{
-					message: {
-						error: {
-							code: 403,
-							message:
-								'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
-							errors: [
-								{
-									message:
-										'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
-									domain: 'global',
-									reason: 'forbidden',
-								},
-							],
-							status: 'PERMISSION_DENIED',
-							details: [
-								{
-									'@type':
-										'type.googleapis.com/google.rpc.ErrorInfo',
-									reason: 'forbidden',
-									domain: 'global',
-								},
-							],
-						},
-					},
+					message: 'Forbidden.',
 				},
 				403
 			);
+
+			const emptyStateNotice = page.locator(
+				'.gla-price-benchmark__empty-metrics'
+			);
+
+			await expect( emptyStateNotice ).toBeVisible();
 
 			const errorMessage = page.locator(
 				'.components-snackbar__content'
