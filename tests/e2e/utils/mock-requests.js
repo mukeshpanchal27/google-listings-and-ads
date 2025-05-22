@@ -844,4 +844,16 @@ export default class MockRequests {
 			methods
 		);
 	}
+
+	/**
+	 * Mock the request to fetch the product reports.
+	 *
+	 * @param {Object} payload
+	 */
+	async fulfillProductsReport( payload ) {
+		await this.fulfillRequest(
+			/\/wc\/gla\/ads\/reports\/products\b/,
+			payload
+		);
+	}
 }

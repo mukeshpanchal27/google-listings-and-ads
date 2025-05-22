@@ -48,7 +48,7 @@ test.describe( 'App Ratings Banner', () => {
 			} );
 		} );
 
-		test( 'Banner visibility on dashboard tab', async () => {
+		test.only( 'Banner visibility on dashboard tab', async () => {
 			await page.waitForSelector( '.gla-dashboard', {
 				state: 'visible',
 			} );
