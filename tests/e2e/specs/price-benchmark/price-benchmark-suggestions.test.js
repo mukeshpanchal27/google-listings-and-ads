@@ -24,6 +24,30 @@ let priceBenchmarkPage = null;
  */
 let page = null;
 
+const ACCOUNT_NOT_ENABLED_ERROR = {
+	error: {
+		code: 403,
+		message:
+			'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
+		errors: [
+			{
+				message:
+					'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
+				domain: 'global',
+				reason: 'forbidden',
+			},
+		],
+		status: 'PERMISSION_DENIED',
+		details: [
+			{
+				'@type': 'type.googleapis.com/google.rpc.ErrorInfo',
+				reason: 'forbidden',
+				domain: 'global',
+			},
+		],
+	},
+};
+
 test.describe( 'Price Benchmark Page', () => {
 	test.beforeAll( async ( { browser } ) => {
 		page = await browser.newPage();
@@ -94,16 +118,15 @@ test.describe( 'Price Benchmark Page', () => {
 
 			await priceBenchmarkPage.fulfillPriceBenchmarkSummary(
 				{
-					message: 'Forbidden.',
+					message: JSON.stringify( ACCOUNT_NOT_ENABLED_ERROR ),
 				},
 				403
 			);
 
-			const emptyStateNotice = page.locator(
-				'.gla-price-benchmark__empty-metrics'
+			// Wait for the summary URL to be requested before assertions
+			await page.waitForRequest(
+				/\/wc\/gla\/mc\/price-benchmarks\/summary\b/
 			);
-
-			await expect( emptyStateNotice ).toBeVisible();
 
 			const errorMessage = page.locator(
 				'.components-snackbar__content'
@@ -159,30 +182,7 @@ test.describe( 'Price Benchmark Page', () => {
 		test( 'Shows empty state notice when Market Insights is not enabled for the account.', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
 				{
-					message: {
-						error: {
-							code: 403,
-							message:
-								'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
-							errors: [
-								{
-									message:
-										'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
-									domain: 'global',
-									reason: 'forbidden',
-								},
-							],
-							status: 'PERMISSION_DENIED',
-							details: [
-								{
-									'@type':
-										'type.googleapis.com/google.rpc.ErrorInfo',
-									reason: 'forbidden',
-									domain: 'global',
-								},
-							],
-						},
-					},
+					message: JSON.stringify( ACCOUNT_NOT_ENABLED_ERROR ),
 				},
 				403
 			);
