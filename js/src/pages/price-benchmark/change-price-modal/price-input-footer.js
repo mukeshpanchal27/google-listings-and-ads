@@ -24,6 +24,7 @@ import useDispatchProduct from '~/hooks/useDispatchProduct';
  * @property {number} recommended_price The recommended price for the product.
  * @property {number} changed_price The new price set for the product.
  * @property {string} currency The currency of the product price.
+ * @property {string} gtin The global unique identifier (e.g., GTIN) for the product.
  */
 
 /**
@@ -42,6 +43,7 @@ import useDispatchProduct from '~/hooks/useDispatchProduct';
  * @param {number} [props.salesPrice] - The current sales price of the product (if any).
  * @param {Function} props.onPriceChange - Callback function triggered after the price is successfully updated.
  * @param {boolean} props.onSale - Indicates if the product is currently on sale.
+ * @param {string} props.globalUniqueId - The global unique identifier (e.g., GTIN) for the product.
  *
  * @return {JSX.Element} The rendered PriceInputFooter component.
  */
@@ -52,6 +54,7 @@ const PriceInputFooter = ( {
 	salesPrice,
 	onSale,
 	onPriceChange,
+	globalUniqueId,
 } ) => {
 	const { formatAmount } = useAdsCurrency();
 	const { updateProduct } = useDispatchProduct();
@@ -119,6 +122,7 @@ const PriceInputFooter = ( {
 				recommended_price: suggestedPrice,
 				changed_price: newPrice,
 				currency: googleAdsAccount?.currency,
+				gtin: globalUniqueId,
 			} );
 		} catch ( error ) {
 			setNewPriceError( error?.message );

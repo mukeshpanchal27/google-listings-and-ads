@@ -134,6 +134,7 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 
 	const salesPrice = Number.parseFloat( productDetails.sale_price );
 	const isOnSale = productDetails.on_sale;
+	const globalUniqueId = productDetails.global_unique_id;
 
 	return (
 		<AppModal
@@ -147,6 +148,7 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 					onSale={ isOnSale }
 					salesPrice={ salesPrice }
 					regularPrice={ regularPrice }
+					globalUniqueId={ globalUniqueId }
 				/>,
 			] }
 		>
