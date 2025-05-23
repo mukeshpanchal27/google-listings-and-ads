@@ -249,6 +249,22 @@ test.describe( 'Price Benchmark Page', () => {
 				'There was an error loading the price benchmark suggestions.'
 			);
 		} );
+
+		test( 'FAQ link is present and has the correct URL', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				priceBenchmarkSuggestionsData
+			);
+			// Get the faq link by .dataviews__view-actions > .components-external-link by text.
+			const faqLink = page.locator(
+				'.dataviews__view-actions .components-external-link'
+			);
+			await expect( faqLink ).toBeVisible();
+			await expect( faqLink ).toContainText( 'FAQ' );
+			await expect( faqLink ).toHaveAttribute(
+				'href',
+				'https://woocommerce.com/document/google-for-woocommerce/faq/'
+			);
+		} );
 	} );
 
 	test.describe( 'Change Price Modal Functionality', () => {
@@ -285,6 +301,19 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test( 'Displays error message when user inputs a negative price', async () => {
+			await priceBenchmarkPage.goto();
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				priceBenchmarkSuggestionsData
+			);
+			await priceBenchmarkPage.fulfillWCProduct(
+				{
+					regular_price: '100.00',
+					sale_price: '90.00',
+					on_sale: true,
+				},
+				[ 'GET' ]
+			);
+
 			// Open the modal again
 			const changePriceLink =
 				await priceBenchmarkPage.getFirstProductChangePriceLink();
