@@ -340,6 +340,7 @@ When a documentation link is clicked.
 	- with `{ context: "reports-products", link_id: "setting-up-currency", href: "https://support.google.com/google-ads/answer/9841530" }`
 	- with `{ context: "reports-programs", link_id: "setting-up-currency", href: "https://support.google.com/google-ads/answer/9841530" }`
 - [`EditStoreAddress`](../../js/src/pages/settings/edit-store-address.js#L41) with `{ context: "settings-store-address", link_id: "contact-information-read-more", href: "https://woocommerce.com/document/google-for-woocommerce/get-started/requirements/#contact-information" }`
+- [`FaqLink`](../../js/src/pages/price-benchmark/faq-link.js#L20) with `{ context: 'price-benchmark-suggestions', link_id: 'price-benchmark-suggestions-faq' }` and the URL.
 - [`Faqs`](../../js/src/components/paid-ads/asset-group/faqs.js#L72) with `{ context: 'assets-faq', linkId: 'assets-faq-about-ad-formats-available-in-different-campaign-types', href: 'https://support.google.com/google-ads/answer/1722124' }`.
 - [`Faqs`](../../js/src/pages/get-started/faqs/index.js#L428)
 	- with `{ context: 'faqs', linkId: 'general-requirements', href: 'https://woocommerce.com/document/google-for-woocommerce/get-started/requirements/#general-requirements' }`.
