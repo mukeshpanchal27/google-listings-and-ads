@@ -8,11 +8,24 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import { PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT } from '../constants';
+import { recordGlaEvent } from '~/utils/tracks';
 import AppButton from '~/components/app-button';
 import AppInputPriceControl from '~/components/app-input-price-control';
 import useAdsCurrency from '~/hooks/useAdsCurrency';
 import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
 import useDispatchProduct from '~/hooks/useDispatchProduct';
+
+/**
+ * @event gla_price_benchmarks_change_price_edited
+ * @property {string} context The context in which the event is triggered.
+ * @property {number} product_id The ID of the product whose price is being changed.
+ * @property {number} previous_price The previous price of the product.
+ * @property {number} recommended_price The recommended price for the product.
+ * @property {number} changed_price The new price set for the product.
+ * @property {string} currency The currency of the product price.
+ * @property {string} gtin The global unique identifier (e.g., GTIN) for the product.
+ */
 
 /**
  * PriceInputFooter component.
@@ -21,21 +34,27 @@ import useDispatchProduct from '~/hooks/useDispatchProduct';
  * update the price of a product. It includes validation for the new price and
  * handles the update process.
  *
+ * @fires gla_price_benchmarks_change_price_edited
+ *
  * @param {Object} props - Component properties.
  * @param {number} props.productId - The ID of the product being updated.
+ * @param {number} props.regularPrice - The regular price of the product.
  * @param {number} props.suggestedPrice - The suggested price for the product.
  * @param {number} [props.salesPrice] - The current sales price of the product (if any).
  * @param {Function} props.onPriceChange - Callback function triggered after the price is successfully updated.
  * @param {boolean} props.onSale - Indicates if the product is currently on sale.
+ * @param {string} props.globalUniqueId - The global unique identifier (e.g., GTIN) for the product.
  *
  * @return {JSX.Element} The rendered PriceInputFooter component.
  */
 const PriceInputFooter = ( {
 	productId,
+	regularPrice,
 	suggestedPrice,
 	salesPrice,
 	onSale,
 	onPriceChange,
+	globalUniqueId,
 } ) => {
 	const { formatAmount } = useAdsCurrency();
 	const { updateProduct } = useDispatchProduct();
@@ -95,6 +114,16 @@ const PriceInputFooter = ( {
 			await updateProduct( productId, {
 				regular_price: `${ newPrice }`,
 			} );
+
+			recordGlaEvent( 'gla_price_benchmarks_change_price_edited', {
+				context: PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT,
+				product_id: productId,
+				previous_price: regularPrice,
+				recommended_price: suggestedPrice,
+				changed_price: newPrice,
+				currency: googleAdsAccount?.currency,
+				gtin: globalUniqueId,
+			} );
 		} catch ( error ) {
 			setNewPriceError( error?.message );
 			setLoading( false );
@@ -103,20 +132,28 @@ const PriceInputFooter = ( {
 
 		setLoading( false );
 		onPriceChange( productId, newPrice );
-	}, [ newPrice, productId, onPriceChange, updateProduct, validatePrice ] );
+	}, [
+		newPrice,
+		productId,
+		onPriceChange,
+		updateProduct,
+		validatePrice,
+		googleAdsAccount,
+		regularPrice,
+		suggestedPrice,
+	] );
 
 	useEffect( () => {
 		validatePrice();
 	}, [ newPrice, validatePrice ] );
 
-	const currency = googleAdsAccount?.currency;
 	const hasError = getInputError();
 
 	return (
 		<div className="gla-change-price-modal-price-input-footer">
 			<AppInputPriceControl
 				label={ __( 'New price', 'google-listings-and-ads' ) }
-				suffix={ currency }
+				suffix={ googleAdsAccount?.currency }
 				value={ newPrice }
 				onChange={ setNewPrice }
 				className={ classnames(

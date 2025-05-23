@@ -9,6 +9,7 @@ import { useState, useMemo, useEffect, useCallback } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import { recordGlaEvent } from '~/utils/tracks';
 import EmptyMetricsNotice from '../empty-metrics-notice';
 import usePriceBenchmarkSuggestions from '~/hooks/usePriceBenchmarkSuggestions';
 import ChangePrice from '../change-price';
@@ -17,6 +18,7 @@ import Label from '../label';
 import Price from '../price';
 import FaqLink from '../faq-link';
 import {
+	PRICE_BENCHMARK_SUGGESTIONS_CONTEXT,
 	LABELS,
 	LABEL_CHANGE_EFFECTIVENESS,
 	LABEL_AVG_PRICE_ON_GOOGLE,
@@ -163,12 +165,20 @@ const METRICS_TABLE_FIELDS = [
 const TABLE_FIELDS_MOBILE = [ 'action' ];
 
 /**
+ * @event gla_price_benchmarks_shown
+ * @property {string} context The context of the event.
+ * @property {number} suggestions The number of suggestions shown.
+ */
+
+/**
  * PriceBenchmarkSuggestions component.
  *
  * This component fetches and displays price benchmark suggestions using the
  * `usePriceBenchmarkSuggestions` hook. It renders a table with the suggestions
  * data and handles responsiveness by providing different field configurations
  * for desktop and mobile views.
+ *
+ * @fires gla_price_benchmarks_shown with `{ context: 'price-benchmark-suggestions' }` and the suggestions count.
  *
  * @param {Object} props - The component props.
  * @param {boolean} props.isViewportMobile - Indicates if the viewport is in mobile size.
@@ -227,6 +237,17 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 			fields: viewportFields,
 		} ) );
 	}, [ viewportFields ] );
+
+	useEffect( () => {
+		if ( ! hasFinishedResolution ) {
+			return;
+		}
+
+		recordGlaEvent( 'gla_price_benchmarks_shown', {
+			context: PRICE_BENCHMARK_SUGGESTIONS_CONTEXT,
+			suggestions: suggestions.length,
+		} );
+	}, [ hasFinishedResolution, suggestions ] );
 
 	if ( hasFinishedResolution && suggestions.length === 0 ) {
 		return <EmptyMetricsNotice />;
