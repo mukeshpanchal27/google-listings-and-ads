@@ -596,7 +596,7 @@ Clicking on the "Yes, I want a new account" button in the warning modal for crea
 | name | type | description |
 | ---- | ---- | ----------- |
 `context` | `string` | The context in which the event is triggered.
-`productID` | `number` | The ID of the product whose price is being changed.
+`product_id` | `number` | The ID of the product whose price is being changed.
 `action` | `string` | The action taken to close the modal.
 #### Emitters
 - [`AttributeMappingTable`](../../js/src/pages/attribute-mapping/attribute-mapping-table.js#L59) When any of the modals is closed
@@ -637,7 +637,7 @@ Clicking on a text link within the modal content
 | name | type | description |
 | ---- | ---- | ----------- |
 `context` | `string` | The context in which the event is triggered.
-`productID` | `number` | The ID of the product whose price is being changed.
+`product_id` | `number` | The ID of the product whose price is being changed.
 #### Emitters
 - [`AttributeMappingTable`](../../js/src/pages/attribute-mapping/attribute-mapping-table.js#L59) When any of the modals is open with `{ context: 'attribute-mapping-manage-rule-modal' | 'attribute-mapping-create-rule-modal' }`
 - [`ChangePriceModal`](../../js/src/pages/price-benchmark/change-price-modal/index.js#L67) with `{ context: 'price-benchmark-change-price-modal' }` and the product ID.
@@ -710,7 +710,7 @@ Triggered when moving to another step during creating/editing a campaign.
 | name | type | description |
 | ---- | ---- | ----------- |
 `context` | `string` | The context in which the event is triggered.
-`productID` | `number` | The ID of the product whose price is being changed.
+`product_id` | `number` | The ID of the product whose price is being changed.
 #### Emitters
 - [`ChangePrice`](../../js/src/pages/price-benchmark/change-price.js#L36) with `{ context: 'price-benchmark-change-price-modal' }` and the product ID.
 
@@ -720,15 +720,15 @@ Triggered when moving to another step during creating/editing a campaign.
 | name | type | description |
 | ---- | ---- | ----------- |
 `context` | `string` | The context in which the event is triggered.
-`productID` | `number` | The ID of the product whose price is being changed.
-`previousPrice` | `number` | The previous price of the product.
-`recommendedPrice` | `number` | The recommended price for the product.
-`changedPrice` | `number` | The new price set for the product.
+`product_id` | `number` | The ID of the product whose price is being changed.
+`previous_price` | `number` | The previous price of the product.
+`recommended_price` | `number` | The recommended price for the product.
+`changed_price` | `number` | The new price set for the product.
 `currency` | `string` | The currency of the product price.
 #### Emitters
 - [`PriceInputFooter`](../../js/src/pages/price-benchmark/change-price-modal/price-input-footer.js#L48)
 
-### [`gla_price_benchmarks_shown`](../../js/src/pages/price-benchmark/price-benchmark-suggestions/index.js#L166)
+### [`gla_price_benchmarks_shown`](../../js/src/pages/price-benchmark/price-benchmark-suggestions/index.js#L167)
 
 #### Properties
 | name | type | description |
@@ -736,7 +736,7 @@ Triggered when moving to another step during creating/editing a campaign.
 `context` | `string` | The context of the event.
 `suggestions` | `number` | The number of suggestions shown.
 #### Emitters
-- [`PriceBenchmarkSuggestions`](../../js/src/pages/price-benchmark/price-benchmark-suggestions/index.js#L186) with `{ context: 'price-benchmark-suggestions' }` and the suggestions count.
+- [`PriceBenchmarkSuggestions`](../../js/src/pages/price-benchmark/price-benchmark-suggestions/index.js#L187) with `{ context: 'price-benchmark-suggestions' }` and the suggestions count.
 
 ### [`gla_request_review`](../../js/src/pages/product-feed/review-request/review-request-modal.js#L19)
 Triggered when request review button is clicked

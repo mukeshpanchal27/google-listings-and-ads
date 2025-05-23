@@ -38,13 +38,13 @@ import './index.scss';
 /**
  * @event gla_modal_open
  * @property {string} context The context in which the event is triggered.
- * @property {number} productID The ID of the product whose price is being changed.
+ * @property {number} product_id The ID of the product whose price is being changed.
  */
 
 /**
  * @event gla_modal_closed
  * @property {string} context The context in which the event is triggered.
- * @property {number} productID The ID of the product whose price is being changed.
+ * @property {number} product_id The ID of the product whose price is being changed.
  * @property {string} action The action taken to close the modal.
  */
 
@@ -87,14 +87,14 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 	useEffect( () => {
 		recordGlaEvent( 'gla_modal_open', {
 			context: PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT,
-			productID: productId,
+			product_id: productId,
 		} );
 	}, [ productId ] );
 
 	const handleOnRequestClose = useCallback( () => {
 		recordGlaEvent( 'gla_modal_closed', {
 			context: PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT,
-			productID: productId,
+			product_id: productId,
 			action: 'close',
 		} );
 

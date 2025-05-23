@@ -19,10 +19,10 @@ import useDispatchProduct from '~/hooks/useDispatchProduct';
 /**
  * @event gla_price_benchmarks_change_price_edited
  * @property {string} context The context in which the event is triggered.
- * @property {number} productID The ID of the product whose price is being changed.
- * @property {number} previousPrice The previous price of the product.
- * @property {number} recommendedPrice The recommended price for the product.
- * @property {number} changedPrice The new price set for the product.
+ * @property {number} product_id The ID of the product whose price is being changed.
+ * @property {number} previous_price The previous price of the product.
+ * @property {number} recommended_price The recommended price for the product.
+ * @property {number} changed_price The new price set for the product.
  * @property {string} currency The currency of the product price.
  */
 
@@ -114,10 +114,10 @@ const PriceInputFooter = ( {
 
 			recordGlaEvent( 'gla_price_benchmarks_change_price_edited', {
 				context: PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT,
-				productID: productId,
-				previousPrice: regularPrice,
-				recommendedPrice: suggestedPrice,
-				changedPrice: newPrice,
+				product_id: productId,
+				previous_rice: regularPrice,
+				recommended_price: suggestedPrice,
+				changed_price: newPrice,
 				currency: googleAdsAccount?.currency,
 			} );
 		} catch ( error ) {

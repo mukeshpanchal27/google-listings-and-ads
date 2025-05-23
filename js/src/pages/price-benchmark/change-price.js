@@ -19,7 +19,7 @@ import ChangePriceModal from './change-price-modal';
 /**
  * @event gla_price_benchmarks_change_price_clicked
  * @property {string} context The context in which the event is triggered.
- * @property {number} productID The ID of the product whose price is being changed.
+ * @property {number} product_id The ID of the product whose price is being changed.
  */
 
 /**
@@ -75,7 +75,7 @@ const ChangePrice = ( { productId } ) => {
 				eventName="gla_price_benchmarks_change_price_clicked"
 				eventProps={ {
 					context: PRICE_BENCHMARK_SUGGESTIONS_CONTEXT,
-					productID: productId,
+					product_id: productId,
 				} }
 			>
 				{ __( 'Change price', 'google-listings-and-ads' ) }
