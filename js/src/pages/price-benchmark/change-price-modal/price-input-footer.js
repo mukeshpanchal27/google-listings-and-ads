@@ -115,7 +115,7 @@ const PriceInputFooter = ( {
 			recordGlaEvent( 'gla_price_benchmarks_change_price_edited', {
 				context: PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT,
 				product_id: productId,
-				previous_rice: regularPrice,
+				previous_price: regularPrice,
 				recommended_price: suggestedPrice,
 				changed_price: newPrice,
 				currency: googleAdsAccount?.currency,
