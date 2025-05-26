@@ -76,7 +76,10 @@ describe( 'reducer', () => {
 			},
 			gtinMigrationStatus: null,
 			price_benchmark: {
-				suggestions: [],
+				suggestions: {
+					items: {},
+					queries: {},
+				},
 				summary: {},
 			},
 		} );
