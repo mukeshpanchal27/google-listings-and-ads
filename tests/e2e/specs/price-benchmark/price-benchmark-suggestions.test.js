@@ -25,26 +25,10 @@ let priceBenchmarkPage = null;
 let page = null;
 
 const ACCOUNT_NOT_ENABLED_ERROR = {
-	error: {
-		code: 403,
-		message:
-			'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
-		errors: [
-			{
-				message:
-					'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
-				domain: 'global',
-				reason: 'forbidden',
-			},
-		],
-		status: 'PERMISSION_DENIED',
-		details: [
-			{
-				'@type': 'type.googleapis.com/google.rpc.ErrorInfo',
-				reason: 'forbidden',
-				domain: 'global',
-			},
-		],
+	message: 'Unable to retrieve price benchmark data',
+	errors: {
+		forbidden:
+			'Market Insights not enabled for account 5337422187. For more information check https://support.google.com/merchants/answer/9625913',
 	},
 };
 
@@ -99,14 +83,6 @@ test.describe( 'Price Benchmark Page', () => {
 				403
 			);
 
-			const errorMessage = page.locator(
-				'.components-snackbar__content'
-			);
-			await expect( errorMessage ).toBeVisible();
-			await expect( errorMessage ).toContainText(
-				'There was an error getting the price benchmark summary. Forbidden.'
-			);
-
 			const comparisonChartElement = page.locator(
 				'.gla-price-benchmark__comparison-chart'
 			);
@@ -117,9 +93,7 @@ test.describe( 'Price Benchmark Page', () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
 
 			await priceBenchmarkPage.fulfillPriceBenchmarkSummary(
-				{
-					message: JSON.stringify( ACCOUNT_NOT_ENABLED_ERROR ),
-				},
+				ACCOUNT_NOT_ENABLED_ERROR,
 				403
 			);
 
@@ -137,6 +111,25 @@ test.describe( 'Price Benchmark Page', () => {
 				'.gla-price-benchmark__comparison-chart'
 			);
 			await expect( comparisonChartElement ).not.toBeVisible();
+		} );
+
+		test( 'Renders an error message for summary API errors other than 403', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
+
+			await priceBenchmarkPage.fulfillPriceBenchmarkSummary(
+				{
+					message: 'An error occured.',
+				},
+				404
+			);
+
+			const errorMessage = page.locator(
+				'.components-snackbar__content'
+			);
+			await expect( errorMessage ).toBeVisible();
+			await expect( errorMessage ).toContainText(
+				'There was an error getting the price benchmark summary. An error occured.'
+			);
 		} );
 
 		test( 'Render the chart if there are products', async () => {
@@ -181,9 +174,7 @@ test.describe( 'Price Benchmark Page', () => {
 
 		test( 'Shows empty state notice when Market Insights is not enabled for the account.', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
-				{
-					message: JSON.stringify( ACCOUNT_NOT_ENABLED_ERROR ),
-				},
+				ACCOUNT_NOT_ENABLED_ERROR,
 				403
 			);
 			const emptyStateNotice = page.locator(

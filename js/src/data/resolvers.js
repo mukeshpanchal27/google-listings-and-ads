@@ -35,8 +35,6 @@ import {
 	receiveGoogleMCContactInformation,
 	fetchTargetAudience,
 	fetchMCSetup,
-	fetchPriceBenchmarkSummary,
-	fetchPriceBenchmarkSuggestions,
 	receiveGoogleAccountAccess,
 	receiveReport,
 	receiveMCProductStatistics,
@@ -590,12 +588,68 @@ export function* getGtinMigrationStatus() {
  * Resolver for getting the Price Benchmark summary.
  */
 export function* getPriceBenchmarkSummary() {
-	yield fetchPriceBenchmarkSummary();
+	try {
+		const { data } = yield fetchWithHeaders( {
+			path: `${ API_NAMESPACE }/mc/price-benchmarks/summary`,
+		} );
+
+		return {
+			type: TYPES.RECEIVE_PRICE_BENCHMARK_SUMMARY,
+			data,
+		};
+	} catch ( response ) {
+		// Intentionally silence the specific in case the the account is not authorized to view the price benchmark suggestions.
+		if ( response.status === 403 ) {
+			return {
+				type: TYPES.RECEIVE_PRICE_BENCHMARK_SUMMARY,
+				data: [],
+			};
+		}
+
+		const bodyPromise = response?.json() || response?.text();
+		const error = yield awaitPromise( bodyPromise );
+
+		handleApiError(
+			error,
+			__(
+				'There was an error getting the price benchmark summary.',
+				'google-listings-and-ads'
+			)
+		);
+	}
 }
 
 /**
  * Resolver for getting the Price Benchmark suggestions.
  */
 export function* getPriceBenchmarkSuggestions() {
-	yield fetchPriceBenchmarkSuggestions();
+	try {
+		const { data } = yield fetchWithHeaders( {
+			path: `${ API_NAMESPACE }/mc/price-benchmarks`,
+		} );
+
+		return {
+			type: TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS,
+			data,
+		};
+	} catch ( response ) {
+		// Intentionally silence the specific in case the the account is not authorized to view the price benchmark suggestions.
+		if ( response.status === 403 ) {
+			return {
+				type: TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS,
+				data: [],
+			};
+		}
+
+		const bodyPromise = response?.json() || response?.text();
+		const error = yield awaitPromise( bodyPromise );
+
+		handleApiError(
+			error,
+			__(
+				'There was an error getting the price benchmark suggestions.',
+				'google-listings-and-ads'
+			)
+		);
+	}
 }
