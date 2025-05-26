@@ -21,6 +21,7 @@ import { isWCIos, isWCAndroid } from '~/utils/isMobileApp';
 /**
  * @typedef {import('~/data/types.js').AssetEntityGroupUpdateBody} AssetEntityGroupUpdateBody
  * @typedef {import('./selectors').Tour} Tour
+ * @typedef {import('./selectors').PriceBenchmarkQueryParams} PriceBenchmarkQueryParams
  */
 
 /**
@@ -1228,14 +1229,21 @@ export function* fetchPriceBenchmarkSummary() {
 
 /**
  * Action to fetch the Price Benchmark suggestions.
+ * If product_id is provided, it will fetch the suggestions for that product.
+ *
+ * @param {PriceBenchmarkQueryParams} args The query parameters for fetching price benchmark suggestions.
  */
 export function* fetchPriceBenchmarkSuggestions( args ) {
 	try {
+		let path = `${ API_NAMESPACE }/mc/price-benchmarks`;
+		if ( args.product_id ) {
+			path = `${ path }/${ args.product_id }`;
+		} else {
+			path = addQueryArgs( path, args );
+		}
+
 		const data = yield apiFetch( {
-			path: addQueryArgs(
-				`${ API_NAMESPACE }/mc/price-benchmarks`,
-				args
-			),
+			path,
 		} );
 
 		return {

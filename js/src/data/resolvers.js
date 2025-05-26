@@ -53,6 +53,7 @@ import {
 
 /**
  * @typedef {import('~/data/actions').CountryCode} CountryCode
+ * @typedef {import('./selectors').PriceBenchmarkQueryParams} PriceBenchmarkQueryParams
  */
 
 export function* getShippingRates() {
@@ -595,6 +596,8 @@ export function* getPriceBenchmarkSummary() {
 
 /**
  * Resolver for getting the Price Benchmark suggestions.
+ *
+ * @param {PriceBenchmarkQueryParams} args The query parameters for fetching price benchmark suggestions.
  */
 export function* getPriceBenchmarkSuggestions( args ) {
 	yield fetchPriceBenchmarkSuggestions( args );

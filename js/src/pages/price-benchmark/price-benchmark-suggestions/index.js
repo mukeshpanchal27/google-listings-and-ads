@@ -165,7 +165,6 @@ const DEFAULT_QUERY_PARAMS = {
 	search: '',
 	page: 1,
 	perPage: 10,
-	filters: [],
 	sort: {
 		direction: 'desc',
 		field: 'effectiveness',
@@ -185,11 +184,12 @@ const DEFAULT_QUERY_PARAMS = {
  * @return {JSX.Element} A div containing the DataViews component.
  */
 const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
-	const { DataViews, filterSortAndPaginate } = window.wp.dataviews;
+	const { DataViews } = window.wp.dataviews;
 	const [ view, setView ] = useState( {
 		type: 'table',
 		layout: {},
 		fields: [],
+		filters: [],
 		titleField: 'title',
 		descriptionField: 'description',
 		mediaField: 'image',
@@ -197,22 +197,16 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 	} );
 
 	const updatedQueryParams = {
-		sort: view.sort,
+		order: view.sort.direction,
+		orderby: view.sort.field,
 		search: view.search,
 		page: view.page,
-		perPage: view.perPage,
-		filters: view.filters,
+		per_page: view.perPage,
 	};
-	const { suggestions, hasFinishedResolution } =
-		usePriceBenchmarkSuggestions( updatedQueryParams );
-
-	const { data: shownData, paginationInfo } = useMemo( () => {
-		const updatedData = filterSortAndPaginate( suggestions, view, [
-			...PRODUCT_TABLE_FIELDS,
-			...METRICS_TABLE_FIELDS,
-		] );
-		return updatedData;
-	}, [ view, suggestions, filterSortAndPaginate ] );
+	const {
+		data: { items: suggestions, meta },
+		hasFinishedResolution,
+	} = usePriceBenchmarkSuggestions( updatedQueryParams );
 
 	const handleOnChangeView = useCallback( ( newView ) => {
 		setView( newView );
@@ -237,7 +231,18 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 	if (
 		hasFinishedResolution &&
 		! suggestions?.length &&
-		isEqual( updatedQueryParams, DEFAULT_QUERY_PARAMS )
+		isEqual(
+			{
+				search: updatedQueryParams.search,
+				page: updatedQueryParams.page,
+				perPage: updatedQueryParams.per_page,
+				sort: {
+					direction: updatedQueryParams.order,
+					field: updatedQueryParams.orderby,
+				},
+			},
+			DEFAULT_QUERY_PARAMS
+		)
 	) {
 		return <EmptyMetricsNotice />;
 	}
@@ -247,9 +252,12 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 			<DataViews
 				getItemId={ ( item ) => item?.product?.id }
 				fields={ [ ...PRODUCT_TABLE_FIELDS, ...METRICS_TABLE_FIELDS ] }
-				data={ shownData }
+				data={ suggestions }
 				view={ view }
-				paginationInfo={ paginationInfo }
+				paginationInfo={ {
+					totalItems: meta?.totalItems,
+					totalPages: meta?.totalPages / view?.perPage,
+				} }
 				onChangeView={ handleOnChangeView }
 				defaultLayouts={ [] }
 				header={ <FaqLink /> }

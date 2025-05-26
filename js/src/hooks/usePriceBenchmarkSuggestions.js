@@ -16,7 +16,7 @@ const usePriceBenchmarkSuggestions = ( args ) => {
 			const selector = select( STORE_KEY );
 
 			return {
-				suggestions: selector[ selectorName ]( args ),
+				data: selector[ selectorName ]( args ),
 				hasFinishedResolution: selector.hasFinishedResolution(
 					selectorName,
 					[ args ]

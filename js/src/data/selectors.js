@@ -59,6 +59,16 @@ export const getSettings = ( state ) => {
  */
 
 /**
+ * @typedef {Object} PriceBenchmarkQueryParams
+ * @property {string} [product_id] The product ID to get the price benchmark for.
+ * @property {string} [order] The sort direction (e.g. 'asc' or 'desc').
+ * @property {string} [orderby] The field to sort by.
+ * @property {string} [search] The search query string.
+ * @property {number} [page] The current page number.
+ * @property {number} [per_page] The number of items per page.
+ */
+
+/**
  * Select jetpack connection state.
  *
  * @param {Object} state The current store state will be injected by `wp.data`.
@@ -418,13 +428,31 @@ export const getPriceBenchmarkSummary = ( state ) => {
 };
 
 /**
- * Retrieves the price benchmark suggestions from the state.
+ * Retrieves the price benchmark suggestions from the state. If `product_id` is provided in the arguments,
+ * it returns the suggestions for that specific product. Otherwise, it generates a key from the arguments
+ * and retrieves the suggestions based on that key.
  *
  * @param {Object} state - The state object containing price benchmark data.
- * @return {Array} The array of price benchmark suggestions.
+ * @param {PriceBenchmarkQueryParams} args - Arguments to generate the key for suggestions.
+ * @return {Object} The price benchmark suggestions and meta.
  */
-export const getPriceBenchmarkSuggestions = ( state, args ) => {
-	const key = generateKeyFromObject( args );
+export const getPriceBenchmarkSuggestions = createSelector(
+	( state, args ) => {
+		if ( args.product_id ) {
+			return state.price_benchmark.suggestions.items[ args.product_id ];
+		}
 
-	return state.price_benchmark.suggestions[ key ];
-};
+		const key = generateKeyFromObject( args );
+		const itemsById = state.price_benchmark.suggestions.items;
+		const ids =
+			state.price_benchmark.suggestions.queries[ key ]?.items || [];
+		return {
+			items: ids.map( ( id ) => itemsById[ id ] ).filter( Boolean ),
+			meta: state.price_benchmark.suggestions.queries[ key ]?.meta,
+		};
+	},
+	( state, args ) => [
+		state.price_benchmark.suggestions,
+		generateKeyFromObject( args ),
+	]
+);
