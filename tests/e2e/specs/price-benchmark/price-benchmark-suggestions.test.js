@@ -42,6 +42,15 @@ test.describe( 'Price Benchmark Page', () => {
 			await priceBenchmarkPage.goto();
 		} );
 
+		test( 'Renders loading state while fetching data', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
+
+			const loadingElement = page.locator(
+				'.gla-horizontal-stacked-bar--loading'
+			);
+			await expect( loadingElement ).toBeVisible();
+		} );
+
 		test( 'Does not render the chart if there are no products', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
 			await priceBenchmarkPage.fulfillPriceBenchmarkSummary( {

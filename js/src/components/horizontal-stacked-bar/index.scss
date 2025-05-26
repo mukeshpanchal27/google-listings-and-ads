@@ -16,65 +16,75 @@
 			"title legend"
 			"chart chart";
 	}
-}
 
-.gla-horizontal-stacked-bar__title {
-	color: $gray-900;
-	font-size: $gla-font-base;
-	font-weight: 500;
-	grid-area: title;
-	line-height: $gla-line-height-medium;
-	margin: 0;
-}
-
-.gla-horizontal-stacked-bar__legend {
-	grid-area: legend;
-	margin: 0;
-
-	ul {
-		display: flex;
-		flex-wrap: wrap;
-		gap: $grid-unit-20;
+	.gla-horizontal-stacked-bar__title {
+		color: $gray-900;
+		font-size: $gla-font-base;
+		font-weight: 500;
+		grid-area: title;
+		line-height: $gla-line-height-medium;
 		margin: 0;
-		row-gap: $grid-unit-05;
+	}
 
-		@media (min-width: $break-wide) {
-			justify-content: flex-end;
+	.gla-horizontal-stacked-bar__legend {
+		grid-area: legend;
+		margin: 0;
+
+		ul {
+			display: flex;
+			flex-wrap: wrap;
+			gap: $grid-unit-20;
+			margin: 0;
+			row-gap: $grid-unit-05;
+
+			@media (min-width: $break-wide) {
+				justify-content: flex-end;
+			}
+		}
+
+		li {
+			margin: 0;
 		}
 	}
 
-	li {
-		margin: 0;
+	.gla-horizontal-stacked-bar__legend-item {
+		align-items: center;
+		color: $gray-700;
+		display: flex;
+		font-size: $gla-font-smaller;
+		line-height: $gla-line-height-medium;
+		gap: $grid-unit-05;
 	}
-}
 
-.gla-horizontal-stacked-bar__legend-item {
-	align-items: center;
-	color: $gray-700;
-	display: flex;
-	font-size: $gla-font-smaller;
-	line-height: $gla-line-height-medium;
-	gap: $grid-unit-05;
-}
+	.gla-horizontal-stacked-bar__legend-color {
+		border-radius: 50%;
+		display: block;
+		height: $grid-unit;
+		width: $grid-unit;
+	}
 
-.gla-horizontal-stacked-bar__legend-color {
-	border-radius: 50%;
-	display: block;
-	height: $grid-unit;
-	width: $grid-unit;
-}
+	.gla-horizontal-stacked-bar__chart {
+		display: flex;
+		flex-wrap: nowrap;
+		gap: $grid-unit-05;
+		grid-area: chart;
 
-.gla-horizontal-stacked-bar__chart {
-	display: flex;
-	flex-wrap: nowrap;
-	gap: $grid-unit-05;
-	grid-area: chart;
+		span {
+			border-radius: $grid-unit-05;
+			height: $grid-unit-30;
 
-	span {
-		border-radius: $grid-unit-05;
-		height: $grid-unit-30;
+			@media (min-width: $break-wide) {
+				height: $grid-unit-20;
+			}
+		}
+	}
 
-		@media (min-width: $break-wide) {
+	&.gla-horizontal-stacked-bar--loading {
+
+		span {
+			@include placeholder;
+
+			display: block;
 			height: $grid-unit-20;
 		}
 	}
