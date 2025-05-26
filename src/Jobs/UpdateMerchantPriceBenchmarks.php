@@ -93,7 +93,7 @@ class UpdateMerchantPriceBenchmarks extends AbstractActionSchedulerJob {
 	 */
 	public function schedule( array $args = [] ) {
 		if ( $this->can_schedule( $args ) ) {
-			$this->action_scheduler->schedule_immediate( $this->get_process_item_hook(), $args );
+			$this->action_scheduler->schedule_recurring( time(), 12 * HOUR_IN_SECONDS, $this->get_process_item_hook(), $args );
 		}
 	}
 

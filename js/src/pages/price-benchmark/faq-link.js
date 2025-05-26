@@ -27,7 +27,11 @@ const FaqLink = () => {
 	};
 
 	return (
-		<ExternalLink onClick={ handleClick } href={ URL }>
+		<ExternalLink
+			onClick={ handleClick }
+			href={ URL }
+			className="gla-price-benchmark-suggestions__faq"
+		>
 			{ __( 'FAQ', 'google-listings-and-ads' ) }
 		</ExternalLink>
 	);
