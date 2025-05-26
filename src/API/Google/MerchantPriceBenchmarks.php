@@ -68,6 +68,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 					'title'                         => $benchmark_result->getProductView()->getTitle(),
 					'price_micros'                  => $benchmark_result->getProductView()->getPriceMicros(),
 					'currency_code'                 => $benchmark_result->getProductView()->getCurrencyCode(),
+					'country_code'                  => $benchmark_result->getPriceCompetitiveness()->getCountryCode(),
 					'benchmark_price_micros'        => $benchmark_result->getPriceCompetitiveness()->getBenchmarkPriceMicros(),
 					'benchmark_price_currency_code' => $benchmark_result->getPriceCompetitiveness()->getBenchmarkPriceCurrencyCode(),
 				];
