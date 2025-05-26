@@ -256,7 +256,7 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 				view={ view }
 				paginationInfo={ {
 					totalItems: meta?.totalItems,
-					totalPages: meta?.totalPages / view?.perPage,
+					totalPages: Math.ceil( meta?.totalItems / view?.perPage ),
 				} }
 				onChangeView={ handleOnChangeView }
 				defaultLayouts={ [] }

@@ -452,7 +452,30 @@ export default class MockRequests {
 	 */
 	async fulfillPriceBenchmarkSuggestions( payload, status = 200 ) {
 		await this.fulfillRequest(
-			/\/wc\/gla\/mc\/price-benchmarks\b/,
+			/\/wc\/gla\/mc\/price-benchmarks(?:\/\d+)?(?:\?(?:[^#]*))?\b/,
+			payload,
+			status,
+			[ 'GET' ]
+		);
+	}
+
+	/**
+	 * Fulfill the price benchmark product suggestions request for a specific product.
+	 *
+	 * @param {string|number} productId - The ID of the product to get price benchmark data for.
+	 * @param {Object} payload - The mock response payload.
+	 * @param {number} [status=200] - The HTTP status code to return.
+	 * @return {Promise<void>}
+	 */
+	async fulfillPriceBenchmarkProductSuggestions(
+		productId,
+		payload,
+		status = 200
+	) {
+		await this.fulfillRequest(
+			new RegExp(
+				`\\/wc\\/gla\\/mc\\/price-benchmarks\\/${ productId }\\b`
+			),
 			payload,
 			status,
 			[ 'GET' ]
