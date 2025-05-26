@@ -81,7 +81,6 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 			$errors = $this->get_exception_errors( $e );
 
 			throw new ExceptionWithResponseData(
-				/* translators: %s Error message */
 				__( 'Unable to retrieve price benchmark data', 'google-listings-and-ads' ),
 				$e->getCode(),
 				null,
@@ -139,7 +138,6 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 			$errors = $this->get_exception_errors( $e );
 
 			throw new ExceptionWithResponseData(
-				/* translators: %s Error message */
 				__( 'Unable to retrieve price insights data', 'google-listings-and-ads' ),
 				$e->getCode(),
 				null,
@@ -190,7 +188,6 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 			$errors = $this->get_exception_errors( $e );
 
 			throw new ExceptionWithResponseData(
-				/* translators: %s Error message */
 				__( 'Unable to retrieve product metrics data', 'google-listings-and-ads' ),
 				$e->getCode(),
 				null,
