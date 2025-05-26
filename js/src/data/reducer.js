@@ -556,6 +556,7 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 
 			const key = generateKeyFromObject( args );
 
+			// Set the product ID as key for easier lookup of products.
 			const productsById = keyBy(
 				data.results,
 				( item ) => item.product.id
