@@ -26,9 +26,31 @@ import './index.scss';
  * @param {string} props.title - Title of the chart.
  * @param {Array<Segment>} [props.segments=[]] - Array of data segments to display in the chart.
  * @param {string} [props.className] - Additional CSS class for the component.
+ * @param {boolean} [props.isLoading=false] - Whether the chart is in a loading state.
  * @return {JSX.Element|null} The rendered component or null if no valid segments.
  */
-const HorizontalStackedBar = ( { title, segments, className } ) => {
+const HorizontalStackedBar = ( {
+	title,
+	segments,
+	className,
+	isLoading = false,
+} ) => {
+	if ( isLoading ) {
+		return (
+			<div
+				className={ classnames(
+					'gla-horizontal-stacked-bar',
+					'gla-horizontal-stacked-bar--loading',
+					className
+				) }
+			>
+				<span className="gla-horizontal-stacked-bar__title" />
+				<span className="gla-horizontal-stacked-bar__legend" />
+				<span className="gla-horizontal-stacked-bar__chart" />
+			</div>
+		);
+	}
+
 	if ( ! segments || segments.length === 0 ) {
 		return null;
 	}

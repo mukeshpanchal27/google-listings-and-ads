@@ -3,6 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 
+export const PRICE_BENCHMARK_SUGGESTIONS_CONTEXT =
+	'price-benchmark-suggestions';
+export const PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT =
+	'price-benchmark-change-price-modal';
 export const LABEL_CHANGE_EFFECTIVENESS = 'LABEL_CHANGE_EFFECTIVENESS';
 export const LABEL_AVG_PRICE_ON_GOOGLE = 'LABEL_AVG_PRICE_ON_GOOGLE';
 export const LABEL_PRICE_GAP_PERCENT = 'LABEL_PRICE_GAP_PERCENT';

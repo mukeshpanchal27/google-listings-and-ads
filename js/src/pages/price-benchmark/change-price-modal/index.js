@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useEffect, useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -21,7 +22,9 @@ import {
 	METRIC_TYPE_EFFECTIVENESS,
 	METRIC_TYPE_PERCENTAGE,
 	METRIC_TYPE_PRICE,
+	PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT,
 } from '../constants';
+import { recordGlaEvent } from '~/utils/tracks';
 import MetricValue from './metric-value';
 import AppButton from '~/components/app-button';
 import AppModal from '~/components/app-modal';
@@ -33,10 +36,26 @@ import useProduct from '~/hooks/useProduct';
 import './index.scss';
 
 /**
+ * @event gla_modal_open
+ * @property {string} context The context in which the event is triggered.
+ * @property {number} product_id The ID of the product whose price is being changed.
+ */
+
+/**
+ * @event gla_modal_closed
+ * @property {string} context The context in which the event is triggered.
+ * @property {number} product_id The ID of the product whose price is being changed.
+ * @property {string} action The action taken to close the modal.
+ */
+
+/**
  * ChangePriceModal component.
  *
  * This component renders a modal for changing the price of a product. It displays
  * product details, price metrics, and allows the user to input a new price.
+ *
+ * @fires gla_modal_open with `{ context: 'price-benchmark-change-price-modal' }` and the product ID.
+ * @fires gla_modal_closed with `{ context: 'price-benchmark-change-price-modal', action: 'close' }` and the product ID.
  *
  * @param {Object} props - Component properties.
  * @param {number|string} props.productId - The ID of the product to change the price for.
@@ -65,9 +84,26 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 		product: { id, title, thumbnail },
 	} = product || {};
 
+	useEffect( () => {
+		recordGlaEvent( 'gla_modal_open', {
+			context: PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT,
+			product_id: productId,
+		} );
+	}, [ productId ] );
+
+	const handleOnRequestClose = useCallback( () => {
+		recordGlaEvent( 'gla_modal_closed', {
+			context: PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT,
+			product_id: productId,
+			action: 'close',
+		} );
+
+		onRequestClose();
+	}, [ onRequestClose, productId ] );
+
 	const appModalProps = {
 		title: __( 'Change Price', 'google-listings-and-ads' ),
-		onRequestClose,
+		onRequestClose: handleOnRequestClose,
 		className: 'gla-change-price-modal',
 	};
 
@@ -98,6 +134,7 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 
 	const salesPrice = Number.parseFloat( productDetails.sale_price );
 	const isOnSale = productDetails.on_sale;
+	const globalUniqueId = productDetails.global_unique_id;
 
 	return (
 		<AppModal
@@ -110,6 +147,8 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 					suggestedPrice={ suggestedPrice }
 					onSale={ isOnSale }
 					salesPrice={ salesPrice }
+					regularPrice={ regularPrice }
+					globalUniqueId={ globalUniqueId }
 				/>,
 			] }
 		>
