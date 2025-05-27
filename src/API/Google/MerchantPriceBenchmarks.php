@@ -111,6 +111,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 					'price_micros'                     => $price_insights_result->getProductView()->getPriceMicros(),
 					'currency_code'                    => $price_insights_result->getProductView()->getCurrencyCode(),
 					'suggested_price_micros'           => $price_insights_result->getPriceInsights()->getSuggestedPriceMicros(),
+					'suggested_price_currency_code'    => $price_insights_result->getPriceInsights()->getSuggestedPriceCurrencyCode(),
 					'predicted_impressions_change_fraction' => $price_insights_result->getPriceInsights()->getPredictedImpressionsChangeFraction(),
 					'predicted_clicks_change_fraction' => $price_insights_result->getPriceInsights()->getPredictedClicksChangeFraction(),
 					'predicted_conversions_change_fraction' => $price_insights_result->getPriceInsights()->getPredictedConversionsChangeFraction(),
