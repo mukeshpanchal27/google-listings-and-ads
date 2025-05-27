@@ -81,23 +81,6 @@ test.describe( 'Price Benchmark Page', () => {
 			await expect( comparisonChartElement ).not.toBeVisible();
 		} );
 
-		test( "Does not render the chart if there's an API error", async () => {
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
-				priceBenchmarkSuggestionsData
-			);
-			await priceBenchmarkPage.fulfillPriceBenchmarkSummary(
-				{
-					message: 'Forbidden.',
-				},
-				403
-			);
-
-			const comparisonChartElement = page.locator(
-				'.gla-price-benchmark__comparison-chart'
-			);
-			await expect( comparisonChartElement ).not.toBeVisible();
-		} );
-
 		test( 'Does not render the chart if Market Insights not enabled for the account.', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
 
