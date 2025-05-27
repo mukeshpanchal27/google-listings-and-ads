@@ -120,6 +120,12 @@ test.describe( 'Price Benchmark Page', () => {
 				'.gla-price-benchmark__comparison-chart'
 			);
 			await expect( comparisonChartElement ).not.toBeVisible();
+
+			const emptyStateNotice = page.locator(
+				'.gla-price-benchmark__empty-metrics'
+			);
+
+			await expect( emptyStateNotice ).toBeVisible();
 		} );
 
 		test( 'Renders an error message for summary API errors other than 403', async () => {
