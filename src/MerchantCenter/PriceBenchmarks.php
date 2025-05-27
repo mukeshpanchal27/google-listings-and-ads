@@ -101,15 +101,47 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 			$job->schedule();
 		}
 
-		// Get counts for all benchmark comparison groups in one query
-		$price_comparison_counts = $query->get_price_benchmark_counts();
+		// Get counts for all price comparison groups in one query.
+		$benchmark_counts_result = $query->get_price_benchmark_counts();
+
+		// Convert raw DB results to an associative array with all groups.
+		$benchmark_counts = $this->get_price_benchmark_counts_data( $benchmark_counts_result );
 
 		return [
-			'total_products' => $price_comparison_counts['total'] ?? 0, // Total products
-			'price_unknown'  => $price_comparison_counts[0] ?? 0, // Unknown/missing
-			'price_lower'    => $price_comparison_counts[1] ?? 0, // Lower price
-			'price_similar'  => $price_comparison_counts[2] ?? 0, // Similar price
-			'price_higher'   => $price_comparison_counts[3] ?? 0, // Higher price
+			'total_products' => $benchmark_counts['total'] ?? 0, // Total products
+			'price_unknown'  => $benchmark_counts[0] ?? 0, // Unknown/missing
+			'price_lower'    => $benchmark_counts[1] ?? 0, // Lower price
+			'price_similar'  => $benchmark_counts[2] ?? 0, // Similar price
+			'price_higher'   => $benchmark_counts[3] ?? 0, // Higher price
 		];
+	}
+
+	/**
+	 * Converts raw benchmark counts from the database to an associative array.
+	 *
+	 * @param array $rows Raw benchmark counts result from the database.
+	 * @return array Associative array with counts for each price comparison group and total.
+	 */
+	public function get_price_benchmark_counts_data( array $rows ): array {
+		// Convert the results to a more usable format
+		$counts = [];
+		$total  = 0;
+		foreach ( $rows as $row ) {
+			$price_compared_value            = (int) $row['price_compared_with_benchmark'];
+			$counts[ $price_compared_value ] = (int) $row['count'];
+			$total                          += $counts[ $price_compared_value ];
+		}
+
+		// Make sure all possible values are represented (0, 1, 2, 3)
+		$all_values = [ 0, 1, 2, 3 ];
+		foreach ( $all_values as $value ) {
+			if ( ! isset( $counts[ $value ] ) ) {
+				$counts[ $value ] = 0;
+			}
+		}
+
+		$counts['total'] = $total;
+
+		return $counts;
 	}
 }
