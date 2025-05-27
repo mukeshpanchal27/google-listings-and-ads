@@ -89,8 +89,6 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 				return [
 					'id'                            => $wc_product_id,
 					'offer_id'                      => $price_competitiveness['offer_id'],
-					'thumbnail'                     => $thumbnail,
-					'title'                         => $price_competitiveness['title'],
 					'effectiveness'                 => $price_insights['effectiveness'] ?? '',
 					'country_code'                  => $price_competitiveness['country_code'] ?? '',
 					'currency_code'                 => $price_competitiveness['benchmark_price_currency_code'] ?? '',
@@ -332,5 +330,95 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		$counts['total'] = $total;
 
 		return $counts;
+	}
+
+	/**
+	 * Retrieves formatted price benchmarks data from the local database.
+	 *
+	 * @param array $args {
+	 *     Optional. Arguments to filter and paginate results.
+	 *
+	 *     @type array|null $include  List of product IDs to include. Default null.
+	 *     @type int        $offset   Offset for the results. Default 0.
+	 *     @type int        $limit    Maximum number of items returned. Default 10.
+	 *     @type string     $search   Search string to filter results. Default null.
+	 *     @type string     $order    Sort order: 'ASC' or 'DESC'. Default 'DESC'.
+	 *     @type string     $orderby  Attribute to sort by. Default 'id'.
+	 * }
+	 * @return array {
+	 *     @type array $results List of formatted price benchmarks.
+	 *     @type int   $total   Total number of price benchmarks available.
+	 * }
+	 */
+	public function get_price_benchmarks_data( array $args = [] ): array {
+		$defaults = [
+			'include' => null,
+			'offset'  => 0,
+			'limit'   => 10,
+			'search'  => null,
+			'order'   => 'DESC',
+			'orderby' => 'mc_insights_effectiveness',
+		];
+
+		$args = array_merge( $defaults, $args );
+
+		/** @var MerchantPriceBenchmarksQuery $query */
+		$query = $this->container->get( MerchantPriceBenchmarksQuery::class );
+
+		// Apply filters.
+		if ( ! empty( $args['include'] ) && is_array( $args['include'] ) ) {
+			$query->where( 'product_id', $args['include'], 'IN' );
+		}
+
+		if ( ! empty( $args['search'] ) ) {
+			$search = trim( $args['search'] );
+			// TODO: Implement a search mechanism.
+		}
+
+		// Set order and orderby.
+		$order   = strtoupper( $args['order'] ) === 'ASC' ? 'ASC' : 'DESC';
+		$orderby = ! empty( $args['orderby'] ) ? $args['orderby'] : 'id';
+
+		$query->set_order( $orderby, $order );
+
+		// Set offset and limit.
+		$query->set_offset( (int) $args['offset'] );
+		$query->set_limit( (int) $args['limit'] );
+
+		// Get total count before limiting.
+		$total = $query->get_count();
+
+		// Get results.
+		$rows = $query->get_results();
+
+		// Format results.
+		$results = [];
+		foreach ( $rows as $row ) {
+			$results[] = [
+				'id'                            => (int) $row['product_id'],
+				'offer_id'                      => $row['mc_product_offer_id'],
+				'effectiveness'                 => $row['mc_insights_effectiveness'] ?? '',
+				'country_code'                  => $row['mc_price_country_code'] ?? '',
+				'currency_code'                 => $row['mc_product_currency_code'] ?? '',
+				'price_micros'                  => (float) $row['mc_product_price_micros'],
+				'benchmark_price_currency_code' => $row['mc_price_benchmark_price_currency_code'] ?? '',
+				'benchmark_price_micros'        => (float) $row['mc_price_benchmark_price_micros'],
+				'suggested_price'               => (float) $row['mc_insights_suggested_price_micros'] ?? '',
+				'suggested_price_currency_code' => $row['mc_insights_suggested_price_currency_code'] ?? '',
+				'predicted_impressions_change'  => $row['mc_insights_predicted_impressions_change_fraction'] ?? '',
+				'predicted_clicks_change'       => $row['mc_insights_predicted_clicks_change_fraction'] ?? '',
+				'predicted_conversions_change'  => $row['mc_insights_predicted_conversions_change_fraction'] ?? '',
+				'clicks'                        => $row['mc_metrics_clicks'] ?? 0,
+				'impressions'                   => $row['mc_metrics_impressions'] ?? 0,
+				'ctr'                           => $row['mc_metrics_ctr'] ?? 0,
+				'conversions'                   => $row['mc_metrics_conversions'] ?? 0,
+				'price_compared_with_benchmark' => $row['price_compared_with_benchmark'] ?? 0,
+			];
+		}
+
+		return [
+			'results' => $results,
+			'total'   => $total,
+		];
 	}
 }
