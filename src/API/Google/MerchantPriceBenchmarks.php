@@ -164,6 +164,8 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 				$results[] = [
 					'offer_id'    => $performance_result->getSegments()->getOfferId(),
 					'clicks'      => $performance_result->getMetrics()->getClicks(),
+					'impressions' => $performance_result->getMetrics()->getImpressions(),
+					'ctr'         => $performance_result->getMetrics()->getCtr(),
 					'conversions' => $performance_result->getMetrics()->getConversions(),
 				];
 			}
