@@ -193,6 +193,23 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	}
 
 	/**
+	 * Returns the key for the given effectiveness value.
+	 *
+	 * @param string $value Effectiveness value.
+	 * @return int The corresponding key if value is found, otherwise 0.
+	 */
+	public function get_effectiveness( $value ) {
+		$effectiveness_map = [
+			'EFFECTIVENESS_UNSPECIFIED' => 0,
+			'LOW'                       => 1,
+			'MEDIUM'                    => 2,
+			'HIGH'                      => 3,
+		];
+
+		return $effectiveness_map[ $value ] ?? 0;
+	}
+
+	/**
 	 * Update price benchmarks by querying the Google Content API and saving the data locally.
 	 */
 	public function update_price_benchmarks(): void {
@@ -221,6 +238,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 				}
 
 				$price_compared_with_benchmark = $this->price_compared_with_benchmark( $benchmark['price_micros'], $benchmark['benchmark_price_micros'] );
+				$effectiveness                 = $this->get_effectiveness( $benchmark['effectiveness'] );
 				$query->insert(
 					[
 						'product_id'                      => $benchmark['id'],
@@ -236,7 +254,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 						'mc_insights_predicted_impressions_change_fraction' => $benchmark['predicted_impressions_change'],
 						'mc_insights_predicted_clicks_change_fraction' => $benchmark['predicted_clicks_change'],
 						'mc_insights_predicted_conversions_change_fraction' => $benchmark['predicted_conversions_change'],
-						'mc_insights_effectiveness'       => $benchmark['effectiveness'],
+						'mc_insights_effectiveness'       => $effectiveness,
 						'mc_metrics_clicks'               => $benchmark['clicks'] ?? 0,
 						'mc_metrics_impressions'          => $benchmark['impressions'] ?? 0,
 						'mc_metrics_ctr'                  => $benchmark['ctr'] ?? 0,
