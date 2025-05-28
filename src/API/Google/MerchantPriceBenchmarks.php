@@ -47,7 +47,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	 *
 	 * @throws Exception If the merchant price benchmarks data can't be retrieved.
 	 */
-	public function get_benchmark_data( array $args ): array {
+	public function get_price_comparisons_data( array $args ): array {
 		try {
 			$response = ( new MerchantPriceBenchmarksQuery( $args ) )
 			->set_client( $this->service, $this->options->get_merchant_id() )
@@ -89,7 +89,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	 *
 	 * @throws Exception If the merchant price suggestions data can't be retrieved.
 	 */
-	public function get_price_insights( array $args ): array {
+	public function get_price_insights_data( array $args ): array {
 		try {
 			$response = ( new MerchantPriceSuggestionsQuery( $args ) )
 			->set_client( $this->service, $this->options->get_merchant_id() )
