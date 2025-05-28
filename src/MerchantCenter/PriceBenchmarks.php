@@ -87,7 +87,11 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 				// Map the data to the required format.
 
 				return [
-					'id'                            => $wc_product_id,
+					'product'                       => [
+						'id'        => $wc_product_id,
+						'thumbnail' => $thumbnail,
+						'title'     => $price_competitiveness['title'],
+					],
 					'offer_id'                      => $price_competitiveness['offer_id'],
 					'effectiveness'                 => $price_insights['effectiveness'] ?? '',
 					'country_code'                  => $price_competitiveness['country_code'] ?? '',
@@ -412,8 +416,16 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		// Format results.
 		$results = [];
 		foreach ( $rows as $row ) {
+			$wc_product_id = (int) $row['product_id'];
+			$product       = wc_get_product( $wc_product_id );
+			$thumbnail     = $this->get_product_thumbnail( $wc_product_id );
+
 			$results[] = [
-				'id'                            => (int) $row['product_id'],
+				'product'                       => [
+					'id'        => $wc_product_id,
+					'thumbnail' => $thumbnail,
+					'title'     => $product instanceof \WC_Product ? $product->get_name() : '',
+				],
 				'offer_id'                      => $row['mc_product_offer_id'],
 				'effectiveness'                 => $row['mc_insights_effectiveness'] ?? '',
 				'country_code'                  => $row['mc_price_country_code'] ?? '',
