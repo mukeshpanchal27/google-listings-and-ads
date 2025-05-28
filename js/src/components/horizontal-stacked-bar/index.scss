@@ -82,10 +82,9 @@
 	&.gla-horizontal-stacked-bar--loading {
 
 		span {
-			@include placeholder;
-
 			display: block;
 			height: $grid-unit-20;
+			@include placeholder;
 		}
 	}
 }

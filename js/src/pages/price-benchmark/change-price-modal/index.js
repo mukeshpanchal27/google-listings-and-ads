@@ -2,7 +2,13 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useCallback } from '@wordpress/element';
+import { addQueryArgs } from '@wordpress/url';
+import { Notice } from '@wordpress/components';
+import {
+	useEffect,
+	useCallback,
+	createInterpolateElement,
+} from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -28,11 +34,12 @@ import { recordGlaEvent } from '~/utils/tracks';
 import MetricValue from './metric-value';
 import AppButton from '~/components/app-button';
 import AppModal from '~/components/app-modal';
+import TrackableLink from '~/components/trackable-link';
 import PriceInputFooter from './price-input-footer';
 import AppSpinner from '~/components/app-spinner';
-import Badge from '~/components/badge';
 import usePriceBenchmarkSuggestionsProduct from '~/hooks/usePriceBenchmarkSuggestionsProduct';
 import useProduct from '~/hooks/useProduct';
+import useAdminUrl from '~/hooks/useAdminUrl';
 import './index.scss';
 
 /**
@@ -65,6 +72,7 @@ import './index.scss';
  * @return {JSX.Element} The rendered ChangePriceModal component.
  */
 const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
+	const adminUrl = useAdminUrl();
 	const {
 		product: productDetails,
 		hasFinishedResolution: hasResolvedProduct,
@@ -135,6 +143,10 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 	const salesPrice = Number.parseFloat( productDetails.sale_price );
 	const isOnSale = productDetails.on_sale;
 	const globalUniqueId = productDetails.global_unique_id;
+	const editProductUrl = addQueryArgs( `${ adminUrl }post.php`, {
+		post: productId,
+		action: 'edit',
+	} );
 
 	return (
 		<AppModal
@@ -247,12 +259,28 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 						<hr className="gla-change-price-modal__separator" />
 
 						{ isOnSale && (
-							<Badge intent="warning">
-								{ __(
-									'Product is currently on sale',
-									'google-listings-and-ads'
+							<Notice status="warning" isDismissible={ false }>
+								{ createInterpolateElement(
+									__(
+										'This product is currently on sale. To change the sale price, go to the <link>Edit Product</link> page in WooCommerce.',
+										'google-listings-and-ads'
+									),
+									{
+										link: (
+											<TrackableLink
+												target="_blank"
+												type="external"
+												href={ editProductUrl }
+												eventName="gla_price_benchmark_edit_product_link_click"
+												eventProps={ {
+													context:
+														PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT,
+												} }
+											/>
+										),
+									}
 								) }
-							</Badge>
+							</Notice>
 						) }
 					</div>
 				</div>
