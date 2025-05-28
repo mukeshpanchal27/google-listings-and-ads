@@ -661,6 +661,25 @@ export default class MockRequests {
 	}
 
 	/**
+	 * Mock MC as incomplete.
+	 * @param {number} id
+	 * @param {string} step
+	 * @param {boolean} notificationServiceEnabled
+	 */
+	async mockMCIncomplete(
+		id = 1234,
+		step = 'accounts',
+		notificationServiceEnabled = false
+	) {
+		await this.fulfillMCConnection( {
+			id,
+			status: 'incomplete',
+			step,
+			notification_service_enabled: notificationServiceEnabled,
+		} );
+	}
+
+	/**
 	 * Mock MC as not connected.
 	 */
 	async mockMCNotConnected() {

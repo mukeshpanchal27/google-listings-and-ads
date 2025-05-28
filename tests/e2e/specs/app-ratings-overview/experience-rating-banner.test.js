@@ -98,4 +98,90 @@ test.describe( 'App Ratings Banner', () => {
 			);
 		} );
 	} );
+
+	test.describe( 'Banner not displayed when criteria is not met', () => {
+		test( 'Banner should not be visible if approved percentage is less than 70%', async () => {
+			appRatingsOverview.fulfillProductStatisticsRequest( {
+				timestamp: 1678886400,
+				statistics: {
+					active: 30,
+					expiring: 75,
+					pending: 200,
+					disapproved: 30,
+					not_synced: 0,
+				},
+				scheduled_sync: 5,
+				loading: false,
+				error: null,
+			} );
+
+			await appRatingsOverview.goto();
+			await page.waitForSelector( '.gla-dashboard', {
+				state: 'visible',
+			} );
+			const banner = page.locator( '.gla-experience-rating-banner' );
+			await expect( banner ).not.toBeVisible();
+		} );
+
+		test( 'Banner should not be visible if not all products are synced', async () => {
+			appRatingsOverview.fulfillProductStatisticsRequest( {
+				timestamp: 1678886400,
+				statistics: {
+					active: 100,
+					expiring: 0,
+					pending: 0,
+					disapproved: 0,
+					not_synced: 10,
+				},
+				scheduled_sync: 5,
+				loading: false,
+				error: null,
+			} );
+
+			await appRatingsOverview.goto();
+			await page.waitForSelector( '.gla-dashboard', {
+				state: 'visible',
+			} );
+			const banner = page.locator( '.gla-experience-rating-banner' );
+			await expect( banner ).not.toBeVisible();
+		} );
+
+		test( 'Banner should not be visible if no conversions are recorded', async () => {
+			appRatingsOverview.fulfillProductStatisticsRequest( {
+				timestamp: 1678886400,
+				statistics: {
+					active: 100,
+					expiring: 0,
+					pending: 0,
+					disapproved: 0,
+					not_synced: 0,
+				},
+				scheduled_sync: 5,
+				loading: false,
+				error: null,
+			} );
+
+			appRatingsOverview.fulfillProductsReport( {
+				totals: { conversions: { value: 0 } },
+			} );
+
+			await appRatingsOverview.goto();
+			await page.waitForSelector( '.gla-dashboard', {
+				state: 'visible',
+			} );
+			const banner = page.locator( '.gla-experience-rating-banner' );
+			await expect( banner ).not.toBeVisible();
+		} );
+
+		test( 'Banner should not be visible if Merchant Center account is not ready', async () => {
+			appRatingsOverview.mockMCIncomplete();
+
+			await appRatingsOverview.goto();
+			await page.waitForSelector( '.gla-dashboard', {
+				state: 'visible',
+			} );
+			const banner = page.locator( '.gla-experience-rating-banner' );
+			await expect( banner ).not.toBeVisible();
+		} );
+	} );
 } );
