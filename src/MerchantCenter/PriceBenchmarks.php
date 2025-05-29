@@ -11,6 +11,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwa
 use Automattic\WooCommerce\GoogleListingsAndAds\DB\Query\MerchantPriceBenchmarksQuery;
 use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\UpdateMerchantPriceBenchmarks;
 use Automattic\WooCommerce\GoogleListingsAndAds\PluginHelper;
+use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductHelper;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -50,9 +51,12 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	protected function map_price_benchmarks_response( array $benchmark_data, array $price_insights_data ): array {
 		$mapped_data = [];
 
+		/** @var ProductHelper $product_helper */
+		$product_helper = $this->container->get( ProductHelper::class );
+
 		// Combine all data sets into $mapped_data keyed by product ID.
 		foreach ( $benchmark_data ?? [] as $benchmark_result ) {
-			$product_id                 = $this->get_product_id( (string) $benchmark_result['offer_id'] );
+			$product_id                 = $product_helper->get_wc_product_id( (string) $benchmark_result['offer_id'] );
 			$mapped_data[ $product_id ] = [
 				'price_competitiveness' => $benchmark_result,
 				'price_insights'        => [],
@@ -62,7 +66,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		// Map price insights data to benchmarks data.
 		if ( ! empty( $price_insights_data ) ) {
 			foreach ( $price_insights_data as $price_insights_result ) {
-				$product_id = $this->get_product_id( (string) $price_insights_result['offer_id'] );
+				$product_id = $product_helper->get_wc_product_id( (string) $price_insights_result['offer_id'] );
 				if ( isset( $mapped_data[ $product_id ] ) ) {
 					$mapped_data[ $product_id ]['price_insights'] = $price_insights_result;
 				}
@@ -71,7 +75,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 
 		// Transform $mapped_data into the desired response format using array_map.
 		$response_data = array_map(
-			function ( $data ) {
+			function ( $data ) use ( $product_helper ) {
 				$price_competitiveness = $data['price_competitiveness'];
 				$price_insights        = $data['price_insights'];
 
@@ -81,7 +85,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 				$price_gap              = $price_micros - $benchmark_price_micros;
 
 				// Get the WooCommerce product ID and thumbnail.
-				$wc_product_id = $this->get_product_id( (string) $price_competitiveness['offer_id'] );
+				$wc_product_id = $product_helper->get_wc_product_id( (string) $price_competitiveness['offer_id'] );
 				$thumbnail     = $this->get_product_thumbnail( $wc_product_id );
 
 				// Map the data to the required format.
@@ -113,36 +117,6 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		);
 
 		return $response_data;
-	}
-
-	/**
-	 * Gets the product ID from the Google product ID.
-	 *
-	 * @param string $mc_product_id Simple product ID (`merchant_center_id`) or
-	 *                              namespaced product ID (`online:en:GB:merchant_center_id`)
-	 * @return int the ID for the WC product linked to the provided Google product ID (0 if not found)
-	 */
-	public function get_product_id( string $mc_product_id ): int {
-		// Maybe remove everything before the last colon ':'
-		$mc_product_id_tokens = explode( ':', $mc_product_id );
-		$mc_product_id        = end( $mc_product_id_tokens );
-
-		// Support a fully numeric ID both with and without the `gla_` prefix.
-		$wc_product_id = 0;
-		$pattern       = '/^(' . preg_quote( $this->get_slug(), '/' ) . '_)?(\d+)$/';
-		$wc_pattern    = '/^(woocommerce_gpf_)?(\d+)$/';
-		if ( preg_match( $pattern, $mc_product_id, $matches ) ) {
-			$wc_product_id = (int) $matches[2];
-		} elseif ( preg_match( $wc_pattern, $mc_product_id, $matches ) ) {
-			$wc_product_id = (int) $matches[2];
-		}
-
-		/**
-		 * This filter is documented in ProductHelper::get_wc_product_id.
-		 *
-		 * @see ProductHelper::get_wc_product_id
-		 */
-		return (int) apply_filters( 'woocommerce_gla_get_wc_product_id', $wc_product_id, $mc_product_id );
 	}
 
 	/**
