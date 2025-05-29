@@ -325,8 +325,8 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		}
 
 		// Set order and orderby.
-		$order   = strtoupper( $args['order'] ) === 'ASC' ? 'ASC' : 'DESC';
-		$orderby = ! empty( $args['orderby'] ) ? $args['orderby'] : 'id';
+		$order   = strtoupper( $args['order'] );
+		$orderby = $args['orderby'];
 
 		$query->set_order( $orderby, $order );
 
