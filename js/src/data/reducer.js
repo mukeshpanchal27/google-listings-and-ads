@@ -538,7 +538,20 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 		}
 
 		case TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS: {
-			const { data, args } = action;
+			const { data, args = {} } = action;
+			const key = generateKeyFromObject( args );
+
+			if ( ! data || ! data.results ) {
+				if ( args.product_id ) {
+					return state;
+				}
+
+				// If no results, return the state unchanged.
+				return chainState( state, [ 'price_benchmark', 'suggestions' ] )
+					.setIn( [ 'queries', [ key ], 'items' ], [] )
+					.setIn( [ 'queries', [ key ], 'meta', 'totalItems' ], 0 )
+					.end();
+			}
 
 			// Retrieve product suggestions for a specific product.
 			if ( args.product_id ) {
@@ -553,8 +566,6 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 					data
 				);
 			}
-
-			const key = generateKeyFromObject( args );
 
 			// Set the product ID as key for easier lookup of products.
 			const productsById = keyBy(
