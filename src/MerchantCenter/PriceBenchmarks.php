@@ -37,8 +37,9 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 
 		$benchmark_data      = $merchant->get_price_comparisons_data( $args );
 		$price_insights_data = $merchant->get_price_insights_data( $args );
+		$performance_data    = $merchant->get_merchant_performance_data( $args );
 
-		return $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data );
+		return $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data, $performance_data );
 	}
 
 	/**
@@ -46,9 +47,10 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	 *
 	 * @param array $benchmark_data      Raw benchmark data.
 	 * @param array $price_insights_data Raw price insights data.
+	 * @param array $performance_data    Raw performance data.
 	 * @return array Mapped response data.
 	 */
-	protected function map_price_benchmarks_response( array $benchmark_data, array $price_insights_data ): array {
+	protected function map_price_benchmarks_response( array $benchmark_data, array $price_insights_data, array $performance_data ): array {
 		$mapped_data = [];
 
 		/** @var ProductHelper $product_helper */
@@ -60,15 +62,25 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 			$mapped_data[ $product_id ] = [
 				'price_competitiveness' => $benchmark_result,
 				'price_insights'        => [],
+				'performance'           => [],
 			];
 		}
 
 		// Map price insights data to benchmarks data.
 		if ( ! empty( $price_insights_data ) ) {
+			// Price insights data.
 			foreach ( $price_insights_data as $price_insights_result ) {
 				$product_id = $product_helper->get_wc_product_id( (string) $price_insights_result['offer_id'] );
 				if ( isset( $mapped_data[ $product_id ] ) ) {
 					$mapped_data[ $product_id ]['price_insights'] = $price_insights_result;
+				}
+			}
+
+			// Performance.
+			foreach ( $performance_data as $performance_result ) {
+				$product_id = $product_helper->get_wc_product_id( (string) $performance_result['offer_id'] );
+				if ( isset( $mapped_data[ $product_id ] ) ) {
+					$mapped_data[ $product_id ]['performance'] = $performance_result;
 				}
 			}
 		}
@@ -78,6 +90,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 			function ( $data ) use ( $product_helper ) {
 				$price_competitiveness = $data['price_competitiveness'];
 				$price_insights        = $data['price_insights'];
+				$performance           = $data['performance'];
 
 				// Calculate the price gap.
 				$price_micros           = (int) $price_competitiveness['price_micros'];
@@ -89,28 +102,31 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 				$thumbnail     = $this->get_product_thumbnail( $wc_product_id );
 
 				// Map the data to the required format.
-
 				return [
-					'product'                       => [
-						'id'        => $wc_product_id,
-						'thumbnail' => $thumbnail,
-						'title'     => $price_competitiveness['title'],
-					],
-					'offer_id'                      => $price_competitiveness['offer_id'],
-					'effectiveness'                 => $price_insights['effectiveness'] ?? '',
-					'country_code'                  => $price_competitiveness['country_code'] ?? '',
-					'currency_code'                 => $price_competitiveness['benchmark_price_currency_code'] ?? '',
-					'price_micros'                  => round( $price_micros / 1000000, 2 ),
-					'benchmark_price_currency_code' => $price_competitiveness['benchmark_price_currency_code'] ?? '',
-					'benchmark_price_micros'        => round( $benchmark_price_micros / 1000000, 2 ),
-					'price_gap'                     => round( $price_gap / 1000000, 2 ),
-					'suggested_price'               => isset( $price_insights['suggested_price_micros'] )
-						? round( $price_insights['suggested_price_micros'] / 1000000, 2 )
-						: '',
-					'suggested_price_currency_code' => $price_insights['suggested_price_currency_code'] ?? '',
-					'predicted_impressions_change'  => $price_insights['predicted_impressions_change_fraction'] ?? '',
-					'predicted_clicks_change'       => $price_insights['predicted_clicks_change_fraction'] ?? '',
-					'predicted_conversions_change'  => $price_insights['predicted_conversions_change_fraction'] ?? '',
+					'product_id'                         => $wc_product_id,
+					'mc_product_id'                      => $price_competitiveness['id'],
+					'mc_product_offer_id'                => $price_competitiveness['offer_id'],
+					'mc_price_country_code'              => $price_competitiveness['country_code'] ?? '',
+					'mc_product_currency_code'           => $price_competitiveness['benchmark_price_currency_code'] ?? '',
+					'mc_product_price_micros'            => round( $price_micros / 1000000, 2 ),
+					'mc_price_benchmark_price_micros'    => round( $benchmark_price_micros / 1000000, 2 ),
+					'mc_price_benchmark_price_currency_code' => $price_competitiveness['benchmark_price_currency_code'] ?? '',
+					'mc_insights_suggested_price_micros' => isset( $price_insights['suggested_price_micros'] )
+					? round( $price_insights['suggested_price_micros'] / 1000000, 2 )
+					: '',
+					'mc_insights_suggested_price_currency_code' => $price_insights['suggested_price_currency_code'] ?? '',
+					'mc_insights_predicted_impressions_change_fraction' => $price_insights['predicted_impressions_change_fraction'] ?? '',
+					'mc_insights_predicted_clicks_change_fraction' => $price_insights['predicted_clicks_change_fraction'] ?? '',
+					'mc_insights_predicted_conversions_change_fraction' => $price_insights['predicted_conversions_change_fraction'] ?? '',
+					'mc_insights_effectiveness'          => isset( $price_insights['effectiveness'] ) ? $this->get_effectiveness( $price_insights['effectiveness'] ) : '',
+					'mc_metrics_clicks'                  => $performance['clicks'] ?? 0,
+					'mc_metrics_impressions'             => $performance['impressions'] ?? 0,
+					'mc_metrics_ctr'                     => $performance['ctr'] ?? 0,
+					'mc_metrics_conversions'             => $performance['conversions'] ?? 0,
+					'price_compared_with_benchmark'      => $this->price_compared_with_benchmark(
+						round( $price_micros / 1000000, 2 ),
+						round( $benchmark_price_micros / 1000000, 2 )
+					),
 				];
 			},
 			$mapped_data
@@ -135,39 +151,6 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		$thumbnail_url = wp_get_attachment_url( $thumbnail_id );
 
 		return $thumbnail_url ?? '';
-	}
-
-	/**
-	 * Retrieves performance data (clicks and conversions) for a given product ID.
-	 *
-	 * @param int|string $id The product ID to fetch performance data for.
-	 * @return array Associative array with 'clicks' and 'conversions' keys, or empty array on failure.
-	 */
-	public function get_performance_data( $id ): array {
-		try {
-			/** @var MerchantPriceBenchmarks $merchant */
-			$merchant = $this->container->get( MerchantPriceBenchmarks::class );
-
-			$query_args = [
-				'ids' => [ $id ],
-			];
-
-			$metrics_data = $merchant->get_merchant_performance_data( $query_args )[0] ?? [];
-
-			if ( empty( $metrics_data ) ) {
-				return [];
-			}
-
-			return [
-				'clicks'      => $metrics_data['clicks'] ?? 0,
-				'impressions' => $metrics_data['impressions'] ?? 0,
-				'ctr'         => $metrics_data['ctr'] ?? 0,
-				'conversions' => $metrics_data['conversions'] ?? 0,
-			];
-		} catch ( \Exception $e ) {
-			do_action( 'woocommerce_gla_debug_message', $e->getMessage(), __METHOD__ );
-			return [];
-		}
 	}
 
 	/**
@@ -208,38 +191,8 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 			$query->reload_data();
 
 			// Insert new benchmark data.
-			foreach ( $benchmarks as $id => $benchmark ) {
-				$performance_data = $this->get_performance_data( $id );
-				if ( ! empty( $performance_data ) ) {
-					// Combine metrics data into the response for the specific product.
-					$benchmark = array_merge( $benchmark, $performance_data );
-				}
-
-				$price_compared_with_benchmark = $this->price_compared_with_benchmark( $benchmark['price_micros'], $benchmark['benchmark_price_micros'] );
-				$effectiveness                 = $this->get_effectiveness( $benchmark['effectiveness'] );
-				$query->insert(
-					[
-						'product_id'                      => $benchmark['id'],
-						'mc_product_id'                   => $benchmark['id'],
-						'mc_product_offer_id'             => $benchmark['offer_id'],
-						'mc_product_price_micros'         => $benchmark['price_micros'],
-						'mc_product_currency_code'        => $benchmark['currency_code'],
-						'mc_price_country_code'           => $benchmark['country_code'],
-						'mc_price_benchmark_price_micros' => $benchmark['benchmark_price_micros'],
-						'mc_price_benchmark_price_currency_code' => $benchmark['benchmark_price_currency_code'],
-						'mc_insights_suggested_price_micros' => $benchmark['suggested_price'],
-						'mc_insights_suggested_price_currency_code' => $benchmark['suggested_price_currency_code'],
-						'mc_insights_predicted_impressions_change_fraction' => $benchmark['predicted_impressions_change'],
-						'mc_insights_predicted_clicks_change_fraction' => $benchmark['predicted_clicks_change'],
-						'mc_insights_predicted_conversions_change_fraction' => $benchmark['predicted_conversions_change'],
-						'mc_insights_effectiveness'       => $effectiveness,
-						'mc_metrics_clicks'               => $benchmark['clicks'] ?? 0,
-						'mc_metrics_impressions'          => $benchmark['impressions'] ?? 0,
-						'mc_metrics_ctr'                  => $benchmark['ctr'] ?? 0,
-						'mc_metrics_conversions'          => $benchmark['conversions'] ?? 0,
-						'price_compared_with_benchmark'   => $price_compared_with_benchmark,
-					]
-				);
+			foreach ( $benchmarks as $benchmark_item ) {
+				$query->insert( $benchmark_item );
 			}
 		} catch ( \Exception $e ) {
 			do_action( 'woocommerce_gla_debug_message', $e->getMessage(), __METHOD__ );
