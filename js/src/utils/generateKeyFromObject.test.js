@@ -35,7 +35,7 @@ describe( 'generateKeyFromObject', () => {
 	} );
 
 	it( 'should handle empty objects', () => {
-		expect( generateKeyFromObject( {} ) ).toBe( '' );
+		expect( generateKeyFromObject( {} ) ).toBe( 'empty' );
 	} );
 
 	it( 'should handle arrays with empty strings', () => {
