@@ -26,35 +26,23 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	use PluginHelper;
 
 	/**
-	 * Get the price benchmarks base data.
+	 * Gets and maps the benchmark and price insights and performance data to the required API response format.
 	 *
 	 * @param array $args Query arguments.
 	 * @return array Mapped response data.
 	 */
-	private function get_price_benchmarks_base_data( $args ) {
+	protected function get_price_benchmarks_response( $args ): array {
+		$mapped_data = [];
+
 		/** @var MerchantPriceBenchmarks $merchant */
 		$merchant = $this->container->get( MerchantPriceBenchmarks::class );
+
+		/** @var ProductHelper $product_helper */
+		$product_helper = $this->container->get( ProductHelper::class );
 
 		$benchmark_data      = $merchant->get_price_comparisons_data( $args );
 		$price_insights_data = $merchant->get_price_insights_data( $args );
 		$performance_data    = $merchant->get_merchant_performance_data( $args );
-
-		return $this->map_price_benchmarks_response( $benchmark_data, $price_insights_data, $performance_data );
-	}
-
-	/**
-	 * Maps the benchmark and price insights data to the required API response format.
-	 *
-	 * @param array $benchmark_data      Raw benchmark data.
-	 * @param array $price_insights_data Raw price insights data.
-	 * @param array $performance_data    Raw performance data.
-	 * @return array Mapped response data.
-	 */
-	protected function map_price_benchmarks_response( array $benchmark_data, array $price_insights_data, array $performance_data ): array {
-		$mapped_data = [];
-
-		/** @var ProductHelper $product_helper */
-		$product_helper = $this->container->get( ProductHelper::class );
 
 		// Combine all data sets into $mapped_data keyed by product ID.
 		foreach ( $benchmark_data ?? [] as $benchmark_result ) {
@@ -178,7 +166,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 			/** @var MerchantPriceBenchmarks $merchant */
 			$merchant = $this->container->get( MerchantPriceBenchmarks::class );
 
-			$benchmarks = $this->get_price_benchmarks_base_data( [] );
+			$benchmarks = $this->get_price_benchmarks_response( [] );
 
 			if ( empty( $benchmarks ) ) {
 				return;
