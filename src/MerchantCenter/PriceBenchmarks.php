@@ -297,7 +297,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 			'orderby' => 'mc_insights_effectiveness',
 		];
 
-		$args = wp_parse_args( $defaults, $args );
+		$args = wp_parse_args( $args, $defaults );
 
 		/** @var MerchantPriceBenchmarksQuery $query */
 		$query = $this->container->get( MerchantPriceBenchmarksQuery::class );
@@ -308,8 +308,22 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		}
 
 		if ( ! empty( $args['search'] ) ) {
-			$search = trim( $args['search'] );
-			// TODO: Implement a search mechanism.
+			$search       = trim( $args['search'] );
+			$search_query = new \WP_Query(
+				[
+					'post_type'      => [ 'product' ],
+					'post_status'    => 'publish',
+					's'              => $search,
+					'fields'         => 'ids',
+					'posts_per_page' => -1,
+				]
+			);
+
+			$product_ids = $search_query->posts;
+
+			if ( ! empty( $product_ids ) ) {
+				$query->where( 'product_id', $product_ids, 'IN' );
+			}
 		}
 
 		// Set order and orderby.
