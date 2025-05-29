@@ -6,6 +6,7 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Google;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceBenchmarksQuery;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceSuggestionsQuery;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\Query\MerchantPriceBenchmarksProductReportQuery;
+use Automattic\WooCommerce\GoogleListingsAndAds\Exception\ExceptionWithResponseData;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Exception as GoogleException;
@@ -21,6 +22,7 @@ use Exception;
 class MerchantPriceBenchmarks implements OptionsAwareInterface {
 
 	use OptionsAwareTrait;
+	use ExceptionTrait;
 
 	/**
 	 * The shopping service.
@@ -45,7 +47,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	 *
 	 * @return array Associative array with price benchmarks data and the next page token.
 	 *
-	 * @throws Exception If the merchant price benchmarks data can't be retrieved.
+	 * @throws ExceptionWithResponseData If the merchant price benchmarks data can't be retrieved.
 	 */
 	public function get_benchmark_data( array $args ): array {
 		try {
@@ -76,7 +78,14 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 			return $results;
 		} catch ( GoogleException $e ) {
 			do_action( 'woocommerce_gla_mc_client_exception', $e, __METHOD__ );
-			throw new Exception( __( 'Unable to retrieve Merchant Price Benchmarks.', 'google-listings-and-ads' ) . $e->getMessage(), $e->getCode() );
+			$errors = $this->get_exception_errors( $e );
+
+			throw new ExceptionWithResponseData(
+				__( 'Unable to retrieve price benchmark data', 'google-listings-and-ads' ),
+				$e->getCode(),
+				null,
+				[ 'errors' => $errors ]
+			);
 		}
 	}
 
@@ -87,7 +96,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	 *
 	 * @return array Associative array with price benchmarks data and the next page token.
 	 *
-	 * @throws Exception If the merchant price suggestions data can't be retrieved.
+	 * @throws ExceptionWithResponseData If the merchant price suggestions data can't be retrieved.
 	 */
 	public function get_price_insights( array $args ): array {
 		try {
@@ -126,7 +135,14 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 			return $results;
 		} catch ( GoogleException $e ) {
 			do_action( 'woocommerce_gla_mc_client_exception', $e, __METHOD__ );
-			throw new Exception( __( 'Unable to retrieve Merchant Price Benchmarks.', 'google-listings-and-ads' ) . $e->getMessage(), $e->getCode() );
+			$errors = $this->get_exception_errors( $e );
+
+			throw new ExceptionWithResponseData(
+				__( 'Unable to retrieve price insights data', 'google-listings-and-ads' ),
+				$e->getCode(),
+				null,
+				[ 'errors' => $errors ]
+			);
 		}
 	}
 
@@ -137,7 +153,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 	 *
 	 * @return array The specific product report data as an associative array.
 	 *
-	 * @throws Exception If there is an error retrieving the product report.
+	 * @throws ExceptionWithResponseData If there is an error retrieving the product report.
 	 */
 	public function get_merchant_performance_data( array $args ): array {
 		try {
@@ -169,7 +185,14 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 			return $results;
 		} catch ( GoogleException $e ) {
 			do_action( 'woocommerce_gla_mc_client_exception', $e, __METHOD__ );
-			throw new Exception( __( 'Unable to retrieve performance data for requested product.', 'google-listings-and-ads' ) . $e->getMessage(), $e->getCode() );
+			$errors = $this->get_exception_errors( $e );
+
+			throw new ExceptionWithResponseData(
+				__( 'Unable to retrieve product metrics data', 'google-listings-and-ads' ),
+				$e->getCode(),
+				null,
+				[ 'errors' => $errors ]
+			);
 		}
 	}
 

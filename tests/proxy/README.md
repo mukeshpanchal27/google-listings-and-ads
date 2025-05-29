@@ -35,11 +35,13 @@ PROXY_PORT=50505 npm run test-proxy
 The mode will determine what kind of responses will be returned, this is used to mock specific responses which can't be reproduced through regular requests.
 
 Modes:
+
+- `access_error` will return a 403 error when getting market insights data (i.e. price benchmarks)
 - `delete_error` will return an internal error when deleting products
 - `update_error` will return an internal error when updating products
 
 ```
-PROXY_MODE=<delete_error|update_error> npm run test-proxy
+PROXY_MODE=<access_error|delete_error|update_error> npm run test-proxy
 ```
 
 ### Log responses when running the proxy

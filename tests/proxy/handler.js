@@ -2,7 +2,7 @@
 
 const config = require( './config' );
 
-module.exports.checkRequest = ( request ) => {
+module.exports.checkRequest = ( request, h ) => {
 	if ( config.logResponses ) {
 		// eslint-disable-next-line no-console
 		console.log( 'Request path: ', '\n', request.params.path );
@@ -27,6 +27,15 @@ module.exports.checkRequest = ( request ) => {
 		if ( config.logResponses ) {
 			// eslint-disable-next-line no-console
 			console.log( 'Request query: ', '\n', body.query );
+		}
+
+		// Handle access errors early.
+		if ( config.proxyMode === 'access_error' ) {
+			return h
+				.response(
+					require( './mocks/mc/price-benchmarks/403_error.json' )
+				)
+				.code( 403 );
 		}
 
 		let mockPath = false;
