@@ -24,11 +24,16 @@ import HorizontalStackedBar from '~/components/horizontal-stacked-bar';
 const ProductComparisonChart = () => {
 	const { summary, hasFinishedResolution } = usePriceBenchmarkSummary();
 
-	if (
-		! hasFinishedResolution ||
-		( summary && isEmpty( summary ) ) ||
-		summary.total_products === 0
-	) {
+	if ( ! hasFinishedResolution ) {
+		return (
+			<HorizontalStackedBar
+				className="gla-price-benchmark__comparison-chart"
+				isLoading
+			/>
+		);
+	}
+
+	if ( ( summary && isEmpty( summary ) ) || summary.total_products === 0 ) {
 		return null;
 	}
 

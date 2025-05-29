@@ -24,6 +24,14 @@ let priceBenchmarkPage = null;
  */
 let page = null;
 
+const ACCOUNT_NOT_ENABLED_ERROR = {
+	message: 'Unable to retrieve price benchmark data',
+	errors: {
+		forbidden:
+			'Market Insights not enabled for account 5337422187. For more information check https://support.google.com/merchants/answer/9625913',
+	},
+};
+
 test.describe( 'Price Benchmark Page', () => {
 	test.beforeAll( async ( { browser } ) => {
 		page = await browser.newPage();
@@ -40,6 +48,15 @@ test.describe( 'Price Benchmark Page', () => {
 	test.describe( 'Price Comparison Chart Functionality', () => {
 		test.beforeEach( async () => {
 			await priceBenchmarkPage.goto();
+		} );
+
+		test( 'Renders loading state while fetching data', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
+
+			const loadingElement = page.locator(
+				'.gla-horizontal-stacked-bar--loading'
+			);
+			await expect( loadingElement ).toBeVisible();
 		} );
 
 		test( 'Does not render the chart if there are no products', async () => {
@@ -64,15 +81,44 @@ test.describe( 'Price Benchmark Page', () => {
 			await expect( comparisonChartElement ).not.toBeVisible();
 		} );
 
-		test( "Does not render the chart if there's an API error", async () => {
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
-				priceBenchmarkSuggestionsData
+		test( 'Does not render the chart if Market Insights not enabled for the account.', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
+
+			await priceBenchmarkPage.fulfillPriceBenchmarkSummary(
+				ACCOUNT_NOT_ENABLED_ERROR,
+				403
 			);
+
+			// Wait for the summary URL to be requested before assertions
+			await page.waitForRequest(
+				/\/wc\/gla\/mc\/price-benchmarks\/summary\b/
+			);
+
+			const errorMessage = page.locator(
+				'.components-snackbar__content'
+			);
+			await expect( errorMessage ).not.toBeVisible();
+
+			const comparisonChartElement = page.locator(
+				'.gla-price-benchmark__comparison-chart'
+			);
+			await expect( comparisonChartElement ).not.toBeVisible();
+
+			const emptyStateNotice = page.locator(
+				'.gla-price-benchmark__empty-metrics'
+			);
+
+			await expect( emptyStateNotice ).toBeVisible();
+		} );
+
+		test( 'Renders an error message for summary API errors other than 403', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
+
 			await priceBenchmarkPage.fulfillPriceBenchmarkSummary(
 				{
-					message: 'Forbidden.',
+					message: 'An error occured.',
 				},
-				403
+				404
 			);
 
 			const errorMessage = page.locator(
@@ -80,13 +126,8 @@ test.describe( 'Price Benchmark Page', () => {
 			);
 			await expect( errorMessage ).toBeVisible();
 			await expect( errorMessage ).toContainText(
-				'There was an error getting the price benchmark summary. Forbidden.'
+				'There was an error getting the price benchmark summary. An error occured.'
 			);
-
-			const comparisonChartElement = page.locator(
-				'.gla-price-benchmark__comparison-chart'
-			);
-			await expect( comparisonChartElement ).not.toBeVisible();
 		} );
 
 		test( 'Render the chart if there are products', async () => {
@@ -131,32 +172,7 @@ test.describe( 'Price Benchmark Page', () => {
 
 		test( 'Shows empty state notice when Market Insights is not enabled for the account.', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
-				{
-					message: {
-						error: {
-							code: 403,
-							message:
-								'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
-							errors: [
-								{
-									message:
-										'Market Insights not enabled for account 5330359695. For more information check https://support.google.com/merchants/answer/9625913',
-									domain: 'global',
-									reason: 'forbidden',
-								},
-							],
-							status: 'PERMISSION_DENIED',
-							details: [
-								{
-									'@type':
-										'type.googleapis.com/google.rpc.ErrorInfo',
-									reason: 'forbidden',
-									domain: 'global',
-								},
-							],
-						},
-					},
-				},
+				ACCOUNT_NOT_ENABLED_ERROR,
 				403
 			);
 			const emptyStateNotice = page.locator(
