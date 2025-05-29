@@ -141,6 +141,7 @@ const PriceInputFooter = ( {
 		googleAdsAccount,
 		regularPrice,
 		suggestedPrice,
+		globalUniqueId,
 	] );
 
 	useEffect( () => {
