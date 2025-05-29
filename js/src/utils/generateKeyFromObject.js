@@ -46,6 +46,7 @@ function flattenObjectToParts( obj, parentKey = '' ) {
  *
  * @param {Object} obj - The input object.
  * @return {string} - A deterministic, hyphen-separated key string.
+ *                    Returns 'empty' if the object is empty.
  *
  * @example
  * generateKeyFromObject({
@@ -54,8 +55,16 @@ function flattenObjectToParts( obj, parentKey = '' ) {
  *   filters: ['foo', 'bar']
  * });
  * // → "filters-foo-bar-page-1-sort.direction-desc-sort.field-score"
+ *
+ * generateKeyFromObject({});
+ * // → "empty"
  */
 export function generateKeyFromObject( obj ) {
+	// Check if the object is empty
+	if ( ! obj || Object.keys( obj ).length === 0 ) {
+		return 'empty';
+	}
+
 	const parts = flattenObjectToParts( obj );
 	return join(
 		filter( parts, ( part ) => part !== '' ),
