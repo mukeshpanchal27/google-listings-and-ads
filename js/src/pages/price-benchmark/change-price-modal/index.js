@@ -268,7 +268,7 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 									{
 										link: (
 											<TrackableLink
-												type="external"
+												type="wp-admin"
 												href={ editProductUrl }
 												eventName="gla_price_benchmark_edit_product_link_click"
 												eventProps={ {
