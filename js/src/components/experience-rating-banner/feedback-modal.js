@@ -25,6 +25,7 @@ const FeedbackModal = ( { onRequestClose } ) => {
 				'Thanks for letting us know!',
 				'google-listings-and-ads'
 			) }
+			className="gla-experience-rating-banner__feedback-modal"
 			buttons={ [
 				<AppButton key="cancel" onClick={ onRequestClose } isTertiary>
 					{ __( 'Cancel', 'google-listings-and-ads' ) }
