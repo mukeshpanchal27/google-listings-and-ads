@@ -309,7 +309,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 			'orderby' => 'mc_insights_effectiveness',
 		];
 
-		$args = array_merge( $defaults, $args );
+		$args = wp_parse_args( $defaults, $args );
 
 		/** @var MerchantPriceBenchmarksQuery $query */
 		$query = $this->container->get( MerchantPriceBenchmarksQuery::class );
