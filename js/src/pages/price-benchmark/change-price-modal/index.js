@@ -268,7 +268,6 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 									{
 										link: (
 											<TrackableLink
-												target="_blank"
 												type="external"
 												href={ editProductUrl }
 												eventName="gla_price_benchmark_edit_product_link_click"
