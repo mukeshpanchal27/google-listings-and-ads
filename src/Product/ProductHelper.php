@@ -316,6 +316,8 @@ class ProductHelper implements Service, HelperNotificationInterface {
 		$wc_pattern    = '/^(woocommerce_gpf_)?(\d+)$/';
 		if ( preg_match( $pattern, $mc_product_id, $matches ) ) {
 			$wc_product_id = (int) $matches[2];
+		} elseif ( preg_match( $wc_pattern, $mc_product_id, $matches ) ) {
+			$wc_product_id = (int) $matches[2];
 		}
 
 		/**
