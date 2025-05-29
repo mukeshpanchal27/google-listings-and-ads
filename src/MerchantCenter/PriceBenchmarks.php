@@ -149,7 +149,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	 * Retrieves the product thumbnail URL.
 	 *
 	 * @param int $product_id WooCommerce product ID.
-	 * @return string|null Product thumbnail URL or null if not found.
+	 * @return string Product thumbnail URL or an empty string if not found.
 	 */
 	protected function get_product_thumbnail( int $product_id ): ?string {
 		$thumbnail_id = get_post_thumbnail_id( $product_id );
