@@ -541,7 +541,7 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 			const { data, args = {} } = action;
 			const key = generateKeyFromObject( args );
 
-			if ( ! data || ! data.results ) {
+			if ( ! data && ! data.results ) {
 				if ( args.product_id ) {
 					return state;
 				}

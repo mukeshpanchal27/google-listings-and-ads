@@ -456,3 +456,13 @@ export const getPriceBenchmarkSuggestions = createSelector(
 		generateKeyFromObject( args ),
 	]
 );
+
+/**
+ * Retrieves the list of price benchmark suggestion items from the state.
+ *
+ * @param {Object} state - The Redux state object.
+ * @return {Array} The array of price benchmark suggestion items.
+ */
+export const getPriceBenchmarkSuggestionsItems = ( state ) => {
+	return state.price_benchmark.suggestions.items;
+};

@@ -14,6 +14,19 @@ const usePriceBenchmarkSuggestions = ( args ) => {
 	return useSelect(
 		( select ) => {
 			const selector = select( STORE_KEY );
+			const { product_id: productId } = args;
+
+			if ( productId ) {
+				const items = selector.getPriceBenchmarkSuggestionsItems();
+				const item = items[ productId ];
+
+				if ( item ) {
+					return {
+						data: item,
+						hasFinishedResolution: true,
+					};
+				}
+			}
 
 			return {
 				data: selector[ selectorName ]( args ),

@@ -54,10 +54,23 @@ test.describe( 'Price Benchmark Page', () => {
 		test( 'Renders loading state while fetching data', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
 
+			// Set up the handler for the summary request that won't resolve immediately
+			const deferredHandler = priceBenchmarkPage.withFulfillDeferred();
+			await deferredHandler.fulfillPriceBenchmarkSummary( {
+				price_higher: 10,
+				price_lower: 20,
+				price_similar: 30,
+				price_unknown: 40,
+				total_products: 100,
+			} );
+
 			const loadingElement = page.locator(
 				'.gla-horizontal-stacked-bar--loading'
 			);
 			await expect( loadingElement ).toBeVisible();
+
+			deferredHandler.continueFulfill();
+			await expect( loadingElement ).toBeHidden();
 		} );
 
 		test( 'Does not render the chart if there are no products', async () => {

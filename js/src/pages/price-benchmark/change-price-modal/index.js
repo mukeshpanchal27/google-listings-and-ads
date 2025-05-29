@@ -72,18 +72,6 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 	const { data, hasFinishedResolution } = usePriceBenchmarkSuggestions( {
 		product_id: productId,
 	} );
-	const {
-		effectiveness,
-		regular_price: regularPrice,
-		price_on_google: priceOnGoogle,
-		price_gap: priceGap,
-		suggested_price: suggestedPrice,
-		clicks,
-		conversions,
-		predicted_clicks_change: predictedClicksChange,
-		predicted_conversions_change: predictedConversionsChange,
-		product: { id, title, thumbnail },
-	} = data || {};
 
 	useEffect( () => {
 		recordGlaEvent( 'gla_modal_open', {
@@ -116,7 +104,7 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 		);
 	}
 
-	if ( ! productDetails && hasResolvedProduct ) {
+	if ( ( ! productDetails || ! data ) && hasResolvedProduct ) {
 		return (
 			<AppModal
 				{ ...appModalProps }
@@ -132,6 +120,19 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 			</AppModal>
 		);
 	}
+
+	const {
+		effectiveness,
+		regular_price: regularPrice,
+		price_on_google: priceOnGoogle,
+		price_gap: priceGap,
+		suggested_price: suggestedPrice,
+		clicks,
+		conversions,
+		predicted_clicks_change: predictedClicksChange,
+		predicted_conversions_change: predictedConversionsChange,
+		product: { id, title, thumbnail },
+	} = data;
 
 	const salesPrice = Number.parseFloat( productDetails.sale_price );
 	const isOnSale = productDetails.on_sale;
