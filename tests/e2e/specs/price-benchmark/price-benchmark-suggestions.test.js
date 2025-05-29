@@ -372,7 +372,7 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 
 		test.describe( 'Sales Price Functionality', () => {
-			test( 'Displays "Product is currently on sale" text when there is a sale price', async () => {
+			test( 'Displays "This product is currently on sale." text when there is a sale price', async () => {
 				await priceBenchmarkPage.goto();
 
 				await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
@@ -396,7 +396,7 @@ test.describe( 'Price Benchmark Page', () => {
 					await priceBenchmarkPage.getChangePriceModal();
 
 				const saleText = changePriceModal.locator(
-					'span.gla-badge__content:has-text("Product is currently on sale")'
+					'.components-notice__content:has-text("This product is currently on sale.")'
 				);
 				await expect( saleText ).toBeVisible();
 			} );
