@@ -144,7 +144,6 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 
 	const salesPrice = Number.parseFloat( productDetails.sale_price );
 	const isOnSale = productDetails.on_sale;
-	const globalUniqueId = productDetails.global_unique_id;
 	const editProductUrl = addQueryArgs( `${ adminUrl }post.php`, {
 		post: productId,
 		action: 'edit',
@@ -159,10 +158,8 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 					productId={ id }
 					key="price-input-footer"
 					suggestedPrice={ suggestedPrice }
-					onSale={ isOnSale }
-					salesPrice={ salesPrice }
 					regularPrice={ regularPrice }
-					globalUniqueId={ globalUniqueId }
+					productDetails={ productDetails }
 				/>,
 			] }
 		>
