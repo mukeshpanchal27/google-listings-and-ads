@@ -71,7 +71,7 @@ const PriceInputFooter = ( {
 		on_sale: onSale,
 		sale_price: salePrice,
 		type,
-		parent_id,
+		parent_id: parentId,
 	} = productDetails;
 
 	useEffect( () => {
@@ -126,10 +126,10 @@ const PriceInputFooter = ( {
 				regular_price: `${ newPrice }`,
 			};
 
-			if ( type === 'variation' && parent_id ) {
+			if ( type === 'variation' && parentId ) {
 				await updateProductVariation(
 					{
-						product_id: parent_id,
+						product_id: parentId,
 						id: productId,
 					},
 					updatePriceArg
