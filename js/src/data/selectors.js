@@ -458,11 +458,12 @@ export const getPriceBenchmarkSuggestions = createSelector(
 );
 
 /**
- * Retrieves the list of price benchmark suggestion items from the state.
+ * Retrieves the price benchmark suggestion for a specific product.
  *
- * @param {Object} state - The Redux state object.
- * @return {Array} The array of price benchmark suggestion items.
+ * @param {Object} state - The Redux state object containing price benchmark data.
+ * @param {string|number} productId - The unique identifier of the product.
+ * @return {Object} The price benchmark suggestion for the specified product, or undefined if not found.
  */
-export const getPriceBenchmarkSuggestionsItems = ( state ) => {
-	return state.price_benchmark.suggestions.items;
+export const getPriceBenchmarkSuggestion = ( state, productId ) => {
+	return state.price_benchmark.suggestions.items[ productId ];
 };

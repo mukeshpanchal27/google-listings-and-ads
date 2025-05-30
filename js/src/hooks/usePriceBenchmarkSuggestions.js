@@ -17,8 +17,7 @@ const usePriceBenchmarkSuggestions = ( args ) => {
 			const { product_id: productId } = args;
 
 			if ( productId ) {
-				const items = selector.getPriceBenchmarkSuggestionsItems();
-				const item = items[ productId ];
+				const item = selector.getPriceBenchmarkSuggestion( productId );
 
 				if ( item ) {
 					return {
