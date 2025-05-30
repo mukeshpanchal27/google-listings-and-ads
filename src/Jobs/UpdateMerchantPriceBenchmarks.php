@@ -6,7 +6,8 @@ namespace Automattic\WooCommerce\GoogleListingsAndAds\Jobs;
 use Automattic\WooCommerce\GoogleListingsAndAds\ActionScheduler\ActionSchedulerInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\MerchantCenterService;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\PriceBenchmarks;
-use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\JobException;
+use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\StartOnHookInterface;
 use Throwable;
 
 defined( 'ABSPATH' ) || exit;
@@ -20,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Jobs
  */
-class UpdateMerchantPriceBenchmarks extends AbstractActionSchedulerJob {
+class UpdateMerchantPriceBenchmarks extends AbstractActionSchedulerJob implements RecurringJobInterface, StartOnHookInterface {
 	/**
 	 * @var MerchantCenterService
 	 */
@@ -48,6 +49,24 @@ class UpdateMerchantPriceBenchmarks extends AbstractActionSchedulerJob {
 		parent::__construct( $action_scheduler, $monitor );
 		$this->merchant_center  = $merchant_center;
 		$this->price_benchmarks = $price_benchmarks;
+	}
+
+	/**
+	 * Get the name of an action hook to attach the job's start method to.
+	 *
+	 * @return StartHook
+	 */
+	public function get_start_hook(): StartHook {
+		return new StartHook( "{$this->get_hook_base_name()}start" );
+	}
+
+	/**
+	 * Return the recurring job's interval in seconds.
+	 *
+	 * @return int
+	 */
+	public function get_interval(): int {
+		return 12 * HOUR_IN_SECONDS; // 12 hours.
 	}
 
 	/**
@@ -93,7 +112,7 @@ class UpdateMerchantPriceBenchmarks extends AbstractActionSchedulerJob {
 	 */
 	public function schedule( array $args = [] ) {
 		if ( $this->can_schedule( $args ) ) {
-			$this->action_scheduler->schedule_recurring( time(), 12 * HOUR_IN_SECONDS, $this->get_process_item_hook(), $args );
+			$this->action_scheduler->schedule_recurring( time(), $this->get_interval(), $this->get_process_item_hook(), $args );
 		}
 	}
 

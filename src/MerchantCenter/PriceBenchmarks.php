@@ -4,12 +4,10 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter;
 
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
-use Automattic\WooCommerce\GoogleListingsAndAds\DB\Table\MerchantPriceBenchmarksTable;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\DB\Query\MerchantPriceBenchmarksQuery;
-use Automattic\WooCommerce\GoogleListingsAndAds\Jobs\UpdateMerchantPriceBenchmarks;
 use Automattic\WooCommerce\GoogleListingsAndAds\PluginHelper;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductHelper;
 
@@ -217,13 +215,6 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	public function get_summary(): array {
 		/** @var MerchantPriceBenchmarksQuery $query */
 		$query = $this->container->get( MerchantPriceBenchmarksQuery::class );
-
-		$job = $this->container->get( UpdateMerchantPriceBenchmarks::class );
-
-		if ( ! $job->is_scheduled() ) {
-			// Schedule job to update the statuses. If the failure rate is too high, the job will not be scheduled.
-			$job->schedule();
-		}
 
 		// Get counts for all price comparison groups in one query.
 		$benchmark_counts_result = $query->get_price_benchmark_counts();
