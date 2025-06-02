@@ -845,6 +845,12 @@ export default class MockRequests {
 		);
 	}
 
+	/**
+	 * Mocks a POST request to the `/wp/v2/users/me` endpoint to fulfill user preferences.
+	 *
+	 * @param {Object} [payload={}] - The payload to return as the mocked response.
+	 * @return {Promise<void>} Resolves when the mock request has been fulfilled.
+	 */
 	async fulfillUsersPreferences( payload = {} ) {
 		await this.fulfillRequest( /\/wp\/v2\/users\/me(\?|$)/, payload, 200, [
 			'POST',

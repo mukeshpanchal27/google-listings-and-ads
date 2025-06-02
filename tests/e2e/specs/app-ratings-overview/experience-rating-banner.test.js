@@ -22,6 +22,7 @@ let appRatingsOverview = null;
  * @type {import('@playwright/test').Page} page
  */
 let page = null;
+const BANNER_CLASS = '.gla-experience-rating-banner';
 
 test.describe( 'App Ratings Banner', () => {
 	test.beforeAll( async ( { browser } ) => {
@@ -40,8 +41,6 @@ test.describe( 'App Ratings Banner', () => {
 	} );
 
 	test.describe( 'Banner is visible across all tabs', () => {
-		const bannerClass = '.gla-experience-rating-banner';
-
 		test.beforeAll( async () => {
 			await page.waitForSelector( '.gla-dashboard', {
 				state: 'visible',
@@ -53,7 +52,7 @@ test.describe( 'App Ratings Banner', () => {
 				state: 'visible',
 			} );
 
-			const banner = page.locator( bannerClass );
+			const banner = page.locator( BANNER_CLASS );
 			await expect( banner ).toBeVisible();
 		} );
 
@@ -65,12 +64,12 @@ test.describe( 'App Ratings Banner', () => {
 				state: 'visible',
 			} );
 
-			const banner = page.locator( bannerClass );
+			const banner = page.locator( BANNER_CLASS );
 			await expect( banner ).toBeVisible();
 		} );
 
 		test( 'Banner has action buttons', async () => {
-			const banner = page.locator( bannerClass );
+			const banner = page.locator( BANNER_CLASS );
 			const goodButton = banner.getByRole( 'button', {
 				name: 'Good',
 			} );
@@ -83,7 +82,7 @@ test.describe( 'App Ratings Banner', () => {
 		} );
 
 		test( 'Need help button opens external link', async () => {
-			const banner = page.locator( bannerClass );
+			const banner = page.locator( BANNER_CLASS );
 			const needHelpButton = banner.getByRole( 'link', {
 				name: 'Need help',
 			} );
@@ -101,7 +100,7 @@ test.describe( 'App Ratings Banner', () => {
 		test( 'Hides the banner when dismissed', async () => {
 			await appRatingsOverview.fulfillUsersPreferences();
 
-			const banner = page.locator( bannerClass );
+			const banner = page.locator( BANNER_CLASS );
 			const dismissButton = banner.getByRole( 'button', {
 				name: 'Close',
 			} );
@@ -112,9 +111,9 @@ test.describe( 'App Ratings Banner', () => {
 		} );
 
 		test( 'Banner is not visible after reload once dismissed', async () => {
-			await appRatingsOverview.goto();
+			await page.reload();
 
-			const banner = page.locator( bannerClass );
+			const banner = page.locator( BANNER_CLASS );
 			await expect( banner ).not.toBeVisible();
 		} );
 	} );
