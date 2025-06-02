@@ -8,7 +8,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\DB\Query\MerchantPriceBenchmarksQuery;
-use Automattic\WooCommerce\GoogleListingsAndAds\PluginHelper;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductHelper;
 
 defined( 'ABSPATH' ) || exit;
@@ -21,7 +20,6 @@ defined( 'ABSPATH' ) || exit;
 class PriceBenchmarks implements ContainerAwareInterface, Service {
 
 	use ContainerAwareTrait;
-	use PluginHelper;
 
 	/**
 	 * Gets and maps the benchmark and price insights and performance data to the required API response format.
@@ -161,9 +159,6 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	 */
 	public function update_price_benchmarks(): void {
 		try {
-			/** @var MerchantPriceBenchmarks $merchant */
-			$merchant = $this->container->get( MerchantPriceBenchmarks::class );
-
 			$benchmarks = $this->get_price_benchmarks_response( [] );
 
 			if ( empty( $benchmarks ) ) {
