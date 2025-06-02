@@ -1,20 +1,28 @@
 /**
  * External dependencies
  */
-import { useState } from '@wordpress/element';
 import { Notice, Icon } from '@wordpress/components';
+import { useDispatch } from '@wordpress/data';
+import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { external as externalIcon } from '@wordpress/icons';
+import { store as preferencesStore } from '@wordpress/preferences';
 
 /**
  * Internal dependencies
  */
 import AppButton from '../app-button';
 import FeedbackModal from './feedback-modal';
+import usePreference from '~/hooks/usePreference';
+import { PREFERENCES_STORE_NAMESPACE } from '~/constants';
 import './index.scss';
+
+const BANNER_DISMISSED_KEY = 'experience-rating-banner-dismissed';
 
 const ExperienceRatingBanner = () => {
 	const [ showModal, setShowModal ] = useState( false );
+	const { set } = useDispatch( preferencesStore );
+	const isDismissed = usePreference( BANNER_DISMISSED_KEY );
 
 	const handleClick = () => {
 		setShowModal( true );
@@ -23,6 +31,14 @@ const ExperienceRatingBanner = () => {
 	const handleRequestClose = () => {
 		setShowModal( false );
 	};
+
+	const onDismiss = () => {
+		set( PREFERENCES_STORE_NAMESPACE, BANNER_DISMISSED_KEY, true );
+	};
+
+	if ( isDismissed ) {
+		return null;
+	}
 
 	return (
 		<div className="gla-experience-rating-banner__container">
@@ -33,6 +49,7 @@ const ExperienceRatingBanner = () => {
 				className="gla-experience-rating-banner"
 				status="info"
 				isDismissible={ true }
+				onRemove={ onDismiss }
 			>
 				<p className="gla-experience-rating-banner__text">
 					{ __(
