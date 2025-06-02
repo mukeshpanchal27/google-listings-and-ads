@@ -9,13 +9,10 @@
 	}
 }
 
-@media (max-width: $break-mobile) {
-	.gla-experience-rating-banner__feedback-modal {
-		margin: auto;
-		max-height: 300px;
+.gla-experience-rating-banner__feedback-modal {
 
-		.app-button {
-			justify-content: center;
-		}
+	.app-modal__footer {
+		flex-direction: row;
+		justify-content: flex-end;
 	}
 }
