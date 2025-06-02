@@ -165,6 +165,9 @@ const PriceInputFooter = ( {
 		regularPrice,
 		suggestedPrice,
 		globalUniqueId,
+		parentId,
+		type,
+		updateProductVariation,
 	] );
 
 	useEffect( () => {
