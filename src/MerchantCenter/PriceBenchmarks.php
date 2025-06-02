@@ -270,7 +270,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	 *     @type int        $page     Offset for the results. Default 1.
 	 *     @type int        $per_page Maximum number of items returned. Default 10.
 	 *     @type string     $search   Search string to filter results. Default null.
-	 *     @type string     $order    Sort order: 'ASC' or 'DESC'. Default 'DESC'.
+	 *     @type string     $order    Sort order: 'asc' or 'desc'. Default 'desc'.
 	 *     @type string     $orderby  Attribute to sort by. Default 'mc_insights_effectiveness'.
 	 * }
 	 * @return array {
@@ -284,7 +284,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 			'page'     => 1,
 			'per_page' => 10,
 			'search'   => null,
-			'order'    => 'DESC',
+			'order'    => 'desc',
 			'orderby'  => 'mc_insights_effectiveness',
 		];
 
