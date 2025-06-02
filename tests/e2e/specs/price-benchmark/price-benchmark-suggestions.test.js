@@ -321,8 +321,6 @@ test.describe( 'Price Benchmark Page', () => {
 			await priceBenchmarkPage.fulfillWCProduct(
 				{
 					regular_price: '100.00',
-					sale_price: '90.00',
-					on_sale: true,
 				},
 				[ 'GET' ]
 			);
@@ -338,7 +336,7 @@ test.describe( 'Price Benchmark Page', () => {
 
 			const error = priceBenchmarkPage.getPriceInputError();
 			await expect( error ).toHaveText(
-				'New price must be greater than the sales price (NT$90.00).'
+				'New price must be greater than or equals to zero.'
 			);
 
 			const changePriceButton =
@@ -396,6 +394,93 @@ test.describe( 'Price Benchmark Page', () => {
 				.locator( 'td' );
 			await expect( firstProductCells.nth( 2 ) ).toHaveText(
 				'NT$120.00'
+			);
+		} );
+
+		test( 'Changes price for a product variation', async () => {
+			await priceBenchmarkPage.goto();
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				priceBenchmarkSuggestionsData
+			);
+			await priceBenchmarkPage.fulfillPriceBenchmarkProductSuggestions(
+				3,
+				priceBenchmarkProductSuggestionsData
+			);
+			await priceBenchmarkPage.fulfillWCProduct(
+				{
+					id: 3,
+					parent_id: 33,
+					type: 'variation',
+					regular_price: '100.00',
+				},
+				[ 'GET' ]
+			);
+
+			// Setup the POST request handler and create a promise to track if it's called
+			let variationRequestReceived = false;
+			const variationRequestPromise = page.waitForRequest(
+				( request ) => {
+					if (
+						request.method() === 'POST' &&
+						request.url().includes( '/products/33/variations/3' )
+					) {
+						variationRequestReceived = true;
+						return true;
+					}
+					return false;
+				}
+			);
+
+			// Mock POST response for updating the variation
+			await priceBenchmarkPage.fulfillRequest(
+				/\/products\/33\/variations\/3\b/,
+				{
+					id: 3,
+					parent_id: 33,
+					type: 'variation',
+					regular_price: '120.00',
+				},
+				200,
+				[ 'POST' ]
+			);
+
+			// Click the change price link
+			const changePriceLink =
+				await priceBenchmarkPage.getFirstProductChangePriceLink();
+			await changePriceLink.click();
+
+			// Verify the modal is displayed
+			const changePriceModal =
+				await priceBenchmarkPage.getChangePriceModal();
+			await expect( changePriceModal ).toBeVisible();
+
+			// Input the new price and submit
+			const priceInput = await priceBenchmarkPage.getPriceInputModal();
+			await priceInput.fill( '220' );
+			await priceInput.blur();
+
+			const changePriceButton =
+				await priceBenchmarkPage.getChangePriceModalButton();
+			await expect( changePriceButton ).toBeEnabled();
+
+			// Click the change price button and wait for the request to be made
+			await Promise.all( [
+				variationRequestPromise,
+				changePriceButton.click(),
+			] );
+
+			// Check if the correct endpoint was called
+			expect( variationRequestReceived ).toBeTruthy();
+
+			// Verify the modal is closed
+			await expect( changePriceModal ).not.toBeVisible();
+
+			// Verify the table shows the updated price
+			const firstProductCells = await priceBenchmarkPage
+				.getFirstProductRow()
+				.locator( 'td' );
+			await expect( firstProductCells.nth( 2 ) ).toHaveText(
+				'NT$220.00'
 			);
 		} );
 
