@@ -267,11 +267,11 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	 *     Optional. Arguments to filter and paginate results.
 	 *
 	 *     @type array|null $include  List of product IDs to include. Default null.
-	 *     @type int        $offset   Offset for the results. Default 0.
-	 *     @type int        $limit    Maximum number of items returned. Default 10.
+	 *     @type int        $page     Offset for the results. Default 1.
+	 *     @type int        $per_page Maximum number of items returned. Default 10.
 	 *     @type string     $search   Search string to filter results. Default null.
 	 *     @type string     $order    Sort order: 'ASC' or 'DESC'. Default 'DESC'.
-	 *     @type string     $orderby  Attribute to sort by. Default 'id'.
+	 *     @type string     $orderby  Attribute to sort by. Default 'mc_insights_effectiveness'.
 	 * }
 	 * @return array {
 	 *     @type array $results List of formatted price benchmarks.
@@ -280,15 +280,15 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	 */
 	public function get_price_benchmarks_data( array $args = [] ): array {
 		$defaults = [
-			'include' => null,
-			'offset'  => 0,
-			'limit'   => 10,
-			'search'  => null,
-			'order'   => 'DESC',
-			'orderby' => 'mc_insights_effectiveness',
+			'include'  => null,
+			'page'     => 1,
+			'per_page' => 10,
+			'search'   => null,
+			'order'    => 'DESC',
+			'orderby'  => 'mc_insights_effectiveness',
 		];
 
-		$args = wp_parse_args( $args, $defaults );
+		$args = wp_parse_args( array_intersect_key( $args, $defaults ), $defaults );
 
 		/** @var MerchantPriceBenchmarksQuery $query */
 		$query = $this->container->get( MerchantPriceBenchmarksQuery::class );
@@ -324,8 +324,8 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		$query->set_order( $orderby, $order );
 
 		// Set offset and limit.
-		$query->set_offset( (int) $args['offset'] );
-		$query->set_limit( (int) $args['limit'] );
+		$query->set_offset( (int) ( $args['page'] - 1 ) * $args['per_page'] );
+		$query->set_limit( (int) $args['per_page'] );
 
 		// Get total count before limiting.
 		$total = $query->get_count();
