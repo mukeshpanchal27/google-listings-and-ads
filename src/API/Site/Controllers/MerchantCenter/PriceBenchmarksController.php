@@ -226,10 +226,6 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 						'title'     => [ 'type' => 'string' ],
 					],
 				],
-				'offer_id'                      => [
-					'description' => __( 'Google offer ID.', 'google-listings-and-ads' ),
-					'type'        => 'string',
-				],
 				'effectiveness'                 => [
 					'description' => __( 'Effectiveness score.', 'google-listings-and-ads' ),
 					'type'        => 'integer',
@@ -243,20 +239,20 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 					'description' => __( 'Currency code.', 'google-listings-and-ads' ),
 					'type'        => 'string',
 				],
-				'price_micros'                  => [
-					'description' => __( 'Regular price of the product.', 'google-listings-and-ads' ),
+				'product_price'                 => [
+					'description' => __( 'Current price of the product on Google.', 'google-listings-and-ads' ),
+					'type'        => 'number',
+				],
+				'benchmark_price'               => [
+					'description' => __( 'Average benchmark price of the product on Google.', 'google-listings-and-ads' ),
 					'type'        => 'number',
 				],
 				'benchmark_price_currency_code' => [
 					'description' => __( 'Benchmark price currency code.', 'google-listings-and-ads' ),
 					'type'        => 'string',
 				],
-				'benchmark_price_micros'        => [
-					'description' => __( 'Price of the product on Google.', 'google-listings-and-ads' ),
-					'type'        => 'number',
-				],
 				'price_gap'                     => [
-					'description' => __( 'Price gap between the regular price and the price on Google.', 'google-listings-and-ads' ),
+					'description' => __( 'Price gap between the product price and the benchmark price on Google.', 'google-listings-and-ads' ),
 					'type'        => 'number',
 				],
 				'suggested_price'               => [

@@ -93,14 +93,8 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 				$price_insights        = $data['price_insights'];
 				$performance           = $data['performance'];
 
-				// Calculate the price gap.
-				$price_micros           = (int) $price_competitiveness['price_micros'];
-				$benchmark_price_micros = (int) $price_competitiveness['benchmark_price_micros'];
-				$price_gap              = $price_micros - $benchmark_price_micros;
-
 				// Get the WooCommerce product ID and thumbnail.
 				$wc_product_id = $product_helper->get_wc_product_id( (string) $price_competitiveness['offer_id'] );
-				$thumbnail     = $this->get_product_thumbnail( $wc_product_id );
 
 				// Map the data to the required format.
 				return [
@@ -109,12 +103,10 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 					'mc_product_offer_id'                               => $price_competitiveness['offer_id'],
 					'mc_price_country_code'                             => $price_competitiveness['country_code'] ?? '',
 					'mc_product_currency_code'                          => $price_competitiveness['benchmark_price_currency_code'] ?? '',
-					'mc_product_price_micros'                           => round( $price_micros / 1000000, 2 ),
-					'mc_price_benchmark_price_micros'                   => round( $benchmark_price_micros / 1000000, 2 ),
+					'mc_product_price_micros'                           => $price_competitiveness['price_micros'],
+					'mc_price_benchmark_price_micros'                   => $price_competitiveness['benchmark_price_micros'],
 					'mc_price_benchmark_price_currency_code'            => $price_competitiveness['benchmark_price_currency_code'] ?? '',
-					'mc_insights_suggested_price_micros'                => isset( $price_insights['suggested_price_micros'] )
-					? round( $price_insights['suggested_price_micros'] / 1000000, 2 )
-					: '',
+					'mc_insights_suggested_price_micros'                => $price_insights['suggested_price_micros'],
 					'mc_insights_suggested_price_currency_code'         => $price_insights['suggested_price_currency_code'] ?? '',
 					'mc_insights_predicted_impressions_change_fraction' => $price_insights['predicted_impressions_change_fraction'] ?? '',
 					'mc_insights_predicted_clicks_change_fraction'      => $price_insights['predicted_clicks_change_fraction'] ?? '',
@@ -125,8 +117,8 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 					'mc_metrics_ctr'                                    => $performance['ctr'] ?? 0,
 					'mc_metrics_conversions'                            => $performance['conversions'] ?? 0,
 					'price_compared_with_benchmark'                     => $this->price_compared_with_benchmark(
-						round( $price_micros / 1000000, 2 ),
-						round( $benchmark_price_micros / 1000000, 2 )
+						(int) $price_competitiveness['price_micros'],
+						(int) $price_competitiveness['benchmark_price_micros']
 					),
 				];
 			},
@@ -361,14 +353,14 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 					'thumbnail' => $thumbnail,
 					'title'     => $product instanceof \WC_Product ? $product->get_name() : '',
 				],
-				'offer_id'                      => $row['mc_product_offer_id'],
-				'effectiveness'                 => $row['mc_insights_effectiveness'] ?? '',
+				'effectiveness'                 => (int) $row['mc_insights_effectiveness'] ?? 0,
 				'country_code'                  => $row['mc_price_country_code'] ?? '',
 				'currency_code'                 => $row['mc_product_currency_code'] ?? '',
-				'price_micros'                  => (float) $row['mc_product_price_micros'],
+				'product_price'                 => $this->micros_to_float( (int) $row['mc_product_price_micros'] ),
+				'benchmark_price'               => $this->micros_to_float( (int) $row['mc_price_benchmark_price_micros'] ),
 				'benchmark_price_currency_code' => $row['mc_price_benchmark_price_currency_code'] ?? '',
-				'benchmark_price_micros'        => (float) $row['mc_price_benchmark_price_micros'],
-				'suggested_price'               => (float) $row['mc_insights_suggested_price_micros'] ?? '',
+				'price_gap'                     => $this->micros_to_float( (int) $row['mc_price_benchmark_price_micros'] - (int) $row['mc_product_price_micros'] ),
+				'suggested_price'               => $this->micros_to_float( (int) $row['mc_insights_suggested_price_micros'] ),
 				'suggested_price_currency_code' => $row['mc_insights_suggested_price_currency_code'] ?? '',
 				'predicted_impressions_change'  => $row['mc_insights_predicted_impressions_change_fraction'] ?? '',
 				'predicted_clicks_change'       => $row['mc_insights_predicted_clicks_change_fraction'] ?? '',
@@ -400,5 +392,16 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		}
 
 		return self::COLUMN_MAP[ $order_by ];
+	}
+
+	/**
+	 * Converts a value in micros to a float representation.
+	 *
+	 * @param int $micros The value in micros (1,000,000 micros = 1 unit of currency).
+	 * @return float The converted float value.
+	 */
+	private function micros_to_float( int $micros ): float {
+		// Convert micros to a float value.
+		return round( $micros / 1000000, 2 );
 	}
 }

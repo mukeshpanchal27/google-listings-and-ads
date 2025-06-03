@@ -175,6 +175,46 @@ class PriceBenchmarksTest extends UnitTest {
 		// Assert expectations
 		$this->assertCount( 3, $result['results'] );
 		$this->assertEquals( 3, $result['total'] );
+
+		// Check that the first result has the expected shape
+		$first_result = $result['results'][0];
+
+		// Verify product structure
+		$this->assertArrayHasKey( 'product', $first_result );
+		$this->assertArrayHasKey( 'id', $first_result['product'] );
+		$this->assertArrayHasKey( 'thumbnail', $first_result['product'] );
+		$this->assertArrayHasKey( 'title', $first_result['product'] );
+
+		// Verify price data
+		$this->assertArrayHasKey( 'currency_code', $first_result );
+		$this->assertArrayHasKey( 'country_code', $first_result );
+		$this->assertArrayHasKey( 'product_price', $first_result );
+		$this->assertArrayHasKey( 'benchmark_price', $first_result );
+		$this->assertArrayHasKey( 'benchmark_price_currency_code', $first_result );
+		$this->assertArrayHasKey( 'price_gap', $first_result );
+		$this->assertArrayHasKey( 'suggested_price', $first_result );
+		$this->assertArrayHasKey( 'suggested_price_currency_code', $first_result );
+		$this->assertArrayHasKey( 'price_compared_with_benchmark', $first_result );
+
+		// Verify insights
+		$this->assertArrayHasKey( 'effectiveness', $first_result );
+		$this->assertArrayHasKey( 'predicted_impressions_change', $first_result );
+		$this->assertArrayHasKey( 'predicted_clicks_change', $first_result );
+		$this->assertArrayHasKey( 'predicted_conversions_change', $first_result );
+
+		// Verify metrics
+		$this->assertArrayHasKey( 'clicks', $first_result );
+		$this->assertArrayHasKey( 'impressions', $first_result );
+		$this->assertArrayHasKey( 'ctr', $first_result );
+		$this->assertArrayHasKey( 'conversions', $first_result );
+
+		// Verify value types.
+		$this->assertIsInt( $first_result['product']['id'] );
+		$this->assertIsFloat( $first_result['product_price'] );
+		$this->assertIsFloat( $first_result['benchmark_price'] );
+		$this->assertIsFloat( $first_result['price_gap'] );
+		$this->assertIsInt( $first_result['effectiveness'] );
+		$this->assertIsInt( $first_result['price_compared_with_benchmark'] );
 	}
 
 	/**
