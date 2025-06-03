@@ -12,7 +12,6 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Exception as GoogleException;
 use Automattic\WooCommerce\GoogleListingsAndAds\Vendor\Google\Service\ShoppingContent;
 use DateTime;
-use Exception;
 
 /**
  * Class MerchantPriceBenchmarks
@@ -75,6 +74,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 					'benchmark_price_currency_code' => $benchmark_result->getPriceCompetitiveness()->getBenchmarkPriceCurrencyCode(),
 				];
 			}
+
 			return $results;
 		} catch ( GoogleException $e ) {
 			do_action( 'woocommerce_gla_mc_client_exception', $e, __METHOD__ );
@@ -133,6 +133,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 					'effectiveness'                         => $price_insights_result->getPriceInsights()->effectiveness ?? 0,
 				];
 			}
+
 			return $results;
 		} catch ( GoogleException $e ) {
 			do_action( 'woocommerce_gla_mc_client_exception', $e, __METHOD__ );
@@ -185,6 +186,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 					'conversions' => $performance_result->getMetrics()->getConversions(),
 				];
 			}
+
 			return $results;
 		} catch ( GoogleException $e ) {
 			do_action( 'woocommerce_gla_mc_client_exception', $e, __METHOD__ );

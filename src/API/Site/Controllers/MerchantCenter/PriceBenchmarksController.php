@@ -3,13 +3,11 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\MerchantCenter;
 
-use Automattic\WooCommerce\GoogleListingsAndAds\API\Google\MerchantPriceBenchmarks;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\BaseController;
 use Automattic\WooCommerce\GoogleListingsAndAds\API\TransportMethods;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\ContainerAwareTrait;
 use Automattic\WooCommerce\GoogleListingsAndAds\Internal\Interfaces\ContainerAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\PriceBenchmarks;
-use Automattic\WooCommerce\GoogleListingsAndAds\PluginHelper;
 use Exception;
 use WP_REST_Request as Request;
 use WP_REST_Response as Response;
@@ -24,7 +22,6 @@ defined( 'ABSPATH' ) || exit;
 class PriceBenchmarksController extends BaseController implements ContainerAwareInterface {
 
 	use ContainerAwareTrait;
-	use PluginHelper;
 
 	/**
 	 * Register rest routes with WordPress.
@@ -126,10 +123,6 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				];
 
 				$response_data = $price_benchmarks->get_price_benchmarks_data( $args );
-
-				if ( empty( $response_data ) ) {
-					return new Response( [] );
-				}
 
 				return new Response( $response_data );
 			} catch ( Exception $e ) {
