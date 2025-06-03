@@ -101,10 +101,6 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 
 				$response_data = $price_benchmarks->get_price_benchmarks_data( $this->prepare_query_arguments( $request ) );
 
-				if ( empty( $response_data ) ) {
-					return new Response( [] );
-				}
-
 				return new Response( $response_data );
 			} catch ( Exception $e ) {
 				return $this->response_from_exception( $e );
