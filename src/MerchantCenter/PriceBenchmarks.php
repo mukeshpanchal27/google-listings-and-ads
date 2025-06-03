@@ -373,11 +373,11 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 				'predicted_impressions_change'  => $row['mc_insights_predicted_impressions_change_fraction'] ?? '',
 				'predicted_clicks_change'       => $row['mc_insights_predicted_clicks_change_fraction'] ?? '',
 				'predicted_conversions_change'  => $row['mc_insights_predicted_conversions_change_fraction'] ?? '',
-				'clicks'                        => $row['mc_metrics_clicks'] ?? 0,
-				'impressions'                   => $row['mc_metrics_impressions'] ?? 0,
+				'clicks'                        => (int) $row['mc_metrics_clicks'] ?? 0,
+				'impressions'                   => (int) $row['mc_metrics_impressions'] ?? 0,
 				'ctr'                           => $row['mc_metrics_ctr'] ?? 0,
-				'conversions'                   => $row['mc_metrics_conversions'] ?? 0,
-				'price_compared_with_benchmark' => $row['price_compared_with_benchmark'] ?? 0,
+				'conversions'                   => (int) $row['mc_metrics_conversions'] ?? 0,
+				'price_compared_with_benchmark' => (int) $row['price_compared_with_benchmark'] ?? 0,
 			];
 		}
 

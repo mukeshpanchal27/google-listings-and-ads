@@ -232,7 +232,8 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				],
 				'effectiveness'                 => [
 					'description' => __( 'Effectiveness score.', 'google-listings-and-ads' ),
-					'type'        => [ 'string', 'number', 'null' ],
+					'type'        => 'integer',
+					'enum'        => [ 0, 1, 2, 3 ],
 				],
 				'country_code'                  => [
 					'description' => __( 'Country code.', 'google-listings-and-ads' ),
@@ -268,11 +269,11 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				],
 				'clicks'                        => [
 					'description' => __( 'Current clicks.', 'google-listings-and-ads' ),
-					'type'        => [ 'integer', 'string', 'null' ],
+					'type'        => 'integer',
 				],
 				'impressions'                   => [
 					'description' => __( 'Current impressions.', 'google-listings-and-ads' ),
-					'type'        => [ 'integer', 'string', 'null' ],
+					'type'        => 'integer',
 				],
 				'ctr'                           => [
 					'description' => __( 'Click-through rate.', 'google-listings-and-ads' ),
@@ -280,7 +281,7 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				],
 				'conversions'                   => [
 					'description' => __( 'Current conversions.', 'google-listings-and-ads' ),
-					'type'        => [ 'integer', 'string', 'null' ],
+					'type'        => 'integer',
 				],
 				'predicted_impressions_change'  => [
 					'description' => __( 'Expected uplift in impressions (fraction).', 'google-listings-and-ads' ),
@@ -296,7 +297,8 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 				],
 				'price_compared_with_benchmark' => [
 					'description' => __( 'Comparison of price with benchmark.', 'google-listings-and-ads' ),
-					'type'        => [ 'string', 'integer', 'null' ],
+					'type'        => 'integer',
+					'enum'        => [ 0, 1, 2, 3 ],
 				],
 			],
 			'total'   => [
