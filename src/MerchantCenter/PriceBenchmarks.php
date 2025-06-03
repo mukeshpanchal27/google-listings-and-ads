@@ -87,27 +87,27 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 
 				// Map the data to the required format.
 				return [
-					'product_id'                         => $wc_product_id,
-					'mc_product_id'                      => $price_competitiveness['id'],
-					'mc_product_offer_id'                => $price_competitiveness['offer_id'],
-					'mc_price_country_code'              => $price_competitiveness['country_code'] ?? '',
-					'mc_product_currency_code'           => $price_competitiveness['benchmark_price_currency_code'] ?? '',
-					'mc_product_price_micros'            => round( $price_micros / 1000000, 2 ),
-					'mc_price_benchmark_price_micros'    => round( $benchmark_price_micros / 1000000, 2 ),
-					'mc_price_benchmark_price_currency_code' => $price_competitiveness['benchmark_price_currency_code'] ?? '',
-					'mc_insights_suggested_price_micros' => isset( $price_insights['suggested_price_micros'] )
+					'product_id'                                        => $wc_product_id,
+					'mc_product_id'                                     => $price_competitiveness['id'],
+					'mc_product_offer_id'                               => $price_competitiveness['offer_id'],
+					'mc_price_country_code'                             => $price_competitiveness['country_code'] ?? '',
+					'mc_product_currency_code'                          => $price_competitiveness['benchmark_price_currency_code'] ?? '',
+					'mc_product_price_micros'                           => round( $price_micros / 1000000, 2 ),
+					'mc_price_benchmark_price_micros'                   => round( $benchmark_price_micros / 1000000, 2 ),
+					'mc_price_benchmark_price_currency_code'            => $price_competitiveness['benchmark_price_currency_code'] ?? '',
+					'mc_insights_suggested_price_micros'                => isset( $price_insights['suggested_price_micros'] )
 					? round( $price_insights['suggested_price_micros'] / 1000000, 2 )
 					: '',
-					'mc_insights_suggested_price_currency_code' => $price_insights['suggested_price_currency_code'] ?? '',
+					'mc_insights_suggested_price_currency_code'         => $price_insights['suggested_price_currency_code'] ?? '',
 					'mc_insights_predicted_impressions_change_fraction' => $price_insights['predicted_impressions_change_fraction'] ?? '',
-					'mc_insights_predicted_clicks_change_fraction' => $price_insights['predicted_clicks_change_fraction'] ?? '',
+					'mc_insights_predicted_clicks_change_fraction'      => $price_insights['predicted_clicks_change_fraction'] ?? '',
 					'mc_insights_predicted_conversions_change_fraction' => $price_insights['predicted_conversions_change_fraction'] ?? '',
-					'mc_insights_effectiveness'          => isset( $price_insights['effectiveness'] ) ? $this->get_effectiveness( $price_insights['effectiveness'] ) : '',
-					'mc_metrics_clicks'                  => $performance['clicks'] ?? 0,
-					'mc_metrics_impressions'             => $performance['impressions'] ?? 0,
-					'mc_metrics_ctr'                     => $performance['ctr'] ?? 0,
-					'mc_metrics_conversions'             => $performance['conversions'] ?? 0,
-					'price_compared_with_benchmark'      => $this->price_compared_with_benchmark(
+					'mc_insights_effectiveness'                         => isset( $price_insights['effectiveness'] ) ? $this->get_effectiveness( $price_insights['effectiveness'] ) : '',
+					'mc_metrics_clicks'                                 => $performance['clicks'] ?? 0,
+					'mc_metrics_impressions'                            => $performance['impressions'] ?? 0,
+					'mc_metrics_ctr'                                    => $performance['ctr'] ?? 0,
+					'mc_metrics_conversions'                            => $performance['conversions'] ?? 0,
+					'price_compared_with_benchmark'                     => $this->price_compared_with_benchmark(
 						round( $price_micros / 1000000, 2 ),
 						round( $benchmark_price_micros / 1000000, 2 )
 					),

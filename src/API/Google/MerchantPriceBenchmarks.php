@@ -114,15 +114,15 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 			$results = [];
 			foreach ( $price_insights_data as $price_insights_result ) {
 				$results[] = [
-					'id'                               => $price_insights_result->getProductView()->getId(),
-					'offer_id'                         => $price_insights_result->getProductView()->getOfferId(),
-					'title'                            => $price_insights_result->getProductView()->getTitle(),
-					'price_micros'                     => $price_insights_result->getProductView()->getPriceMicros(),
-					'currency_code'                    => $price_insights_result->getProductView()->getCurrencyCode(),
-					'suggested_price_micros'           => $price_insights_result->getPriceInsights()->getSuggestedPriceMicros(),
-					'suggested_price_currency_code'    => $price_insights_result->getPriceInsights()->getSuggestedPriceCurrencyCode(),
+					'id'                                    => $price_insights_result->getProductView()->getId(),
+					'offer_id'                              => $price_insights_result->getProductView()->getOfferId(),
+					'title'                                 => $price_insights_result->getProductView()->getTitle(),
+					'price_micros'                          => $price_insights_result->getProductView()->getPriceMicros(),
+					'currency_code'                         => $price_insights_result->getProductView()->getCurrencyCode(),
+					'suggested_price_micros'                => $price_insights_result->getPriceInsights()->getSuggestedPriceMicros(),
+					'suggested_price_currency_code'         => $price_insights_result->getPriceInsights()->getSuggestedPriceCurrencyCode(),
 					'predicted_impressions_change_fraction' => $price_insights_result->getPriceInsights()->getPredictedImpressionsChangeFraction(),
-					'predicted_clicks_change_fraction' => $price_insights_result->getPriceInsights()->getPredictedClicksChangeFraction(),
+					'predicted_clicks_change_fraction'      => $price_insights_result->getPriceInsights()->getPredictedClicksChangeFraction(),
 					'predicted_conversions_change_fraction' => $price_insights_result->getPriceInsights()->getPredictedConversionsChangeFraction(),
 
 					/*
@@ -130,7 +130,7 @@ class MerchantPriceBenchmarks implements OptionsAwareInterface {
 					 * Until we upgrade, we can use the magic getter to access the property directly from modelData.
 					 * @see: https://github.com/googleapis/google-api-php-client-services/blob/v0.354.0/src/ShoppingContent/PriceInsights.php
 					 */
-					'effectiveness'                    => $price_insights_result->getPriceInsights()->effectiveness ?? 0,
+					'effectiveness'                         => $price_insights_result->getPriceInsights()->effectiveness ?? 0,
 				];
 			}
 			return $results;
