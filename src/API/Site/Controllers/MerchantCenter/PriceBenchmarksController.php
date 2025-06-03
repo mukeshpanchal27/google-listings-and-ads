@@ -164,7 +164,8 @@ class PriceBenchmarksController extends BaseController implements ContainerAware
 			'orderby'  => [
 				'description' => __( 'Sort collection by attribute.', 'google-listings-and-ads' ),
 				'type'        => 'string',
-				'default'     => 'mc_insights_effectiveness',
+				'enum'        => array_keys( PriceBenchmarks::COLUMN_MAP ),
+				'default'     => PriceBenchmarks::DEFAULT_ORDERBY,
 			],
 		];
 	}

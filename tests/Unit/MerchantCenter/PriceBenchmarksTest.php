@@ -214,20 +214,26 @@ class PriceBenchmarksTest extends UnitTest {
 
 	/**
 	 * Test getting price benchmarks data with custom ordering.
+	 *
+	 * @dataProvider data_order_scenarios
+	 *
+	 * @param string $orderby
+	 * @param string $order
+	 * @param array  $expected_ids
 	 */
-	public function test_get_price_benchmarks_data_with_custom_order(): void {
+	public function test_get_price_benchmarks_data_with_custom_order( $orderby, $order, $expected_ids ): void {
 		// Call the method with custom ordering
 		$result = $this->price_benchmarks->get_price_benchmarks_data(
 			[
-				'orderby' => 'product_id',
-				'order'   => 'asc',
+				'orderby' => $orderby,
+				'order'   => $order,
 			]
 		);
 
 		// Assert expectations.
 		$this->assertCount( 3, $result['results'] );
 		$this->assertSame(
-			[ 101, 102, 103 ],
+			$expected_ids,
 			array_map(
 				function ( $item ) {
 					return $item['product']['id'];
@@ -235,6 +241,28 @@ class PriceBenchmarksTest extends UnitTest {
 				$result['results']
 			)
 		);
+	}
+
+	/**
+	 * Data provider for test_get_price_benchmarks_data_with_custom_order.
+	 *
+	 * @return array
+	 */
+	public function data_order_scenarios(): array {
+		return [
+			'id asc'               => [ 'id', 'asc', [ 101, 102, 103 ] ],
+			'id desc'              => [ 'id', 'desc', [ 103, 102, 101 ] ],
+			'effectiveness asc'    => [ 'effectiveness', 'asc', [ 102, 101, 103 ] ],
+			'effectiveness desc'   => [ 'effectiveness', 'desc', [ 103, 101, 102 ] ],
+			'regular_price asc'    => [ 'regular_price', 'asc', [ 103, 101, 102 ] ],
+			'regular_price desc'   => [ 'regular_price', 'desc', [ 102, 101, 103 ] ],
+			'price_on_google asc'  => [ 'price_on_google', 'asc', [ 103, 101, 102 ] ],
+			'price_on_google desc' => [ 'price_on_google', 'desc', [ 102, 101, 103 ] ],
+			'suggested_price asc'  => [ 'suggested_price', 'asc', [ 103, 101, 102 ] ],
+			'suggested_price desc' => [ 'suggested_price', 'desc', [ 102, 101, 103 ] ],
+			'unsupported_key asc'  => [ 'unsupported', 'asc', [ 102, 101, 103 ] ], // Unsupported key should return in order of effectiveness.
+			'unsupported_key desc' => [ 'unsupported', 'desc', [ 103, 101, 102 ] ], // Unsupported key should return in order of effectiveness.
+		];
 	}
 
 	/**

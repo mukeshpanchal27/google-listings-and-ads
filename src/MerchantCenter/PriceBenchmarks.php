@@ -22,6 +22,23 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	use ContainerAwareTrait;
 
 	/**
+	 * Map of column names to their corresponding database fields.
+	 *
+	 * This is used to map the orderby parameter to the correct database column.
+	 *
+	 * @var array
+	 */
+	public const COLUMN_MAP = [
+		'effectiveness'   => 'mc_insights_effectiveness',
+		'id'              => 'product_id',
+		'price_on_google' => 'mc_price_benchmark_price_micros',
+		'regular_price'   => 'mc_product_price_micros',
+		'suggested_price' => 'mc_insights_suggested_price_micros',
+	];
+
+	public const DEFAULT_ORDERBY = 'effectiveness';
+
+	/**
 	 * Gets and maps the benchmark and price insights and performance data to the required API response format.
 	 *
 	 * @param array $args Query arguments.
@@ -280,7 +297,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 			'per_page' => 10,
 			'search'   => null,
 			'order'    => 'desc',
-			'orderby'  => 'mc_insights_effectiveness',
+			'orderby'  => self::DEFAULT_ORDERBY,
 		];
 
 		$args = wp_parse_args( array_intersect_key( $args, $defaults ), $defaults );
@@ -313,8 +330,11 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 		}
 
 		// Set order and orderby.
-		$order   = strtoupper( $args['order'] );
-		$orderby = $args['orderby'];
+		$order = strtoupper( $args['order'] );
+		if ( ! in_array( $order, [ 'ASC', 'DESC' ], true ) ) {
+			$order = 'DESC';
+		}
+		$orderby = $this->map_orderby_to_db_value( $args['orderby'] );
 
 		$query->set_order( $orderby, $order );
 
@@ -365,5 +385,20 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 			'results' => $results,
 			'total'   => $total,
 		];
+	}
+
+	/**
+	 * Maps the orderby parameter to the corresponding database column name.
+	 *
+	 * @param string $order_by The orderby parameter from the request.
+	 * @return string The corresponding database column name.
+	 */
+	private function map_orderby_to_db_value( string $order_by ): string {
+		// If the $order_by value is not in the COLUMN_MAP, use the default.
+		if ( ! in_array( $order_by, array_keys( self::COLUMN_MAP ), true ) ) {
+			$order_by = self::DEFAULT_ORDERBY;
+		}
+
+		return self::COLUMN_MAP[ $order_by ];
 	}
 }
