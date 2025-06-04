@@ -1,11 +1,12 @@
 /**
  * External dependencies
  */
-import { setWith, clone } from 'lodash';
+import { setWith, clone, keyBy } from 'lodash';
 
 /**
  * Internal dependencies
  */
+import { generateKeyFromObject } from '~/utils/generateKeyFromObject';
 import TYPES from './action-types';
 
 const DEFAULT_STATE = {
@@ -73,7 +74,10 @@ const DEFAULT_STATE = {
 	},
 	gtinMigrationStatus: null,
 	price_benchmark: {
-		suggestions: [],
+		suggestions: {
+			items: {},
+			queries: {},
+		},
 		summary: {},
 	},
 };
@@ -534,31 +538,72 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 		}
 
 		case TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS: {
-			const { data } = action;
-			return setIn( state, 'price_benchmark.suggestions', data );
+			const { data, args = {} } = action;
+			const key = generateKeyFromObject( args );
+
+			if ( ! data && ! data.results ) {
+				if ( args.product_id ) {
+					return state;
+				}
+
+				return chainState( state, [ 'price_benchmark', 'suggestions' ] )
+					.setIn( [ 'queries', [ key ], 'items' ], [] )
+					.setIn( [ 'queries', [ key ], 'meta', 'totalItems' ], 0 )
+					.end();
+			}
+
+			if ( args.product_id ) {
+				return setIn(
+					state,
+					[
+						'price_benchmark',
+						'suggestions',
+						'items',
+						[ args.product_id ],
+					],
+					data
+				);
+			}
+
+			// Set the product ID as key for easier lookup of products.
+			const productsById = keyBy(
+				data.results,
+				( item ) => item.product.id
+			);
+
+			const stateSetter = chainState( state, [
+				'price_benchmark',
+				'suggestions',
+			] );
+
+			return stateSetter
+				.setIn(
+					[ 'queries', [ key ], 'items' ],
+					data.results.map( ( item ) => item.product.id )
+				)
+				.setIn(
+					[ 'queries', [ key ], 'meta', 'totalItems' ],
+					data.total
+				)
+				.setIn( 'items', {
+					...state.price_benchmark.suggestions.items,
+					...productsById,
+				} )
+				.end();
 		}
 
-		case TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS_REGULAR_PRICE: {
+		case TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS_PRODUCT_PRICE: {
 			const {
-				data: { productId, regularPrice },
+				data: { productId, productPrice },
 			} = action;
 
-			const newSuggestionsState = [
-				...state.price_benchmark.suggestions,
-			];
-			const productIndex = newSuggestionsState.findIndex(
-				( { product } ) => product.id === productId
-			);
-
-			if ( productIndex >= 0 ) {
-				newSuggestionsState[ productIndex ].regular_price =
-					regularPrice;
-			}
-			return setIn(
-				state,
-				'price_benchmark.suggestions',
-				newSuggestionsState
-			);
+			return setIn( state, 'price_benchmark.suggestions.items', {
+				...state.price_benchmark.suggestions.items,
+				[ productId ]: {
+					...state.price_benchmark.suggestions.items[ productId ],
+					product_price: productPrice,
+				},
+			} );
 		}
 
 		// Page will be reloaded after all accounts have been disconnected, so no need to mutate state.

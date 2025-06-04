@@ -2,8 +2,8 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { isEqual } from 'lodash';
 import { withViewportMatch } from '@wordpress/viewport';
-import { TablePlaceholder } from '@woocommerce/components';
 import { useState, useMemo, useEffect, useCallback } from '@wordpress/element';
 
 /**
@@ -54,13 +54,20 @@ const PRODUCT_TABLE_FIELDS = [
 		},
 	},
 	{
-		id: 'title',
+		id: 'id',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: true,
 		label: __( 'Product', 'google-listings-and-ads' ),
 		getValue: ( { item } ) => {
-			return item?.product?.title || null;
+			return item.product.id;
+		},
+		render: ( { item } ) => {
+			if ( ! item?.product?.title ) {
+				return null;
+			}
+
+			return item.product.title;
 		},
 	},
 	{
@@ -95,30 +102,30 @@ const METRICS_TABLE_FIELDS = [
 		},
 	},
 	{
-		id: 'regular_price',
+		id: 'product_price',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
-		label: <Label labelKey={ LABEL_REGULAR_PRICE } />,
+		label: LABELS[ LABEL_REGULAR_PRICE ].title,
 		render: ( { item } ) => {
-			return <Price amount={ item.regular_price } highlight />;
+			return <Price amount={ item.product_price } highlight />;
 		},
 	},
 	{
-		id: 'price_on_google',
+		id: 'benchmark_price',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
 		header: <Label labelKey={ LABEL_AVG_PRICE_ON_GOOGLE } />,
 		label: LABELS[ LABEL_AVG_PRICE_ON_GOOGLE ].title,
 		render: ( { item } ) => {
-			return <Price amount={ item.price_on_google } />;
+			return <Price amount={ item.benchmark_price } />;
 		},
 	},
 	{
 		id: 'price_gap',
 		enableHiding: false,
-		enableSorting: true,
+		enableSorting: false,
 		enableGlobalSearch: false,
 		header: <Label labelKey={ LABEL_PRICE_GAP_PERCENT } />,
 		label: LABELS[ LABEL_PRICE_GAP_PERCENT ].title,
@@ -163,6 +170,15 @@ const METRICS_TABLE_FIELDS = [
 ];
 
 const TABLE_FIELDS_MOBILE = [ 'action' ];
+const DEFAULT_QUERY_PARAMS = {
+	search: '',
+	page: 1,
+	perPage: 10,
+	sort: {
+		direction: 'desc',
+		field: 'effectiveness',
+	},
+};
 
 /**
  * @event gla_price_benchmarks_shown
@@ -185,30 +201,29 @@ const TABLE_FIELDS_MOBILE = [ 'action' ];
  * @return {JSX.Element} A div containing the DataViews component.
  */
 const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
-	const { DataViews, filterSortAndPaginate } = window.wp.dataviews;
-	const { suggestions, hasFinishedResolution } =
-		usePriceBenchmarkSuggestions();
-
+	const { DataViews } = window.wp.dataviews;
 	const [ view, setView ] = useState( {
 		type: 'table',
-		search: '',
-		page: 1,
-		perPage: 10,
 		layout: {},
-		filters: [],
 		fields: [],
-		titleField: 'title',
+		filters: [],
+		titleField: 'id',
 		descriptionField: 'description',
 		mediaField: 'image',
+		...DEFAULT_QUERY_PARAMS,
 	} );
 
-	const { data: shownData, paginationInfo } = useMemo( () => {
-		const updatedData = filterSortAndPaginate( suggestions, view, [
-			...PRODUCT_TABLE_FIELDS,
-			...METRICS_TABLE_FIELDS,
-		] );
-		return updatedData;
-	}, [ view, suggestions, filterSortAndPaginate ] );
+	const updatedQueryParams = {
+		order: view.sort.direction,
+		orderby: view.sort.field,
+		search: view.search,
+		page: view.page,
+		per_page: view.perPage,
+	};
+	const {
+		data: { items: suggestions, meta },
+		hasFinishedResolution,
+	} = usePriceBenchmarkSuggestions( updatedQueryParams );
 
 	const handleOnChangeView = useCallback( ( newView ) => {
 		setView( newView );
@@ -221,15 +236,6 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 		}
 		return METRICS_TABLE_FIELDS.map( ( field ) => field.id );
 	}, [ isViewportMobile ] );
-
-	const placeholderTableHeaders = useMemo( () => {
-		return METRICS_TABLE_FIELDS.map( ( { id, label } ) => {
-			return {
-				key: id,
-				label,
-			};
-		} );
-	}, [] );
 
 	useEffect( () => {
 		setView( ( prevView ) => ( {
@@ -246,44 +252,46 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 		recordGlaEvent( 'gla_price_benchmarks_shown', {
 			context: PRICE_BENCHMARK_SUGGESTIONS_CONTEXT,
 			suggestions: suggestions.length,
+			per_page: view.perPage,
 		} );
-	}, [ hasFinishedResolution, suggestions ] );
+	}, [ hasFinishedResolution, suggestions, view ] );
 
-	if ( hasFinishedResolution && suggestions.length === 0 ) {
+	// If there are no suggestions and the query params are default, which means we are loading the initial set of data, show an empty notice.
+	if (
+		hasFinishedResolution &&
+		! suggestions?.length &&
+		isEqual(
+			{
+				search: updatedQueryParams.search,
+				page: updatedQueryParams.page,
+				perPage: updatedQueryParams.per_page,
+				sort: {
+					direction: updatedQueryParams.order,
+					field: updatedQueryParams.orderby,
+				},
+			},
+			DEFAULT_QUERY_PARAMS
+		)
+	) {
 		return <EmptyMetricsNotice />;
 	}
 
 	return (
 		<div className="gla-price-benchmark-suggestions">
-			{ ! hasFinishedResolution && (
-				<TablePlaceholder
-					headers={ [
-						{
-							key: 'product',
-							label: __( 'Product', 'google-listings-and-ads' ),
-						},
-						...placeholderTableHeaders,
-					] }
-					caption={ __( 'Loading data…', 'google-listings-and-ads' ) }
-					numberOfRows={ 10 }
-				/>
-			) }
-
-			{ hasFinishedResolution && (
-				<DataViews
-					getItemId={ ( item ) => item?.product?.id }
-					fields={ [
-						...PRODUCT_TABLE_FIELDS,
-						...METRICS_TABLE_FIELDS,
-					] }
-					data={ shownData }
-					view={ view }
-					paginationInfo={ paginationInfo }
-					onChangeView={ handleOnChangeView }
-					defaultLayouts={ [] }
-					header={ <FaqLink /> }
-				/>
-			) }
+			<DataViews
+				getItemId={ ( item ) => item?.product?.id }
+				fields={ [ ...PRODUCT_TABLE_FIELDS, ...METRICS_TABLE_FIELDS ] }
+				data={ suggestions }
+				view={ view }
+				paginationInfo={ {
+					totalItems: meta?.totalItems,
+					totalPages: Math.ceil( meta?.totalItems / view?.perPage ),
+				} }
+				onChangeView={ handleOnChangeView }
+				defaultLayouts={ [] }
+				header={ <FaqLink /> }
+				isLoading={ ! hasFinishedResolution }
+			/>
 		</div>
 	);
 };

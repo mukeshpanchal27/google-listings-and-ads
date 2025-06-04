@@ -8,6 +8,7 @@ import { expect, test } from '@playwright/test';
  */
 import { clearOnboardedMerchant } from '../../utils/api';
 import priceBenchmarkSuggestionsData from '../../utils/__fixtures__/price-benchmark-suggestions.json';
+import priceBenchmarkProductSuggestionsData from '../../utils/__fixtures__/price-benchmark-product-suggestions.json';
 import PriceBenchmarkPage from '../../utils/pages/price-benchmark';
 
 test.use( { storageState: process.env.ADMINSTATE } );
@@ -53,10 +54,23 @@ test.describe( 'Price Benchmark Page', () => {
 		test( 'Renders loading state while fetching data', async () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
 
+			// Set up the handler for the summary request that won't resolve immediately
+			const deferredHandler = priceBenchmarkPage.withFulfillDeferred();
+			await deferredHandler.fulfillPriceBenchmarkSummary( {
+				price_higher: 10,
+				price_lower: 20,
+				price_similar: 30,
+				price_unknown: 40,
+				total_products: 100,
+			} );
+
 			const loadingElement = page.locator(
 				'.gla-horizontal-stacked-bar--loading'
 			);
 			await expect( loadingElement ).toBeVisible();
+
+			deferredHandler.continueFulfill();
+			await expect( loadingElement ).toBeHidden();
 		} );
 
 		test( 'Does not render the chart if there are no products', async () => {
@@ -187,25 +201,10 @@ test.describe( 'Price Benchmark Page', () => {
 			);
 		} );
 
-		test( 'Shows 10 results per page by default', async () => {
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-				...priceBenchmarkSuggestionsData,
-			] );
-
-			const tableRows = page.locator( 'table tbody tr' );
-			await expect( tableRows ).toHaveCount( 10 );
-		} );
-
-		test( 'Navigates to the next page and shows 5 results', async () => {
-			const nextPageButton = page.locator( '[aria-label="Next page"]' );
-			await nextPageButton.click();
-
-			// Ensure the table displays 5 rows on the second page
-			const tableRows = page.locator( 'table tbody tr' );
-			await expect( tableRows ).toHaveCount( 5 );
-		} );
-
 		test( 'Displays the product and action columns only in the table when screen is resized to 400px', async () => {
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				priceBenchmarkSuggestionsData
+			);
 			await page.setViewportSize( { width: 400, height: 800 } );
 
 			const tableHeaderColumns = page.locator( 'table thead tr th' );
@@ -215,6 +214,24 @@ test.describe( 'Price Benchmark Page', () => {
 			await expect( tableHeaderColumns.nth( 1 ) ).toHaveText( 'Action' );
 
 			await page.setViewportSize( { width: 1280, height: 720 } );
+		} );
+
+		test( 'Navigates to the next page and triggers a request with page=2', async () => {
+			const nextPageButton = page.locator( '[aria-label="Next page"]' );
+
+			const [ pageRequest ] = await Promise.all( [
+				page.waitForRequest(
+					( request ) =>
+						request
+							.url()
+							.includes( '/wc/gla/mc/price-benchmarks' ) &&
+						request.url().includes( 'page=2' ) &&
+						request.method() === 'GET'
+				),
+				nextPageButton.click(),
+			] );
+
+			expect( pageRequest ).toBeTruthy();
 		} );
 
 		test( 'Displays error message when data view fails to load', async () => {
@@ -259,10 +276,13 @@ test.describe( 'Price Benchmark Page', () => {
 	test.describe( 'Change Price Modal Functionality', () => {
 		test( 'Clicking "Change Price" link renders the modal', async () => {
 			await priceBenchmarkPage.goto();
-
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-				...priceBenchmarkSuggestionsData,
-			] );
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				priceBenchmarkSuggestionsData
+			);
+			await priceBenchmarkPage.fulfillPriceBenchmarkProductSuggestions(
+				33,
+				priceBenchmarkProductSuggestionsData
+			);
 
 			await priceBenchmarkPage.fulfillWCProduct(
 				{
@@ -294,11 +314,13 @@ test.describe( 'Price Benchmark Page', () => {
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
 				priceBenchmarkSuggestionsData
 			);
+			await priceBenchmarkPage.fulfillPriceBenchmarkProductSuggestions(
+				33,
+				priceBenchmarkProductSuggestionsData
+			);
 			await priceBenchmarkPage.fulfillWCProduct(
 				{
 					regular_price: '100.00',
-					sale_price: '90.00',
-					on_sale: true,
 				},
 				[ 'GET' ]
 			);
@@ -314,7 +336,7 @@ test.describe( 'Price Benchmark Page', () => {
 
 			const error = priceBenchmarkPage.getPriceInputError();
 			await expect( error ).toHaveText(
-				'New price must be greater than the sales price (NT$90.00).'
+				'New price must be greater than or equals to zero.'
 			);
 
 			const changePriceButton =
@@ -325,9 +347,13 @@ test.describe( 'Price Benchmark Page', () => {
 		test( 'Clicking "Change Price" button with a valid price closes the modal and updates the table', async () => {
 			await priceBenchmarkPage.goto();
 
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-				...priceBenchmarkSuggestionsData,
-			] );
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				priceBenchmarkSuggestionsData
+			);
+			await priceBenchmarkPage.fulfillPriceBenchmarkProductSuggestions(
+				33,
+				priceBenchmarkProductSuggestionsData
+			);
 
 			await priceBenchmarkPage.fulfillWCProduct(
 				{
@@ -371,13 +397,104 @@ test.describe( 'Price Benchmark Page', () => {
 			);
 		} );
 
+		test( 'Changes price for a product variation', async () => {
+			await priceBenchmarkPage.goto();
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				priceBenchmarkSuggestionsData
+			);
+			await priceBenchmarkPage.fulfillPriceBenchmarkProductSuggestions(
+				3,
+				priceBenchmarkProductSuggestionsData
+			);
+			await priceBenchmarkPage.fulfillWCProduct(
+				{
+					id: 3,
+					parent_id: 33,
+					type: 'variation',
+					regular_price: '100.00',
+				},
+				[ 'GET' ]
+			);
+
+			// Setup the POST request handler and create a promise to track if it's called
+			let variationRequestReceived = false;
+			const variationRequestPromise = page.waitForRequest(
+				( request ) => {
+					if (
+						request.method() === 'POST' &&
+						request.url().includes( '/products/33/variations/3' )
+					) {
+						variationRequestReceived = true;
+						return true;
+					}
+					return false;
+				}
+			);
+
+			// Mock POST response for updating the variation
+			await priceBenchmarkPage.fulfillRequest(
+				/\/products\/33\/variations\/3\b/,
+				{
+					id: 3,
+					parent_id: 33,
+					type: 'variation',
+					regular_price: '120.00',
+				},
+				200,
+				[ 'POST' ]
+			);
+
+			// Click the change price link
+			const changePriceLink =
+				await priceBenchmarkPage.getFirstProductChangePriceLink();
+			await changePriceLink.click();
+
+			// Verify the modal is displayed
+			const changePriceModal =
+				await priceBenchmarkPage.getChangePriceModal();
+			await expect( changePriceModal ).toBeVisible();
+
+			// Input the new price and submit
+			const priceInput = await priceBenchmarkPage.getPriceInputModal();
+			await priceInput.fill( '220' );
+			await priceInput.blur();
+
+			const changePriceButton =
+				await priceBenchmarkPage.getChangePriceModalButton();
+			await expect( changePriceButton ).toBeEnabled();
+
+			// Click the change price button and wait for the request to be made
+			await Promise.all( [
+				variationRequestPromise,
+				changePriceButton.click(),
+			] );
+
+			// Check if the correct endpoint was called
+			expect( variationRequestReceived ).toBeTruthy();
+
+			// Verify the modal is closed
+			await expect( changePriceModal ).not.toBeVisible();
+
+			// Verify the table shows the updated price
+			const firstProductCells = await priceBenchmarkPage
+				.getFirstProductRow()
+				.locator( 'td' );
+			await expect( firstProductCells.nth( 2 ) ).toHaveText(
+				'NT$220.00'
+			);
+		} );
+
 		test.describe( 'Sales Price Functionality', () => {
 			test( 'Displays "This product is currently on sale." text when there is a sale price', async () => {
 				await priceBenchmarkPage.goto();
 
-				await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-					...priceBenchmarkSuggestionsData,
-				] );
+				await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+					priceBenchmarkSuggestionsData
+				);
+				await priceBenchmarkPage.fulfillPriceBenchmarkProductSuggestions(
+					33,
+					priceBenchmarkProductSuggestionsData
+				);
 
 				await priceBenchmarkPage.fulfillWCProduct(
 					{
@@ -443,9 +560,9 @@ test.describe( 'Price Benchmark Page', () => {
 			test( 'Does not display "Product is currently on sale" text when there is no sale price', async () => {
 				await priceBenchmarkPage.goto();
 
-				await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-					...priceBenchmarkSuggestionsData,
-				] );
+				await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+					priceBenchmarkSuggestionsData
+				);
 
 				await priceBenchmarkPage.fulfillWCProduct(
 					{
@@ -470,9 +587,13 @@ test.describe( 'Price Benchmark Page', () => {
 			test( 'Does not display "Product is currently on sale" text when the product is not on sale but has a sale price', async () => {
 				await priceBenchmarkPage.goto();
 
-				await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-					...priceBenchmarkSuggestionsData,
-				] );
+				await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+					priceBenchmarkSuggestionsData
+				);
+				await priceBenchmarkPage.fulfillPriceBenchmarkProductSuggestions(
+					33,
+					priceBenchmarkProductSuggestionsData
+				);
 
 				await priceBenchmarkPage.fulfillWCProduct(
 					{
@@ -501,9 +622,9 @@ test.describe( 'Price Benchmark Page', () => {
 	test.describe( 'Price Benchmark Suggestions Banner', () => {
 		test( 'Shows the banner when the user is not onboarded', async () => {
 			await priceBenchmarkPage.goto();
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-				...priceBenchmarkSuggestionsData,
-			] );
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				priceBenchmarkSuggestionsData
+			);
 
 			const banner = page.locator(
 				'.gla-price-benchmark-suggestions-banner'
@@ -521,9 +642,9 @@ test.describe( 'Price Benchmark Page', () => {
 
 		test( 'Hides the banner when dismissed', async () => {
 			await priceBenchmarkPage.fulfillUsersPreferences();
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [
-				...priceBenchmarkSuggestionsData,
-			] );
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				priceBenchmarkSuggestionsData
+			);
 
 			const banner = page.locator(
 				'.gla-price-benchmark-suggestions-banner'

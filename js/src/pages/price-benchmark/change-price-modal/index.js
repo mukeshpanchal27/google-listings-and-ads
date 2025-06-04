@@ -37,7 +37,7 @@ import AppModal from '~/components/app-modal';
 import TrackableLink from '~/components/trackable-link';
 import PriceInputFooter from './price-input-footer';
 import AppSpinner from '~/components/app-spinner';
-import usePriceBenchmarkSuggestionsProduct from '~/hooks/usePriceBenchmarkSuggestionsProduct';
+import usePriceBenchmarkSuggestions from '~/hooks/usePriceBenchmarkSuggestions';
 import useProduct from '~/hooks/useProduct';
 import useAdminUrl from '~/hooks/useAdminUrl';
 import './index.scss';
@@ -77,20 +77,9 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 		product: productDetails,
 		hasFinishedResolution: hasResolvedProduct,
 	} = useProduct( productId );
-	const { product, hasFinishedResolution } =
-		usePriceBenchmarkSuggestionsProduct( productId );
-	const {
-		effectiveness,
-		regular_price: regularPrice,
-		price_on_google: priceOnGoogle,
-		price_gap: priceGap,
-		suggested_price: suggestedPrice,
-		clicks,
-		conversions,
-		predicted_clicks_change: predictedClicksChange,
-		predicted_conversions_change: predictedConversionsChange,
-		product: { id, title, thumbnail },
-	} = product || {};
+	const { data, hasFinishedResolution } = usePriceBenchmarkSuggestions( {
+		product_id: productId,
+	} );
 
 	useEffect( () => {
 		recordGlaEvent( 'gla_modal_open', {
@@ -123,7 +112,7 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 		);
 	}
 
-	if ( ! productDetails && hasResolvedProduct ) {
+	if ( ( ! productDetails || ! data ) && hasResolvedProduct ) {
 		return (
 			<AppModal
 				{ ...appModalProps }
@@ -140,9 +129,21 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 		);
 	}
 
+	const {
+		effectiveness,
+		product_price: productPrice,
+		benchmark_price: benchmarkPrice,
+		price_gap: priceGap,
+		suggested_price: suggestedPrice,
+		clicks,
+		conversions,
+		predicted_clicks_change: predictedClicksChange,
+		predicted_conversions_change: predictedConversionsChange,
+		product: { id, title, thumbnail },
+	} = data;
+
 	const salesPrice = Number.parseFloat( productDetails.sale_price );
 	const isOnSale = productDetails.on_sale;
-	const globalUniqueId = productDetails.global_unique_id;
 	const editProductUrl = addQueryArgs( `${ adminUrl }post.php`, {
 		post: productId,
 		action: 'edit',
@@ -157,10 +158,8 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 					productId={ id }
 					key="price-input-footer"
 					suggestedPrice={ suggestedPrice }
-					onSale={ isOnSale }
-					salesPrice={ salesPrice }
-					regularPrice={ regularPrice }
-					globalUniqueId={ globalUniqueId }
+					productPrice={ productPrice }
+					productDetails={ productDetails }
 				/>,
 			] }
 		>
@@ -207,13 +206,13 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 
 						<MetricValue
 							labelKey={ LABEL_REGULAR_PRICE }
-							value={ regularPrice }
+							value={ productPrice }
 							type={ METRIC_TYPE_PRICE }
 						/>
 
 						<MetricValue
 							labelKey={ LABEL_AVG_PRICE_ON_GOOGLE }
-							value={ priceOnGoogle }
+							value={ benchmarkPrice }
 							type={ METRIC_TYPE_PRICE }
 						/>
 

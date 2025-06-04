@@ -3,6 +3,11 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { useState, useEffect, useCallback } from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
+import {
+	PRODUCTS_STORE_NAME,
+	EXPERIMENTAL_PRODUCT_VARIATIONS_STORE_NAME,
+} from '@woocommerce/data';
 import classnames from 'classnames';
 
 /**
@@ -14,7 +19,6 @@ import AppButton from '~/components/app-button';
 import AppInputPriceControl from '~/components/app-input-price-control';
 import useAdsCurrency from '~/hooks/useAdsCurrency';
 import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
-import useDispatchProduct from '~/hooks/useDispatchProduct';
 
 /**
  * @event gla_price_benchmarks_change_price_edited
@@ -38,30 +42,37 @@ import useDispatchProduct from '~/hooks/useDispatchProduct';
  *
  * @param {Object} props - Component properties.
  * @param {number} props.productId - The ID of the product being updated.
- * @param {number} props.regularPrice - The regular price of the product.
+ * @param {number} props.productPrice - The regular price of the product.
  * @param {number} props.suggestedPrice - The suggested price for the product.
- * @param {number} [props.salesPrice] - The current sales price of the product (if any).
  * @param {Function} props.onPriceChange - Callback function triggered after the price is successfully updated.
- * @param {boolean} props.onSale - Indicates if the product is currently on sale.
- * @param {string} props.globalUniqueId - The global unique identifier (e.g., GTIN) for the product.
+ * @param {Object} props.productDetails - The details object for the product, including type, sale price, etc.
  *
  * @return {JSX.Element} The rendered PriceInputFooter component.
  */
 const PriceInputFooter = ( {
 	productId,
-	regularPrice,
+	productPrice,
 	suggestedPrice,
-	salesPrice,
-	onSale,
 	onPriceChange,
-	globalUniqueId,
+	productDetails,
 } ) => {
 	const { formatAmount } = useAdsCurrency();
-	const { updateProduct } = useDispatchProduct();
 	const [ newPriceError, setNewPriceError ] = useState();
 	const [ loading, setLoading ] = useState( false );
 	const [ newPrice, setNewPrice ] = useState( 0 );
 	const { googleAdsAccount } = useGoogleAdsAccount();
+	const { updateProduct } = useDispatch( PRODUCTS_STORE_NAME );
+	const { updateProductVariation } = useDispatch(
+		EXPERIMENTAL_PRODUCT_VARIATIONS_STORE_NAME
+	);
+
+	const {
+		global_unique_id: globalUniqueId,
+		on_sale: onSale,
+		sale_price: salePrice,
+		type,
+		parent_id: parentId,
+	} = productDetails;
 
 	useEffect( () => {
 		setNewPrice( suggestedPrice );
@@ -70,7 +81,7 @@ const PriceInputFooter = ( {
 	const getInputError = useCallback( () => {
 		const updatedPrice = Number.parseFloat( newPrice );
 
-		const formattedSalesPrice = Number.parseFloat( salesPrice );
+		const formattedSalesPrice = Number.parseFloat( salePrice );
 		if (
 			! isNaN( formattedSalesPrice ) &&
 			formattedSalesPrice &&
@@ -95,7 +106,7 @@ const PriceInputFooter = ( {
 		}
 
 		return null;
-	}, [ newPrice, salesPrice, formatAmount, onSale ] );
+	}, [ newPrice, salePrice, formatAmount, onSale ] );
 
 	const validatePrice = useCallback( () => {
 		const error = getInputError();
@@ -111,14 +122,26 @@ const PriceInputFooter = ( {
 
 		setLoading( true );
 		try {
-			await updateProduct( productId, {
+			const updatePriceArg = {
 				regular_price: `${ newPrice }`,
-			} );
+			};
+
+			if ( type === 'variation' && parentId ) {
+				await updateProductVariation(
+					{
+						product_id: parentId,
+						id: productId,
+					},
+					updatePriceArg
+				);
+			} else if ( type === 'simple' ) {
+				await updateProduct( productId, updatePriceArg );
+			}
 
 			recordGlaEvent( 'gla_price_benchmarks_change_price_edited', {
 				context: PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT,
 				product_id: productId,
-				previous_price: regularPrice,
+				previous_price: productPrice,
 				recommended_price: suggestedPrice,
 				changed_price: newPrice,
 				currency: googleAdsAccount?.currency,
@@ -139,9 +162,12 @@ const PriceInputFooter = ( {
 		updateProduct,
 		validatePrice,
 		googleAdsAccount,
-		regularPrice,
+		productPrice,
 		suggestedPrice,
 		globalUniqueId,
+		parentId,
+		type,
+		updateProductVariation,
 	] );
 
 	useEffect( () => {
