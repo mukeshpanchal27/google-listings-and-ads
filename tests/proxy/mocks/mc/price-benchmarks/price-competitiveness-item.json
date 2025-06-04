@@ -2,16 +2,16 @@
 	"results": [
 		{
 			"productView": {
-				"offerId": "gla_103572",
-				"title": "Dr. Seuss The Grinch Stole Christmas Ugly Sweater xl",
+				"offerId": "gla_37",
+				"title": "WordPress Pennant",
 				"currencyCode": "USD",
-				"priceMicros": "34950000",
-				"id": "online:en:US:gla_103572"
+				"priceMicros": "20000000",
+				"id": "online:en:US:gla_37"
 			},
 			"priceCompetitiveness": {
 				"countryCode": "US",
 				"benchmarkPriceCurrencyCode": "USD",
-				"benchmarkPriceMicros": "15131447"
+				"benchmarkPriceMicros": "19500000"
 			}
 		}
 	]
