@@ -351,4 +351,20 @@ class PriceBenchmarksTest extends UnitTest {
 		$this->assertEquals( 1, $result['total'] );
 		$this->assertEquals( $test_product->get_id(), $result['results'][0]['product']['id'] );
 	}
+
+	/**
+	 * Test getting price benchmarks data with search filter.
+	 */
+	public function test_get_price_benchmarks_data_with_search_returns_null(): void {
+		// Call the method with search argument.
+		$result = $this->price_benchmarks->get_price_benchmarks_data(
+			[
+				'search' => 'search with no results',
+			]
+		);
+
+		// Assert expectations.
+		$this->assertCount( 0, $result['results'] );
+		$this->assertEquals( 0, $result['total'] );
+	}
 }
