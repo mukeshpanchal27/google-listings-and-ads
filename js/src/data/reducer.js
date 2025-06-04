@@ -546,14 +546,12 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 					return state;
 				}
 
-				// If no results, return the state unchanged.
 				return chainState( state, [ 'price_benchmark', 'suggestions' ] )
 					.setIn( [ 'queries', [ key ], 'items' ], [] )
 					.setIn( [ 'queries', [ key ], 'meta', 'totalItems' ], 0 )
 					.end();
 			}
 
-			// Retrieve product suggestions for a specific product.
 			if ( args.product_id ) {
 				return setIn(
 					state,

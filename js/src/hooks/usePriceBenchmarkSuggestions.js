@@ -25,6 +25,11 @@ const usePriceBenchmarkSuggestions = ( args ) => {
 						hasFinishedResolution: true,
 					};
 				}
+
+				return {
+					data: null,
+					hasFinishedResolution: true,
+				};
 			}
 
 			return {
