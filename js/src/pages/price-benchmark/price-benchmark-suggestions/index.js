@@ -54,13 +54,20 @@ const PRODUCT_TABLE_FIELDS = [
 		},
 	},
 	{
-		id: 'title',
+		id: 'id',
 		enableHiding: false,
-		enableSorting: false,
+		enableSorting: true,
 		enableGlobalSearch: true,
 		label: __( 'Product', 'google-listings-and-ads' ),
 		getValue: ( { item } ) => {
-			return item?.product?.title || null;
+			return item.product.id;
+		},
+		render: ( { item } ) => {
+			if ( ! item?.product?.title ) {
+				return null;
+			}
+
+			return item.product.title;
 		},
 	},
 	{
@@ -200,7 +207,7 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 		layout: {},
 		fields: [],
 		filters: [],
-		titleField: 'title',
+		titleField: 'id',
 		descriptionField: 'description',
 		mediaField: 'image',
 		...DEFAULT_QUERY_PARAMS,
