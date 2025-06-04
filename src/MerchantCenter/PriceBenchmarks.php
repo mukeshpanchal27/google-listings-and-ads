@@ -31,8 +31,8 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 	public const COLUMN_MAP = [
 		'effectiveness'   => 'mc_insights_effectiveness',
 		'id'              => 'product_id',
-		'price_on_google' => 'mc_price_benchmark_price_micros',
-		'regular_price'   => 'mc_product_price_micros',
+		'benchmark_price' => 'mc_price_benchmark_price_micros',
+		'product_price'   => 'mc_product_price_micros',
 		'suggested_price' => 'mc_insights_suggested_price_micros',
 	];
 
@@ -316,9 +316,15 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 
 			$product_ids = $search_query->posts;
 
-			if ( ! empty( $product_ids ) ) {
-				$query->where( 'product_id', $product_ids, 'IN' );
+			// If no products found, return empty results.
+			if ( empty( $product_ids ) ) {
+				return [
+					'results' => [],
+					'total'   => 0,
+				];
 			}
+
+			$query->where( 'product_id', $product_ids, 'IN' );
 		}
 
 		// Set order and orderby.
