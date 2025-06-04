@@ -51,31 +51,10 @@ class MerchantPriceBenchmarksQuery extends Query {
 
 		$query = "SELECT `{$column}`, COUNT(*) as count FROM `{$this->table->get_name()}` GROUP BY `{$column}`";
 
-		$results = $this->wpdb->get_results(
+		return $this->wpdb->get_results(
 			$query, // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, No user input.
 			ARRAY_A
 		);
-
-		// Convert the results to a more usable format
-		$counts = [];
-		$total  = 0;
-		foreach ( $results as $row ) {
-			$price_compared_value            = (int) $row['price_compared_with_benchmark'];
-			$counts[ $price_compared_value ] = (int) $row['count'];
-			$total                          += $counts[ $price_compared_value ];
-		}
-
-		// Make sure all possible values are represented (0, 1, 2, 3)
-		$all_values = [ 0, 1, 2, 3 ];
-		foreach ( $all_values as $value ) {
-			if ( ! isset( $counts[ $value ] ) ) {
-				$counts[ $value ] = 0;
-			}
-		}
-
-		$counts['total'] = $total;
-
-		return $counts;
 	}
 
 	/**
