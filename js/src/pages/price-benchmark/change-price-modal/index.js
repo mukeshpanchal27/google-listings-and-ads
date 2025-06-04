@@ -131,8 +131,8 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 
 	const {
 		effectiveness,
-		regular_price: regularPrice,
-		price_on_google: priceOnGoogle,
+		product_price: regularPrice,
+		benchmark_price: priceOnGoogle,
 		price_gap: priceGap,
 		suggested_price: suggestedPrice,
 		clicks,

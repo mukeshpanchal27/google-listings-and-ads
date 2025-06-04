@@ -594,16 +594,16 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 				.end();
 		}
 
-		case TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS_REGULAR_PRICE: {
+		case TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS_PRODUCT_PRICE: {
 			const {
-				data: { productId, regularPrice },
+				data: { productId, productPrice },
 			} = action;
 
 			return setIn( state, 'price_benchmark.suggestions.items', {
 				...state.price_benchmark.suggestions.items,
 				[ productId ]: {
 					...state.price_benchmark.suggestions.items[ productId ],
-					regular_price: regularPrice,
+					product_price: productPrice,
 				},
 			} );
 		}
