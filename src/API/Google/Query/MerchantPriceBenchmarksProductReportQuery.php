@@ -34,6 +34,8 @@ class MerchantPriceBenchmarksProductReportQuery extends MerchantQuery {
 			[
 				'offer_id'    => 'segments.offer_id',
 				'clicks'      => 'metrics.clicks',
+				'impressions' => 'metrics.impressions',
+				'ctr'         => 'metrics.ctr',
 				'conversions' => 'metrics.conversions',
 			]
 		);
