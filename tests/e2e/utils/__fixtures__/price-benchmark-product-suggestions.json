@@ -5,8 +5,8 @@
 		"title": "Abstract Geometric Poster"
 	},
 	"effectiveness": 3,
-	"regular_price": 25.0,
-	"price_on_google": 20.0,
+	"product_price": 25.0,
+	"benchmark_price": 20.0,
 	"price_gap": 5.0,
 	"suggested_price": 20.0,
 	"clicks": 30,

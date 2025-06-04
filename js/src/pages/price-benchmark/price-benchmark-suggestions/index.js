@@ -95,24 +95,24 @@ const METRICS_TABLE_FIELDS = [
 		},
 	},
 	{
-		id: 'regular_price',
+		id: 'product_price',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
 		label: LABELS[ LABEL_REGULAR_PRICE ].title,
 		render: ( { item } ) => {
-			return <Price amount={ item.regular_price } highlight />;
+			return <Price amount={ item.product_price } highlight />;
 		},
 	},
 	{
-		id: 'price_on_google',
+		id: 'benchmark_price',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
 		header: <Label labelKey={ LABEL_AVG_PRICE_ON_GOOGLE } />,
 		label: LABELS[ LABEL_AVG_PRICE_ON_GOOGLE ].title,
 		render: ( { item } ) => {
-			return <Price amount={ item.price_on_google } />;
+			return <Price amount={ item.benchmark_price } />;
 		},
 	},
 	{

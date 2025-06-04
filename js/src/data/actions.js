@@ -1203,15 +1203,15 @@ export function* fetchGoogleAdsAccountStatus() {
 	}
 }
 
-export function* receivePriceBenchmarkSuggestionsRegularPrice(
+export function* receivePriceBenchmarkSuggestionsProductPrice(
 	productId,
-	regularPrice
+	productPrice
 ) {
 	return {
-		type: TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS_REGULAR_PRICE,
+		type: TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS_PRODUCT_PRICE,
 		data: {
 			productId,
-			regularPrice,
+			productPrice,
 		},
 	};
 }
