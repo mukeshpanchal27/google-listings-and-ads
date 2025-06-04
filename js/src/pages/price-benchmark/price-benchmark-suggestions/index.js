@@ -56,7 +56,7 @@ const PRODUCT_TABLE_FIELDS = [
 	{
 		id: 'title',
 		enableHiding: false,
-		enableSorting: true,
+		enableSorting: false,
 		enableGlobalSearch: true,
 		label: __( 'Product', 'google-listings-and-ads' ),
 		getValue: ( { item } ) => {
@@ -118,7 +118,7 @@ const METRICS_TABLE_FIELDS = [
 	{
 		id: 'price_gap',
 		enableHiding: false,
-		enableSorting: true,
+		enableSorting: false,
 		enableGlobalSearch: false,
 		header: <Label labelKey={ LABEL_PRICE_GAP_PERCENT } />,
 		label: LABELS[ LABEL_PRICE_GAP_PERCENT ].title,
