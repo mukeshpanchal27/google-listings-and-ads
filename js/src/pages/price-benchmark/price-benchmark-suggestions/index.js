@@ -130,11 +130,7 @@ const METRICS_TABLE_FIELDS = [
 		header: <Label labelKey={ LABEL_PRICE_GAP_PERCENT } />,
 		label: LABELS[ LABEL_PRICE_GAP_PERCENT ].title,
 		render: ( { item } ) => {
-			if ( ! item.price_gap ) {
-				return null;
-			}
-
-			return `${ item.price_gap }%`;
+			return `${ item.price_gap || 0 }%`;
 		},
 	},
 	{
