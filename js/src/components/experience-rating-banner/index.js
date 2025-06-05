@@ -26,22 +26,27 @@ const ExperienceRatingBanner = () => {
 	const { data: productsReport } = useProductsReport( REPORT_SOURCE_PAID );
 	const { set } = useDispatch( preferencesStore );
 	const isDismissed = usePreference( BANNER_DISMISSED_KEY );
+	const statistics = statisticsData?.statistics || {};
 
-	const totalProducts = Object.values(
-		statisticsData?.statistics || {}
-	).reduce( ( total, value ) => total + value, 0 );
+	const totalProducts = Object.values( statistics ).reduce(
+		( total, value ) => total + value,
+		0
+	);
 
-	const notSyncedProducts = statisticsData?.statistics?.not_synced || 0;
-	const activeProducts = statisticsData?.statistics?.active || 0;
+	const notSyncedProducts = statistics?.not_synced || 0;
+	const activeProducts = statistics?.active || 0;
 	const conversions = productsReport?.totals?.conversions?.value || 0;
 
-	const isApproved = ( activeProducts / totalProducts ) * 100 >= 70;
+	const hasEnoughActiveProducts =
+		totalProducts && ( activeProducts / totalProducts ) * 100 >= 70;
 	const isSynced = notSyncedProducts === 0 && activeProducts > 0;
-	const isReady = isMCAccountReady;
 	const hasConversions = conversions > 0;
 
 	const shouldDisplayBanner =
-		isApproved && isSynced && isReady && hasConversions;
+		hasEnoughActiveProducts &&
+		isSynced &&
+		isMCAccountReady &&
+		hasConversions;
 
 	if ( ! shouldDisplayBanner ) {
 		return null;
