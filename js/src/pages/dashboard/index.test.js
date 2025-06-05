@@ -29,6 +29,10 @@ jest.mock( '~/components/different-currency-notice', () =>
 	jest.fn().mockName( 'DifferentCurrencyNotice' )
 );
 
+jest.mock( '~/components/experience-rating-banner', () =>
+	jest.fn().mockName( 'ExperienceRatingBanner' )
+);
+
 jest.mock( './summary-section', () => jest.fn().mockName( 'SummarySection' ) );
 
 jest.mock( './all-programs-table-card', () =>

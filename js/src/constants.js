@@ -124,3 +124,7 @@ export const GOOGLE_WPCOM_APP_CONNECTED_STATUS = {
 	ERROR: 'error',
 	DISABLED: 'disabled',
 };
+
+// @wordpress/preferences namespace
+export const PREFERENCES_STORE_NAMESPACE =
+	'woocommerce/google-listings-and-ads';
