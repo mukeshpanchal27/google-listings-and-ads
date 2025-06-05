@@ -131,8 +131,8 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 
 	const {
 		effectiveness,
-		regular_price: regularPrice,
-		price_on_google: priceOnGoogle,
+		product_price: productPrice,
+		benchmark_price: benchmarkPrice,
 		price_gap: priceGap,
 		suggested_price: suggestedPrice,
 		clicks,
@@ -158,7 +158,7 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 					productId={ id }
 					key="price-input-footer"
 					suggestedPrice={ suggestedPrice }
-					regularPrice={ regularPrice }
+					productPrice={ productPrice }
 					productDetails={ productDetails }
 				/>,
 			] }
@@ -206,13 +206,13 @@ const ChangePriceModal = ( { productId, onRequestClose, onPriceChange } ) => {
 
 						<MetricValue
 							labelKey={ LABEL_REGULAR_PRICE }
-							value={ regularPrice }
+							value={ productPrice }
 							type={ METRIC_TYPE_PRICE }
 						/>
 
 						<MetricValue
 							labelKey={ LABEL_AVG_PRICE_ON_GOOGLE }
-							value={ priceOnGoogle }
+							value={ benchmarkPrice }
 							type={ METRIC_TYPE_PRICE }
 						/>
 

@@ -34,7 +34,7 @@ import ChangePriceModal from './change-price-modal';
  * @return {JSX.Element|null} The rendered component or null if no productId is provided.
  */
 const ChangePrice = ( { productId } ) => {
-	const { receivePriceBenchmarkSuggestionsRegularPrice } = useAppDispatch();
+	const { receivePriceBenchmarkSuggestionsProductPrice } = useAppDispatch();
 	const [ isOpen, setIsOpen ] = useState( false );
 
 	const handleOnRequestClose = () => {
@@ -43,7 +43,7 @@ const ChangePrice = ( { productId } ) => {
 
 	const handleOnPriceChange = useCallback(
 		( updatedProductId, newPrice ) => {
-			receivePriceBenchmarkSuggestionsRegularPrice(
+			receivePriceBenchmarkSuggestionsProductPrice(
 				updatedProductId,
 				newPrice
 			);
@@ -55,7 +55,7 @@ const ChangePrice = ( { productId } ) => {
 
 			handleOnRequestClose();
 		},
-		[ receivePriceBenchmarkSuggestionsRegularPrice ]
+		[ receivePriceBenchmarkSuggestionsProductPrice ]
 	);
 
 	if ( ! productId ) {

@@ -546,14 +546,12 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 					return state;
 				}
 
-				// If no results, return the state unchanged.
 				return chainState( state, [ 'price_benchmark', 'suggestions' ] )
 					.setIn( [ 'queries', [ key ], 'items' ], [] )
 					.setIn( [ 'queries', [ key ], 'meta', 'totalItems' ], 0 )
 					.end();
 			}
 
-			// Retrieve product suggestions for a specific product.
 			if ( args.product_id ) {
 				return setIn(
 					state,
@@ -594,16 +592,16 @@ const reducer = ( state = DEFAULT_STATE, action ) => {
 				.end();
 		}
 
-		case TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS_REGULAR_PRICE: {
+		case TYPES.RECEIVE_PRICE_BENCHMARK_SUGGESTIONS_PRODUCT_PRICE: {
 			const {
-				data: { productId, regularPrice },
+				data: { productId, productPrice },
 			} = action;
 
 			return setIn( state, 'price_benchmark.suggestions.items', {
 				...state.price_benchmark.suggestions.items,
 				[ productId ]: {
 					...state.price_benchmark.suggestions.items[ productId ],
-					regular_price: regularPrice,
+					product_price: productPrice,
 				},
 			} );
 		}

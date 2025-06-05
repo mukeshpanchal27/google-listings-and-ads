@@ -42,7 +42,7 @@ import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
  *
  * @param {Object} props - Component properties.
  * @param {number} props.productId - The ID of the product being updated.
- * @param {number} props.regularPrice - The regular price of the product.
+ * @param {number} props.productPrice - The regular price of the product.
  * @param {number} props.suggestedPrice - The suggested price for the product.
  * @param {Function} props.onPriceChange - Callback function triggered after the price is successfully updated.
  * @param {Object} props.productDetails - The details object for the product, including type, sale price, etc.
@@ -51,7 +51,7 @@ import useGoogleAdsAccount from '~/hooks/useGoogleAdsAccount';
  */
 const PriceInputFooter = ( {
 	productId,
-	regularPrice,
+	productPrice,
 	suggestedPrice,
 	onPriceChange,
 	productDetails,
@@ -141,7 +141,7 @@ const PriceInputFooter = ( {
 			recordGlaEvent( 'gla_price_benchmarks_change_price_edited', {
 				context: PRICE_BENCHMARK_CHANGE_PRICE_MODAL_CONTEXT,
 				product_id: productId,
-				previous_price: regularPrice,
+				previous_price: productPrice,
 				recommended_price: suggestedPrice,
 				changed_price: newPrice,
 				currency: googleAdsAccount?.currency,
@@ -162,7 +162,7 @@ const PriceInputFooter = ( {
 		updateProduct,
 		validatePrice,
 		googleAdsAccount,
-		regularPrice,
+		productPrice,
 		suggestedPrice,
 		globalUniqueId,
 		parentId,

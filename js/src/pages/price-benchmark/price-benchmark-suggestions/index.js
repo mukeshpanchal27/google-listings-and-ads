@@ -54,13 +54,20 @@ const PRODUCT_TABLE_FIELDS = [
 		},
 	},
 	{
-		id: 'title',
+		id: 'id',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: true,
 		label: __( 'Product', 'google-listings-and-ads' ),
 		getValue: ( { item } ) => {
-			return item?.product?.title || null;
+			return item.product.id;
+		},
+		render: ( { item } ) => {
+			if ( ! item?.product?.title ) {
+				return null;
+			}
+
+			return item.product.title;
 		},
 	},
 	{
@@ -95,39 +102,35 @@ const METRICS_TABLE_FIELDS = [
 		},
 	},
 	{
-		id: 'regular_price',
+		id: 'product_price',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
 		label: LABELS[ LABEL_REGULAR_PRICE ].title,
 		render: ( { item } ) => {
-			return <Price amount={ item.regular_price } highlight />;
+			return <Price amount={ item.product_price } highlight />;
 		},
 	},
 	{
-		id: 'price_on_google',
+		id: 'benchmark_price',
 		enableHiding: false,
 		enableSorting: true,
 		enableGlobalSearch: false,
 		header: <Label labelKey={ LABEL_AVG_PRICE_ON_GOOGLE } />,
 		label: LABELS[ LABEL_AVG_PRICE_ON_GOOGLE ].title,
 		render: ( { item } ) => {
-			return <Price amount={ item.price_on_google } />;
+			return <Price amount={ item.benchmark_price } />;
 		},
 	},
 	{
 		id: 'price_gap',
 		enableHiding: false,
-		enableSorting: true,
+		enableSorting: false,
 		enableGlobalSearch: false,
 		header: <Label labelKey={ LABEL_PRICE_GAP_PERCENT } />,
 		label: LABELS[ LABEL_PRICE_GAP_PERCENT ].title,
 		render: ( { item } ) => {
-			if ( ! item.price_gap ) {
-				return null;
-			}
-
-			return `${ item.price_gap }%`;
+			return `${ item.price_gap || 0 }%`;
 		},
 	},
 	{
@@ -200,7 +203,7 @@ const PriceBenchmarkSuggestions = ( { isViewportMobile } ) => {
 		layout: {},
 		fields: [],
 		filters: [],
-		titleField: 'title',
+		titleField: 'id',
 		descriptionField: 'description',
 		mediaField: 'image',
 		...DEFAULT_QUERY_PARAMS,
