@@ -28,25 +28,37 @@ const ExperienceRatingBanner = () => {
 	const isDismissed = usePreference( BANNER_DISMISSED_KEY );
 	const statistics = statisticsData?.statistics || {};
 
-	const totalProducts = Object.values( statistics ).reduce(
-		( total, value ) => total + value,
-		0
-	);
+	const shouldDisplayBanner = () => {
+		if ( Object.keys( statistics ).length === 0 ) {
+			return false;
+		}
 
-	const notSyncedProducts = statistics?.not_synced || 0;
-	const activeProducts = statistics?.active || 0;
-	const conversions = productsReport?.totals?.conversions?.value || 0;
+		const totalProducts = Object.values( statistics ).reduce(
+			( total, value ) => total + value,
+			0
+		);
 
-	const hasEnoughActiveProducts =
-		totalProducts && ( activeProducts / totalProducts ) * 100 >= 70;
-	const isSynced = notSyncedProducts === 0 && activeProducts > 0;
-	const hasConversions = conversions > 0;
+		if ( ! totalProducts ) {
+			return false;
+		}
 
-	const shouldDisplayBanner =
-		hasEnoughActiveProducts &&
-		isSynced &&
-		isMCAccountReady &&
-		hasConversions;
+		const notSyncedProducts = statistics.not_synced;
+		const activeProducts = statistics.active;
+		const conversions = productsReport?.totals?.conversions?.value || 0;
+
+		const hasEnoughActiveProducts =
+			( activeProducts / totalProducts ) * 100 >= 70;
+		const hasAllProductsSynced =
+			notSyncedProducts === 0 && activeProducts > 0;
+		const hasConversions = conversions > 0;
+
+		return (
+			hasEnoughActiveProducts &&
+			hasAllProductsSynced &&
+			isMCAccountReady &&
+			hasConversions
+		);
+	};
 
 	if ( ! shouldDisplayBanner ) {
 		return null;
