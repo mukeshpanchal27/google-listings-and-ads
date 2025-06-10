@@ -125,6 +125,9 @@ export const GOOGLE_WPCOM_APP_CONNECTED_STATUS = {
 	DISABLED: 'disabled',
 };
 
+// App Ratings related
+export const APP_RATINGS_BANNER_CONTEXT = 'app_ratings_banner';
+
 // @wordpress/preferences namespace
 export const PREFERENCES_STORE_NAMESPACE =
 	'woocommerce/google-listings-and-ads';

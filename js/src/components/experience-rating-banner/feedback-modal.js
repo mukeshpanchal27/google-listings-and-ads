@@ -10,6 +10,8 @@ import { external as externalIcon } from '@wordpress/icons';
  */
 import AppModal from '../app-modal';
 import AppButton from '../app-button';
+import { APP_RATINGS_BANNER_CONTEXT } from '~/constants';
+import { recordGlaEvent } from '~/utils/tracks';
 
 /**
  * FeedbackModal component.
@@ -18,7 +20,22 @@ import AppButton from '../app-button';
  * @param {Function} props.onRequestClose - Function to call when the modal is closed.
  * @return {JSX.Element} The FeedbackModal component.
  */
+
+/**
+ * @event gla_app_ratings_cancel_clicked
+ * @property {string} context The context in which the event is triggered.
+ */
+
+/**
+ * @event gla_app_ratings_rate_clicked
+ * @property {string} context The context in which the event is triggered.
+ */
+
 const FeedbackModal = ( { onRequestClose } ) => {
+	const trackEvent = ( eventName ) => {
+		recordGlaEvent( eventName, { context: APP_RATINGS_BANNER_CONTEXT } );
+	};
+
 	return (
 		<AppModal
 			title={ __(
@@ -27,12 +44,22 @@ const FeedbackModal = ( { onRequestClose } ) => {
 			) }
 			className="gla-experience-rating-banner__feedback-modal"
 			buttons={ [
-				<AppButton key="cancel" onClick={ onRequestClose } isTertiary>
+				<AppButton
+					key="cancel"
+					onClick={ () => {
+						trackEvent( 'gla_app_ratings_cancel_clicked' );
+						onRequestClose();
+					} }
+					isTertiary
+				>
 					{ __( 'Cancel', 'google-listings-and-ads' ) }
 				</AppButton>,
 				<AppButton
 					key="rate-us"
-					onClick={ onRequestClose }
+					onClick={ () => {
+						trackEvent( 'gla_app_ratings_rate_clicked' );
+						onRequestClose();
+					} }
 					isPrimary
 					target="_blank"
 					href="https://wordpress.org/support/plugin/google-listings-and-ads/reviews/#new-post"

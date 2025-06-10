@@ -176,6 +176,36 @@ Clicking on the button to disconnect the Google Ads account.
 #### Emitters
 - [`DisconnectAccount`](../../js/src/components/google-ads-account-card/disconnect-account.js#L32) When the user clicks on the button to disconnect the Google Ads account.
 
+### [`gla_app_ratings_shown`](../../js/src/components/experience-rating-banner/index.js#L27)
+Triggered when the app ratings prompt is shown to the user.
+#### Emitters
+- [`AppRatings`](../../js/src/components/experience-rating-banner/index.js#L60) when the ratings prompt is displayed.
+
+### [`gla_app_ratings_good_clicked`](../../js/src/components/experience-rating-banner/index.js#L32)
+Triggered when the user clicks the "Good" (positive) rating button in the app ratings prompt.
+#### Emitters
+- [`AppRatings`](../../js/src/components/experience-rating-banner/index.js#L60) when the "Good" button is clicked.
+
+### [`gla_app_ratings_close`](../../js/src/components/experience-rating-banner/index.js#L37)
+Triggered when the user closes the app ratings prompt without interacting with any rating options.
+#### Emitters
+- [`AppRatings`](../../js/src/components/experience-rating-banner/index.js#L60) when the close action is performed.
+
+### [`gla_app_ratings_need_help_clicked`](../../js/src/components/experience-rating-banner/index.js#L42)
+Triggered when the user clicks the "Need Help" option in the app ratings prompt.
+#### Emitters
+- [`AppRatings`](../../js/src/components/experience-rating-banner/index.js#L60) when the "Need Help" button is clicked.
+
+### [`gla_app_ratings_cancel_clicked`](../../js/src/components/experience-rating-banner/feedback-modal.js#L25)
+Triggered when the user clicks the "Cancel" button in the app ratings prompt.
+#### Emitters
+- [`FeedbackModal`](../../js/src/components/experience-rating-banner/feedback-modal.js#L34) when the "Cancel" button is clicked.
+
+### [`gla_app_ratings_rate_clicked`](../../js/src/components/experience-rating-banner/feedback-modal.js#L30)
+Triggered when the user clicks the "Rate" button to proceed to rate the app.
+#### Emitters
+- [`FeedbackModal`](../../js/src/components/experience-rating-banner/feedback-modal.js#L34) when the "Rate" button is clicked.
+
 ### [`gla_ads_set_up_billing_click`](../../js/src/components/paid-ads/billing-card/billing-setup-card.js#L22)
 "Set up billing" button for Google Ads account is clicked.
 #### Properties
