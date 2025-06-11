@@ -111,6 +111,47 @@ test.describe( 'Price Benchmark Page', () => {
 		} );
 	} );
 
+	test.describe( 'Market Insights not enabled', () => {
+		test( 'Does not render the chart and table', async () => {
+			await priceBenchmarkPage.goto();
+
+			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
+				ACCOUNT_NOT_ENABLED_ERROR,
+				403
+			);
+			await priceBenchmarkPage.fulfillPriceBenchmarkSummary(
+				ACCOUNT_NOT_ENABLED_ERROR,
+				403
+			);
+
+			// Wait for the summary URL to be requested before assertions
+			await page.waitForRequest(
+				/\/wc\/gla\/mc\/price-benchmarks\/summary\b/
+			);
+
+			const errorMessage = page.locator(
+				'.components-snackbar__content'
+			);
+			await expect( errorMessage ).not.toBeVisible();
+
+			const comparisonChartElement = page.locator(
+				'.gla-price-benchmark__comparison-chart'
+			);
+			await expect( comparisonChartElement ).not.toBeVisible();
+
+			const emptyStateNotice = page.locator(
+				'.gla-price-benchmark__empty-metrics'
+			);
+			await expect( emptyStateNotice ).toBeVisible();
+			await expect( emptyStateNotice ).toContainText(
+				'You do not have any sale price suggestions at this moment.'
+			);
+			await expect( emptyStateNotice ).toContainText(
+				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
+			);
+		} );
+	} );
+
 	test.describe( 'Empty States and Error Handling', () => {
 		test.beforeEach( async () => {
 			await priceBenchmarkPage.goto();
@@ -136,35 +177,6 @@ test.describe( 'Price Benchmark Page', () => {
 			deferredHandler.continueFulfill();
 			await expect( loadingElement ).toBeHidden();
 
-			const emptyStateNotice = page.locator(
-				'.gla-price-benchmark__empty-metrics'
-			);
-
-			await expect( emptyStateNotice ).toBeVisible();
-
-			const comparisonChartElement = page.locator(
-				'.gla-price-benchmark__comparison-chart'
-			);
-			await expect( comparisonChartElement ).not.toBeVisible();
-		} );
-
-		test( 'Does not render the chart if Market Insights not enabled', async () => {
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
-			await priceBenchmarkPage.fulfillPriceBenchmarkSummary(
-				ACCOUNT_NOT_ENABLED_ERROR,
-				403
-			);
-
-			// Wait for the summary URL to be requested before assertions
-			await page.waitForRequest(
-				/\/wc\/gla\/mc\/price-benchmarks\/summary\b/
-			);
-
-			const errorMessage = page.locator(
-				'.components-snackbar__content'
-			);
-			await expect( errorMessage ).not.toBeVisible();
-
 			const comparisonChartElement = page.locator(
 				'.gla-price-benchmark__comparison-chart'
 			);
@@ -175,6 +187,12 @@ test.describe( 'Price Benchmark Page', () => {
 			);
 
 			await expect( emptyStateNotice ).toBeVisible();
+			await expect( emptyStateNotice ).toContainText(
+				'You do not have any sale price suggestions at this moment.'
+			);
+			await expect( emptyStateNotice ).toContainText(
+				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
+			);
 		} );
 
 		test( 'Renders an error message for summary API errors other than 403', async () => {
@@ -194,43 +212,10 @@ test.describe( 'Price Benchmark Page', () => {
 				'There was an error getting the price benchmark summary. An error occured.'
 			);
 		} );
-
-		test( 'Shows no results if there is no data', async () => {
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions( [] );
-
-			const emptyStateNotice = page.locator(
-				'.gla-price-benchmark__empty-metrics'
-			);
-
-			await expect( emptyStateNotice ).toBeVisible();
-			await expect( emptyStateNotice ).toContainText(
-				'You do not have any sale price suggestions at this moment.'
-			);
-			await expect( emptyStateNotice ).toContainText(
-				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
-			);
-		} );
-
-		test( 'Shows empty state notice when Market Insights is not enabled', async () => {
-			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
-				ACCOUNT_NOT_ENABLED_ERROR,
-				403
-			);
-			const emptyStateNotice = page.locator(
-				'.gla-price-benchmark__empty-metrics'
-			);
-			await expect( emptyStateNotice ).toBeVisible();
-			await expect( emptyStateNotice ).toContainText(
-				'You do not have any sale price suggestions at this moment.'
-			);
-			await expect( emptyStateNotice ).toContainText(
-				'Find out if you meet all eligibility criteria to receive suggestions in the future.'
-			);
-		} );
 	} );
 
 	test.describe( 'Price Comparison Chart with Data', () => {
-		test.beforeEach( async () => {
+		test.beforeAll( async () => {
 			// Set up common test data once for this group
 			await priceBenchmarkPage.goto();
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
@@ -295,8 +280,7 @@ test.describe( 'Price Benchmark Page', () => {
 	} );
 
 	test.describe( 'Change Price Modal - Regular Products', () => {
-		test.beforeEach( async () => {
-			// Single page load with product suggestions setup for this entire group
+		test.beforeAll( async () => {
 			await priceBenchmarkPage.goto();
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
 				priceBenchmarkSuggestionsData
@@ -350,6 +334,8 @@ test.describe( 'Price Benchmark Page', () => {
 				{ regular_price: '120.00' },
 				[ 'POST' ]
 			);
+			await priceBenchmarkPage.goto();
+
 			const changePriceLink =
 				await priceBenchmarkPage.getFirstProductChangePriceLink();
 			await changePriceLink.click();
@@ -469,7 +455,7 @@ test.describe( 'Price Benchmark Page', () => {
 	} );
 
 	test.describe( 'Sales Price Functionality', () => {
-		test.beforeEach( async () => {
+		test.beforeAll( async () => {
 			// Set up once for all sale price tests
 			await priceBenchmarkPage.goto();
 			await priceBenchmarkPage.fulfillPriceBenchmarkSuggestions(
@@ -487,14 +473,14 @@ test.describe( 'Price Benchmark Page', () => {
 				},
 				[ 'GET' ]
 			);
+		} );
 
+		test( 'Displays "This product is currently on sale." text when there is a sale price', async () => {
 			// Open the modal once for all tests
 			const changePriceLink =
 				await priceBenchmarkPage.getFirstProductChangePriceLink();
 			await changePriceLink.click();
-		} );
 
-		test( 'Displays "This product is currently on sale." text when there is a sale price', async () => {
 			const changePriceModal =
 				await priceBenchmarkPage.getChangePriceModal();
 			const saleText = changePriceModal.locator(
