@@ -60,7 +60,7 @@ const ExperienceRatingBanner = () => {
 		);
 	};
 
-	if ( ! shouldDisplayBanner ) {
+	if ( ! shouldDisplayBanner() ) {
 		return null;
 	}
 
