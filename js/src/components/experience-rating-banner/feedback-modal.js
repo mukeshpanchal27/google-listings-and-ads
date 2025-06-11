@@ -40,6 +40,16 @@ const FeedbackModal = ( { onRequestClose } ) => {
 		recordGlaEvent( eventName, { context: APP_RATINGS_BANNER_CONTEXT } );
 	};
 
+	const handleOnCancelClick = () => {
+		trackEvent( 'gla_app_ratings_cancel_clicked' );
+		onRequestClose();
+	};
+
+	const handleRateUsClick = () => {
+		trackEvent( 'gla_app_ratings_rate_clicked' );
+		onRequestClose();
+	};
+
 	return (
 		<AppModal
 			title={ __(
@@ -50,20 +60,14 @@ const FeedbackModal = ( { onRequestClose } ) => {
 			buttons={ [
 				<AppButton
 					key="cancel"
-					onClick={ () => {
-						trackEvent( 'gla_app_ratings_cancel_clicked' );
-						onRequestClose();
-					} }
+					onClick={ handleOnCancelClick }
 					isTertiary
 				>
 					{ __( 'Cancel', 'google-listings-and-ads' ) }
 				</AppButton>,
 				<AppButton
 					key="rate-us"
-					onClick={ () => {
-						trackEvent( 'gla_app_ratings_rate_clicked' );
-						onRequestClose();
-					} }
+					onClick={ handleRateUsClick }
 					isPrimary
 					target="_blank"
 					href="https://wordpress.org/support/plugin/google-listings-and-ads/reviews/#new-post"
