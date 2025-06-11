@@ -93,7 +93,7 @@ const ExperienceRatingBanner = () => {
 		setShowModal( false );
 	};
 
-	const handleNeedHelpClick = () => {
+	const handleOnNeedHelpClick = () => {
 		recordGlaEvent( 'gla_app_ratings_need_help_clicked', {
 			context: APP_RATINGS_BANNER_CONTEXT,
 		} );
@@ -134,7 +134,7 @@ const ExperienceRatingBanner = () => {
 						isSecondary
 						href="https://woocommerce.com"
 						target="_blank"
-						onClick={ handleNeedHelpClick }
+						onClick={ handleOnNeedHelpClick }
 					>
 						{ __( 'Need help', 'google-listings-and-ads' ) }
 						<Icon icon={ externalIcon } size={ 12 } />
