@@ -14,14 +14,6 @@ import { APP_RATINGS_BANNER_CONTEXT } from '~/constants';
 import { recordGlaEvent } from '~/utils/tracks';
 
 /**
- * FeedbackModal component.
- *
- * @param {Object} props - Component props.
- * @param {Function} props.onRequestClose - Function to call when the modal is closed.
- * @return {JSX.Element} The FeedbackModal component.
- */
-
-/**
  * @event gla_app_ratings_cancel_clicked
  * @property {string} context The context in which the event is triggered.
  */
@@ -31,6 +23,18 @@ import { recordGlaEvent } from '~/utils/tracks';
  * @property {string} context The context in which the event is triggered.
  */
 
+/**
+ * FeedbackModal component.
+ *
+ * Displays a modal asking users to rate the extension, with options to cancel or proceed to the rating page.
+ *
+ * @param {Object} props - Component props.
+ * @param {Function} props.onRequestClose - Function to call when the modal is closed.
+ * @return {JSX.Element} The FeedbackModal component.
+ *
+ * @fires gla_app_ratings_cancel_clicked - Fired when the user clicks the "Cancel" button.
+ * @fires gla_app_ratings_rate_clicked - Fired when the user clicks the "Rate us" button.
+ */
 const FeedbackModal = ( { onRequestClose } ) => {
 	const trackEvent = ( eventName ) => {
 		recordGlaEvent( eventName, { context: APP_RATINGS_BANNER_CONTEXT } );
