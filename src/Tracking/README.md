@@ -176,36 +176,6 @@ Clicking on the button to disconnect the Google Ads account.
 #### Emitters
 - [`DisconnectAccount`](../../js/src/components/google-ads-account-card/disconnect-account.js#L32) When the user clicks on the button to disconnect the Google Ads account.
 
-### [`gla_app_ratings_shown`](../../js/src/components/experience-rating-banner/index.js#L27)
-Triggered when the app ratings prompt is shown to the user.
-#### Emitters
-- [`AppRatings`](../../js/src/components/experience-rating-banner/index.js#L60) when the ratings prompt is displayed.
-
-### [`gla_app_ratings_good_clicked`](../../js/src/components/experience-rating-banner/index.js#L32)
-Triggered when the user clicks the "Good" (positive) rating button in the app ratings prompt.
-#### Emitters
-- [`AppRatings`](../../js/src/components/experience-rating-banner/index.js#L60) when the "Good" button is clicked.
-
-### [`gla_app_ratings_close`](../../js/src/components/experience-rating-banner/index.js#L37)
-Triggered when the user closes the app ratings prompt without interacting with any rating options.
-#### Emitters
-- [`AppRatings`](../../js/src/components/experience-rating-banner/index.js#L60) when the close action is performed.
-
-### [`gla_app_ratings_need_help_clicked`](../../js/src/components/experience-rating-banner/index.js#L42)
-Triggered when the user clicks the "Need Help" option in the app ratings prompt.
-#### Emitters
-- [`AppRatings`](../../js/src/components/experience-rating-banner/index.js#L60) when the "Need Help" button is clicked.
-
-### [`gla_app_ratings_cancel_clicked`](../../js/src/components/experience-rating-banner/feedback-modal.js#L25)
-Triggered when the user clicks the "Cancel" button in the app ratings prompt.
-#### Emitters
-- [`FeedbackModal`](../../js/src/components/experience-rating-banner/feedback-modal.js#L34) when the "Cancel" button is clicked.
-
-### [`gla_app_ratings_rate_clicked`](../../js/src/components/experience-rating-banner/feedback-modal.js#L30)
-Triggered when the user clicks the "Rate" button to proceed to rate the app.
-#### Emitters
-- [`FeedbackModal`](../../js/src/components/experience-rating-banner/feedback-modal.js#L34) when the "Rate" button is clicked.
-
 ### [`gla_ads_set_up_billing_click`](../../js/src/components/paid-ads/billing-card/billing-setup-card.js#L22)
 "Set up billing" button for Google Ads account is clicked.
 #### Properties
@@ -217,6 +187,60 @@ Triggered when the user clicks the "Rate" button to proceed to rate the app.
 `step` | `string` | Indicates the step in the onboarding process.
 #### Emitters
 - [`BillingSetupCard`](../../js/src/components/paid-ads/billing-card/billing-setup-card.js#L39) When the user clicks on the button to set up billing in Google Ads.
+
+### [`gla_app_ratings_cancel_clicked`](../../js/src/components/experience-rating-banner/feedback-modal.js#L16)
+
+#### Properties
+| name | type | description |
+| ---- | ---- | ----------- |
+`context` | `string` | The context in which the event is triggered.
+#### Emitters
+- [`FeedbackModal`](../../js/src/components/experience-rating-banner/feedback-modal.js#L38) Fired when the user clicks the "Cancel" button.
+
+### [`gla_app_ratings_close`](../../js/src/components/experience-rating-banner/index.js#L40)
+When the feedback modal is closed by the user.
+#### Properties
+| name | type | description |
+| ---- | ---- | ----------- |
+`context` | `string` | The context in which the event is triggered.
+#### Emitters
+- [`ExperienceRatingBanner`](../../js/src/components/experience-rating-banner/index.js#L68) When the feedback modal is closed.
+
+### [`gla_app_ratings_good_clicked`](../../js/src/components/experience-rating-banner/index.js#L33)
+When the user clicks the "Good" button on the banner.
+#### Properties
+| name | type | description |
+| ---- | ---- | ----------- |
+`context` | `string` | The context in which the event is triggered.
+#### Emitters
+- [`ExperienceRatingBanner`](../../js/src/components/experience-rating-banner/index.js#L68) When the "Good" button is clicked.
+
+### [`gla_app_ratings_need_help_clicked`](../../js/src/components/experience-rating-banner/index.js#L47)
+When the user clicks the "Need help" button on the banner.
+#### Properties
+| name | type | description |
+| ---- | ---- | ----------- |
+`context` | `string` | The context in which the event is triggered.
+#### Emitters
+- [`ExperienceRatingBanner`](../../js/src/components/experience-rating-banner/index.js#L68) When the "Need help" button is clicked.
+
+### [`gla_app_ratings_rate_clicked`](../../js/src/components/experience-rating-banner/feedback-modal.js#L21)
+
+#### Properties
+| name | type | description |
+| ---- | ---- | ----------- |
+`context` | `string` | The context in which the event is triggered.
+#### Emitters
+- [`FeedbackModal`](../../js/src/components/experience-rating-banner/feedback-modal.js#L38) Fired when the user clicks the "Rate us" button.
+
+### [`gla_app_ratings_shown`](../../js/src/components/experience-rating-banner/index.js#L26)
+When the experience rating banner is displayed to the user.
+#### Properties
+| name | type | description |
+| ---- | ---- | ----------- |
+`context` | `string` | The context in which the event is triggered.
+#### Emitters
+- [`ExperienceRatingBanner`](../../js/src/components/experience-rating-banner/index.js#L68) When the banner is shown.
 
 ### [`gla_attribute_mapping_create_rule`](../../js/src/pages/attribute-mapping/attribute-mapping-rule-modal.js#L32)
 Creates the rule successfully
@@ -513,10 +537,10 @@ Clicking on the link to view free ad credit value by country.
 #### Emitters
 - [`FreeAdCredit`](../../js/src/components/free-ad-credit/index.js#L27) with `{ context: 'setup-ads' }`.
 
-### [`gla_free_campaign_edited`](../../js/src/pages/shipping/index.js#L29)
+### [`gla_free_campaign_edited`](../../js/src/pages/shipping/index.js#L30)
 Saving changes of audience and/or shipping settings to the free listings.
 #### Emitters
-- [`exports`](../../js/src/pages/shipping/index.js#L45)
+- [`exports`](../../js/src/pages/shipping/index.js#L46)
 
 ### [`gla_google_account_connect_button_click`](../../js/src/utils/tracks.js#L175)
 Clicking on the button to connect Google account.
@@ -628,7 +652,7 @@ A modal is closed.
 `action` | `string` | Indicates the modal is closed by what action (e.g. `maybe-later`\|`dismiss` \| `create-another-campaign`)    - `maybe-later` is used when the "Maybe later" button on the modal is clicked    - `dismiss` is used when the modal is dismissed by clicking on "X" icon, overlay, generic "Cancel" button, or pressing ESC    - `create-another-campaign` is used when the button "Create another campaign" is clicked    - `create-paid-campaign` is used when the button "Create paid campaign" is clicked    - `confirm` is used when the button "Confirm", "Save"  or similar generic "Accept" button is clicked
 #### Emitters
 - [`AttributeMappingTable`](../../js/src/pages/attribute-mapping/attribute-mapping-table.js#L59) When any of the modals is closed
-- [`Dashboard`](../../js/src/pages/dashboard/index.js#L33) when CES modal is closed.
+- [`Dashboard`](../../js/src/pages/dashboard/index.js#L34) when CES modal is closed.
 - [`ReviewRequest`](../../js/src/pages/product-feed/review-request/index.js#L31) with `action: 'request-review-success' | 'maybe-later' | 'dismiss', context: REQUEST_REVIEW`
 - [`SubmissionSuccessGuide`](../../js/src/pages/product-feed/submission-success-guide/index.js#L155) with `action: 'create-paid-campaign' | 'maybe-later' | 'view-product-feed' | 'dismiss'`
 
