@@ -134,7 +134,7 @@ const PriceInputFooter = ( {
 					},
 					updatePriceArg
 				);
-			} else if ( type === 'simple' ) {
+			} else {
 				await updateProduct( productId, updatePriceArg );
 			}
 
