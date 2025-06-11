@@ -24,21 +24,29 @@ import './index.scss';
 const BANNER_DISMISSED_KEY = 'experience-rating-banner-dismissed';
 
 /**
+ * Fired when the experience rating banner is displayed to the user.
+ *
  * @event gla_app_ratings_shown
  * @property {string} context The context in which the event is triggered.
  */
 
 /**
+ * Fired when the user clicks the "Good" button on the banner.
+ *
  * @event gla_app_ratings_good_clicked
  * @property {string} context The context in which the event is triggered.
  */
 
 /**
+ * Fired when the feedback modal is closed by the user.
+ *
  * @event gla_app_ratings_close
  * @property {string} context The context in which the event is triggered.
  */
 
 /**
+ * Fired when the user clicks the "Need help" button on the banner.
+ *
  * @event gla_app_ratings_need_help_clicked
  * @property {string} context The context in which the event is triggered.
  */
@@ -46,16 +54,16 @@ const BANNER_DISMISSED_KEY = 'experience-rating-banner-dismissed';
 /**
  * ExperienceRatingBanner component.
  *
- * @fires gla_app_ratings_shown - Fired when the banner is shown.
- * @fires gla_app_ratings_good_clicked - Fired when the "Good" button is clicked.
- * @fires gla_app_ratings_close - Fired when the feedback modal is closed.
- * @fires gla_app_ratings_need_help_clicked - Fired when the "Need help" button is clicked.
- *
  * Displays a dismissible banner asking users to rate their experience with Google for WooCommerce.
  * Handles user interactions such as clicking "Good", "Need help", and dismissing the banner,
  * and records corresponding events. Shows a feedback modal when "Good" is clicked.
  *
  * @return {JSX.Element|null} The ExperienceRatingBanner component, or null if dismissed.
+ *
+ * @fires gla_app_ratings_shown - Fired when the banner is shown.
+ * @fires gla_app_ratings_good_clicked - Fired when the "Good" button is clicked.
+ * @fires gla_app_ratings_close - Fired when the feedback modal is closed.
+ * @fires gla_app_ratings_need_help_clicked - Fired when the "Need help" button is clicked.
  */
 const ExperienceRatingBanner = () => {
 	const [ showModal, setShowModal ] = useState( false );
