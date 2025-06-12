@@ -49,9 +49,34 @@ export default class AppRatingsOverview extends MockRequests {
 				total: 0,
 				loading: false,
 			} ),
+			this.fulfillProductStatisticsRequest( {
+				timestamp: 1678886400,
+				statistics: {
+					active: 1250,
+					expiring: 75,
+					pending: 200,
+					disapproved: 30,
+					not_synced: 0,
+				},
+				scheduled_sync: 5,
+				loading: false,
+				error: null,
+			} ),
+			this.fulfillProductsReport( {
+				free_listings: null,
+				products: null,
+				intervals: null,
+				totals: {
+					clicks: 0,
+					impressions: 0,
+					conversions: 5,
+				},
+				next_page: null,
+			} ),
 			this.mockJetpackConnected(),
 			this.mockGoogleConnected(),
 			this.mockAdsAccountConnected(),
+			this.mockMCConnected(),
 		] );
 	}
 

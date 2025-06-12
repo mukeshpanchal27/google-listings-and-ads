@@ -661,6 +661,25 @@ export default class MockRequests {
 	}
 
 	/**
+	 * Mock MC as incomplete.
+	 * @param {number} id
+	 * @param {string} step
+	 * @param {boolean} notificationServiceEnabled
+	 */
+	async mockMCIncomplete(
+		id = 1234,
+		step = 'accounts',
+		notificationServiceEnabled = false
+	) {
+		await this.fulfillMCConnection( {
+			id,
+			status: 'incomplete',
+			step,
+			notification_service_enabled: notificationServiceEnabled,
+		} );
+	}
+
+	/**
 	 * Mock MC as not connected.
 	 */
 	async mockMCNotConnected() {
@@ -842,6 +861,18 @@ export default class MockRequests {
 			payload,
 			200,
 			methods
+		);
+	}
+
+	/**
+	 * Mock the request to fetch the product reports.
+	 *
+	 * @param {Object} payload
+	 */
+	async fulfillProductsReport( payload ) {
+		await this.fulfillRequest(
+			/\/wc\/gla\/ads\/reports\/products\b/,
+			payload
 		);
 	}
 

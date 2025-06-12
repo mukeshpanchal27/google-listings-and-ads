@@ -12,13 +12,17 @@ import { store as preferencesStore } from '@wordpress/preferences';
  * Internal dependencies
  */
 import AppButton from '../app-button';
+import {
+	REPORT_SOURCE_PAID,
+	PREFERENCES_STORE_NAMESPACE,
+	APP_RATINGS_BANNER_CONTEXT,
+} from '~/constants';
+import useMCProductStatistics from '~/hooks/useMCProductStatistics';
+import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
+import useProductsReport from '~/pages/reports/products/useProductsReport';
+import usePreference from '~/hooks/usePreference';
 import FeedbackModal from './feedback-modal';
 import { recordGlaEvent } from '~/utils/tracks';
-import usePreference from '~/hooks/usePreference';
-import {
-	APP_RATINGS_BANNER_CONTEXT,
-	PREFERENCES_STORE_NAMESPACE,
-} from '~/constants';
 import './index.scss';
 
 const BANNER_DISMISSED_KEY = 'experience-rating-banner-dismissed';
@@ -66,9 +70,45 @@ const BANNER_DISMISSED_KEY = 'experience-rating-banner-dismissed';
  * @fires gla_app_ratings_need_help_clicked When the "Need help" button is clicked.
  */
 const ExperienceRatingBanner = () => {
+	const { data: statisticsData } = useMCProductStatistics();
+	const { isReady: isMCAccountReady } = useGoogleMCAccount();
+	const { data: productsReport } = useProductsReport( REPORT_SOURCE_PAID );
 	const [ showModal, setShowModal ] = useState( false );
 	const { set } = useDispatch( preferencesStore );
 	const isDismissed = usePreference( BANNER_DISMISSED_KEY );
+	const statistics = statisticsData?.statistics || {};
+
+	const shouldDisplayBanner = () => {
+		if ( Object.keys( statistics ).length === 0 ) {
+			return false;
+		}
+
+		const totalProducts = Object.values( statistics ).reduce(
+			( total, value ) => total + value,
+			0
+		);
+
+		if ( ! totalProducts ) {
+			return false;
+		}
+
+		const notSyncedProducts = statistics.not_synced;
+		const activeProducts = statistics.active;
+		const conversions = productsReport?.totals?.conversions?.value || 0;
+
+		const hasEnoughActiveProducts =
+			( activeProducts / totalProducts ) * 100 >= 70;
+		const hasAllProductsSynced =
+			notSyncedProducts === 0 && activeProducts > 0;
+		const hasConversions = conversions > 0;
+
+		return (
+			hasEnoughActiveProducts &&
+			hasAllProductsSynced &&
+			isMCAccountReady &&
+			hasConversions
+		);
+	};
 
 	// Fire event when banner is shown.
 	useEffect( () => {
@@ -78,6 +118,10 @@ const ExperienceRatingBanner = () => {
 			} );
 		}
 	}, [ isDismissed ] );
+
+	if ( ! shouldDisplayBanner() ) {
+		return null;
+	}
 
 	const handleGoodOnClick = () => {
 		recordGlaEvent( 'gla_app_ratings_good_clicked', {
