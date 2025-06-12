@@ -8,3 +8,12 @@
 		gap: $grid-unit-15;
 	}
 }
+
+.gla-experience-rating-banner__feedback-modal {
+	.app-modal__footer {
+
+		.components-button.is-primary {
+			justify-content: center;
+		}
+	}
+}

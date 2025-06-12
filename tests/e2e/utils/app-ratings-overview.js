@@ -79,4 +79,14 @@ export default class AppRatingsOverview extends MockRequests {
 			this.mockMCConnected(),
 		] );
 	}
+
+	clickGoodButton() {
+		const goodButton = this.page
+			.locator( '.gla-experience-rating-banner__actions' )
+			.getByRole( 'button', {
+				name: 'Good',
+			} );
+
+		goodButton.click();
+	}
 }

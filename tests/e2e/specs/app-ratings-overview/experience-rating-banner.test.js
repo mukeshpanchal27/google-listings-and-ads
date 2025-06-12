@@ -47,6 +47,10 @@ test.describe( 'App Ratings Banner', () => {
 			} );
 		} );
 
+		test.afterAll( async () => {
+			await page.evaluate( 'window.localStorage.clear()' );
+		} );
+
 		test( 'Banner visibility on dashboard tab', async () => {
 			await page.waitForSelector( '.gla-dashboard', {
 				state: 'visible',
@@ -115,6 +119,94 @@ test.describe( 'App Ratings Banner', () => {
 
 			const banner = page.locator( BANNER_CLASS );
 			await expect( banner ).not.toBeVisible();
+		} );
+	} );
+
+	test.describe( 'Feedback modal', () => {
+		const feedbackModalClass = '.app-modal';
+
+		test.beforeAll( async () => {
+			await appRatingsOverview.goto();
+			appRatingsOverview.clickGoodButton();
+		} );
+
+		test( 'Feedback modal is visible', async () => {
+			const feedbackModal = page.locator( feedbackModalClass );
+			await expect( feedbackModal ).toBeVisible();
+		} );
+
+		test( 'Feedback modal has action buttons', async () => {
+			const feedbackModal = page.locator( feedbackModalClass );
+			const cancelButton = feedbackModal.getByRole( 'button', {
+				name: 'Cancel',
+			} );
+			const rateUsButton = feedbackModal.getByRole( 'link', {
+				name: 'Rate us',
+			} );
+
+			await expect( cancelButton ).toBeVisible();
+			await expect( rateUsButton ).toBeVisible();
+		} );
+
+		test( 'Rate us button opens external link', async () => {
+			const feedbackModal = page.locator( feedbackModalClass );
+			const rateUsButton = feedbackModal.getByRole( 'link', {
+				name: 'Rate us',
+			} );
+
+			await expect( rateUsButton ).toHaveAttribute(
+				'href',
+				'https://wordpress.org/support/plugin/google-listings-and-ads/reviews/#new-post'
+			);
+			await expect( rateUsButton ).toHaveAttribute( 'target', '_blank' );
+		} );
+
+		test( 'Cancel button closes the modal', async () => {
+			const feedbackModal = page.locator( feedbackModalClass );
+			const cancelButton = feedbackModal.getByRole( 'button', {
+				name: 'Cancel',
+			} );
+
+			await expect( cancelButton ).toBeEnabled();
+			await cancelButton.click();
+
+			const dialog = page
+				.locator( '.gla-experience-rating-feedback-modal' )
+				.getByRole( 'dialog' );
+
+			await expect( dialog ).not.toBeVisible();
+		} );
+
+		test( 'Clicking the escape button closes the modal', async () => {
+			appRatingsOverview.clickGoodButton();
+
+			await page.waitForSelector( feedbackModalClass, {
+				state: 'visible',
+			} );
+
+			const feedbackModal = page.locator( feedbackModalClass );
+
+			await expect( feedbackModal ).toBeVisible();
+			await page.keyboard.press( 'Escape' );
+
+			await expect( feedbackModal ).not.toBeVisible();
+		} );
+
+		test( 'Clicking the close button closes the modal', async () => {
+			appRatingsOverview.clickGoodButton();
+
+			await page.waitForSelector( feedbackModalClass, {
+				state: 'visible',
+			} );
+
+			const feedbackModal = page.locator( feedbackModalClass );
+			const closeButton = feedbackModal.getByRole( 'button', {
+				name: 'Close',
+			} );
+
+			await expect( closeButton ).toBeVisible();
+			await closeButton.click();
+			await expect( feedbackModal ).not.toBeVisible();
 		} );
 	} );
 
