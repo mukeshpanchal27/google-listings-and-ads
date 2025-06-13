@@ -73,7 +73,7 @@ The Dependency Extraction Webpack Plugin makes working with frontend dependencie
 
 ## Helper Scripts
 
-There are a number of helper scripts exposed via our package.json (below list is not exhaustive, you can view the [package.json file directly](https://github.com/woocommerce/google-listings-and-ads/blob/trunk/package.json#L11) to see all):
+There are a number of helper scripts exposed via our package.json (below list is not exhaustive, you can view the [package.json](./package.json#L90) file directly to see all):
 
 -   `npm run lint:js` : Run eslint over the javascript files
 -   `npm run lint:css` : Run stylelint over the javascript files
@@ -96,12 +96,6 @@ Change to the plugin root directory and type:
 
 ```bash
 $ composer install
-```
-
-Change to the plugin root directory and type:
-
-```bash
-$ npm install && npm run dev
 ```
 
 ### Install Test Dependencies
@@ -152,6 +146,7 @@ To install the PlayWright browser locally you can run:
 Run E2E testing:
 
 -   `npm run test:e2e` to run the test in headless mode.
+-   `npm run test:e2e -- --ui` to run the test in UI mode, which is convenient for development and debugging.
 -   `npm run test:e2e-dev` to run the tests in Chromium browser.
 
 To remove the Docker container and images (this will **delete everything** in the WordPress Docker container):
@@ -186,16 +181,19 @@ npm run -- wp-env run tests-cli -- wp wc update
 
 The new Google Ads API Client Library version is now available with PHP 7.4 support under this "legacy" branch.
 
-We are using it in [composer](https://github.com/woocommerce/google-listings-and-ads/blob/develop/composer.json#L15) 
-in order to support PHP 7.4.
+We are using it in [composer](./composer.json#L12) in order to support PHP 7.4.
 
 Going forward, Google will always add the prefix "legacy-" for the branch supporting PHP 7.4.
 
 ## Docs
 
+- [Make a local development site publicly accessible](https://github.com/woocommerce/google-listings-and-ads/wiki/Hack-for-working-locally-with-APIs#make-a-local-development-site-publicly-accessible)
+- [Use Ads account without setting billing data](https://github.com/woocommerce/google-listings-and-ads/wiki/Hack-for-working-locally-with-APIs#use-ads-account-without-setting-billing-data)
 - [Usage Tracking](./src/Tracking/README.md)
 - [Hooks defined or used in GLA](./src/Hooks/README.md)
 - [gtag consent mode & cookie banners](./docs/gtag-consent-mode.md)
+- [Mocking the API responses of this plugin via filters](./tests/mocks/mocking.md)
+- [Mocking the API responses of Connect Server via a local proxy](./tests/proxy/README.md)
 
 <p align="center">
 	<br/><br/>
