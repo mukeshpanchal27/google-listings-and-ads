@@ -75,6 +75,13 @@ describe( 'reducer', () => {
 				budgetRecommendations: {},
 			},
 			gtinMigrationStatus: null,
+			price_benchmark: {
+				suggestions: {
+					items: {},
+					queries: {},
+				},
+				summary: {},
+			},
 		} );
 
 		prepareState = prepareImmutableState.bind( null, defaultState );
