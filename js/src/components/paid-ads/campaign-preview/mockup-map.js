@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { forwardRef } from '@wordpress/element';
 import GridiconLocation from 'gridicons/dist/location';
 
 /**
@@ -20,9 +21,10 @@ import mapBackgroundURL from '~/images/campaign-preview/map-background.png';
  * @param {Object} props React props.
  * @param {AdPreviewData} props.product Data for compositing ad preview mockups.
  */
-export default function MockupMap( { product } ) {
+function MockupMap( { product }, ref ) {
 	return (
 		<div
+			ref={ ref }
 			className="gla-ads-mockup gla-ads-mockup-map"
 			style={ { backgroundImage: `url(${ mapBackgroundURL })` } }
 		>
@@ -32,3 +34,5 @@ export default function MockupMap( { product } ) {
 		</div>
 	);
 }
+
+export default forwardRef( MockupMap );
