@@ -58,7 +58,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\API\Site\Controllers\RestAPI
  *
- * @since 3.0.0
+ * @since x.x.x
  */
 class SyncController extends BaseOptionsController {
 
