@@ -127,6 +127,13 @@ export const GOOGLE_WPCOM_APP_CONNECTED_STATUS = {
 
 export const APP_RATINGS_BANNER_CONTEXT = 'app_ratings_banner';
 
+export const PRICE_BENCHMARK_CHART_COLORS = {
+	LOWER: '#42b1af',
+	SIMILAR: '#6d89d3',
+	HIGHER: '#caa76f',
+	UNKNOWN: '#e0e0e0',
+};
+
 // @wordpress/preferences namespace
 export const PREFERENCES_STORE_NAMESPACE =
 	'woocommerce/google-listings-and-ads';
