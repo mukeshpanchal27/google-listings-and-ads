@@ -119,9 +119,9 @@ const ExperienceRatingBanner = () => {
 		}
 	}, [ isDismissed ] );
 
-	if ( ! shouldDisplayBanner() ) {
-		return null;
-	}
+	// if ( ! shouldDisplayBanner() ) {
+	// 	return null;
+	// }
 
 	const handleGoodOnClick = () => {
 		recordGlaEvent( 'gla_app_ratings_good_clicked', {
@@ -179,9 +179,11 @@ const ExperienceRatingBanner = () => {
 						href="https://woocommerce.com"
 						target="_blank"
 						onClick={ handleNeedHelpOnClick }
+						icon={ <Icon icon={ externalIcon } /> }
+						iconPosition="right"
+						iconSize={ 16 }
 					>
 						{ __( 'Need help', 'google-listings-and-ads' ) }
-						<Icon icon={ externalIcon } size={ 12 } />
 					</AppButton>
 				</div>
 			</Notice>
