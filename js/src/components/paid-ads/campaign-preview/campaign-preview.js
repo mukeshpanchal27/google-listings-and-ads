@@ -77,7 +77,7 @@ const mockupPairs = [
 	MockupDisplay,
 	MockupGmail,
 ].map( ( Mockup ) => {
-	const nodeRef = createRef( null );
+	const nodeRef = createRef();
 	return [ nodeRef, Mockup ];
 } );
 
