@@ -179,9 +179,11 @@ const ExperienceRatingBanner = () => {
 						href="https://woocommerce.com/my-account/contact-support/"
 						target="_blank"
 						onClick={ handleNeedHelpOnClick }
+						icon={ <Icon icon={ externalIcon } /> }
+						iconPosition="right"
+						iconSize={ 16 }
 					>
 						{ __( 'Need help', 'google-listings-and-ads' ) }
-						<Icon icon={ externalIcon } size={ 12 } />
 					</AppButton>
 				</div>
 			</Notice>

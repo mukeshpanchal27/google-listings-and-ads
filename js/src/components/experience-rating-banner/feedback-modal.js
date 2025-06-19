@@ -71,9 +71,11 @@ const FeedbackModal = ( { onRequestClose } ) => {
 					isPrimary
 					target="_blank"
 					href="https://wordpress.org/support/plugin/google-listings-and-ads/reviews/#new-post"
+					icon={ <Icon icon={ externalIcon } /> }
+					iconPosition="right"
+					iconSize={ 16 }
 				>
 					{ __( 'Rate us', 'google-listings-and-ads' ) }
-					<Icon icon={ externalIcon } size={ 18 } />
 				</AppButton>,
 			] }
 			onRequestClose={ onRequestClose }
