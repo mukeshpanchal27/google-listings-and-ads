@@ -53,4 +53,6 @@ function MockupGmail( { product }, ref ) {
 	);
 }
 
+MockupGmail.displayName = 'MockupGmail';
+
 export default forwardRef( MockupGmail );

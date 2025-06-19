@@ -80,4 +80,6 @@ function MockupSearch( { product }, ref ) {
 	);
 }
 
+MockupSearch.displayName = 'MockupSearch';
+
 export default forwardRef( MockupSearch );

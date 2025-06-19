@@ -55,4 +55,6 @@ function MockupShopping( { product }, ref ) {
 	);
 }
 
+MockupShopping.displayName = 'MockupShopping';
+
 export default forwardRef( MockupShopping );

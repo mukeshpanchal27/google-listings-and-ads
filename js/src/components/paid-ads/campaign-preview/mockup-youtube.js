@@ -58,4 +58,6 @@ function MockupYouTube( { product }, ref ) {
 	);
 }
 
+MockupYouTube.displayName = 'MockupYouTube';
+
 export default forwardRef( MockupYouTube );

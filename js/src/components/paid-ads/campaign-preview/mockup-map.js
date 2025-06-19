@@ -35,4 +35,6 @@ function MockupMap( { product }, ref ) {
 	);
 }
 
+MockupMap.displayName = 'MockupMap';
+
 export default forwardRef( MockupMap );

@@ -60,4 +60,6 @@ function MockupDisplay( { product }, ref ) {
 	);
 }
 
+MockupDisplay.displayName = 'MockupDisplay';
+
 export default forwardRef( MockupDisplay );
