@@ -176,7 +176,7 @@ const ExperienceRatingBanner = () => {
 
 					<AppButton
 						isSecondary
-						href="https://woocommerce.com"
+						href="https://woocommerce.com/my-account/contact-support/"
 						target="_blank"
 						onClick={ handleNeedHelpOnClick }
 					>
