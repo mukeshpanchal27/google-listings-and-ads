@@ -9,6 +9,7 @@ import { Card } from '@wordpress/components';
  * Internal dependencies
  */
 import { glaData } from '~/constants';
+import ExperienceRatingBanner from '~/components/experience-rating-banner';
 import AppNotice from '~/components/app-notice';
 import AppSpinner from '~/components/app-spinner';
 import MainTabNav from '~/components/main-tab-nav';
@@ -52,8 +53,8 @@ const PriceBenchmark = () => {
 
 	return (
 		<div className="gla-price-benchmark">
+			<ExperienceRatingBanner />
 			<MainTabNav />
-
 			<Banner />
 			<ProductComparisonChart />
 
