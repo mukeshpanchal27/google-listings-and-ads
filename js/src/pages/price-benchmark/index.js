@@ -9,13 +9,13 @@ import { Card } from '@wordpress/components';
  * Internal dependencies
  */
 import { glaData } from '~/constants';
-import ExperienceRatingBanner from '~/components/experience-rating-banner';
 import AppNotice from '~/components/app-notice';
 import AppSpinner from '~/components/app-spinner';
+import Banner from './banner';
+import ExperienceRatingBanner from '~/components/experience-rating-banner';
 import MainTabNav from '~/components/main-tab-nav';
 import PriceBenchmarkSuggestions from './price-benchmark-suggestions';
 import ProductComparisonChart from './product-comparison-chart';
-import Banner from './banner';
 import './index.scss';
 
 const PriceBenchmark = () => {

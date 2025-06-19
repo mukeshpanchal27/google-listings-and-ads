@@ -119,9 +119,9 @@ const ExperienceRatingBanner = () => {
 		}
 	}, [ isDismissed ] );
 
-	if ( ! shouldDisplayBanner() ) {
-		return null;
-	}
+	// if ( ! shouldDisplayBanner() ) {
+	// 	return null;
+	// }
 
 	const handleGoodOnClick = () => {
 		recordGlaEvent( 'gla_app_ratings_good_clicked', {
