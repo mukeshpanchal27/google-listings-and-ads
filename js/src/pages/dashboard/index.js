@@ -84,8 +84,8 @@ const Dashboard = () => {
 
 	return (
 		<>
-			<ExperienceRatingBanner />
 			<div className="gla-dashboard">
+				<ExperienceRatingBanner />
 				<DifferentCurrencyNotice context="dashboard" />
 				<MainTabNav />
 				<RebrandingTour />

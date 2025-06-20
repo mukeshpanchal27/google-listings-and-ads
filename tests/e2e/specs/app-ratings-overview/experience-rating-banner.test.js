@@ -93,7 +93,7 @@ test.describe( 'App Ratings Banner', () => {
 
 			await expect( needHelpButton ).toHaveAttribute(
 				'href',
-				'https://woocommerce.com'
+				'https://woocommerce.com/my-account/contact-support/'
 			);
 			await expect( needHelpButton ).toHaveAttribute(
 				'target',
@@ -116,6 +116,11 @@ test.describe( 'App Ratings Banner', () => {
 
 		test( 'Banner is not visible after reload once dismissed', async () => {
 			await page.reload();
+
+			// Ensure the dashboard is loaded before checking the banner
+			await page.waitForSelector( '.gla-product-feed', {
+				state: 'visible',
+			} );
 
 			const banner = page.locator( BANNER_CLASS );
 			await expect( banner ).not.toBeVisible();
