@@ -93,7 +93,7 @@ test.describe( 'App Ratings Banner', () => {
 
 			await expect( needHelpButton ).toHaveAttribute(
 				'href',
-				'https://woocommerce.com'
+				'https://woocommerce.com/my-account/contact-support/'
 			);
 			await expect( needHelpButton ).toHaveAttribute(
 				'target',
@@ -137,14 +137,14 @@ test.describe( 'App Ratings Banner', () => {
 
 		test( 'Feedback modal has action buttons', async () => {
 			const feedbackModal = page.locator( feedbackModalClass );
-			const cancelButton = feedbackModal.getByRole( 'button', {
-				name: 'Cancel',
+			const maybeLaterButton = feedbackModal.getByRole( 'button', {
+				name: 'Maybe later',
 			} );
 			const rateUsButton = feedbackModal.getByRole( 'link', {
 				name: 'Rate us',
 			} );
 
-			await expect( cancelButton ).toBeVisible();
+			await expect( maybeLaterButton ).toBeVisible();
 			await expect( rateUsButton ).toBeVisible();
 		} );
 
@@ -163,12 +163,12 @@ test.describe( 'App Ratings Banner', () => {
 
 		test( 'Cancel button closes the modal', async () => {
 			const feedbackModal = page.locator( feedbackModalClass );
-			const cancelButton = feedbackModal.getByRole( 'button', {
-				name: 'Cancel',
+			const maybeLaterButton = feedbackModal.getByRole( 'button', {
+				name: 'Maybe later',
 			} );
 
-			await expect( cancelButton ).toBeEnabled();
-			await cancelButton.click();
+			await expect( maybeLaterButton ).toBeEnabled();
+			await maybeLaterButton.click();
 
 			const dialog = page
 				.locator( '.gla-experience-rating-feedback-modal' )
@@ -207,6 +207,25 @@ test.describe( 'App Ratings Banner', () => {
 			await expect( closeButton ).toBeVisible();
 			await closeButton.click();
 			await expect( feedbackModal ).not.toBeVisible();
+		} );
+
+		test( 'Clicking the "Rate us" button closes the modal and dismisses the notice', async () => {
+			appRatingsOverview.clickGoodButton();
+
+			await page.waitForSelector( feedbackModalClass, {
+				state: 'visible',
+			} );
+
+			const feedbackModal = page.locator( feedbackModalClass );
+			const rateUsButton = feedbackModal.getByRole( 'link', {
+				name: 'Rate us',
+			} );
+
+			await rateUsButton.click();
+			await expect( feedbackModal ).not.toBeVisible();
+
+			const banner = page.locator( BANNER_CLASS );
+			await expect( banner ).not.toBeVisible();
 		} );
 	} );
 
