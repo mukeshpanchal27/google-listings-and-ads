@@ -338,7 +338,7 @@ Triggered when "continue" to edit program button is clicked.
 #### Properties
 | name | type | description |
 | ---- | ---- | ----------- |
-`programId` | `string` | program id
+`program_id` | `string` | program id
 `url` | `string` | URL for editing the program (paid campaign)
 #### Emitters
 - [`EditProgramPromptModal`](../../js/src/pages/dashboard/all-programs-table-card/edit-program-button/edit-program-prompt-modal.js#L31) when "Continue to edit" is clicked.
@@ -524,7 +524,7 @@ Triggered when changing products & variations filter,
 | ---- | ---- | ----------- |
 `report` | `string` | Name of the report (e.g. `"reports-products"`)
 `filter` | `string` | Value of the filter (e.g. `"all" \| "single-product" \| "compare-products"`)
-`variationFilter` | `string \| undefined` | Value of the variation filter (e.g. `undefined \| "single-variation" \| "compare-variations"`)
+`filter_variation` | `string` | Value of the variation filter (e.g. `"single-variation" \| "compare-variations"`)
 #### Emitters
 - [`ProductsReportFilters`](../../js/src/pages/reports/products/products-report-filters.js#L41)
 - [`ProgramsReportFilters`](../../js/src/pages/reports/programs/programs-report-filters.js#L43)
