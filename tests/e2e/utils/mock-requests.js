@@ -920,4 +920,19 @@ export default class MockRequests {
 			[ 'GET' ]
 		);
 	}
+
+	/**
+	 * Fulfills a mock request for the shipping times endpoint.
+	 *
+	 * @param {Object} payload - The mock response payload to be returned.
+	 * @return {Promise<void>} A promise that resolves when the request is fulfilled.
+	 */
+	async fulfillShippingTimes( payload, status = 200 ) {
+		await this.fulfillRequest(
+			/\/wc\/gla\/mc\/shipping\/times\b/,
+			payload,
+			status,
+			[ 'GET' ]
+		);
+	}
 }
