@@ -49,6 +49,20 @@ export default class ProductFeedPage extends MockRequests {
 				loading: false,
 			} ),
 
+			this.fulfillAdsReportProducts( {
+				products: null,
+				campaigns: null,
+				intervals: null,
+				totals: {
+					sales: 0,
+					conversions: 0,
+					spend: 0,
+					clicks: 0,
+					impressions: 0,
+				},
+				next_page: null,
+			} ),
+
 			this.mockJetpackConnected(),
 			this.mockGoogleConnected(),
 			this.mockAdsAccountConnected(),
