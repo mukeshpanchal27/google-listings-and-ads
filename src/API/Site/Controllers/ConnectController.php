@@ -47,7 +47,7 @@ class ConnectController extends BaseController {
 	public function __construct( RESTServer $server, Middleware $middleware, OptionsInterface $options ) {
 		parent::__construct( $server );
 		$this->middleware = $middleware;
-		$this->options = $options;
+		$this->options    = $options;
 	}
 
 	/**
@@ -77,7 +77,7 @@ class ConnectController extends BaseController {
 			try {
 				// Trigger the account connection
 				$this->middleware->update_sdi_merchant_account();
-				
+
 				$result = [
 					'status'             => 'success',
 					'message'            => __( 'Account connection triggered successfully.', 'google-listings-and-ads' ),
@@ -99,13 +99,13 @@ class ConnectController extends BaseController {
 	 */
 	protected function get_schema_properties(): array {
 		return [
-			'status' => [
+			'status'             => [
 				'description' => __( 'Status of the connection request.', 'google-listings-and-ads' ),
 				'type'        => 'string',
 				'context'     => [ 'view' ],
 				'readonly'    => true,
 			],
-			'message' => [
+			'message'            => [
 				'description' => __( 'Message describing the connection result.', 'google-listings-and-ads' ),
 				'type'        => 'string',
 				'context'     => [ 'view' ],
@@ -117,7 +117,7 @@ class ConnectController extends BaseController {
 				'context'     => [ 'view' ],
 				'readonly'    => true,
 			],
-			'blog_id' => [
+			'blog_id'            => [
 				'description' => __( 'The WordPress.com blog ID.', 'google-listings-and-ads' ),
 				'type'        => 'integer',
 				'context'     => [ 'view' ],
