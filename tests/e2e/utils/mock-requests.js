@@ -150,6 +150,19 @@ export default class MockRequests {
 	}
 
 	/**
+	 * Fulfill the Ads Report Products request.
+	 *
+	 * @param {Object} payload
+	 * @return {Promise<void>}
+	 */
+	async fulfillAdsReportProducts( payload ) {
+		await this.fulfillRequest(
+			/\/wc\/gla\/ads\/reports\/products\b/,
+			payload
+		);
+	}
+
+	/**
 	 * Fulfill the Target Audience request.
 	 *
 	 * @param {Object} payload
@@ -899,18 +912,6 @@ export default class MockRequests {
 			payload,
 			200,
 			methods
-		);
-	}
-
-	/**
-	 * Mock the request to fetch the product reports.
-	 *
-	 * @param {Object} payload
-	 */
-	async fulfillProductsReport( payload ) {
-		await this.fulfillRequest(
-			/\/wc\/gla\/ads\/reports\/products\b/,
-			payload
 		);
 	}
 

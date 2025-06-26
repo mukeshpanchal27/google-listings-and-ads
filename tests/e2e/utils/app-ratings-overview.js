@@ -62,14 +62,16 @@ export default class AppRatingsOverview extends MockRequests {
 				loading: false,
 				error: null,
 			} ),
-			this.fulfillProductsReport( {
-				free_listings: null,
+			this.fulfillAdsReportProducts( {
 				products: null,
+				campaigns: null,
 				intervals: null,
 				totals: {
+					sales: 0,
+					conversions: 5,
+					spend: 0,
 					clicks: 0,
 					impressions: 0,
-					conversions: 5,
 				},
 				next_page: null,
 			} ),

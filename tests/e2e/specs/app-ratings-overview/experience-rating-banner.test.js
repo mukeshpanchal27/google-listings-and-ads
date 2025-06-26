@@ -296,8 +296,18 @@ test.describe( 'App Ratings Banner', () => {
 				error: null,
 			} );
 
-			appRatingsOverview.fulfillProductsReport( {
-				totals: { conversions: { value: 0 } },
+			appRatingsOverview.fulfillAdsReportProducts( {
+				products: null,
+				campaigns: null,
+				intervals: null,
+				totals: {
+					sales: 0,
+					conversions: 0,
+					spend: 0,
+					clicks: 0,
+					impressions: 0,
+				},
+				next_page: null,
 			} );
 
 			await appRatingsOverview.goto();
