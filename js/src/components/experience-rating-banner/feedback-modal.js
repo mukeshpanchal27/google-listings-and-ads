@@ -14,7 +14,7 @@ import { APP_RATINGS_BANNER_CONTEXT } from '~/constants';
 import { recordGlaEvent } from '~/utils/tracks';
 
 /**
- * @event gla_app_ratings_cancel_clicked
+ * @event gla_app_ratings_maybe_later_clicked
  * @property {string} context The context in which the event is triggered.
  */
 
@@ -30,24 +30,26 @@ import { recordGlaEvent } from '~/utils/tracks';
  *
  * @param {Object} props - Component props.
  * @param {Function} props.onRequestClose - Function to call when the modal is closed.
+ * @param {Function} props.onRateUsClick - Function to call when the "Rate us" button is clicked.
  * @return {JSX.Element} The FeedbackModal component.
  *
- * @fires gla_app_ratings_cancel_clicked - Fired when the user clicks the "Cancel" button.
+ * @fires gla_app_ratings_maybe_later_clicked - Fired when the user clicks the "Maybe later" button.
  * @fires gla_app_ratings_rate_clicked - Fired when the user clicks the "Rate us" button.
  */
-const FeedbackModal = ( { onRequestClose } ) => {
+const FeedbackModal = ( { onRequestClose, onRateUsClick } ) => {
 	const trackEvent = ( eventName ) => {
 		recordGlaEvent( eventName, { context: APP_RATINGS_BANNER_CONTEXT } );
 	};
 
-	const handleCancelOnClick = () => {
-		trackEvent( 'gla_app_ratings_cancel_clicked' );
+	const handleMaybeLaterOnClick = () => {
+		trackEvent( 'gla_app_ratings_maybe_later_clicked' );
 		onRequestClose();
 	};
 
 	const handleRateUsOnClick = () => {
 		trackEvent( 'gla_app_ratings_rate_clicked' );
 		onRequestClose();
+		onRateUsClick();
 	};
 
 	return (
@@ -59,11 +61,11 @@ const FeedbackModal = ( { onRequestClose } ) => {
 			className="gla-experience-rating-banner__feedback-modal"
 			buttons={ [
 				<AppButton
-					key="cancel"
-					onClick={ handleCancelOnClick }
-					isTertiary
+					key="maybe-later"
+					onClick={ handleMaybeLaterOnClick }
+					isSecondary
 				>
-					{ __( 'Cancel', 'google-listings-and-ads' ) }
+					{ __( 'Maybe later', 'google-listings-and-ads' ) }
 				</AppButton>,
 				<AppButton
 					key="rate-us"

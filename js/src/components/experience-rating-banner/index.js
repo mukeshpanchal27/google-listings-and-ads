@@ -119,7 +119,7 @@ const ExperienceRatingBanner = () => {
 		}
 	}, [ isDismissed ] );
 
-	if ( ! shouldDisplayBanner() ) {
+	if ( ! shouldDisplayBanner() || isDismissed ) {
 		return null;
 	}
 
@@ -143,24 +143,23 @@ const ExperienceRatingBanner = () => {
 		} );
 	};
 
-	const onDismiss = () => {
+	const dismissBanner = () => {
 		set( PREFERENCES_STORE_NAMESPACE, BANNER_DISMISSED_KEY, true );
 	};
-
-	if ( isDismissed ) {
-		return null;
-	}
 
 	return (
 		<div className="gla-experience-rating-banner__container">
 			{ showModal && (
-				<FeedbackModal onRequestClose={ handleRequestClose } />
+				<FeedbackModal
+					onRequestClose={ handleRequestClose }
+					onRateUsClick={ dismissBanner }
+				/>
 			) }
 			<Notice
 				className="gla-experience-rating-banner"
 				status="info"
 				isDismissible={ true }
-				onRemove={ onDismiss }
+				onRemove={ dismissBanner }
 			>
 				<p className="gla-experience-rating-banner__text">
 					{ __(

@@ -188,15 +188,6 @@ Clicking on the button to disconnect the Google Ads account.
 #### Emitters
 - [`BillingSetupCard`](../../js/src/components/paid-ads/billing-card/billing-setup-card.js#L39) When the user clicks on the button to set up billing in Google Ads.
 
-### [`gla_app_ratings_cancel_clicked`](../../js/src/components/experience-rating-banner/feedback-modal.js#L16)
-
-#### Properties
-| name | type | description |
-| ---- | ---- | ----------- |
-`context` | `string` | The context in which the event is triggered.
-#### Emitters
-- [`FeedbackModal`](../../js/src/components/experience-rating-banner/feedback-modal.js#L38) Fired when the user clicks the "Cancel" button.
-
 ### [`gla_app_ratings_close`](../../js/src/components/experience-rating-banner/index.js#L44)
 When the feedback modal is closed by the user.
 #### Properties
@@ -215,6 +206,15 @@ When the user clicks the "Good" button on the banner.
 #### Emitters
 - [`ExperienceRatingBanner`](../../js/src/components/experience-rating-banner/index.js#L72) When the "Good" button is clicked.
 
+### [`gla_app_ratings_maybe_later_clicked`](../../js/src/components/experience-rating-banner/feedback-modal.js#L16)
+
+#### Properties
+| name | type | description |
+| ---- | ---- | ----------- |
+`context` | `string` | The context in which the event is triggered.
+#### Emitters
+- [`FeedbackModal`](../../js/src/components/experience-rating-banner/feedback-modal.js#L39) Fired when the user clicks the "Maybe later" button.
+
 ### [`gla_app_ratings_need_help_clicked`](../../js/src/components/experience-rating-banner/index.js#L51)
 When the user clicks the "Need help" button on the banner.
 #### Properties
@@ -231,7 +231,7 @@ When the user clicks the "Need help" button on the banner.
 | ---- | ---- | ----------- |
 `context` | `string` | The context in which the event is triggered.
 #### Emitters
-- [`FeedbackModal`](../../js/src/components/experience-rating-banner/feedback-modal.js#L38) Fired when the user clicks the "Rate us" button.
+- [`FeedbackModal`](../../js/src/components/experience-rating-banner/feedback-modal.js#L39) Fired when the user clicks the "Rate us" button.
 
 ### [`gla_app_ratings_shown`](../../js/src/components/experience-rating-banner/index.js#L30)
 When the experience rating banner is displayed to the user.
