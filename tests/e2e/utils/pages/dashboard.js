@@ -83,19 +83,7 @@ export default class DashboardPage extends MockRequests {
 			status: 'disconnected',
 		} );
 
-		await this.fulfillAdsReportProducts( {
-			products: null,
-			campaigns: null,
-			intervals: null,
-			totals: {
-				sales: 0,
-				conversions: 0,
-				spend: 0,
-				clicks: 0,
-				impressions: 0,
-			},
-			next_page: null,
-		} );
+		await this.fulfillAdsReportProducts( adsReportProductsData );
 	}
 
 	/**
