@@ -8,6 +8,7 @@ import { expect, test } from '@playwright/test';
  */
 import { clearOnboardedMerchant, setOnboardedMerchant } from '../../utils/api';
 import AppRatingsOverview from '../../utils/app-ratings-overview';
+import adsReportProductsData from '../../utils/__fixtures__/ads-report-products.json';
 
 test.use( { storageState: process.env.ADMINSTATE } );
 
@@ -296,9 +297,9 @@ test.describe( 'App Ratings Banner', () => {
 				error: null,
 			} );
 
-			appRatingsOverview.fulfillProductsReport( {
-				totals: { conversions: { value: 0 } },
-			} );
+			appRatingsOverview.fulfillAdsReportProducts(
+				adsReportProductsData
+			);
 
 			await appRatingsOverview.goto();
 			await page.waitForSelector( '.gla-dashboard', {
