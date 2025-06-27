@@ -4,6 +4,7 @@
 import { LOAD_STATE } from '../constants';
 import MockRequests from '../mock-requests';
 import adsReportProductsData from '../__fixtures__/ads-report-products.json';
+import mcProductStatistics from '../__fixtures__/mc-product-statistics.json';
 
 /**
  * Dashboard page object class.
@@ -59,6 +60,7 @@ export default class DashboardPage extends MockRequests {
 		} );
 
 		await this.fulfillAdsReportProgram( adsReportProductsData );
+		await this.fulfillProductStatisticsRequest( mcProductStatistics );
 
 		await this.fulfillTargetAudience( {
 			location: 'selected',
