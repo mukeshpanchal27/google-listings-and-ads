@@ -8,6 +8,7 @@ import { Locator } from '@playwright/test';
  */
 import MockRequests from '../mock-requests';
 import { LOAD_STATE } from '../constants';
+import adsReportProductsData from '../__fixtures__/ads-report-products.json';
 
 export default class ShippingPage extends MockRequests {
 	/**
@@ -39,19 +40,7 @@ export default class ShippingPage extends MockRequests {
 			language: 'English',
 		} );
 
-		await this.fulfillAdsReportProducts( {
-			products: null,
-			campaigns: null,
-			intervals: null,
-			totals: {
-				sales: 0,
-				conversions: 0,
-				spend: 0,
-				clicks: 0,
-				impressions: 0,
-			},
-			next_page: null,
-		} );
+		await this.fulfillAdsReportProducts( adsReportProductsData );
 	}
 
 	/**

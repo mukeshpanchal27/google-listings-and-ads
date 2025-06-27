@@ -3,6 +3,7 @@
  */
 import { LOAD_STATE } from './constants';
 import MockRequests from './mock-requests';
+import adsReportProductsData from './__fixtures__/ads-report-products.json';
 
 /**
  * AppRatingsOverview class.
@@ -63,17 +64,11 @@ export default class AppRatingsOverview extends MockRequests {
 				error: null,
 			} ),
 			this.fulfillAdsReportProducts( {
-				products: null,
-				campaigns: null,
-				intervals: null,
+				...adsReportProductsData,
 				totals: {
-					sales: 0,
+					...adsReportProductsData.totals,
 					conversions: 5,
-					spend: 0,
-					clicks: 0,
-					impressions: 0,
 				},
-				next_page: null,
 			} ),
 			this.mockJetpackConnected(),
 			this.mockGoogleConnected(),
