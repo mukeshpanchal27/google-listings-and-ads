@@ -106,7 +106,7 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 					'mc_product_price_micros'                           => $price_competitiveness['price_micros'],
 					'mc_price_benchmark_price_micros'                   => $price_competitiveness['benchmark_price_micros'],
 					'mc_price_benchmark_price_currency_code'            => $price_competitiveness['benchmark_price_currency_code'] ?? '',
-					'mc_insights_suggested_price_micros'                => $price_insights['suggested_price_micros'],
+					'mc_insights_suggested_price_micros'                => $price_insights['suggested_price_micros'] ?? '',
 					'mc_insights_suggested_price_currency_code'         => $price_insights['suggested_price_currency_code'] ?? '',
 					'mc_insights_predicted_impressions_change_fraction' => $price_insights['predicted_impressions_change_fraction'] ?? '',
 					'mc_insights_predicted_clicks_change_fraction'      => $price_insights['predicted_clicks_change_fraction'] ?? '',
