@@ -1,13 +1,5 @@
 *** Google for WooCommerce Changelog ***
 
-= 3.1.0 - 2025-06-27 =
-* Add – /wc/gla/connect endpoint for Google-triggered account linking.
-* Add – Notice to gather feedback and request ratings from merchants.
-* Fix - The API error of querying campaign assets by an invalid ID after saving a campaign with assets.
-* Dev – Optimize E2E tests for Price Benchmarks.
-* Add – Reintroduce account:connect functionality for Google account linking.
-* Tweak - WC 10.0 compatibility.
-
 = 3.0.0 - 2025-06-17 =
 * Add - API Push/Pull Sync control endpoint Implementation.
 * Add - Price Benchmarks: Competitive pricing analysis and price recommendations from Google.
