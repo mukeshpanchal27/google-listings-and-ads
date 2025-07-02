@@ -522,7 +522,7 @@ class PriceBenchmarksTest extends UnitTest {
 	 * Test get_price_benchmarks_response returns empty array if product id is zero.
 	 */
 	public function test_get_price_benchmarks_response_bail_early_when_product_id_zero(): void {
-		$benchmark_data      = [
+		$benchmark_data = [
 			[
 				'offer_id'                      => 'offer_0',
 				'id'                            => 'mc_1',
