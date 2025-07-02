@@ -517,4 +517,36 @@ class PriceBenchmarksTest extends UnitTest {
 		$this->assertIsArray( $result );
 		$this->assertCount( 0, $result );
 	}
+
+	/**
+	 * Test get_price_benchmarks_response returns empty array if product id is zero.
+	 */
+	public function test_get_price_benchmarks_response_bail_early_when_product_id_zero(): void {
+		$benchmark_data      = [
+			[
+				'offer_id'                      => 'offer_0',
+				'id'                            => 'mc_1',
+				'country_code'                  => 'US',
+				'benchmark_price_currency_code' => 'USD',
+				'price_micros'                  => 10000000,
+				'benchmark_price_micros'        => 9000000,
+			],
+		];
+
+		$this->price_benchmarks_api_middleware->method( 'get_price_comparisons_data' )->willReturn( $benchmark_data );
+		$this->price_benchmarks_api_middleware->method( 'get_price_insights_data' )->willReturn( [] );
+		$this->price_benchmarks_api_middleware->method( 'get_merchant_performance_data' )->willReturn( [] );
+
+		$this->product_helper->method( 'get_wc_product_id' )->willReturn( 0 );
+
+		// Use Reflection to access protected method
+		$reflection = new \ReflectionClass( $this->price_benchmarks );
+		$method     = $reflection->getMethod( 'get_price_benchmarks_response' );
+		$method->setAccessible( true );
+
+		$result = $method->invoke( $this->price_benchmarks, [] );
+
+		$this->assertIsArray( $result );
+		$this->assertCount( 0, $result );
+	}
 }
