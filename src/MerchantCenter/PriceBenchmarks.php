@@ -59,7 +59,12 @@ class PriceBenchmarks implements ContainerAwareInterface, Service {
 
 		// Combine all data sets into $mapped_data keyed by product ID.
 		foreach ( $benchmark_data ?? [] as $benchmark_result ) {
-			$product_id                 = $product_helper->get_wc_product_id( (string) $benchmark_result['offer_id'] );
+			$product_id = $product_helper->get_wc_product_id( (string) $benchmark_result['offer_id'] );
+
+			if ( $product_id === 0 ) {
+				continue; // Skip if product ID is not valid.
+			}
+
 			$mapped_data[ $product_id ] = [
 				'price_competitiveness' => $benchmark_result,
 				'price_insights'        => [],
