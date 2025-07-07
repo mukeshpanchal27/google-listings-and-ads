@@ -153,7 +153,4 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 * Add - Price Benchmarks: Competitive pricing analysis and price recommendations from Google.
 * Tweak - WC 9.9 compatibility.
 
-= 2.9.13 - 2025-04-29 =
-* Update - Revert the changes related to the Grant API Pull Access in Onboarding feature made in version 2.9.12.
-
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).
