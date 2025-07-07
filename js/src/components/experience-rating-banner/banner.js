@@ -19,7 +19,6 @@ import {
 	APP_RATINGS_BANNER_CONTEXT,
 } from '~/constants';
 import AppButton from '~/components/app-button';
-import useGoogleMCAccount from '~/hooks/useGoogleMCAccount';
 import useMCProductStatistics from '~/hooks/useMCProductStatistics';
 import useProductsReport from '~/pages/reports/products/useProductsReport';
 import FeedbackModal from './feedback-modal';
@@ -69,10 +68,9 @@ import './index.scss';
  */
 const Banner = () => {
 	const { data: statisticsData } = useMCProductStatistics();
-	const { isReady: isMCAccountReady } = useGoogleMCAccount();
 	const { data: productsReport } = useProductsReport( REPORT_SOURCE_PAID );
 	const [ showModal, setShowModal ] = useState( false );
-	const { set } = useDispatch( preferencesStore );
+	const { set } = useDispatch( preferencesStore ) || {};
 
 	const shouldDisplayBanner = useMemo( () => {
 		const statistics = statisticsData?.statistics || {};
@@ -101,22 +99,16 @@ const Banner = () => {
 		const hasConversions = conversions > 0;
 
 		return (
-			hasEnoughActiveProducts &&
-			hasAllProductsSynced &&
-			isMCAccountReady &&
-			hasConversions
+			hasEnoughActiveProducts && hasAllProductsSynced && hasConversions
 		);
-	}, [ isMCAccountReady, statisticsData, productsReport ] );
+	}, [ statisticsData, productsReport ] );
 
-	// Track event when banner is shown.
 	useEffect( () => {
-		if ( ! shouldDisplayBanner ) {
-			return false;
+		if ( shouldDisplayBanner ) {
+			recordGlaEvent( 'gla_app_ratings_shown', {
+				context: APP_RATINGS_BANNER_CONTEXT,
+			} );
 		}
-
-		recordGlaEvent( 'gla_app_ratings_shown', {
-			context: APP_RATINGS_BANNER_CONTEXT,
-		} );
 	}, [ shouldDisplayBanner ] );
 
 	if ( ! shouldDisplayBanner ) {
