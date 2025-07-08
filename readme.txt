@@ -140,6 +140,10 @@ To allow your products to appear in all relevant locations, make sure you’ve c
 
 == Changelog ==
 
+= 3.1.1 - 2025-07-08 =
+* Fix - Do not render experience rating banner if Ads account is disconnected.
+* Fix - Fixed undefined array key warnings in Price Benchmarks feature.
+
 = 3.1.0 - 2025-07-01 =
 * Add - A new endpoint for Google-triggered account linking.
 * Add - Notice to gather feedback and request ratings from merchants.
